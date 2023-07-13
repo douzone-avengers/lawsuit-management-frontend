@@ -8,6 +8,7 @@ import CaseProfile from "../case/CaseProfile";
 import { CardItem } from "../component/Card";
 import CardList from "../component/CardList";
 import Main from "../component/Main";
+import RegisterForm from "../component/RegisterForm";
 import { TabItem } from "../component/Tab";
 import TabList from "../component/TabList";
 import { ROOT } from "../constant/url";
@@ -111,6 +112,7 @@ export default function CasePage() {
           onRegisterButtonClick={() => {
             setUi({
               ...ui,
+              registerForm: true,
             });
           }}
         />
@@ -131,6 +133,7 @@ export default function CasePage() {
           </Main>
         </div>
       ) : null}
+      {ui.registerForm ? <RegisterForm /> : null}
     </div>
   );
 }

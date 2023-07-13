@@ -93,6 +93,7 @@ export default function ClientPage() {
           onRegisterButtonClick={() => {
             setUi({
               ...ui,
+              registerForm: true,
             });
           }}
         />
