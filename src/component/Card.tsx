@@ -27,7 +27,6 @@ export default function Card({ card }: Props) {
           height: 48,
           fontSize: 18,
           fontWeight: 700,
-          fontFamily: "nato",
           whiteSpace: "nowrap",
         }}
       >
