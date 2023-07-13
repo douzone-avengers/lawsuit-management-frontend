@@ -3,6 +3,7 @@ import { atom } from "recoil";
 type UiState = {
   loginForm: boolean;
   searchForm: boolean;
+  registerForm: boolean;
   cardList: boolean;
 };
 
@@ -11,6 +12,7 @@ export const uiState = atom<UiState>({
   default: {
     loginForm: false,
     searchForm: false,
+    registerForm: false,
     cardList: true,
   },
 });
