@@ -27,7 +27,6 @@ export default function Tab({ tab }: Props) {
           width: 64,
           fontSize: 18,
           fontWeight: 700,
-          fontFamily: "nato",
           borderRight: "1px solid black",
         }}
       >
