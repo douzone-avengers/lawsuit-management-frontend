@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import LoginButton from "./LoginButton";
 import Logo from "./Logo";
 
 export default function Header() {
@@ -21,6 +22,9 @@ export default function Header() {
         }}
       >
         <Logo width={96} height={64} />
+      </div>
+      <div style={{ display: "flex" }}>
+        <LoginButton />
       </div>
     </div>
   );
