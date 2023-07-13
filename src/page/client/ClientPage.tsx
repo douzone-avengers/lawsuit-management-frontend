@@ -1,23 +1,20 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import CaseAdvices from "../case/CaseAdvices";
-import CaseExpenses from "../case/CaseExpenses";
-import CaseJudgement from "../case/CaseJudgement";
-import CaseProfile from "../case/CaseProfile";
-import { CardItem } from "../component/Card";
-import CardList from "../component/CardList";
-import Main from "../component/Main";
-import RegisterForm from "../component/RegisterForm";
-import { TabItem } from "../component/Tab";
-import TabList from "../component/TabList";
-import { ROOT } from "../constant/url";
-import { cardsState } from "../state/cardsState";
-import { caseIdState } from "../state/caseIdState";
-import { uiState } from "../state/uiState";
+import { CardItem } from "../../component/Card";
+import CardList from "../../component/CardList";
+import Main from "../../component/Main";
+import { TabItem } from "../../component/Tab";
+import TabList from "../../component/TabList";
+import { ROOT } from "../../constant/url";
+import { cardsState } from "../../state/cardsState";
+import { clientIdState } from "../../state/clientIdState";
+import { uiState } from "../../state/uiState";
+import ClientCasesPage from "../client/ClientCasesPage";
+import ClientProfilePage from "../client/ClientProfilePage";
 
-export default function CasePage() {
-  const [caseId, setCaseId] = useRecoilState(caseIdState);
+export default function ClientPage() {
+  const [clientId, setClientId] = useRecoilState(clientIdState);
   const [ui, setUi] = useRecoilState(uiState);
   const [cards, setCards] = useRecoilState(cardsState);
 
@@ -28,7 +25,7 @@ export default function CasePage() {
         id: number;
         name: string;
         url: string;
-      }[] = (await axios.get(`${ROOT}/lawsuits`)).data;
+      }[] = (await axios.get(`${ROOT}/clients`)).data;
       const newCards: CardItem[] = data.map(
         (item: { id: number; name: string; url: string }) => {
           return {
@@ -37,7 +34,7 @@ export default function CasePage() {
             checked: false,
             onClick: async () => {
               const { data } = await axios.get(item.url);
-              setCaseId(data.id);
+              setClientId(data.id);
               setCurTabId(0);
             },
           };
@@ -48,10 +45,10 @@ export default function CasePage() {
   }, []);
   useEffect(() => {
     const newCards = cards.map((item) => {
-      return { ...item, checked: caseId === item.id };
+      return { ...item, checked: clientId === item.id };
     });
     setCards(newCards);
-  }, [caseId]);
+  }, [clientId]);
 
   // 탭
   const [tabs, setTabs] = useState<TabItem[]>([
@@ -65,26 +62,10 @@ export default function CasePage() {
     },
     {
       id: 1,
-      name: "상 담",
+      name: "사 건",
       checked: false,
       onClick: () => {
         handleTabClick(1);
-      },
-    },
-    {
-      id: 2,
-      name: "지 출",
-      checked: false,
-      onClick: () => {
-        handleTabClick(2);
-      },
-    },
-    {
-      id: 3,
-      name: "종 결",
-      checked: false,
-      onClick: () => {
-        handleTabClick(3);
       },
     },
   ]);
@@ -122,18 +103,13 @@ export default function CasePage() {
           <TabList tabs={tabs} />
           <Main>
             {curTabId === 0 ? (
-              <CaseProfile />
+              <ClientProfilePage />
             ) : curTabId === 1 ? (
-              <CaseAdvices />
-            ) : curTabId === 2 ? (
-              <CaseExpenses />
-            ) : curTabId === 3 ? (
-              <CaseJudgement />
+              <ClientCasesPage />
             ) : null}
           </Main>
         </div>
       ) : null}
-      {ui.registerForm ? <RegisterForm /> : null}
     </div>
   );
 }
