@@ -30,7 +30,7 @@ export default function Layout() {
             <div style={{ width: 96, height: "100%" }}>
               <MenuBar />
             </div>
-            <div style={{ flexGrow: 1 }}>
+            <div style={{ display: "flex", flexGrow: 1, height: "100%" }}>
               <Outlet />
             </div>
           </div>
