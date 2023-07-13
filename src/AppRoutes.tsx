@@ -2,11 +2,11 @@ import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import Layout from "./Layout";
-import CasePage from "./page/CasePage";
-import ClientPage from "./page/ClientPage";
-import EmployeePage from "./page/EmployeePage";
 import HomePage from "./page/HomePage";
 import NotFoundPage from "./page/NotFoundPage";
+import CasePage from "./page/case/CasePage";
+import ClientPage from "./page/client/ClientPage";
+import EmployeePage from "./page/employee/EmployeePage";
 import { pageState } from "./state/pageState";
 
 export default function AppRoutes() {

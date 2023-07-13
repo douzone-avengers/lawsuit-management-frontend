@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { ROOT } from "../constant/url";
-import { caseIdState } from "../state/caseIdState";
+import { ROOT } from "../../constant/url";
+import { caseIdState } from "../../state/caseIdState";
 
 type CaseProfile = {
   id: number;
