@@ -29,7 +29,7 @@ function ClientRegisterPopUp() {
     setClientRegisterPopUpOpen(false);
   };
   const handleRegisterButtonClick = () => {
-    const handleRequestSucccess: RequestSuccessHandler = (res) => {
+    const handleRequestSuccess: RequestSuccessHandler = (res) => {
       const body: { data: ClientData[] } = res.data;
       const newItems: MainNavigationBarItemState[] = body.data.map((item) => {
         return {
@@ -54,7 +54,7 @@ function ClientRegisterPopUp() {
         email,
         address,
       },
-      onSuccess: handleRequestSucccess,
+      onSuccess: handleRequestSuccess,
     });
   };
   return (
