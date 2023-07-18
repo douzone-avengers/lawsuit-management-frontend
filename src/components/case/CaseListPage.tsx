@@ -28,7 +28,7 @@ function CaseListPage() {
       // TODO
       return;
     }
-    const handleRequestSucccess: RequestSuccessHandler = (res) => {
+    const handleRequestSuccess: RequestSuccessHandler = (res) => {
       const body: { data: LawsuitData[] } = res.data;
       const { data } = body;
       setCases(data);
@@ -36,7 +36,7 @@ function CaseListPage() {
     };
 
     request("GET", `/lawsuits/clients/${clientId}`, {
-      onSuccess: handleRequestSucccess,
+      onSuccess: handleRequestSuccess,
     });
   }, [clientId]);
 

@@ -23,7 +23,7 @@ function ClientInfo({ rightButton }: Props) {
       return;
     }
 
-    const handleRequestSucccess: RequestSuccessHandler = (res) => {
+    const handleRequestSuccess: RequestSuccessHandler = (res) => {
       const body: { data: ClientData } = res.data;
       const { data } = body;
       const { name, email } = data;
@@ -32,7 +32,7 @@ function ClientInfo({ rightButton }: Props) {
     };
 
     request("GET", `/clients/${clientId}`, {
-      onSuccess: handleRequestSucccess,
+      onSuccess: handleRequestSuccess,
     });
   }, [clientId]);
 

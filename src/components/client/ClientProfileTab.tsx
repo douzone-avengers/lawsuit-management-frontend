@@ -24,7 +24,7 @@ function ClientProfileTab() {
       return;
     }
 
-    const handleRequestSucccess: RequestSuccessHandler = (res) => {
+    const handleRequestSuccess: RequestSuccessHandler = (res) => {
       const body: { data: ClientData } = res.data;
       const { data } = body;
       const { name, phone, email, address } = data;
@@ -35,7 +35,7 @@ function ClientProfileTab() {
     };
 
     request("GET", `/clients/${clientId}`, {
-      onSuccess: handleRequestSucccess,
+      onSuccess: handleRequestSuccess,
     });
   }, [clientId]);
 

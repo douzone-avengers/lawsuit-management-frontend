@@ -3,7 +3,7 @@ import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import * as React from "react";
 import { ReactNode } from "react";
-import CustomTabPanel from "./TabPanel";
+import TabPanel from "./TabPanel";
 
 export type TabItem = {
   id: number;
@@ -34,9 +34,9 @@ export default function TabBar({ items, value, setValue }: Props) {
         </Tabs>
       </Box>
       {items.map((item, index) => (
-        <CustomTabPanel key={item.id} value={value} index={index}>
+        <TabPanel key={item.id} value={value} index={index}>
           {item.children}
-        </CustomTabPanel>
+        </TabPanel>
       ))}
     </Box>
   );
