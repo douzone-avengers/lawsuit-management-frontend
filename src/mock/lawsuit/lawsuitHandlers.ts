@@ -14,7 +14,7 @@ const lawsuitDetailHandler = rest.get(
     const result = lawsuitTable.filter((item) => lawsuitIds.includes(item.id));
 
     return res(ctx.status(200), ctx.json({ data: result }));
-  }
+  },
 );
 
 const lawsuitHandlers = [lawsuitDetailHandler];

@@ -27,7 +27,7 @@ function AppRoutes() {
   const setClientId = useSetRecoilState(clientIdState);
   const setCaseId = useSetRecoilState(caseIdState);
   const [mainNavigationBar, setMainNavigationBar] = useRecoilState(
-    mainNavigationBarState
+    mainNavigationBarState,
   );
   const setSubNavigationBarType = useSetRecoilState(subNavigationBarTypeState);
   const setCaseButtonId = useSetRecoilState(caseButtonIdState);

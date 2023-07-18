@@ -23,7 +23,7 @@ function request(
     timeout?: number;
     onSuccess?: RequestSuccessHandler;
     onFail?: RequestFailHandler;
-  }
+  },
 ) {
   const ROOT = import.meta.env.DEV ? "http://localhost:3000/api" : ""; // TODO: 배포되고 난 다음
   const url = path.startsWith("/") ? `${ROOT}${path}` : `${ROOT}/${path}`;

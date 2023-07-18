@@ -26,7 +26,7 @@ function SubNavigationBarItem({
   item: { SvgIcon, text, subText, url, id },
 }: Props) {
   const [subNavigationBar, setSubNavigationBar] = useRecoilState(
-    subNavigationBarState
+    subNavigationBarState,
   );
 
   const navigate = useNavigate();

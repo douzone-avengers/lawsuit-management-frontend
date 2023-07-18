@@ -24,13 +24,13 @@ const memberDetailHandler = rest.get(
       email: member.email,
       name: member.name,
       hierarchy: hierarchyTable.filter(
-        (item) => item.id === member.hierarchyId
+        (item) => item.id === member.hierarchyId,
       )[0].name,
       role: roleTable.filter((item) => item.id === member.roleId)[0].name,
     };
 
     return res(ctx.status(200), ctx.json({ data: memberInfo }));
-  }
+  },
 );
 
 const memberJoinHandler = rest.post("/api/members", async (req, res, ctx) => {

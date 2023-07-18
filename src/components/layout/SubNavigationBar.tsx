@@ -20,7 +20,7 @@ function SubNavigationBar() {
   const clientId = useRecoilValue(clientIdState);
   const caseId = useRecoilValue(caseIdState);
   const [subNavigationBar, setSubNavigationBar] = useRecoilState(
-    subNavigationBarState
+    subNavigationBarState,
   );
   const subNavigationBarType = useRecoilValue(subNavigationBarTypeState);
   let selectedItem = null;
