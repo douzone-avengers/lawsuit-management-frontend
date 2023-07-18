@@ -8,7 +8,7 @@ const loginHandler = rest.post("/api/tokens/login", async (req, res, ctx) => {
   const password = body["password"];
 
   const member = memberTable.filter(
-    (item) => item.email === email && item.password === password
+    (item) => item.email === email && item.password === password,
   )[0];
 
   if (!member) {
@@ -28,7 +28,7 @@ const loginHandler = rest.post("/api/tokens/login", async (req, res, ctx) => {
           ...newToken,
           accessToken: `id=${member.id}`,
         },
-      })
+      }),
     );
   } else {
     const newToken: TokenData = {
@@ -45,7 +45,7 @@ const loginHandler = rest.post("/api/tokens/login", async (req, res, ctx) => {
           ...newToken,
           accessToken: `id=${member.id}`,
         },
-      })
+      }),
     );
   }
 });

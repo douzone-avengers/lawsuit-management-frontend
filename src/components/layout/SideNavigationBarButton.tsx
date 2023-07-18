@@ -5,7 +5,7 @@ import sideNavigationBarState from "../../states/layout/SideNavigationBarOpenSta
 
 function SideNavigationBarButton() {
   const [sideBarNavigationOpen, setSideBarNavigationOpen] = useRecoilState(
-    sideNavigationBarState
+    sideNavigationBarState,
   );
 
   const handleClick = () => {

@@ -20,10 +20,10 @@ function ClientRegisterPopUp() {
   const [address, setAddress] = useState("");
 
   const [clientRegisterPopUpOpen, setClientRegisterPopUpOpen] = useRecoilState(
-    clientRegisterPopUpState
+    clientRegisterPopUpState,
   );
   const [subNavigationBar, setSubNavigationBar] = useRecoilState(
-    subNavigationBarState
+    subNavigationBarState,
   );
   const handleCloseButtonClick = () => {
     setClientRegisterPopUpOpen(false);

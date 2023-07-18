@@ -7,7 +7,7 @@ export default function ColorToggleButton() {
 
   const handleChange = (
     _: React.MouseEvent<HTMLElement>,
-    newAlignment: string
+    newAlignment: string,
   ) => {
     setAlignment(newAlignment);
   };

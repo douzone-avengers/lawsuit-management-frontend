@@ -13,7 +13,7 @@ const clientDetailHandler = rest.get(
     const client = clientTable.filter((item) => item.id === clientId)[0];
 
     return res(ctx.status(200), ctx.json({ data: client }));
-  }
+  },
 );
 
 const clientAddHandler = rest.post("/api/clients", async (req, res, ctx) => {

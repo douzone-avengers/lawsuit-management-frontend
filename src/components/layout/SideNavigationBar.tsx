@@ -13,7 +13,7 @@ import IconButton from "@mui/material/IconButton";
 
 function SideNavigationBar() {
   const [sideNavigationBarOpen, setSideNavigationBarOpen] = useRecoilState(
-    sideNavigationBarOpenState
+    sideNavigationBarOpenState,
   );
 
   const handleClick = () => {

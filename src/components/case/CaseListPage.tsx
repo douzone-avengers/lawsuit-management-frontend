@@ -16,7 +16,7 @@ function CaseListPage() {
   const navigate = useNavigate();
   const [cases, setCases] = useState<LawsuitData[]>([]);
   const [lawsuitStatus, setLawsuitStatus] = useState<LawsuitStatus | null>(
-    null
+    null,
   );
   const totalLength = cases.length;
   const aLength = cases.filter((item) => item.lawsuitStatus === "등록").length;
