@@ -7,6 +7,7 @@ import { LawsuitData } from "../../mock/lawsuit/lawsuitTable";
 import clientIdState from "../../states/client/ClientIdState";
 import CaseTable from "../common/CaseTable";
 import ClientInfo from "../common/ClientInfo";
+import CaseRegisterButton from "../case/CaseRegisterButton.tsx";
 
 function ClientCaseListTab() {
   const clientId = useRecoilValue(clientIdState);
@@ -31,7 +32,7 @@ function ClientCaseListTab() {
 
   return (
     <Box sx={{ display: "flex", gap: 2, flexDirection: "column" }}>
-      <ClientInfo />
+      <ClientInfo rightButton={<CaseRegisterButton />} />
       <CaseTable
         cases={cases.map((item) => ({
           ...item,
