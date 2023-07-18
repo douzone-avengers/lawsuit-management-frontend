@@ -46,7 +46,17 @@ function SubNavigationBarItem({
             <SvgIcon />
           </ListItemIcon>
         ) : null}
-        <ListItemText primary={text} secondary={subText} />
+        <ListItemText
+          primary={text}
+          secondary={subText}
+          primaryTypographyProps={{
+            sx: {
+              textOverflow: "ellipsis",
+              overflow: "hidden",
+              whiteSpace: "nowrap",
+            },
+          }}
+        />
       </ListItemButton>
     </ListItem>
   );
