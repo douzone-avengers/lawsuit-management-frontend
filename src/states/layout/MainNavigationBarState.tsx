@@ -22,15 +22,15 @@ const mainNavigationBarState = atom<MainNavigationBarState>({
       },
       {
         id: 1,
-        text: "사원",
-        url: "employees",
-        SvgIcon: BadgeIcon,
-      },
-      {
-        id: 2,
         text: "사건",
         url: "cases",
         SvgIcon: BalanceIcon,
+      },
+      {
+        id: 2,
+        text: "사원",
+        url: "employees",
+        SvgIcon: BadgeIcon,
       },
     ],
   },

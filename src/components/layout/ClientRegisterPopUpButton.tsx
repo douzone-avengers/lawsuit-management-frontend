@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 import { useSetRecoilState } from "recoil";
-import clientRegisterPopUpState from "../../states/layout/ClientRegisterPopUpOpenState";
+import clientRegisterPopUpState from "../../states/layout/ClientRegisterPopUpOpenState.tsx";
 
 function ClientRegisterPopUpButton() {
   const setClientRegisterPopUp = useSetRecoilState(clientRegisterPopUpState);

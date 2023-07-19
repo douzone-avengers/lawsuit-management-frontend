@@ -2,20 +2,21 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import request, { RequestSuccessHandler } from "../../lib/request";
 import { ClientData } from "../../mock/client/clientTable";
 import clientIdState from "../../states/client/ClientIdState";
+import Button from "@mui/material/Button";
+import ClientRemovePopUpButton from "../layout/ClientRemovePopUpButton.tsx";
 
-type Props = {
-  rightButton?: ReactNode;
-};
-
-function ClientInfo({ rightButton }: Props) {
+function ClientInfo() {
   const clientId = useRecoilValue(clientIdState);
   const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
     if (typeof clientId !== "number") {
@@ -26,9 +27,11 @@ function ClientInfo({ rightButton }: Props) {
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
       const body: { data: ClientData } = res.data;
       const { data } = body;
-      const { name, email } = data;
+      const { name, email, phone, address } = data;
       setName(name);
+      setPhone(phone);
       setEmail(email);
+      setAddress(address);
     };
 
     request("GET", `/clients/${clientId}`, {
@@ -37,24 +40,68 @@ function ClientInfo({ rightButton }: Props) {
   }, [clientId]);
 
   return (
-    <Card
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-      }}
-    >
-      <Box>
-        <CardContent>
-          <Typography variant="h5" component="div">
+    <Card sx={{ minWidth: 480 }}>
+      <CardContent>
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Typography
+            sx={{ display: "inline-block" }}
+            variant="h5"
+            contentEditable={editMode}
+          >
             {name}
           </Typography>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary">
-            {email}
-          </Typography>
-        </CardContent>
-      </Box>
-      <Box>{rightButton}</Box>
+          <Box sx={{ display: "flex", justifyContent: "right", gap: 1 }}>
+            {editMode ? (
+              <Button
+                variant="contained"
+                size="small"
+                onClick={() => {
+                  setEditMode(false);
+                }}
+              >
+                확인
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                size="small"
+                onClick={() => {
+                  setEditMode(true);
+                }}
+              >
+                수정
+              </Button>
+            )}
+            <ClientRemovePopUpButton />
+          </Box>
+        </Box>
+        <Typography
+          sx={{ display: "inline-block", fontSize: 14 }}
+          color="text.secondary"
+          gutterBottom
+          contentEditable={editMode}
+        >
+          {email}
+        </Typography>
+        <br />
+        <Typography
+          sx={{ display: "inline-block", fontSize: 14 }}
+          color="text.secondary"
+          gutterBottom
+          contentEditable={editMode}
+        >
+          {phone}
+        </Typography>
+        <br />
+        <Typography
+          sx={{ display: "inline-block", fontSize: 14 }}
+          color="text.secondary"
+          gutterBottom
+          contentEditable={editMode}
+        >
+          {address}
+        </Typography>
+      </CardContent>
     </Card>
   );
 }
