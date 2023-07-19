@@ -4,9 +4,9 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
-import request, { RequestSuccessHandler } from "../../lib/request";
-import { ClientData } from "../../mock/client/clientTable";
-import clientIdState from "../../states/client/ClientIdState";
+import request, { RequestSuccessHandler } from "../../lib/request.ts";
+import { ClientData } from "../../mock/client/clientTable.ts";
+import clientIdState from "../../states/client/ClientIdState.tsx";
 import Button from "@mui/material/Button";
 import ClientRemovePopUpButton from "../layout/ClientRemovePopUpButton.tsx";
 

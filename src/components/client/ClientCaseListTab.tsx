@@ -5,7 +5,7 @@ import { useRecoilValue } from "recoil";
 import request, { RequestSuccessHandler } from "../../lib/request";
 import { LawsuitData } from "../../mock/lawsuit/lawsuitTable";
 import clientIdState from "../../states/client/ClientIdState";
-import CaseTable from "../common/CaseTable";
+import CaseTable from "../case/CaseTable.tsx";
 import Placeholder from "../common/Placeholder.tsx";
 
 function ClientCaseListTab() {

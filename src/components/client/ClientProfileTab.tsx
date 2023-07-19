@@ -1,6 +1,6 @@
 import Placeholder from "../common/Placeholder.tsx";
 import Box from "@mui/material/Box";
-import ClientInfo from "../common/ClientInfo.tsx";
+import ClientInfo from "../case/ClientInfo.tsx";
 
 function ClientProfileTab() {
   return (
