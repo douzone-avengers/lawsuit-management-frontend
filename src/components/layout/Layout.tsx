@@ -30,7 +30,7 @@ function Layout() {
         <Header />
         <SideNavigationBar />
         <Main />
-        <Debug />
+        {import.meta.env.DEV ? <Debug /> : null}
       </Box>
       {clientRegisterPopUp ? <ClientRegisterPopUp /> : null}
       {clientRemovePopUpOpen ? <ClientRemovePopUp /> : null}

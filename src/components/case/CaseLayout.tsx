@@ -15,8 +15,22 @@ function CaseLayout() {
   return (
     <Box sx={{ display: "flex", gap: 2, flexDirection: "column" }}>
       <ButtonGroup variant="outlined" size="large" fullWidth>
-        <Button>사건 등록</Button>
-        <Button>사건 수정</Button>
+        <Button
+          variant={caseButtonId === 0 ? "contained" : "outlined"}
+          onClick={() => {
+            navigate(`/cases/new`);
+          }}
+        >
+          사건 등록
+        </Button>
+        <Button
+          variant={caseButtonId === 1 ? "contained" : "outlined"}
+          onClick={() => {
+            navigate(`/cases/${caseId}/edit`);
+          }}
+        >
+          사건 수정
+        </Button>
         <Button
           variant={caseButtonId === 2 ? "contained" : "outlined"}
           onClick={() => {

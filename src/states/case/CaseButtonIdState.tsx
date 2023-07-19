@@ -2,7 +2,7 @@ import { atom } from "recoil";
 
 const caseButtonIdState = atom({
   key: "caseButtonIdState",
-  default: 0,
+  default: -1,
 });
 
 export default caseButtonIdState;

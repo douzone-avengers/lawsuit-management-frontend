@@ -3,17 +3,15 @@ import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import request, { RequestSuccessHandler } from "../../lib/request";
 import { LawsuitData, LawsuitStatus } from "../../mock/lawsuit/lawsuitTable";
-import caseIdState from "../../states/case/CaseIdState";
 import clientIdState from "../../states/client/ClientIdState";
 import CaseTable from "../common/CaseTable";
 import ClientInfo from "../common/ClientInfo.tsx";
 
 function CaseListPage() {
   const clientId = useRecoilValue(clientIdState);
-  const setCaseId = useSetRecoilState(caseIdState);
   const navigate = useNavigate();
   const [cases, setCases] = useState<LawsuitData[]>([]);
   const [lawsuitStatus, setLawsuitStatus] = useState<LawsuitStatus | null>(
@@ -33,7 +31,6 @@ function CaseListPage() {
       const body: { data: LawsuitData[] } = res.data;
       const { data } = body;
       setCases(data);
-      setCaseId(data[0]?.id);
     };
 
     request("GET", `/lawsuits/clients/${clientId}`, {

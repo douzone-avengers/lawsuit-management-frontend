@@ -19,6 +19,8 @@ import HomePage from "../home/HomePage";
 import JoinPage from "../join/JoinPage";
 import Layout from "../layout/Layout";
 import LoginPage from "../login/LoginPage";
+import CaseNewPage from "../case/CaseNewPage.tsx";
+import CaseEditPage from "../case/CaseEditPage.tsx";
 
 function AppRoutes() {
   const location = useLocation();
@@ -35,7 +37,7 @@ function AppRoutes() {
   useEffect(() => {
     const { pathname, search } = location;
 
-    console.log(pathname, search);
+    console.log(`${pathname}${search}`);
 
     const paths = pathname.split("/");
     const param: Record<string, string> = {};
@@ -50,6 +52,7 @@ function AppRoutes() {
 
     // /
     if (length === 1 && paths[1] === "") {
+      setSubNavigationBarType("none");
       return;
     }
 
@@ -81,7 +84,18 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 1,
       });
-      setSubNavigationBarType("caseClient");
+      setSubNavigationBarType("none");
+      return;
+    }
+
+    // /cases/new
+    if (length === 2 && paths[1] === "cases" && paths[2] === "new") {
+      setMainNavigationBar({
+        ...mainNavigationBar,
+        curId: 1,
+      });
+      setCaseButtonId(0);
+      setSubNavigationBarType("none");
       return;
     }
 
@@ -118,12 +132,29 @@ function AppRoutes() {
       return;
     }
 
+    // /cases/:caseId/edit
+    if (
+      length === 3 &&
+      paths[1] === "cases" &&
+      paths[2] &&
+      paths[3] === "edit"
+    ) {
+      setMainNavigationBar({
+        ...mainNavigationBar,
+        curId: 1,
+      });
+      setCaseButtonId(1);
+      setSubNavigationBarType("none");
+      return;
+    }
+
     // /employees
     if (length === 1 && paths[1] === "employees") {
       setMainNavigationBar({
         ...mainNavigationBar,
         curId: 2,
       });
+      setSubNavigationBarType("none");
       return;
     }
 
@@ -156,7 +187,7 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: -1,
       });
-      setSubNavigationBarType("client");
+      setSubNavigationBarType("none");
       setCaseButtonId(0);
     }
   }, [location]);
@@ -183,10 +214,16 @@ function AppRoutes() {
         <Route path="cases" element={<CaseLayout />}>
           {/* /cases */}
           <Route index element={<CasesPage />} />
+          {/* /cases/new */}
+          <Route path="new" element={<CaseNewPage />} />
           {/* /cases/list?client=:clientId */}
           <Route path="list" element={<CaseListPage />} />
-          {/* /cases/:caseId?client=:clientId */}
-          <Route path=":caseId" element={<CaseDetailPage />} />
+          <Route path=":caseId">
+            {/* /cases/:caseId?client=:clientId */}
+            <Route index element={<CaseDetailPage />} />
+            {/* /cases/:caseId/edit */}
+            <Route path="edit" element={<CaseEditPage />} />
+          </Route>
         </Route>
       </Route>
       {/* /login */}

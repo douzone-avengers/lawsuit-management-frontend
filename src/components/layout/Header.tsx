@@ -6,6 +6,7 @@ import sideNavigationBarOpenState from "../../states/layout/SideNavigationBarOpe
 import LogoutButton from "./LogoutButton";
 import SideNavigationBarButton from "./SideNavigationBarButton";
 import Title from "./Title";
+import subNavigationBarTypeState from "../../states/layout/SubNavigationBarTypeState.tsx";
 
 interface HeaderProps extends MuiAppBarProps {
   open?: boolean;
@@ -15,6 +16,7 @@ const HeaderContainer = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
 })<HeaderProps>(({ theme }) => {
   const sideNavigationBarOpen = useRecoilValue(sideNavigationBarOpenState);
+  const subNavigationBarType = useRecoilValue(subNavigationBarTypeState);
 
   return {
     transition: theme.transitions.create(["margin", "width"], {
@@ -22,8 +24,11 @@ const HeaderContainer = styled(MuiAppBar, {
       duration: theme.transitions.duration.leavingScreen,
     }),
     ...(sideNavigationBarOpen && {
-      width: `calc(100% - 480px)`,
-      marginLeft: `480px`,
+      width:
+        subNavigationBarType !== "none"
+          ? `calc(100% - 480px)`
+          : `calc(100% - 240px)`,
+      marginLeft: subNavigationBarType !== "none" ? 480 : 240,
       transition: theme.transitions.create(["margin", "width"], {
         easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.enteringScreen,
