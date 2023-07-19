@@ -8,7 +8,7 @@ import request, { RequestSuccessHandler } from "../../lib/request.ts";
 import { ClientData } from "../../mock/client/clientTable.ts";
 import clientIdState from "../../states/client/ClientIdState.tsx";
 import Button from "@mui/material/Button";
-import ClientRemovePopUpButton from "../layout/ClientRemovePopUpButton.tsx";
+import ClientRemovePopUpButton from "./ClientRemovePopUpButton.tsx";
 
 function ClientInfo() {
   const clientId = useRecoilValue(clientIdState);

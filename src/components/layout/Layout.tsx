@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import userState from "../../states/common/UserState";
 import clientRegisterPopUpState from "../../states/layout/ClientRegisterPopUpOpenState";
-import ClientRegisterPopUp from "./ClientRegisterPopUp.tsx";
+import ClientRegisterPopUp from "../client/ClientRegisterPopUp.tsx";
 import Debug from "./Debug";
 import Header from "./Header";
 import Main from "./Main";
 import SideNavigationBar from "./SideNavigationBar";
-import ClientRemovePopUp from "./ClientRemovePopUp.tsx";
+import ClientRemovePopUp from "../client/ClientRemovePopUp.tsx";
 import clientRemovePopUpOpenState from "../../states/client/ClientRemovePopUpOpenState.tsx";
 
 function Layout() {

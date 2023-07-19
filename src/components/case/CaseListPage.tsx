@@ -8,7 +8,7 @@ import request, { RequestSuccessHandler } from "../../lib/request";
 import { LawsuitData, LawsuitStatus } from "../../mock/lawsuit/lawsuitTable";
 import caseIdState from "../../states/case/CaseIdState";
 import clientIdState from "../../states/client/ClientIdState";
-import ClientInfo from "./ClientInfo.tsx";
+import ClientInfo from "../client/ClientInfo.tsx";
 import CaseTable from "./CaseTable.tsx";
 
 function CaseListPage() {
