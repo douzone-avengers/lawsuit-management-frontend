@@ -14,6 +14,7 @@ import subNavigationBarTypeState from "../../states/layout/SubNavigationBarTypeS
 import SubNavigationBarItem, {
   SubNavigationBarItemState,
 } from "./SubNavigationBarItem";
+import ClientRegisterPopUpButton from "./ClientRegisterPopUpButton.tsx";
 
 function SubNavigationBar() {
   const clientId = useRecoilValue(clientIdState);
@@ -100,6 +101,7 @@ function SubNavigationBar() {
           />
         ))}
       </List>
+      <ClientRegisterPopUpButton />
     </Box>
   );
 }
