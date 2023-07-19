@@ -1,6 +1,6 @@
 import BalanceIcon from "@mui/icons-material/Balance";
 import PersonIcon from "@mui/icons-material/Person";
-import { Box, Divider } from "@mui/material";
+import { Box } from "@mui/material";
 import List from "@mui/material/List";
 import { useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -11,7 +11,6 @@ import caseIdState from "../../states/case/CaseIdState";
 import clientIdState from "../../states/client/ClientIdState";
 import subNavigationBarState from "../../states/layout/SubNavigationBarState";
 import subNavigationBarTypeState from "../../states/layout/SubNavigationBarTypeState";
-import ClientRegisterPopUpButton from "./ClientRegisterPopUpButton";
 import SubNavigationBarItem, {
   SubNavigationBarItemState,
 } from "./SubNavigationBarItem";
@@ -23,28 +22,6 @@ function SubNavigationBar() {
     subNavigationBarState,
   );
   const subNavigationBarType = useRecoilValue(subNavigationBarTypeState);
-  let selectedItem = null;
-  let notSelectedItem = null;
-  if (
-    subNavigationBarType === "client" ||
-    subNavigationBarType === "caseClient"
-  ) {
-    selectedItem =
-      subNavigationBar.items.filter((item) => item.id === clientId)[0] ?? null;
-    notSelectedItem = subNavigationBar.items
-      .filter((item) => item.id !== clientId)
-      .map((item) => (
-        <SubNavigationBarItem key={item.id} item={item} selected={false} />
-      ));
-  } else if (subNavigationBarType === "case") {
-    selectedItem =
-      subNavigationBar.items.filter((item) => item.id === caseId)[0] ?? null;
-    notSelectedItem = subNavigationBar.items
-      .filter((item) => item.id !== caseId)
-      .map((item) => (
-        <SubNavigationBarItem key={item.id} item={item} selected={false} />
-      ));
-  }
 
   useEffect(() => {
     if (subNavigationBarType === "client") {
@@ -108,16 +85,21 @@ function SubNavigationBar() {
       }}
     >
       <List sx={{ width: 240, padding: 0 }}>
-        {selectedItem !== null ? (
-          <SubNavigationBarItem item={selectedItem} selected={true} />
-        ) : null}
-        <Divider />
-        {notSelectedItem}
+        {subNavigationBar.items.map((item) => (
+          <SubNavigationBarItem
+            key={item.id}
+            item={item}
+            selected={
+              subNavigationBarType === "client" ||
+              subNavigationBarType === "caseClient"
+                ? clientId === item.id
+                : subNavigationBarType === "case"
+                ? caseId === item.id
+                : false
+            }
+          />
+        ))}
       </List>
-      {subNavigationBarType === "client" ||
-      subNavigationBarType === "caseClient" ? (
-        <ClientRegisterPopUpButton />
-      ) : null}
     </Box>
   );
 }

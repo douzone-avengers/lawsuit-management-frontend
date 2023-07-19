@@ -6,8 +6,7 @@ import request, { RequestSuccessHandler } from "../../lib/request";
 import { LawsuitData } from "../../mock/lawsuit/lawsuitTable";
 import clientIdState from "../../states/client/ClientIdState";
 import CaseTable from "../common/CaseTable";
-import ClientInfo from "../common/ClientInfo";
-import CaseRegisterButton from "../case/CaseRegisterButton.tsx";
+import Placeholder from "../common/Placeholder.tsx";
 
 function ClientCaseListTab() {
   const clientId = useRecoilValue(clientIdState);
@@ -31,8 +30,7 @@ function ClientCaseListTab() {
   }, [clientId]);
 
   return (
-    <Box sx={{ display: "flex", gap: 2, flexDirection: "column" }}>
-      <ClientInfo rightButton={<CaseRegisterButton />} />
+    <Box sx={{ display: "flex", gap: 3, flexDirection: "column" }}>
       <CaseTable
         cases={cases.map((item) => ({
           ...item,
@@ -41,6 +39,9 @@ function ClientCaseListTab() {
           },
         }))}
       />
+      <Box sx={{ flexGrow: 1, height: 480 }}>
+        <Placeholder />
+      </Box>
     </Box>
   );
 }

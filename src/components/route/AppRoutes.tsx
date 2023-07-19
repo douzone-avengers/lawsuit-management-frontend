@@ -75,20 +75,11 @@ function AppRoutes() {
       return;
     }
 
-    // /employees
-    if (length === 1 && paths[1] === "employees") {
-      setMainNavigationBar({
-        ...mainNavigationBar,
-        curId: 1,
-      });
-      return;
-    }
-
     // /cases
     if (length === 1 && paths[1] === "cases") {
       setMainNavigationBar({
         ...mainNavigationBar,
-        curId: 2,
+        curId: 1,
       });
       setSubNavigationBarType("caseClient");
       return;
@@ -105,10 +96,10 @@ function AppRoutes() {
       setClientId(newClientId);
       setMainNavigationBar({
         ...mainNavigationBar,
-        curId: 2,
+        curId: 1,
       });
       setSubNavigationBarType("caseClient");
-      setCaseButtonId(0);
+      setCaseButtonId(2);
       return;
     }
 
@@ -120,10 +111,19 @@ function AppRoutes() {
       setCaseId(newCaseId);
       setMainNavigationBar({
         ...mainNavigationBar,
-        curId: 2,
+        curId: 1,
       });
       setSubNavigationBarType("case");
-      setCaseButtonId(1);
+      setCaseButtonId(3);
+      return;
+    }
+
+    // /employees
+    if (length === 1 && paths[1] === "employees") {
+      setMainNavigationBar({
+        ...mainNavigationBar,
+        curId: 2,
+      });
       return;
     }
 

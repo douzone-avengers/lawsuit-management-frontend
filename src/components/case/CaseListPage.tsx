@@ -9,6 +9,7 @@ import { LawsuitData, LawsuitStatus } from "../../mock/lawsuit/lawsuitTable";
 import caseIdState from "../../states/case/CaseIdState";
 import clientIdState from "../../states/client/ClientIdState";
 import CaseTable from "../common/CaseTable";
+import ClientInfo from "../common/ClientInfo.tsx";
 
 function CaseListPage() {
   const clientId = useRecoilValue(clientIdState);
@@ -57,45 +58,48 @@ function CaseListPage() {
   }
 
   return (
-    <Box>
-      <Stack direction="row" spacing={1} sx={{ marginBottom: 2 }}>
-        <Chip
-          variant={lawsuitStatus === null ? "filled" : "outlined"}
-          label={`전체 (${totalLength})`}
-          onClick={() => {
-            setLawsuitStatus(null);
-          }}
+    <Box sx={{ display: "flex", gap: 2, flexDirection: "column" }}>
+      <ClientInfo />
+      <Box>
+        <Stack direction="row" spacing={1} sx={{ marginBottom: 2 }}>
+          <Chip
+            variant={lawsuitStatus === null ? "filled" : "outlined"}
+            label={`전체 (${totalLength})`}
+            onClick={() => {
+              setLawsuitStatus(null);
+            }}
+          />
+          <Chip
+            variant={lawsuitStatus === "등록" ? "filled" : "outlined"}
+            label={`등록 (${aLength})`}
+            onClick={() => {
+              setLawsuitStatus("등록");
+            }}
+          />
+          <Chip
+            variant={lawsuitStatus === "진행" ? "filled" : "outlined"}
+            label={`진행 (${bLength})`}
+            onClick={() => {
+              setLawsuitStatus("진행");
+            }}
+          />
+          <Chip
+            variant={lawsuitStatus === "종결" ? "filled" : "outlined"}
+            label={`종결 (${cLength})`}
+            onClick={() => {
+              setLawsuitStatus("종결");
+            }}
+          />
+        </Stack>
+        <CaseTable
+          cases={filteredCases.map((item) => ({
+            ...item,
+            onClick: () => {
+              navigate(`/cases/${item.id}?client=${clientId}`);
+            },
+          }))}
         />
-        <Chip
-          variant={lawsuitStatus === "등록" ? "filled" : "outlined"}
-          label={`등록 (${aLength})`}
-          onClick={() => {
-            setLawsuitStatus("등록");
-          }}
-        />
-        <Chip
-          variant={lawsuitStatus === "진행" ? "filled" : "outlined"}
-          label={`진행 (${bLength})`}
-          onClick={() => {
-            setLawsuitStatus("진행");
-          }}
-        />
-        <Chip
-          variant={lawsuitStatus === "종결" ? "filled" : "outlined"}
-          label={`종결 (${cLength})`}
-          onClick={() => {
-            setLawsuitStatus("종결");
-          }}
-        />
-      </Stack>
-      <CaseTable
-        cases={filteredCases.map((item) => ({
-          ...item,
-          onClick: () => {
-            navigate(`/cases/${item.id}?client=${clientId}`);
-          },
-        }))}
-      />
+      </Box>
     </Box>
   );
 }
