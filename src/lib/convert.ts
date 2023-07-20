@@ -35,3 +35,17 @@ export function fromRole(role: Role) {
       return "";
   }
 }
+
+export function delimiter(num: number): string {
+  const numStr = num.toString().split("").reverse().join("");
+
+  let result = "";
+  for (let i = 0; i < numStr.length; i++) {
+    if (i !== 0 && i % 3 === 0) {
+      result += ",";
+    }
+    result += numStr[i];
+  }
+
+  return result.split("").reverse().join("");
+}

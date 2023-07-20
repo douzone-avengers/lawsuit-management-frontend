@@ -9,7 +9,7 @@ import { LawsuitData, LawsuitStatus } from "../../mock/lawsuit/lawsuitTable";
 import caseIdState from "../../states/case/CaseIdState";
 import clientIdState from "../../states/client/ClientIdState";
 import ClientInfo from "../client/ClientInfo.tsx";
-import CaseListTable from "../common/CaseListTable.tsx";
+import CaseListTable from "./CaseListTable.tsx";
 
 function CaseListPage() {
   const clientId = useRecoilValue(clientIdState);
