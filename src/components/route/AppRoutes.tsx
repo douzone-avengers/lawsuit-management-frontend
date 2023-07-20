@@ -20,7 +20,6 @@ import JoinPage from "../join/JoinPage";
 import Layout from "../layout/Layout";
 import LoginPage from "../login/LoginPage";
 import CaseNewPage from "../case/CaseNewPage.tsx";
-import CaseEditPage from "../case/CaseEditPage.tsx";
 
 function AppRoutes() {
   const location = useLocation();
@@ -113,7 +112,7 @@ function AppRoutes() {
         curId: 1,
       });
       setSubNavigationBarType("caseClient");
-      setCaseButtonId(2);
+      setCaseButtonId(1);
       return;
     }
 
@@ -128,23 +127,7 @@ function AppRoutes() {
         curId: 1,
       });
       setSubNavigationBarType("case");
-      setCaseButtonId(3);
-      return;
-    }
-
-    // /cases/:caseId/edit
-    if (
-      length === 3 &&
-      paths[1] === "cases" &&
-      paths[2] &&
-      paths[3] === "edit"
-    ) {
-      setMainNavigationBar({
-        ...mainNavigationBar,
-        curId: 1,
-      });
-      setCaseButtonId(1);
-      setSubNavigationBarType("none");
+      setCaseButtonId(2);
       return;
     }
 
@@ -218,12 +201,8 @@ function AppRoutes() {
           <Route path="new" element={<CaseNewPage />} />
           {/* /cases/list?client=:clientId */}
           <Route path="list" element={<CaseListPage />} />
-          <Route path=":caseId">
-            {/* /cases/:caseId?client=:clientId */}
-            <Route index element={<CaseDetailPage />} />
-            {/* /cases/:caseId/edit */}
-            <Route path="edit" element={<CaseEditPage />} />
-          </Route>
+          {/* /cases/:caseId?client=:clientId */}
+          <Route path=":caseId" element={<CaseDetailPage />} />
         </Route>
       </Route>
       {/* /login */}

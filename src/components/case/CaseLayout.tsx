@@ -26,21 +26,13 @@ function CaseLayout() {
         <Button
           variant={caseButtonId === 1 ? "contained" : "outlined"}
           onClick={() => {
-            navigate(`/cases/${caseId}/edit`);
-          }}
-        >
-          사건 수정
-        </Button>
-        <Button
-          variant={caseButtonId === 2 ? "contained" : "outlined"}
-          onClick={() => {
             navigate(`/cases/list?client=${clientId}`);
           }}
         >
           사건 리스트
         </Button>
         <Button
-          variant={caseButtonId === 3 ? "contained" : "outlined"}
+          variant={caseButtonId === 2 ? "contained" : "outlined"}
           onClick={() => {
             navigate(`/cases/${caseId}?client=${clientId}`);
           }}
