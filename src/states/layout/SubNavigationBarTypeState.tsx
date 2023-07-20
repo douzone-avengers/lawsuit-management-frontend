@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-type SubNavigationBarType = "client" | "caseClient" | "case";
+type SubNavigationBarType = "none" | "client" | "caseClient" | "case";
 
 const subNavigationBarTypeState = atom<SubNavigationBarType>({
   key: "subNavigationBarTypeState",

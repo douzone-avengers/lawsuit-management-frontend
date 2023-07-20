@@ -6,7 +6,7 @@ import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { SvgIconTypeMap } from "@mui/material/SvgIcon/SvgIcon";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import subNavigationBarState from "../../states/layout/SubNavigationBarState";
+import subNavigationBarState from "../../../states/layout/SubNavigationBarState.tsx";
 
 export type SubNavigationBarItemState = {
   id: number;

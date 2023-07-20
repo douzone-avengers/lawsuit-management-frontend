@@ -5,13 +5,13 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { LawsuitData } from "../../mock/lawsuit/lawsuitTable";
+import { LawsuitData } from "../../mock/lawsuit/lawsuitTable.ts";
 
 type Props = {
   cases: (LawsuitData & { onClick: () => void })[];
 };
 
-function CaseTable({ cases }: Props) {
+function CaseListTable({ cases }: Props) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -52,4 +52,4 @@ function CaseTable({ cases }: Props) {
   );
 }
 
-export default CaseTable;
+export default CaseListTable;

@@ -21,9 +21,15 @@ function ClientDetailPage() {
   ]);
 
   return (
-    <Box>
-      <TabBar items={clientTab} value={clientTabId} setValue={setClientTabId} />
-    </Box>
+    <>
+      <Box>
+        <TabBar
+          items={clientTab}
+          value={clientTabId}
+          setValue={setClientTabId}
+        />
+      </Box>
+    </>
   );
 }
 

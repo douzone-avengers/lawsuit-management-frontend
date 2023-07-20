@@ -1,7 +1,7 @@
 import List from "@mui/material/List";
 import { useRecoilValue } from "recoil";
-import mainNavigationBarState from "../../states/layout/MainNavigationBarState";
-import MainNavigationBarItem from "./MainNavigationBarItem";
+import mainNavigationBarState from "../../../states/layout/MainNavigationBarState.tsx";
+import MainNavigationBarItem from "./MainNavigationBarItem.tsx";
 
 function MainNavigationBar() {
   const mainNavigationBar = useRecoilValue(mainNavigationBarState);

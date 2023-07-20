@@ -9,7 +9,7 @@ import { MemberInfo } from "../../mock/member/memberHandlers";
 import { TokenData } from "../../mock/token/tokenTable";
 import userState from "../../states/common/UserState";
 import PopUp from "../common/PopUp";
-import Logo from "../layout/Logo";
+import Logo from "../common/Logo.tsx";
 
 function LoginPage() {
   const setUserState = useSetRecoilState(userState);

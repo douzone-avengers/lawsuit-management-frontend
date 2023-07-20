@@ -1,8 +1,9 @@
 import { styled } from "@mui/material/styles";
 import { Outlet } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import sideNavigationBarOpenState from "../../states/layout/SideNavigationBarOpenState";
-import DrawerHeader from "./DrawerHeader";
+import sideNavigationBarOpenState from "../../../states/layout/SideNavigationBarOpenState.tsx";
+import DrawerHeader from "../DrawerHeader.tsx";
+import subNavigationBarTypeState from "../../../states/layout/SubNavigationBarTypeState.tsx";
 
 const MainContainer = styled("main", {
   shouldForwardProp: (prop) => prop !== "open",
@@ -10,6 +11,7 @@ const MainContainer = styled("main", {
   open?: boolean;
 }>(({ theme }) => {
   const sideNavigationBarOpen = useRecoilValue(sideNavigationBarOpenState);
+  const subNavigationBarType = useRecoilValue(subNavigationBarTypeState);
 
   return {
     flexGrow: 1,
@@ -18,7 +20,7 @@ const MainContainer = styled("main", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    marginLeft: `-480px`,
+    marginLeft: subNavigationBarType !== "none" ? `-480px` : `-240px`,
     ...(sideNavigationBarOpen && {
       transition: theme.transitions.create("margin", {
         easing: theme.transitions.easing.easeOut,

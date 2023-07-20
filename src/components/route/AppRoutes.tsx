@@ -19,6 +19,7 @@ import HomePage from "../home/HomePage";
 import JoinPage from "../join/JoinPage";
 import Layout from "../layout/Layout";
 import LoginPage from "../login/LoginPage";
+import CaseNewPage from "../case/CaseNewPage.tsx";
 
 function AppRoutes() {
   const location = useLocation();
@@ -35,7 +36,7 @@ function AppRoutes() {
   useEffect(() => {
     const { pathname, search } = location;
 
-    console.log(pathname, search);
+    console.log(`${pathname}${search}`);
 
     const paths = pathname.split("/");
     const param: Record<string, string> = {};
@@ -50,6 +51,7 @@ function AppRoutes() {
 
     // /
     if (length === 1 && paths[1] === "") {
+      setSubNavigationBarType("none");
       return;
     }
 
@@ -75,22 +77,24 @@ function AppRoutes() {
       return;
     }
 
-    // /employees
-    if (length === 1 && paths[1] === "employees") {
-      setMainNavigationBar({
-        ...mainNavigationBar,
-        curId: 1,
-      });
-      return;
-    }
-
     // /cases
     if (length === 1 && paths[1] === "cases") {
       setMainNavigationBar({
         ...mainNavigationBar,
-        curId: 2,
+        curId: 1,
       });
-      setSubNavigationBarType("caseClient");
+      setSubNavigationBarType("none");
+      return;
+    }
+
+    // /cases/new
+    if (length === 2 && paths[1] === "cases" && paths[2] === "new") {
+      setMainNavigationBar({
+        ...mainNavigationBar,
+        curId: 1,
+      });
+      setCaseButtonId(0);
+      setSubNavigationBarType("none");
       return;
     }
 
@@ -105,10 +109,10 @@ function AppRoutes() {
       setClientId(newClientId);
       setMainNavigationBar({
         ...mainNavigationBar,
-        curId: 2,
+        curId: 1,
       });
       setSubNavigationBarType("caseClient");
-      setCaseButtonId(0);
+      setCaseButtonId(1);
       return;
     }
 
@@ -120,10 +124,20 @@ function AppRoutes() {
       setCaseId(newCaseId);
       setMainNavigationBar({
         ...mainNavigationBar,
-        curId: 2,
+        curId: 1,
       });
       setSubNavigationBarType("case");
-      setCaseButtonId(1);
+      setCaseButtonId(2);
+      return;
+    }
+
+    // /employees
+    if (length === 1 && paths[1] === "employees") {
+      setMainNavigationBar({
+        ...mainNavigationBar,
+        curId: 2,
+      });
+      setSubNavigationBarType("none");
       return;
     }
 
@@ -156,7 +170,7 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: -1,
       });
-      setSubNavigationBarType("client");
+      setSubNavigationBarType("none");
       setCaseButtonId(0);
     }
   }, [location]);
@@ -174,19 +188,21 @@ function AppRoutes() {
             <Route index element={<ClientDetailPage />} />
           </Route>
         </Route>
+        <Route path="cases" element={<CaseLayout />}>
+          {/* /cases */}
+          <Route index element={<CasesPage />} />
+          {/* /cases/new */}
+          <Route path="new" element={<CaseNewPage />} />
+          {/* /cases/list?client=:clientId */}
+          <Route path="list" element={<CaseListPage />} />
+          {/* /cases/:caseId?client=:clientId */}
+          <Route path=":caseId" element={<CaseDetailPage />} />
+        </Route>
         <Route path="employees">
           {/* /employees */}
           <Route index element={<EmployeesPage />} />
           {/* /employees/:employeeId */}
           <Route path=":employeeId" element={<EmployeeDetailPage />} />
-        </Route>
-        <Route path="cases" element={<CaseLayout />}>
-          {/* /cases */}
-          <Route index element={<CasesPage />} />
-          {/* /cases/list?client=:clientId */}
-          <Route path="list" element={<CaseListPage />} />
-          {/* /cases/:caseId?client=:clientId */}
-          <Route path=":caseId" element={<CaseDetailPage />} />
         </Route>
       </Route>
       {/* /login */}

@@ -2,7 +2,7 @@ import BadgeIcon from "@mui/icons-material/Badge";
 import BalanceIcon from "@mui/icons-material/Balance";
 import PersonIcon from "@mui/icons-material/Person";
 import { atom } from "recoil";
-import { MainNavigationBarItemState } from "../../components/layout/MainNavigationBarItem";
+import { MainNavigationBarItemState } from "../../components/layout/snb/MainNavigationBarItem.tsx";
 
 export type MainNavigationBarState = {
   curId: number;
@@ -22,15 +22,15 @@ const mainNavigationBarState = atom<MainNavigationBarState>({
       },
       {
         id: 1,
-        text: "사원",
-        url: "employees",
-        SvgIcon: BadgeIcon,
-      },
-      {
-        id: 2,
         text: "사건",
         url: "cases",
         SvgIcon: BalanceIcon,
+      },
+      {
+        id: 2,
+        text: "사원",
+        url: "employees",
+        SvgIcon: BadgeIcon,
       },
     ],
   },

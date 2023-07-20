@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { MainNavigationBarItemState } from "../../components/layout/MainNavigationBarItem";
+import { MainNavigationBarItemState } from "../../components/layout/snb/MainNavigationBarItem.tsx";
 
 export type SubNavigationBarState = {
   curId: number;

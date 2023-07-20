@@ -3,19 +3,21 @@ import Dialog from "@mui/material/Dialog";
 import { ReactNode } from "react";
 
 type Props = {
+  width?: number | string;
+  popUpType?: "form" | "alert";
   children?: ReactNode;
 };
 
-function PopUp({ children }: Props) {
+function PopUp({ width = 360, popUpType = "form", children }: Props) {
   return (
     <Dialog open={true} sx={{ backdropFilter: "blur(3px)" }}>
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
-          width: 360,
-          padding: 3,
-          gap: 2,
+          width,
+          padding: popUpType === "form" ? 3 : 0,
+          gap: popUpType === "form" ? 2 : 0,
         }}
       >
         {children}

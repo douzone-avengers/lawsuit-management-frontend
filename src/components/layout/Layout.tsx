@@ -4,16 +4,19 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import userState from "../../states/common/UserState";
 import clientRegisterPopUpState from "../../states/layout/ClientRegisterPopUpOpenState";
-import ClientRegisterPopUp from "./ClientRegisterPopUp";
+import ClientRegisterPopUp from "../client/ClientRegisterPopUp.tsx";
 import Debug from "./Debug";
-import Header from "./Header";
-import Main from "./Main";
-import SideNavigationBar from "./SideNavigationBar";
+import Header from "./header/Header.tsx";
+import Main from "./main/Main.tsx";
+import SideNavigationBar from "./snb/SideNavigationBar.tsx";
+import ClientRemovePopUp from "../client/ClientRemovePopUp.tsx";
+import clientRemovePopUpOpenState from "../../states/client/ClientRemovePopUpOpenState.tsx";
 
 function Layout() {
   const clientRegisterPopUp = useRecoilValue(clientRegisterPopUpState);
   const user = useRecoilValue(userState);
   const navigate = useNavigate();
+  const clientRemovePopUpOpen = useRecoilValue(clientRemovePopUpOpenState);
 
   useEffect(() => {
     if (!user) {
@@ -27,9 +30,10 @@ function Layout() {
         <Header />
         <SideNavigationBar />
         <Main />
-        <Debug />
+        {import.meta.env.DEV ? <Debug /> : null}
       </Box>
       {clientRegisterPopUp ? <ClientRegisterPopUp /> : null}
+      {clientRemovePopUpOpen ? <ClientRemovePopUp /> : null}
     </>
   );
 }

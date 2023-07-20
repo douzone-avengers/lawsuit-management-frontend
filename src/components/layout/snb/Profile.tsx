@@ -6,8 +6,8 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import { Navigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { fromHierarchy } from "../../lib/convert";
-import userState from "../../states/common/UserState";
+import { fromHierarchy } from "../../../lib/convert.ts";
+import userState from "../../../states/common/UserState.tsx";
 
 export default function Profile() {
   const user = useRecoilValue(userState);

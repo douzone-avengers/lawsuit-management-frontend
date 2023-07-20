@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 import { useSetRecoilState } from "recoil";
-import userState from "../../states/common/UserState";
+import userState from "../../../states/common/UserState.tsx";
 
 function LogoutButton() {
   const setUser = useSetRecoilState(userState);
