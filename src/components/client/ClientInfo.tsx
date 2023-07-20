@@ -10,7 +10,12 @@ import clientIdState from "../../states/client/ClientIdState.tsx";
 import Button from "@mui/material/Button";
 import ClientRemovePopUpButton from "./ClientRemovePopUpButton.tsx";
 
-function ClientInfo() {
+type Props = {
+  width?: string | number;
+  height?: string | number;
+};
+
+function ClientInfo({ width, height }: Props) {
   const clientId = useRecoilValue(clientIdState);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -40,7 +45,7 @@ function ClientInfo() {
   }, [clientId]);
 
   return (
-    <Card sx={{ minWidth: 480 }}>
+    <Card sx={{ width, height }}>
       <CardContent>
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography

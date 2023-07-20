@@ -4,9 +4,9 @@ import ClientInfo from "./ClientInfo.tsx";
 
 function ClientProfileTab() {
   return (
-    <Box sx={{ display: "flex", gap: 3, flexDirection: "column" }}>
-      <ClientInfo />
-      <Box sx={{ flexGrow: 1, height: 480 }}>
+    <Box sx={{ display: "flex", gap: 3, flexDirection: "row" }}>
+      <ClientInfo width={480} height={140} />
+      <Box sx={{ flexGrow: 1, height: 680 }}>
         <Placeholder />
       </Box>
     </Box>
