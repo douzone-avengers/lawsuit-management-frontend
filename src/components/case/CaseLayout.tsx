@@ -12,6 +12,7 @@ function CaseLayout() {
   const clientId = useRecoilValue(clientIdState);
   const caseId = useRecoilValue(caseIdState);
   const navigate = useNavigate();
+  
   return (
     <Box sx={{ display: "flex", gap: 2, flexDirection: "column" }}>
       <ButtonGroup variant="outlined" size="large" fullWidth>

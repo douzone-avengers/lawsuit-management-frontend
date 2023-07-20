@@ -5,7 +5,7 @@ import { useRecoilValue } from "recoil";
 import request, { RequestSuccessHandler } from "../../lib/request";
 import { LawsuitData } from "../../mock/lawsuit/lawsuitTable";
 import clientIdState from "../../states/client/ClientIdState";
-import CaseTable from "../case/CaseTable.tsx";
+import CaseListTable from "../common/CaseListTable.tsx";
 import Placeholder from "../common/Placeholder.tsx";
 
 function ClientCaseListTab() {
@@ -31,7 +31,7 @@ function ClientCaseListTab() {
 
   return (
     <Box sx={{ display: "flex", gap: 3, flexDirection: "column" }}>
-      <CaseTable
+      <CaseListTable
         cases={cases.map((item) => ({
           ...item,
           onClick: () => {

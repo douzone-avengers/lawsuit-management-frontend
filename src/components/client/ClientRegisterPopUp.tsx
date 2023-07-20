@@ -8,7 +8,7 @@ import request, { RequestSuccessHandler } from "../../lib/request.ts";
 import { ClientData } from "../../mock/client/clientTable.ts";
 import clientRegisterPopUpState from "../../states/layout/ClientRegisterPopUpOpenState.tsx";
 import subNavigationBarState from "../../states/layout/SubNavigationBarState.tsx";
-import { MainNavigationBarItemState } from "../layout/MainNavigationBarItem.tsx";
+import { MainNavigationBarItemState } from "../layout/snb/MainNavigationBarItem.tsx";
 import PopUp from "../common/PopUp.tsx";
 import CloseButton from "../common/CloseButton.tsx";
 

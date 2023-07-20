@@ -2,11 +2,11 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import { styled } from "@mui/material/styles";
 import { useRecoilValue } from "recoil";
-import sideNavigationBarOpenState from "../../states/layout/SideNavigationBarOpenState";
-import LogoutButton from "./LogoutButton";
-import SideNavigationBarButton from "./SideNavigationBarButton";
-import Title from "./Title";
-import subNavigationBarTypeState from "../../states/layout/SubNavigationBarTypeState.tsx";
+import sideNavigationBarOpenState from "../../../states/layout/SideNavigationBarOpenState.tsx";
+import LogoutButton from "./LogoutButton.tsx";
+import SideNavigationBarDisplayButton from "./SideNavigationBarDisplayButton.tsx";
+import Title from "./Title.tsx";
+import subNavigationBarTypeState from "../../../states/layout/SubNavigationBarTypeState.tsx";
 
 interface HeaderProps extends MuiAppBarProps {
   open?: boolean;
@@ -48,7 +48,7 @@ function Header() {
       position="fixed"
     >
       <Toolbar>
-        <SideNavigationBarButton />
+        <SideNavigationBarDisplayButton />
         <Title />
       </Toolbar>
       <LogoutButton />

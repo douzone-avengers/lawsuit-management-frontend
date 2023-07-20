@@ -4,17 +4,17 @@ import { Box } from "@mui/material";
 import List from "@mui/material/List";
 import { useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import request, { RequestSuccessHandler } from "../../lib/request";
-import { ClientData } from "../../mock/client/clientTable";
-import { LawsuitData } from "../../mock/lawsuit/lawsuitTable";
-import caseIdState from "../../states/case/CaseIdState";
-import clientIdState from "../../states/client/ClientIdState";
-import subNavigationBarState from "../../states/layout/SubNavigationBarState";
-import subNavigationBarTypeState from "../../states/layout/SubNavigationBarTypeState";
+import request, { RequestSuccessHandler } from "../../../lib/request.ts";
+import { ClientData } from "../../../mock/client/clientTable.ts";
+import { LawsuitData } from "../../../mock/lawsuit/lawsuitTable.ts";
+import caseIdState from "../../../states/case/CaseIdState.tsx";
+import clientIdState from "../../../states/client/ClientIdState.tsx";
+import subNavigationBarState from "../../../states/layout/SubNavigationBarState.tsx";
+import subNavigationBarTypeState from "../../../states/layout/SubNavigationBarTypeState.tsx";
 import SubNavigationBarItem, {
   SubNavigationBarItemState,
-} from "./SubNavigationBarItem";
-import ClientRegisterPopUpButton from "../client/ClientRegisterPopUpButton.tsx";
+} from "./SubNavigationBarItem.tsx";
+import ClientRegisterPopUpButton from "../../client/ClientRegisterPopUpButton.tsx";
 
 function SubNavigationBar() {
   const clientId = useRecoilValue(clientIdState);

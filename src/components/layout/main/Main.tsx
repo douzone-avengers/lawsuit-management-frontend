@@ -1,9 +1,9 @@
 import { styled } from "@mui/material/styles";
 import { Outlet } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import sideNavigationBarOpenState from "../../states/layout/SideNavigationBarOpenState";
-import DrawerHeader from "./DrawerHeader";
-import subNavigationBarTypeState from "../../states/layout/SubNavigationBarTypeState.tsx";
+import sideNavigationBarOpenState from "../../../states/layout/SideNavigationBarOpenState.tsx";
+import DrawerHeader from "../DrawerHeader.tsx";
+import subNavigationBarTypeState from "../../../states/layout/SubNavigationBarTypeState.tsx";
 
 const MainContainer = styled("main", {
   shouldForwardProp: (prop) => prop !== "open",

@@ -188,12 +188,6 @@ function AppRoutes() {
             <Route index element={<ClientDetailPage />} />
           </Route>
         </Route>
-        <Route path="employees">
-          {/* /employees */}
-          <Route index element={<EmployeesPage />} />
-          {/* /employees/:employeeId */}
-          <Route path=":employeeId" element={<EmployeeDetailPage />} />
-        </Route>
         <Route path="cases" element={<CaseLayout />}>
           {/* /cases */}
           <Route index element={<CasesPage />} />
@@ -203,6 +197,12 @@ function AppRoutes() {
           <Route path="list" element={<CaseListPage />} />
           {/* /cases/:caseId?client=:clientId */}
           <Route path=":caseId" element={<CaseDetailPage />} />
+        </Route>
+        <Route path="employees">
+          {/* /employees */}
+          <Route index element={<EmployeesPage />} />
+          {/* /employees/:employeeId */}
+          <Route path=":employeeId" element={<EmployeeDetailPage />} />
         </Route>
       </Route>
       {/* /login */}
