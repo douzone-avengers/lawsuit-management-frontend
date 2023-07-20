@@ -1,6 +1,4 @@
 import Box from "@mui/material/Box";
-import Chip from "@mui/material/Chip";
-import Stack from "@mui/material/Stack";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -10,6 +8,11 @@ import caseIdState from "../../states/case/CaseIdState";
 import clientIdState from "../../states/client/ClientIdState";
 import ClientInfo from "../client/ClientInfo.tsx";
 import CaseListTable from "./CaseListTable.tsx";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Chip from "@mui/material/Chip";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
 function CaseListPage() {
   const clientId = useRecoilValue(clientIdState);
@@ -60,37 +63,53 @@ function CaseListPage() {
   return (
     <Box sx={{ display: "flex", gap: 2, flexDirection: "column" }}>
       <ClientInfo />
+      <Card>
+        <CardContent>
+          <TextField size="small" fullWidth />
+          <Box
+            sx={{
+              display: "flex",
+              marginTop: 3,
+              height: 8,
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Box sx={{ display: "flex", gap: 1 }}>
+              <Chip
+                variant={lawsuitStatus === null ? "filled" : "outlined"}
+                label={`전체 (${totalLength})`}
+                onClick={() => {
+                  setLawsuitStatus(null);
+                }}
+              />
+              <Chip
+                variant={lawsuitStatus === "등록" ? "filled" : "outlined"}
+                label={`등록 (${aLength})`}
+                onClick={() => {
+                  setLawsuitStatus("등록");
+                }}
+              />
+              <Chip
+                variant={lawsuitStatus === "진행" ? "filled" : "outlined"}
+                label={`진행 (${bLength})`}
+                onClick={() => {
+                  setLawsuitStatus("진행");
+                }}
+              />
+              <Chip
+                variant={lawsuitStatus === "종결" ? "filled" : "outlined"}
+                label={`종결 (${cLength})`}
+                onClick={() => {
+                  setLawsuitStatus("종결");
+                }}
+              />
+            </Box>
+            <Button variant="contained">검색</Button>
+          </Box>
+        </CardContent>
+      </Card>
       <Box>
-        <Stack direction="row" spacing={1} sx={{ marginBottom: 2 }}>
-          <Chip
-            variant={lawsuitStatus === null ? "filled" : "outlined"}
-            label={`전체 (${totalLength})`}
-            onClick={() => {
-              setLawsuitStatus(null);
-            }}
-          />
-          <Chip
-            variant={lawsuitStatus === "등록" ? "filled" : "outlined"}
-            label={`등록 (${aLength})`}
-            onClick={() => {
-              setLawsuitStatus("등록");
-            }}
-          />
-          <Chip
-            variant={lawsuitStatus === "진행" ? "filled" : "outlined"}
-            label={`진행 (${bLength})`}
-            onClick={() => {
-              setLawsuitStatus("진행");
-            }}
-          />
-          <Chip
-            variant={lawsuitStatus === "종결" ? "filled" : "outlined"}
-            label={`종결 (${cLength})`}
-            onClick={() => {
-              setLawsuitStatus("종결");
-            }}
-          />
-        </Stack>
         <CaseListTable
           cases={filteredCases.map((item) => ({
             ...item,
