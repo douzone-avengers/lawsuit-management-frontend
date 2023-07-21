@@ -93,7 +93,7 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 1,
       });
-      setCaseButtonId(0);
+      setClientId(null);
       setSubNavigationBarType("none");
       return;
     }
@@ -112,7 +112,7 @@ function AppRoutes() {
         curId: 1,
       });
       setSubNavigationBarType("caseClient");
-      setCaseButtonId(1);
+      setCaseButtonId(0);
       return;
     }
 
@@ -127,7 +127,7 @@ function AppRoutes() {
         curId: 1,
       });
       setSubNavigationBarType("case");
-      setCaseButtonId(2);
+      setCaseButtonId(1);
       return;
     }
 
@@ -188,11 +188,12 @@ function AppRoutes() {
             <Route index element={<ClientDetailPage />} />
           </Route>
         </Route>
+        {/* /cases/new */}
+        <Route path="cases/new" element={<CaseNewPage />} />
         <Route path="cases" element={<CaseLayout />}>
           {/* /cases */}
           <Route index element={<CasesPage />} />
-          {/* /cases/new */}
-          <Route path="new" element={<CaseNewPage />} />
+
           {/* /cases/list?client=:clientId */}
           <Route path="list" element={<CaseListPage />} />
           {/* /cases/:caseId?client=:clientId */}

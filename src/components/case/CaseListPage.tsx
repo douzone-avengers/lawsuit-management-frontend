@@ -60,8 +60,19 @@ function CaseListPage() {
       filteredCases = cases;
   }
 
+  const handleCaseAddButtonClick = () => {
+    navigate("/cases/new");
+  };
+
   return (
-    <Box sx={{ display: "flex", gap: 2, flexDirection: "column" }}>
+    <Box
+      sx={{
+        display: "flex",
+        gap: 2,
+        flexDirection: "column",
+        position: "relative",
+      }}
+    >
       <ClientInfoCard />
       <Card>
         <CardContent>
@@ -119,6 +130,13 @@ function CaseListPage() {
           }))}
         />
       </Box>
+      <Button
+        variant="contained"
+        sx={{ position: "fixed", bottom: 24, right: 24 }}
+        onClick={handleCaseAddButtonClick}
+      >
+        사건 추가
+      </Button>
     </Box>
   );
 }
