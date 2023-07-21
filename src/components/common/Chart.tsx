@@ -13,12 +13,12 @@ export default function Chart() {
 
     // 의뢰비 차트 옵션 설정
     const commissionFeeOptions: EChartsOption = {
-      grid: {
-        width: "50%",
-      },
       title: {
         text: "사건 상태별 총 금액",
         left: "center",
+      },
+      grid: {
+        width: "50%",
       },
       tooltip: {
         trigger: "item",
@@ -61,12 +61,12 @@ export default function Chart() {
 
     // 성공보수 차트 옵션 설정
     const successFeeOptions: EChartsOption = {
-      grid: {
-        width: "50%",
-      },
       title: {
         text: "미수령 금액",
         left: "center",
+      },
+      grid: {
+        width: "50%",
       },
       tooltip: {
         trigger: "item",
