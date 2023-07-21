@@ -88,15 +88,15 @@ function AppRoutes() {
     }
 
     // /cases/new
-    if (length === 2 && paths[1] === "cases" && paths[2] === "new") {
-      setMainNavigationBar({
-        ...mainNavigationBar,
-        curId: 1,
-      });
-      setCaseButtonId(0);
-      setSubNavigationBarType("none");
-      return;
-    }
+    // if (length === 2 && paths[1] === "cases" && paths[2] === "new") {
+    //   setMainNavigationBar({
+    //     ...mainNavigationBar,
+    //     curId: 1,
+    //   });
+    //   setCaseButtonId(0);
+    //   setSubNavigationBarType("none");
+    //   return;
+    // }
 
     // /cases/list?client=:clientId
     if (
@@ -112,7 +112,7 @@ function AppRoutes() {
         curId: 1,
       });
       setSubNavigationBarType("caseClient");
-      setCaseButtonId(1);
+      setCaseButtonId(0);
       return;
     }
 
@@ -127,7 +127,7 @@ function AppRoutes() {
         curId: 1,
       });
       setSubNavigationBarType("case");
-      setCaseButtonId(2);
+      setCaseButtonId(1);
       return;
     }
 

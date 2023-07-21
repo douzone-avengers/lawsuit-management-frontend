@@ -12,20 +12,20 @@ function CaseLayout() {
   const clientId = useRecoilValue(clientIdState);
   const caseId = useRecoilValue(caseIdState);
   const navigate = useNavigate();
-  
+
   return (
     <Box sx={{ display: "flex", gap: 2, flexDirection: "column" }}>
       <ButtonGroup variant="outlined" size="large" fullWidth>
+        {/*<Button*/}
+        {/*  variant={caseButtonId === 0 ? "contained" : "outlined"}*/}
+        {/*  onClick={() => {*/}
+        {/*    navigate(`/cases/new`);*/}
+        {/*  }}*/}
+        {/*>*/}
+        {/*  사건 등록*/}
+        {/*</Button>*/}
         <Button
           variant={caseButtonId === 0 ? "contained" : "outlined"}
-          onClick={() => {
-            navigate(`/cases/new`);
-          }}
-        >
-          사건 등록
-        </Button>
-        <Button
-          variant={caseButtonId === 1 ? "contained" : "outlined"}
           onClick={() => {
             navigate(`/cases/list?client=${clientId}`);
           }}
@@ -33,7 +33,7 @@ function CaseLayout() {
           사건 리스트
         </Button>
         <Button
-          variant={caseButtonId === 2 ? "contained" : "outlined"}
+          variant={caseButtonId === 1 ? "contained" : "outlined"}
           onClick={() => {
             navigate(`/cases/${caseId}?client=${clientId}`);
           }}
