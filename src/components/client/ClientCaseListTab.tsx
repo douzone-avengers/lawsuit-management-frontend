@@ -49,14 +49,8 @@ function ClientCaseListTab() {
           },
         }))}
       />
-      {/*<Box sx={{ flexGrow: 1, height: 480 }}>*/}
-      {/*  <Chart />*/}
-      {/*</Box>*/}
       <br />
-      <Chart />
-      {/*<Box sx={{ flexGrow: 1 }}>*/}
-      {/*  */}
-      {/*</Box>*/}
+      <Chart cases={cases} />
     </Box>
   );
 }

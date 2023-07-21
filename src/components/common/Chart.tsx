@@ -1,13 +1,18 @@
 import { useEffect, useRef } from "react";
 import * as echarts from "echarts";
 import { Box } from "@mui/material";
+import { LawsuitData } from "../../mock/lawsuit/lawsuitTable.ts";
 
 type EChartsOption = echarts.EChartsOption;
-export default function Chart() {
+type Props = {
+  cases: LawsuitData[];
+};
+export default function Chart({ cases }: Props) {
   const commissionFee_ChartRef = useRef<HTMLDivElement>(null);
   const successFee_ChartRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    console.log(cases);
     const commissionFeeChart = echarts.init(commissionFee_ChartRef.current);
     const successFeeChart = echarts.init(successFee_ChartRef.current);
 
