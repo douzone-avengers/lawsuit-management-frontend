@@ -15,7 +15,7 @@ type Props = {
   height?: string | number;
 };
 
-function ClientInfo({ width, height }: Props) {
+function ClientInfoCard({ width, height }: Props) {
   const clientId = useRecoilValue(clientIdState);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -111,4 +111,4 @@ function ClientInfo({ width, height }: Props) {
   );
 }
 
-export default ClientInfo;
+export default ClientInfoCard;

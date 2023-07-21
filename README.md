@@ -98,7 +98,7 @@ npm run dev
   - LogoutButton
 - SideNavigationBar
   - SideNavigationBarHeader
-    - Profile
+    - ClientInformation
     - SideNavigationBarHiddenButton
   - MainNavigation
   - (SubNavigation)

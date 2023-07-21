@@ -6,7 +6,7 @@ import request, { RequestSuccessHandler } from "../../lib/request";
 import { LawsuitData, LawsuitStatus } from "../../mock/lawsuit/lawsuitTable";
 import caseIdState from "../../states/case/CaseIdState";
 import clientIdState from "../../states/client/ClientIdState";
-import ClientInfo from "../client/ClientInfo.tsx";
+import ClientInfoCard from "../client/ClientInfoCard.tsx";
 import CaseListTable from "./CaseListTable.tsx";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -62,7 +62,7 @@ function CaseListPage() {
 
   return (
     <Box sx={{ display: "flex", gap: 2, flexDirection: "column" }}>
-      <ClientInfo />
+      <ClientInfoCard />
       <Card>
         <CardContent>
           <TextField size="small" fullWidth />

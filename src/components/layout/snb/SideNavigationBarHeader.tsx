@@ -1,7 +1,7 @@
 import DrawerHeader from "../DrawerHeader.tsx";
 import Box from "@mui/material/Box";
-import Profile from "./Profile.tsx";
 import SideNavigationBarHiddenButton from "./SideNavigationBarHiddenButton.tsx";
+import ClientInformation from "./ClientInformation.tsx";
 
 function SideNavigationBarHeader() {
   return (
@@ -14,7 +14,8 @@ function SideNavigationBarHeader() {
           alignItems: "center",
         }}
       >
-        <Profile />
+        {/*<Profile />*/}
+        <ClientInformation />
         <SideNavigationBarHiddenButton />
       </Box>
     </DrawerHeader>
