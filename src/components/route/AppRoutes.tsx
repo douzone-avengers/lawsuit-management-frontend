@@ -183,7 +183,7 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 2,
       });
-      setSubNavigationBarType("case");
+      setSubNavigationBarType("employee");
       setEmployeeButtonId(2);
       return;
     }
