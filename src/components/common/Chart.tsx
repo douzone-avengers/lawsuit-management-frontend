@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useEffect, useRef } from "react";
 import * as echarts from "echarts";
 import { Box } from "@mui/material";
 
@@ -103,7 +103,9 @@ export default function Chart() {
       ],
     };
 
+    // @ts-ignore
     commissionFeeChart.setOption(commissionFeeOptions);
+    // @ts-ignore
     successFeeChart.setOption(successFeeOptions);
 
     // 창 크기 조절 이벤트 핸들러 추가
@@ -121,15 +123,19 @@ export default function Chart() {
 
   return (
     <Box
-      sx={{ display: "flex", width: "100%", justifyContent: "space-around" }}
+      sx={{
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "space-between",
+      }}
     >
       <Box
         ref={commissionFee_ChartRef}
-        sx={{ width: "50%", height: "400px" }}
+        sx={{ width: ["100%", "50%"], height: "400px" }}
       ></Box>
       <Box
         ref={successFee_ChartRef}
-        sx={{ width: "50%", height: "400px" }}
+        sx={{ width: ["100%", "50%"], height: "400px" }}
       ></Box>
     </Box>
   );

@@ -7,6 +7,7 @@ import { LawsuitData } from "../../mock/lawsuit/lawsuitTable";
 import clientIdState from "../../states/client/ClientIdState";
 import CaseListTable from "../common/CaseListTable.tsx";
 import Chart from "../common/Chart.tsx";
+
 // import Placeholder from "../common/Placeholder.tsx";
 
 function ClientCaseListTab() {
@@ -32,7 +33,13 @@ function ClientCaseListTab() {
 
   return (
     <Box
-      sx={{ display: "flex", gap: 3, flexDirection: "column", width: "100%" }}
+      sx={{
+        display: "flex",
+        gap: 3,
+        flexDirection: "column",
+        width: "100%",
+        overflow: "hidden",
+      }}
     >
       <CaseListTable
         cases={cases.map((item) => ({
