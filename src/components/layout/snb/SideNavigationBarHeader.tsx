@@ -14,7 +14,6 @@ function SideNavigationBarHeader() {
           alignItems: "center",
         }}
       >
-        {/*<Profile />*/}
         <ClientInformation />
         <SideNavigationBarHiddenButton />
       </Box>
