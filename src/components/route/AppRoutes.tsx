@@ -88,15 +88,15 @@ function AppRoutes() {
     }
 
     // /cases/new
-    // if (length === 2 && paths[1] === "cases" && paths[2] === "new") {
-    //   setMainNavigationBar({
-    //     ...mainNavigationBar,
-    //     curId: 1,
-    //   });
-    //   setCaseButtonId(0);
-    //   setSubNavigationBarType("none");
-    //   return;
-    // }
+    if (length === 2 && paths[1] === "cases" && paths[2] === "new") {
+      setMainNavigationBar({
+        ...mainNavigationBar,
+        curId: 1,
+      });
+      setClientId(null);
+      setSubNavigationBarType("none");
+      return;
+    }
 
     // /cases/list?client=:clientId
     if (
@@ -188,11 +188,12 @@ function AppRoutes() {
             <Route index element={<ClientDetailPage />} />
           </Route>
         </Route>
+        {/* /cases/new */}
+        <Route path="cases/new" element={<CaseNewPage />} />
         <Route path="cases" element={<CaseLayout />}>
           {/* /cases */}
           <Route index element={<CasesPage />} />
-          {/* /cases/new */}
-          <Route path="new" element={<CaseNewPage />} />
+
           {/* /cases/list?client=:clientId */}
           <Route path="list" element={<CaseListPage />} />
           {/* /cases/:caseId?client=:clientId */}

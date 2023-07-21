@@ -14,7 +14,13 @@ function CaseLayout() {
   const navigate = useNavigate();
 
   return (
-    <Box sx={{ display: "flex", gap: 2, flexDirection: "column" }}>
+    <Box
+      sx={{
+        display: "flex",
+        gap: 2,
+        flexDirection: "column",
+      }}
+    >
       <ButtonGroup variant="outlined" size="large" fullWidth>
         {/*<Button*/}
         {/*  variant={caseButtonId === 0 ? "contained" : "outlined"}*/}
