@@ -5,11 +5,8 @@ import { useRecoilValue } from "recoil";
 import request, { RequestSuccessHandler } from "../../lib/request";
 import { LawsuitData } from "../../mock/lawsuit/lawsuitTable";
 import clientIdState from "../../states/client/ClientIdState";
-import CaseListTable from "../common/CaseListTable.tsx";
+import CaseListTable from "../case/CaseListTable.tsx";
 import Chart from "../common/Chart.tsx";
-
-// import Placeholder from "../common/Placeholder.tsx";
-
 function ClientCaseListTab() {
   const clientId = useRecoilValue(clientIdState);
   const navigate = useNavigate();

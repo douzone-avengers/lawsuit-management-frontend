@@ -6,6 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { LawsuitData } from "../../mock/lawsuit/lawsuitTable.ts";
+import { delimiter } from "../../lib/convert.ts";
 
 type Props = {
   cases: (LawsuitData & { onClick: () => void })[];
@@ -42,8 +43,12 @@ function CaseListTable({ cases }: Props) {
               <TableCell align="left">{item.name}</TableCell>
               <TableCell align="left">{item.lawsuitNum}</TableCell>
               <TableCell align="left">{item.lawsuitStatus}</TableCell>
-              <TableCell align="left">{item.commissionFee}</TableCell>
-              <TableCell align="left">{item.contingentFee}</TableCell>
+              <TableCell align="left">
+                {delimiter(item.commissionFee)}
+              </TableCell>
+              <TableCell align="left">
+                {delimiter(item.contingentFee)}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
