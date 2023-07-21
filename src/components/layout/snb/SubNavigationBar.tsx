@@ -124,7 +124,10 @@ function SubNavigationBar() {
           />
         ))}
       </List>
-      <ClientRegisterPopUpButton />
+      {subNavigationBarType === "client" ||
+      subNavigationBarType === "caseClient" ? (
+        <ClientRegisterPopUpButton />
+      ) : null}
     </Box>
   );
 }
