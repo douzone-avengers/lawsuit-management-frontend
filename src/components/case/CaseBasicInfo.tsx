@@ -1,6 +1,7 @@
 import { fromHierarchy } from "../../lib/convert.ts";
 import { Hierarchy } from "../../states/common/UserState.tsx";
 import { LawsuitData } from "../../mock/lawsuit/lawsuitTable.ts";
+import Card from "@mui/material/Card";
 
 type CaseBasicEmployee = { name: string; hierarchy: Hierarchy };
 type CaseBasicClient = { name: string };
@@ -21,7 +22,7 @@ function CaseBasicInfo({ info }: Props) {
   const { lawsuit, employees, clients } = info;
 
   return (
-    <div>
+    <Card sx={{ flexGrow: 1 }}>
       <div>
         <div>lawsuit</div>
         <div>{lawsuit?.name}</div>
@@ -46,7 +47,7 @@ function CaseBasicInfo({ info }: Props) {
           </div>
         ))}
       </div>
-    </div>
+    </Card>
   );
 }
 
