@@ -20,6 +20,26 @@ const memberTable: MemberData[] = [
     hierarchyId: 2,
     roleId: 2,
   },
+  {
+    id: 2,
+    email: "root2@douzone.com",
+    password: "1234",
+    name: "김길동",
+    phone: "010-0000-0000",
+    address: "서울특별시",
+    hierarchyId: 2,
+    roleId: 2,
+  },
+  {
+    id: 3,
+    email: "root3@douzone.com",
+    password: "1234",
+    name: "김네종",
+    phone: "010-0000-0000",
+    address: "대구광역시",
+    hierarchyId: 2,
+    roleId: 3,
+  },
 ];
 
 export default memberTable;

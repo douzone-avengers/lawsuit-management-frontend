@@ -15,10 +15,13 @@ import SubNavigationBarItem, {
   SubNavigationBarItemState,
 } from "./SubNavigationBarItem.tsx";
 import ClientRegisterPopUpButton from "../../client/ClientRegisterPopUpButton.tsx";
+import { MemberInfo } from "../../../mock/member/memberHandlers";
+import employeeIdState from "../../../states/employee/EmployeeIdState";
 
 function SubNavigationBar() {
   const clientId = useRecoilValue(clientIdState);
   const caseId = useRecoilValue(caseIdState);
+  const employeeId = useRecoilValue(employeeIdState);
   const [subNavigationBar, setSubNavigationBar] = useRecoilState(
     subNavigationBarState,
   );
@@ -74,6 +77,25 @@ function SubNavigationBar() {
       request("GET", `/lawsuits/clients/${clientId}`, {
         onSuccess: handleRequestSuccess,
       });
+    } else if (subNavigationBarType === "employee") {
+      const handleRequestSuccess: RequestSuccessHandler = (res) => {
+        const body: { data: MemberInfo[] } = res.data;
+        const newItems: SubNavigationBarItemState[] = body.data.map((item) => {
+          return {
+            id: item.id,
+            text: item.name,
+            subText: item.role,
+            url: `employees/${item.id}`,
+            SvgIcon: BalanceIcon,
+          };
+        });
+        console.log("newItems ***");
+        console.log(newItems);
+        setSubNavigationBar({ ...subNavigationBar, items: newItems });
+      };
+      request("GET", `/members?role=ADMIN,EMPLOYEE`, {
+        onSuccess: handleRequestSuccess,
+      });
     }
   }, [subNavigationBarType]);
 
@@ -91,17 +113,21 @@ function SubNavigationBar() {
             key={item.id}
             item={item}
             selected={
-              subNavigationBarType === "client" ||
-              subNavigationBarType === "caseClient"
-                ? clientId === item.id
-                : subNavigationBarType === "case"
-                ? caseId === item.id
-                : false
+              (subNavigationBarType === "client" ||
+                subNavigationBarType === "caseClient") &&
+              clientId === item.id
+                ? true
+                : subNavigationBarType === "case" && caseId === item.id
+                ? true
+                : subNavigationBarType === "employee" && employeeId === item.id
             }
           />
         ))}
       </List>
-      <ClientRegisterPopUpButton />
+      {subNavigationBarType === "client" ||
+      subNavigationBarType === "caseClient" ? (
+        <ClientRegisterPopUpButton />
+      ) : null}
     </Box>
   );
 }

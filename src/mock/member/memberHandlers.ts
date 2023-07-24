@@ -2,7 +2,7 @@ import { rest } from "msw";
 import { Hierarchy, Role } from "../../states/common/UserState";
 import hierarchyTable from "../hierarchy/hierarchyTable";
 import roleTable from "../role/roleTable";
-import memberTable from "./memberTable";
+import memberTable, { MemberData } from "./memberTable";
 
 export type MemberInfo = {
   id: number;
@@ -12,6 +12,34 @@ export type MemberInfo = {
   role: Role;
 };
 
+const toMemberInfo = function (member: MemberData) {
+  const memberInfo: MemberInfo = {
+    id: member.id,
+    email: member.email,
+    name: member.name,
+    hierarchy: hierarchyTable.filter(
+      (item) => item.id === member.hierarchyId,
+    )[0].name,
+    role: roleTable.filter((item) => item.id === member.roleId)[0].name,
+  };
+  return memberInfo;
+};
+
+const membersHandler = rest.get("/api/members", async (req, res, ctx) => {
+  let memberInfoList = memberTable.map((memberData) =>
+    toMemberInfo(memberData),
+  );
+
+  const roleParam = req.url.searchParams.get("role");
+  if (roleParam) {
+    const roles = roleParam.split(",");
+    memberInfoList = memberInfoList.filter((member) =>
+      roles.includes(member.role),
+    );
+  }
+  return res(ctx.status(200), ctx.json({ data: memberInfoList }));
+});
+
 const memberDetailHandler = rest.get(
   "/api/members/:memberId",
   async (req, res, ctx) => {
@@ -19,17 +47,7 @@ const memberDetailHandler = rest.get(
 
     const member = memberTable.filter((item) => item.id === memberId)[0];
 
-    const memberInfo: MemberInfo = {
-      id: member.id,
-      email: member.email,
-      name: member.name,
-      hierarchy: hierarchyTable.filter(
-        (item) => item.id === member.hierarchyId,
-      )[0].name,
-      role: roleTable.filter((item) => item.id === member.roleId)[0].name,
-    };
-
-    return res(ctx.status(200), ctx.json({ data: memberInfo }));
+    return res(ctx.status(200), ctx.json({ data: toMemberInfo(member) }));
   },
 );
 
@@ -55,6 +73,6 @@ const memberJoinHandler = rest.post("/api/members", async (req, res, ctx) => {
   return res(ctx.status(200), ctx.json({ data: null }));
 });
 
-const memberHandlers = [memberDetailHandler, memberJoinHandler];
+const memberHandlers = [memberDetailHandler, memberJoinHandler, membersHandler];
 
 export default memberHandlers;
