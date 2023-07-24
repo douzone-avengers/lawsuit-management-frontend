@@ -1,48 +1,50 @@
 import Box from "@mui/material/Box";
 import ClientInfoCard from "./ClientInfoCard.tsx";
-import KakaoMap from "./ClientKakaoMap.tsx";
-import { useRef, useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+
+function useWindowSize(): [number, number] {
+  const [windowSize, setWindowSize] = useState({
+    height: window.innerHeight,
+    width: window.innerWidth,
+  });
+
+  const handleResize = () => {
+    setWindowSize({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  return [windowSize.width, windowSize.height];
+}
 
 function ClientProfileTab() {
   const parentContainer = useRef<HTMLDivElement>(null);
-  const [parentWidth, setParentWidth] = useState(0);
-  const [parentHeight, setParentHeight] = useState(0);
+  const [width, height] = useWindowSize();
 
-  useEffect(() => {
-    function getParentSize() {
-      if (parentContainer.current) {
-        setParentWidth(parentContainer.current.offsetWidth);
-        setParentHeight(parentContainer.current.offsetHeight);
-      }
-    }
-
-    getParentSize();
-    console.log("offsetWidth: " + parentWidth);
-    console.log("offsetHeight: " + parentHeight);
-    window.addEventListener("resize", getParentSize);
-
-    return () => {
-      window.removeEventListener("resize", getParentSize);
-    };
-  }, [
-    parentContainer.current?.offsetWidth,
-    parentContainer.current?.offsetHeight,
-  ]);
+  console.log(width, height);
 
   return (
-    <Box sx={{ display: "flex", gap: 3, flexDirection: "row" }}>
-      <ClientInfoCard width={480} height={140} />
+    <Box sx={{ display: "flex", gap: 3, flexDirection: "row", height: "100%" }}>
+      <ClientInfoCard width="50%" />
       <Box
         ref={parentContainer}
         sx={{
           display: "inline-block",
           background: "red",
-          flexGrow: 1,
-          width: "100%",
-          height: 140,
+          width: "50%",
+          height: height - 210,
         }}
       >
-        <KakaoMap parentWidth={parentWidth} parentHeight={parentHeight} />
+        {/*<KakaoMap parentWidth={parentWidth} parentHeight={parentHeight} />*/}
       </Box>
     </Box>
   );
