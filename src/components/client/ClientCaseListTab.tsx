@@ -6,7 +6,7 @@ import request, { RequestSuccessHandler } from "../../lib/request";
 import { LawsuitData } from "../../mock/lawsuit/lawsuitTable";
 import clientIdState from "../../states/client/ClientIdState";
 import CaseListTable from "../case/CaseListTable.tsx";
-import Chart from "../common/Chart.tsx";
+import Chart from "./Chart.tsx";
 function ClientCaseListTab() {
   const clientId = useRecoilValue(clientIdState);
   const navigate = useNavigate();

@@ -13,6 +13,7 @@ import ClientRemovePopUpButton from "./ClientRemovePopUpButton.tsx";
 type Props = {
   width?: string | number;
   height?: string | number;
+  flexGrow?: number;
 };
 
 function ClientInfoCard({ width, height }: Props) {
