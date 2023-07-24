@@ -51,6 +51,7 @@ export default function Chart({ cases }: Props) {
             {
               value: 2000000,
               name: "종결",
+              itemStyle: { color: "#5B73C9" },
             },
           ],
           emphasis: {
@@ -94,7 +95,7 @@ export default function Chart({ cases }: Props) {
             {
               value: 12000000,
               name: "기대 성공 보수",
-              itemStyle: { color: "#4A75CC" },
+              itemStyle: { color: "#5B73C9" },
             },
           ],
           emphasis: {
