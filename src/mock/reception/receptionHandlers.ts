@@ -11,9 +11,17 @@ const getReceptionsHandler = rest.get(
       return res(ctx.status(400));
     }
 
-    const data = receptionTable.filter(
+    let data = receptionTable.filter(
       (item) => item.lawsuitId === lawsuitId && !item.isDeleted,
     );
+
+    const typeParam = req.url.searchParams.get("type");
+
+    if (typeParam === "fixed") {
+      data = data.filter((item) => item.receptionType === "불변");
+    } else if (typeParam === "scheduled") {
+      data = data.filter((item) => item.receptionType === "기일");
+    }
 
     return res(
       ctx.status(200),
@@ -35,7 +43,7 @@ const getDetailReceptionHandler = rest.get(
       return res(ctx.status(400));
     }
 
-    const data = receptionTable.filter(
+    let data = receptionTable.filter(
       (item) => item.id === receptionId && !item.isDeleted,
     )[0];
 
