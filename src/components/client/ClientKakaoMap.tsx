@@ -29,11 +29,9 @@ export default function KakaoMap(props: Props) {
   // 화면 크기가 변경될 때마다 지도 영역 크기를 업데이트하는 함수
   const updateMapSize = () => {
     if (current) {
-      const { clientWidth, clientHeight } = current;
-      setWidth(clientWidth);
-      setHeight(clientHeight);
-
-      console.log(`Window Width: ${width}px, Height: ${height}px`);
+      // const { clientWidth, clientHeight } = current;
+      setWidth(width);
+      setHeight(height);
     }
   };
 
@@ -90,7 +88,6 @@ export default function KakaoMap(props: Props) {
     geocoder.addressSearch(address, function (result: any[], status: any) {
       // 정상적으로 검색 완료됐으면
       if (status === window.kakao.maps.services.Status.OK) {
-        console.log("주소: " + address);
         const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
 
         // 결과값으로 받은 위치를 마커로 표시
