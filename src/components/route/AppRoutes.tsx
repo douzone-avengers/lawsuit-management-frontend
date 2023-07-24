@@ -19,7 +19,7 @@ import HomePage from "../home/HomePage";
 import JoinPage from "../join/JoinPage";
 import Layout from "../layout/Layout";
 import LoginPage from "../login/LoginPage";
-import CaseNewPage from "../case/CaseNewPage.tsx";
+import CaseNewPage from "../../case/CaseNewPage.tsx";
 
 function AppRoutes() {
   const location = useLocation();
