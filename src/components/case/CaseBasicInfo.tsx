@@ -2,37 +2,57 @@ import { fromHierarchy } from "../../lib/convert.ts";
 import { Hierarchy } from "../../states/common/UserState.tsx";
 import { LawsuitData } from "../../mock/lawsuit/lawsuitTable.ts";
 import Card from "@mui/material/Card";
+import { useRecoilValue } from "recoil";
+import caseIdState from "../../states/case/CaseIdState.tsx";
+import { useEffect, useState } from "react";
+import request, { RequestSuccessHandler } from "../../lib/request.ts";
 
 type CaseBasicEmployee = { name: string; hierarchy: Hierarchy };
 type CaseBasicClient = { name: string };
-export type CaseBasicInfoType = {
+type CaseBasicInfoType = {
   lawsuit: LawsuitData;
   employees: CaseBasicEmployee[];
   clients: CaseBasicClient[];
 };
 
-type Props = {
-  info: CaseBasicInfoType | null;
-};
+function CaseBasicInfo() {
+  const caseId = useRecoilValue(caseIdState);
+  const [caseBasicInfo, setCaseBasicInfo] = useState<CaseBasicInfoType | null>(
+    null,
+  );
 
-function CaseBasicInfo({ info }: Props) {
-  if (!info) {
-    return null;
-  }
-  const { lawsuit, employees, clients } = info;
+  useEffect(() => {
+    if (caseId === null) {
+      return;
+    }
 
-  return (
+    const handleSuccessHandler: RequestSuccessHandler = async (res) => {
+      setCaseBasicInfo(
+        (
+          (await res.data) as {
+            data: CaseBasicInfoType;
+          }
+        ).data,
+      );
+    };
+
+    request("GET", `/lawsuits/${caseId}`, {
+      onSuccess: handleSuccessHandler,
+    });
+  }, [caseId]);
+
+  return caseBasicInfo !== null ? (
     <Card sx={{ flexGrow: 1 }}>
       <div>
         <div>lawsuit</div>
-        <div>{lawsuit?.name}</div>
-        <div>{lawsuit?.lawsuitNum}</div>
-        <div>{lawsuit?.lawsuitType}</div>
-        <div>{lawsuit?.court}</div>
+        <div>{caseBasicInfo.lawsuit?.name}</div>
+        <div>{caseBasicInfo.lawsuit?.lawsuitNum}</div>
+        <div>{caseBasicInfo.lawsuit?.lawsuitType}</div>
+        <div>{caseBasicInfo.lawsuit?.court}</div>
       </div>
       <div>
         <div>employees</div>
-        {employees.map((item) => (
+        {caseBasicInfo.employees.map((item) => (
           <div key={item.name}>
             <div>{item.name}</div>
             <div>{fromHierarchy(item.hierarchy)}</div>
@@ -41,14 +61,14 @@ function CaseBasicInfo({ info }: Props) {
       </div>
       <div>
         <div>clients</div>
-        {clients.map((item) => (
+        {caseBasicInfo.clients.map((item) => (
           <div key={item.name}>
             <div>{item.name}</div>
           </div>
         ))}
       </div>
     </Card>
-  );
+  ) : null;
 }
 
 export default CaseBasicInfo;
