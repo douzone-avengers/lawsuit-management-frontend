@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import { useState } from "react";
 import TabBar, { TabItem } from "../common/TabBar";
+import CaseBasicInfoTab from "./CaseBasicInfoTab.tsx";
 
 function CaseDetailPage() {
   const [caseTabId, setCaseTabId] = useState(0);
@@ -9,7 +10,7 @@ function CaseDetailPage() {
     {
       id: 0,
       name: "사건 정보",
-      children: <div>사건 정보</div>,
+      children: <CaseBasicInfoTab />,
     },
     {
       id: 1,
