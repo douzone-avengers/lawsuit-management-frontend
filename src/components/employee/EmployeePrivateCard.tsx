@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
@@ -54,92 +53,99 @@ function EmployeePrivateCard({ width, height }: Props) {
 
   return (
     <Card sx={{ width, height }}>
-      <CardContent>
-        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <Box sx={{ display: "flex", justifyContent: "right", gap: 1 }}>
-            {editMode ? (
-              <Button
-                variant="contained"
-                size="small"
-                onClick={() => {
-                  setEditMode(false);
-                }}
-              >
-                확인
-              </Button>
-            ) : (
-              <Button
-                variant="contained"
-                size="small"
-                onClick={() => {
-                  setEditMode(true);
-                }}
-              >
-                수정
-              </Button>
-            )}
-          </Box>
+      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+        <Box sx={{ display: "flex", justifyContent: "right", gap: 1 }}></Box>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          width: "100%",
+          padding: "10px",
+          justifyContent: "space-between",
+        }}
+      >
+        <Box>
+          <Typography
+            sx={{ display: "inline-block" }}
+            variant="h4"
+            contentEditable={editMode}
+          >
+            {name}
+          </Typography>
         </Box>
-        <Typography
-          sx={{ display: "inline-block" }}
-          variant="h4"
-          contentEditable={editMode}
-        >
-          {name}
-        </Typography>
-        <br />
-        <hr />
-        <br />
-        <Typography
-          sx={{ display: "inline-block", fontSize: 20 }}
-          color="text.secondary"
-          gutterBottom
-          contentEditable={editMode}
-        >
-          <SvgIcon component={Email} /> &nbsp;
-          {email}
-        </Typography>
-        <br />
-        <Typography
-          sx={{ display: "inline-block", fontSize: 20 }}
-          color="text.secondary"
-          gutterBottom
-          contentEditable={editMode}
-        >
-          <SvgIcon component={PhoneIphone} /> &nbsp;
-          {phone}
-        </Typography>
-        <br />
-        <Typography
-          sx={{ display: "inline-block", fontSize: 20 }}
-          color="text.secondary"
-          gutterBottom
-          contentEditable={editMode}
-        >
-          <SvgIcon component={LocationOn} /> &nbsp;
-          {address}
-        </Typography>
-        <br />
-        <Typography
-          sx={{ display: "inline-block", fontSize: 20 }}
-          color="text.secondary"
-          gutterBottom
-          contentEditable="false"
-        >
-          <SvgIcon component={Business} /> &nbsp;
-          {hierarchy}
-        </Typography>
-        <br />
-        <Typography
-          sx={{ display: "inline-block", fontSize: 20 }}
-          color="text.secondary"
-          gutterBottom
-          contentEditable="false"
-        >
-          <SvgIcon component={Business} /> &nbsp;
-          {role}
-        </Typography>
-      </CardContent>
+        {editMode ? (
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() => {
+              setEditMode(false);
+            }}
+          >
+            확인
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() => {
+              setEditMode(true);
+            }}
+          >
+            수정
+          </Button>
+        )}
+      </Box>
+
+      <hr />
+      <Typography
+        sx={{ display: "inline-block", fontSize: 20 }}
+        color="text.secondary"
+        gutterBottom
+        contentEditable={editMode}
+      >
+        <SvgIcon component={Email} /> &nbsp;
+        {email}
+      </Typography>
+      <br />
+      <Typography
+        sx={{ display: "inline-block", fontSize: 20 }}
+        color="text.secondary"
+        gutterBottom
+        contentEditable={editMode}
+      >
+        <SvgIcon component={PhoneIphone} /> &nbsp;
+        {phone}
+      </Typography>
+      <br />
+      <Typography
+        sx={{ display: "inline-block", fontSize: 20 }}
+        color="text.secondary"
+        gutterBottom
+        contentEditable={editMode}
+      >
+        <SvgIcon component={LocationOn} /> &nbsp;
+        {address}
+      </Typography>
+      <br />
+      <Typography
+        sx={{ display: "inline-block", fontSize: 20 }}
+        color="text.secondary"
+        gutterBottom
+        contentEditable="false"
+      >
+        <SvgIcon component={Business} /> &nbsp;
+        {hierarchy}
+      </Typography>
+      <br />
+      <Typography
+        sx={{ display: "inline-block", fontSize: 20 }}
+        color="text.secondary"
+        gutterBottom
+        contentEditable="false"
+      >
+        <SvgIcon component={Business} /> &nbsp;
+        {role}
+      </Typography>
     </Card>
   );
 }
