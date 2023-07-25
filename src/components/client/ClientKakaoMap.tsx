@@ -100,7 +100,16 @@ export default function KakaoMap({ parentWidth, parentHeight }: Props) {
         const infoWindow = new window.kakao.maps.InfoWindow({
           content: `<div style="width:200px;text-align:center;padding:6px 0;">${address}</div>`,
         });
-        infoWindow.open(map, marker);
+
+        // 마커에 마우스오버 이벤트 등록
+        window.kakao.maps.event.addListener(marker, "mouseover", function () {
+          infoWindow.open(map, marker);
+        });
+
+        // 마커에 마우스아웃 이벤트를 등록
+        window.kakao.maps.event.addListener(marker, "mouseout", function () {
+          infoWindow.close();
+        });
 
         // 지도의 중심을 결과값으로 받은 위치로 이동
         map.setCenter(coords);
