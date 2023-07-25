@@ -49,3 +49,7 @@ export function delimiter(num: number): string {
 
   return result.split("").reverse().join("");
 }
+
+export function toDateValue(dateStr: string) {
+  return dateStr.split("T")[0];
+}

@@ -16,7 +16,6 @@ const getReceptionsHandler = rest.get(
     );
 
     const typeParam = req.url.searchParams.get("type");
-
     if (typeParam === "fixed") {
       data = data.filter((item) => item.receptionType === "불변");
     } else if (typeParam === "scheduled") {
@@ -126,6 +125,8 @@ const updateReceptionHandler = rest.put(
     if (body["deadline"] !== undefined) {
       foundReception.deadline = new Date(body["deadline"]);
     }
+
+    return res(ctx.status(200));
   },
 );
 

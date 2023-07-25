@@ -4,6 +4,7 @@ import caseIdState from "../../states/case/CaseIdState";
 import clientIdState from "../../states/client/ClientIdState";
 import employeeIdState from "../../states/employee/EmployeeIdState";
 import subNavigationBarTypeState from "../../states/layout/SubNavigationBarTypeState.tsx";
+import { useEffect, useState } from "react";
 
 function Debug() {
   const clientId = useRecoilValue(clientIdState);
@@ -11,7 +12,19 @@ function Debug() {
   const employeeId = useRecoilValue(employeeIdState);
   const subNavigationBarType = useRecoilValue(subNavigationBarTypeState);
 
-  return (
+  const [show, setShow] = useState(true);
+
+  const handleKeydown = (e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      setShow((prev) => !prev);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeydown);
+  }, []);
+
+  return show ? (
     <Box
       sx={{
         position: "absolute",
@@ -24,7 +37,7 @@ function Debug() {
       <div>employeeId: {employeeId}</div>
       <div>subNavigationBarType: {subNavigationBarType}</div>
     </Box>
-  );
+  ) : null;
 }
 
 export default Debug;
