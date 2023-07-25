@@ -1,5 +1,7 @@
+import EmployeePrivateCard from "./EmployeePrivateCard";
+
 function EmployeePrivatePage() {
-  return <div>TODO: EmployeePrivatePage</div>;
+  return <EmployeePrivateCard />;
 }
 
 export default EmployeePrivatePage;
