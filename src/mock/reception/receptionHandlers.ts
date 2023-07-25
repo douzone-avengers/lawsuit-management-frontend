@@ -1,25 +1,57 @@
 import { rest } from "msw";
 import receptionTable, { ReceptionType } from "./receptionTable.ts";
+import * as dayjs from "dayjs";
 
 const getReceptionsHandler = rest.get(
   "/api/receptions",
   async (req, res, ctx) => {
-    const lawsuitId = Number.parseInt(
+    const lawsuitParam = Number.parseInt(
       req.url.searchParams.get("lawsuit") ?? "",
     );
-    if (Number.isNaN(lawsuitId)) {
+
+    if (Number.isNaN(lawsuitParam)) {
       return res(ctx.status(400));
     }
 
     let data = receptionTable.filter(
-      (item) => item.lawsuitId === lawsuitId && !item.isDeleted,
+      (item) => item.lawsuitId === lawsuitParam && !item.isDeleted,
     );
 
-    const typeParam = req.url.searchParams.get("type");
-    if (typeParam === "fixed") {
-      data = data.filter((item) => item.receptionType === "불변");
-    } else if (typeParam === "scheduled") {
-      data = data.filter((item) => item.receptionType === "기일");
+    const statusParam = req.url.searchParams.get("status") ?? "";
+    switch (statusParam) {
+      case "complete":
+        data = data.filter((item) => item.isDone);
+        break;
+      case "incomplete":
+        data = data.filter((item) => !item.isDone);
+        break;
+    }
+
+    const categoryParam = req.url.searchParams.get("category") ?? "";
+    switch (categoryParam) {
+      case "scheduled":
+        data = data.filter((item) => item.receptionType === "기일");
+        break;
+      case "fixed":
+        data = data.filter((item) => item.receptionType === "불변");
+        break;
+    }
+
+    const startParam = req.url.searchParams.get("start") ?? "";
+    if (startParam !== "") {
+      data = data.filter((item) =>
+        dayjs(item.deadline).isAfter(
+          dayjs(startParam).subtract(1, "day"),
+          "date",
+        ),
+      );
+    }
+
+    const endParam = req.url.searchParams.get("end") ?? "";
+    if (endParam !== "") {
+      data = data.filter((item) =>
+        dayjs(item.deadline).isBefore(dayjs(endParam).add(1, "day"), "date"),
+      );
     }
 
     return res(

@@ -4,7 +4,7 @@ import CaseReception from "./CaseReception.tsx";
 
 function CaseBasicInfoTab() {
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+    <Box sx={{ display: "flex", gap: 2 }}>
       <CaseBasicInfo />
       <CaseReception />
     </Box>

@@ -45,7 +45,20 @@ function CaseReceptionSearchBox() {
       return;
     }
 
-    const url = `/receptions?lawsuit=${caseId}`;
+    let startValue = null;
+    if (start) {
+      startValue = `${start.year()}-${start.month() + 1}-${start.date()}`;
+    }
+
+    let endValue = null;
+    if (end) {
+      endValue = `${end.year()}-${end.month() + 1}-${end.date()}`;
+    }
+
+    const url = `/receptions?lawsuit=${caseId}&status=${status}&category=${category}${
+      start !== null ? `&start=${startValue}` : ""
+    }${end !== null ? `&end=${endValue}` : ""}`;
+    console.log(url);
 
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
       const caseReceptions: CaseReceptionType[] = res.data["data"];

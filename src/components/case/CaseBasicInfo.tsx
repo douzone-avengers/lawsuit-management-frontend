@@ -4,7 +4,9 @@ import CaseBasicContents from "./CaseBasicContents.tsx";
 
 function CaseBasicInfo() {
   return (
-    <Card sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+    <Card
+      sx={{ display: "flex", flexDirection: "column", gap: 2, flexGrow: 1 }}
+    >
       <CaseBasicInfoHeader />
       <CaseBasicContents />
     </Card>
