@@ -3,6 +3,7 @@ import clientIdState from "../../states/client/ClientIdState.tsx";
 import { useRecoilValue } from "recoil";
 import request, { RequestSuccessHandler } from "../../lib/request.ts";
 import { ClientData } from "../../mock/client/clientTable.ts";
+import Card from "@mui/material/Card";
 
 // window.kakao에 대한 타입 선언
 declare global {
@@ -16,20 +17,19 @@ type Props = {
   parentHeight: number;
 };
 
-export default function KakaoMap(props: Props) {
+export default function KakaoMap({ parentWidth, parentHeight }: Props) {
   const clientId = useRecoilValue(clientIdState);
   const [address, setAddress] = useState("");
   // 지도를 담을 영역의 DOM 레퍼런스
   const container = useRef<HTMLDivElement>(null);
   // container의 current 속성
   const { current } = container;
-  const [width, setWidth] = useState<number>(props.parentWidth);
-  const [height, setHeight] = useState<number>(props.parentHeight);
+  const [width, setWidth] = useState<number>(parentWidth);
+  const [height, setHeight] = useState<number>(parentHeight);
 
   // 화면 크기가 변경될 때마다 지도 영역 크기를 업데이트하는 함수
   const updateMapSize = () => {
     if (current) {
-      // const { clientWidth, clientHeight } = current;
       setWidth(width);
       setHeight(height);
     }
@@ -50,7 +50,7 @@ export default function KakaoMap(props: Props) {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [parentWidth, parentHeight]);
 
   // clientId가 변경될 때마다 해당 주소 가져옴
   useEffect(() => {
@@ -109,9 +109,11 @@ export default function KakaoMap(props: Props) {
   }, [address]);
 
   return (
-    <div
-      style={{ width: `${width}px`, height: `${height}px` }}
-      ref={container}
-    ></div>
+    <Card>
+      <div
+        style={{ width: `${width}px`, height: `${height}px` }}
+        ref={container}
+      ></div>
+    </Card>
   );
 }

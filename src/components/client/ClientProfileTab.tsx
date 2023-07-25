@@ -16,7 +16,6 @@ function ClientProfileTab() {
         sx={{
           display: "inline-block",
           width: "50%",
-          height: height - 210,
         }}
       >
         <KakaoMap parentWidth={width / 2} parentHeight={height - 210} />
