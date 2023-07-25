@@ -75,7 +75,6 @@ function ClientInfoCard({ width, height }: Props) {
             <ClientRemovePopUpButton />
           </Box>
         </Box>
-        <br />
         <Typography
           sx={{ display: "inline-block" }}
           variant="h4"
@@ -92,7 +91,6 @@ function ClientInfoCard({ width, height }: Props) {
           gutterBottom
           contentEditable={editMode}
         >
-          <br />
           <SvgIcon component={Email} /> &nbsp;
           {email}
         </Typography>
@@ -103,7 +101,6 @@ function ClientInfoCard({ width, height }: Props) {
           gutterBottom
           contentEditable={editMode}
         >
-          <br />
           <SvgIcon component={PhoneIphone} /> &nbsp;
           {phone}
         </Typography>
@@ -114,7 +111,6 @@ function ClientInfoCard({ width, height }: Props) {
           gutterBottom
           contentEditable={editMode}
         >
-          <br />
           <SvgIcon component={LocationOn} /> &nbsp;
           {address}
         </Typography>
