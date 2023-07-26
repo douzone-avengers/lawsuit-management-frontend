@@ -25,7 +25,7 @@ import EmployeePrivatePage from "../employee/EmployeePrivatePage";
 import employeeButtonIdState from "../../states/employee/EmployeeButtonIdState";
 import EmployeeListPage from "../employee/EmployeesListPage";
 import employeeIdState from "../../states/employee/EmployeeIdState";
-import EmployeeCaseListTab from "../employee/EmployeeCaseListTab";
+import EmployeeCasePage from "../employee/case/EmployeeCasePage";
 
 function AppRoutes() {
   const location = useLocation();
@@ -276,7 +276,7 @@ function AppRoutes() {
           <Route path={"list"} element={<EmployeeListPage />} />
           {/* /employees/:employeeId */}
           <Route path=":employeeId" element={<EmployeeDetailPage />} />
-          <Route path=":employeeId/cases" element={<EmployeeCaseListTab />} />
+          <Route path=":employeeId/cases" element={<EmployeeCasePage />} />
         </Route>
       </Route>
       {/* /login */}
