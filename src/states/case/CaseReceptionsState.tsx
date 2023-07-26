@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-export type CaseReceptionType = {
+export type CaseReceptionRowType = {
   id: number;
   isDone: boolean;
   receptionType: string;
@@ -9,7 +9,9 @@ export type CaseReceptionType = {
   deadline: string;
 };
 
-const caseReceptionsState = atom<CaseReceptionType[]>({
+const caseReceptionsState = atom<
+  (CaseReceptionRowType & { editable: boolean })[]
+>({
   key: "caseReceptionsState",
   default: [],
 });

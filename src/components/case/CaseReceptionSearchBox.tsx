@@ -8,7 +8,7 @@ import { Button } from "@mui/material";
 import request, { RequestSuccessHandler } from "../../lib/request.ts";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import caseReceptionsState, {
-  CaseReceptionType,
+  CaseReceptionRowType,
 } from "../../states/case/CaseReceptionsState.tsx";
 import caseIdState from "../../states/case/CaseIdState.tsx";
 import caseReceptionSearchState, {
@@ -67,8 +67,13 @@ function CaseReceptionSearchBox() {
       const {
         receptions,
         size,
-      }: { receptions: CaseReceptionType[]; size: number } = res.data["data"];
-      setCaseReceptions(receptions);
+      }: { receptions: CaseReceptionRowType[]; size: number } =
+        res.data["data"];
+      setCaseReceptions(
+        receptions.map((item) => {
+          return { ...item, editable: false };
+        }),
+      );
       setSize(size);
       setPage(0);
     };
