@@ -10,13 +10,17 @@ import { Button, Divider, useTheme } from "@mui/material";
 import caseReceptionPageState from "../../states/case/CaseReceptionPageState.tsx";
 import caseReceptionSizeState from "../../states/case/CaseReceptionSizeState.tsx";
 import { caseReceptionSearchUrlState } from "../../states/case/CaseReceptionSearchState.tsx";
-import DeleteButton from "../common/DeleteButton.tsx";
-import EditButton from "../common/EditButton.tsx";
 import CaseReceptionIsDoneCell from "./CaseReceptionIsDoneCell.tsx";
 import CaseReceptionReceptionTypeCell from "./CaseReceptionReceptionTypeCell.tsx";
 import CaseReceptionContentsCell from "./CaseReceptionContentsCell.tsx";
 import CaseReceptionReceivedAtCell from "./CaseReceptionReceivedAtCell.tsx";
 import CaseReceptionDeadlineCell from "./CaseReceptionDeadlineCell.tsx";
+import CaseReceptionEditButton from "./CaseReceptionEditButton.tsx";
+import CaseReceptionDeleteButton from "./CaseReceptionDeleteButton.tsx";
+import TableHeader from "../common/TableHeader.tsx";
+import Column from "../common/Column.tsx";
+import Table from "../common/Table.tsx";
+import CaseReceptionEditConfirmButton from "./CaseReceptionEditConfirmButton.tsx";
 
 export function updateUrl(url: string, newPage: number): string {
   return url.replace(/(page=)\d+/, `$1${newPage}`);
@@ -25,8 +29,7 @@ export function updateUrl(url: string, newPage: number): string {
 function CaseReceptionTable() {
   const theme = useTheme();
   const caseId = useRecoilValue(caseIdState);
-  const [caseReceptions, setCaseReceptions] =
-    useRecoilState(caseReceptionsState);
+  const [receptions, setReceptions] = useRecoilState(caseReceptionsState);
   const [page, setPage] = useRecoilState(caseReceptionPageState);
   const [size, setSize] = useRecoilState(caseReceptionSizeState);
   const url = useRecoilValue(caseReceptionSearchUrlState);
@@ -44,7 +47,7 @@ function CaseReceptionTable() {
         size,
       }: { receptions: CaseReceptionRowType[]; size: number } =
         res.data["data"];
-      setCaseReceptions(
+      setReceptions(
         receptions.map((item) => {
           return { ...item, editable: false };
         }),
@@ -58,127 +61,51 @@ function CaseReceptionTable() {
 
   return (
     <Box>
-      <Box sx={{ display: "flex" }}>
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            상태
-          </Box>
-          {caseReceptions.map((item) => (
+      <Table sx={{ gap: 1 }}>
+        <Column>
+          <TableHeader text="상태" />
+          {receptions.map((item) => (
             <CaseReceptionIsDoneCell key={item.id} item={item} />
           ))}
-        </Box>
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            유형
-          </Box>
-          {caseReceptions.map((item) => (
+        </Column>
+        <Column>
+          <TableHeader text="유형" />
+          {receptions.map((item) => (
             <CaseReceptionReceptionTypeCell key={item.id} item={item} />
           ))}
-        </Box>
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            내용
-          </Box>
-          {caseReceptions.map((item) => (
+        </Column>
+        <Column>
+          <TableHeader text="내용" />
+          {receptions.map((item) => (
             <CaseReceptionContentsCell key={item.id} item={item} />
           ))}
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            접수일
-          </Box>
-          {caseReceptions.map((item) => (
+        </Column>
+        <Column>
+          <TableHeader text="접수일" />
+          {receptions.map((item) => (
             <CaseReceptionReceivedAtCell key={item.id} item={item} />
           ))}
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            마감일
-          </Box>
-          {caseReceptions.map((item) => (
+        </Column>
+        <Column>
+          <TableHeader text="마감일" />
+          {receptions.map((item) => (
             <CaseReceptionDeadlineCell key={item.id} item={item} />
           ))}
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            &nbsp;
-          </Box>
-          {caseReceptions.map((item) => (
+        </Column>
+        <Column>
+          <TableHeader text="&nbsp;" />
+          {receptions.map((item) => (
             <Box key={item.id} sx={{ display: "flex" }}>
-              <EditButton
-                onClick={() => {
-                  const idx = caseReceptions.findIndex(
-                    (item2) => item2.id === item.id,
-                  );
-                  if (idx === -1) {
-                    return;
-                  }
-                  setCaseReceptions([
-                    ...caseReceptions.slice(0, idx),
-                    {
-                      ...caseReceptions[idx],
-                      editable: true,
-                    },
-                    ...caseReceptions.slice(idx + 1),
-                  ]);
-                }}
-              />
-              <DeleteButton onClick={() => {}} />
+              {!item.editable ? (
+                <CaseReceptionEditButton item={item} />
+              ) : (
+                <CaseReceptionEditConfirmButton item={item} />
+              )}
+              <CaseReceptionDeleteButton item={item} />
             </Box>
           ))}
-        </Box>
-      </Box>
+        </Column>
+      </Table>
 
       <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
 
@@ -201,7 +128,7 @@ function CaseReceptionTable() {
                   size,
                 }: { receptions: CaseReceptionRowType[]; size: number } =
                   res.data["data"];
-                setCaseReceptions(
+                setReceptions(
                   receptions.map((item) => {
                     return { ...item, editable: false };
                   }),
@@ -234,7 +161,7 @@ function CaseReceptionTable() {
                   size,
                 }: { receptions: CaseReceptionRowType[]; size: number } =
                   res.data["data"];
-                setCaseReceptions(
+                setReceptions(
                   receptions.map((item) => {
                     return { ...item, editable: false };
                   }),
