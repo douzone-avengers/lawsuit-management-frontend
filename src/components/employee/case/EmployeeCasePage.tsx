@@ -2,6 +2,7 @@ import Box from "@mui/material/Box";
 import EmployeeCaseListTab from "./EmployeeCaseListTab";
 import { useState } from "react";
 import TabBar, { TabItem } from "../../common/TabBar";
+import EmployeeCaseStatisticsTab from "./EmployeeCaseStatisticsTab";
 
 function EmployeeCasePage() {
   const [tabId, setTabId] = useState(0);
@@ -15,7 +16,7 @@ function EmployeeCasePage() {
     {
       id: 1,
       name: "통계",
-      children: <div>통계</div>,
+      children: <EmployeeCaseStatisticsTab />,
     },
   ]);
 
