@@ -2,6 +2,7 @@ import CaseReceptionHeader from "./CaseReceptionHeader.tsx";
 import CaseReceptionSearchBox from "./CaseReceptionSearchBox.tsx";
 import Card from "@mui/material/Card";
 import CaseReceptionTable from "./CaseReceptionTable.tsx";
+import { Divider } from "@mui/material";
 
 function CaseReception() {
   return (
@@ -10,6 +11,7 @@ function CaseReception() {
     >
       <CaseReceptionHeader />
       <CaseReceptionSearchBox />
+      <Divider />
       <CaseReceptionTable />
     </Card>
   );
