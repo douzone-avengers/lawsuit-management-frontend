@@ -17,6 +17,7 @@ import SubNavigationBarItem, {
 import ClientRegisterPopUpButton from "../../client/ClientRegisterPopUpButton.tsx";
 import { MemberInfo } from "../../../mock/member/memberHandlers";
 import employeeIdState from "../../../states/employee/EmployeeIdState";
+import employeeButtonIdState from "../../../states/employee/EmployeeButtonIdState";
 
 function SubNavigationBar() {
   const clientId = useRecoilValue(clientIdState);
@@ -26,6 +27,7 @@ function SubNavigationBar() {
     subNavigationBarState,
   );
   const subNavigationBarType = useRecoilValue(subNavigationBarTypeState);
+  const employeeButton = useRecoilValue(employeeButtonIdState);
 
   useEffect(() => {
     if (subNavigationBarType === "client") {
@@ -85,7 +87,10 @@ function SubNavigationBar() {
             id: item.id,
             text: item.name,
             subText: item.role,
-            url: `employees/${item.id}`,
+            url:
+              employeeButton === 2
+                ? `employees/${item.id}`
+                : `employees/${item.id}/cases`,
             SvgIcon: BalanceIcon,
           };
         });

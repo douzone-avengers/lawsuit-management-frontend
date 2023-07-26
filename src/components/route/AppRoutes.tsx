@@ -25,6 +25,7 @@ import EmployeePrivatePage from "../employee/EmployeePrivatePage";
 import employeeButtonIdState from "../../states/employee/EmployeeButtonIdState";
 import EmployeeListPage from "../employee/EmployeesListPage";
 import employeeIdState from "../../states/employee/EmployeeIdState";
+import EmployeeCasePage from "../employee/case/EmployeeCasePage";
 
 function AppRoutes() {
   const location = useLocation();
@@ -188,6 +189,24 @@ function AppRoutes() {
       return;
     }
 
+    // /employees/:employeeId/cases
+    if (
+      length === 3 &&
+      paths[1] === "employees" &&
+      paths[2] &&
+      !isNaN(Number(paths[2])) &&
+      paths[3] === "cases"
+    ) {
+      setEmployeeId(Number.parseInt(paths[2]));
+      setMainNavigationBar({
+        ...mainNavigationBar,
+        curId: 2,
+      });
+      setSubNavigationBarType("employee");
+      setEmployeeButtonId(3);
+      return;
+    }
+
     // /login
     if (length === 1 && paths[1] === "login") {
       cleanUp();
@@ -257,6 +276,7 @@ function AppRoutes() {
           <Route path={"list"} element={<EmployeeListPage />} />
           {/* /employees/:employeeId */}
           <Route path=":employeeId" element={<EmployeeDetailPage />} />
+          <Route path=":employeeId/cases" element={<EmployeeCasePage />} />
         </Route>
       </Route>
       {/* /login */}

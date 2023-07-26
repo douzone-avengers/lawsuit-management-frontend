@@ -8,6 +8,8 @@ export type MemberInfo = {
   id: number;
   email: string;
   name: string;
+  phone: string;
+  address: string;
   hierarchy: Hierarchy;
   role: Role;
 };
@@ -17,6 +19,8 @@ const toMemberInfo = function (member: MemberData) {
     id: member.id,
     email: member.email,
     name: member.name,
+    phone: member.phone,
+    address: member.address,
     hierarchy: hierarchyTable.filter(
       (item) => item.id === member.hierarchyId,
     )[0].name,
