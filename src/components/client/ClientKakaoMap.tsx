@@ -24,14 +24,26 @@ export default function KakaoMap({ parentWidth, parentHeight }: Props) {
   const container = useRef<HTMLDivElement>(null);
   // container의 current 속성
   const { current } = container;
+  // 지도를 생성할 때 필요한 기본 옵션
+  const options = {
+    center: new window.kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심 좌표.
+    level: 3, // 지도의 레벨 (확대, 축소 정도)
+  };
+
+  const [map, setMap] = useState<any>(null);
   const [width, setWidth] = useState<number>(parentWidth);
   const [height, setHeight] = useState<number>(parentHeight);
+
+  // 지도 확대, 축소 이벤트 등록
+  const [zoomControl, setZoomControl] = useState<any>(
+    new window.kakao.maps.ZoomControl(),
+  );
 
   // 화면 크기가 변경될 때마다 지도 영역 크기를 업데이트하는 함수
   const updateMapSize = () => {
     if (current) {
-      setWidth(width);
-      setHeight(height);
+      setWidth(parentWidth);
+      setHeight(parentHeight);
     }
   };
 
@@ -66,18 +78,19 @@ export default function KakaoMap({ parentWidth, parentHeight }: Props) {
     });
   }, [clientId]);
 
+  useEffect(() => {
+    setZoomControl(new window.kakao.maps.ZoomControl());
+  }, []);
+
   // address(주소)가 변경될 때마다 지도 렌더링
   useEffect(() => {
     if (address === "") {
       return;
     }
-    // 지도를 생성할 때 필요한 기본 옵션
-    const options = {
-      center: new window.kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심 좌표.
-      level: 3, // 지도의 레벨 (확대, 축소 정도)
-    };
 
-    const map = new window.kakao.maps.Map(current, options); // 지도 생성
+    if (!map) {
+      setMap(new window.kakao.maps.Map(current, options));
+    }
     const geocoder = new window.kakao.maps.services.Geocoder(); // 주소를 좌표로 변환하기 위한 객체
 
     if (typeof clientId !== "number") {
@@ -101,24 +114,29 @@ export default function KakaoMap({ parentWidth, parentHeight }: Props) {
           content: `<div style="width:200px;text-align:center;padding:6px 0;">${address}</div>`,
         });
 
+        console.log("zoomControl: " + zoomControl);
+
+        map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
+
         // 마커에 마우스오버 이벤트 등록
         window.kakao.maps.event.addListener(marker, "mouseover", function () {
           infoWindow.open(map, marker);
         });
 
-        // 마커에 마우스아웃 이벤트를 등록
+        // 마커에 마우스아웃 이벤트 등록
         window.kakao.maps.event.addListener(marker, "mouseout", function () {
           infoWindow.close();
         });
 
         // 지도의 중심을 결과값으로 받은 위치로 이동
         map.setCenter(coords);
+        map.relayout();
       }
     });
-  }, [address]);
+  }, [address, map, width, height]);
 
   return (
-    <Card>
+    <Card sx={{ minHeight: `${height}` }}>
       <div
         style={{ width: `${width}px`, height: `${height}px` }}
         ref={container}
