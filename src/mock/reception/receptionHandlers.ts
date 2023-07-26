@@ -167,7 +167,7 @@ const updateReceptionHandler = rest.put(
       foundReception.deadline = new Date(body["deadline"]);
     }
 
-    return res(ctx.status(200));
+    return res(ctx.status(200), ctx.json({ data: foundReception }));
   },
 );
 

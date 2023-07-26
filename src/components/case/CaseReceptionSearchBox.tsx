@@ -59,7 +59,7 @@ function CaseReceptionSearchBox() {
 
   const handleSubmitButtonClick = () => {
     if (caseId === null) {
-      console.log("무엇인가 잘못되었습니다.");
+      // TODO
       return;
     }
 

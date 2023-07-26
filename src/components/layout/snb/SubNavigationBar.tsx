@@ -89,8 +89,6 @@ function SubNavigationBar() {
             SvgIcon: BalanceIcon,
           };
         });
-        console.log("newItems ***");
-        console.log(newItems);
         setSubNavigationBar({ ...subNavigationBar, items: newItems });
       };
       request("GET", `/members?role=ADMIN,EMPLOYEE`, {

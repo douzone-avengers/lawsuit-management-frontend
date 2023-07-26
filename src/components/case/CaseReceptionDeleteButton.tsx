@@ -7,13 +7,7 @@ type Props = {
 
 function CaseReceptionDeleteButton({ item }: Props) {
   // TODO:
-  return (
-    <DeleteButton
-      onClick={() => {
-        console.log(item);
-      }}
-    />
-  );
+  return <DeleteButton onClick={() => {}} />;
 }
 
 export default CaseReceptionDeleteButton;
