@@ -13,33 +13,33 @@ const getReceptionsHandler = rest.get(
       return res(ctx.status(400));
     }
 
-    let data = receptionTable.filter(
+    let receptions = receptionTable.filter(
       (item) => item.lawsuitId === lawsuitParam && !item.isDeleted,
     );
 
     const statusParam = req.url.searchParams.get("status") ?? "";
     switch (statusParam) {
       case "complete":
-        data = data.filter((item) => item.isDone);
+        receptions = receptions.filter((item) => item.isDone);
         break;
       case "incomplete":
-        data = data.filter((item) => !item.isDone);
+        receptions = receptions.filter((item) => !item.isDone);
         break;
     }
 
     const categoryParam = req.url.searchParams.get("category") ?? "";
     switch (categoryParam) {
       case "scheduled":
-        data = data.filter((item) => item.receptionType === "기일");
+        receptions = receptions.filter((item) => item.receptionType === "기일");
         break;
       case "fixed":
-        data = data.filter((item) => item.receptionType === "불변");
+        receptions = receptions.filter((item) => item.receptionType === "불변");
         break;
     }
 
     const startParam = req.url.searchParams.get("start") ?? "";
     if (startParam !== "") {
-      data = data.filter((item) =>
+      receptions = receptions.filter((item) =>
         dayjs(item.deadline).isAfter(
           dayjs(startParam).subtract(1, "day"),
           "date",
@@ -49,15 +49,24 @@ const getReceptionsHandler = rest.get(
 
     const endParam = req.url.searchParams.get("end") ?? "";
     if (endParam !== "") {
-      data = data.filter((item) =>
+      receptions = receptions.filter((item) =>
         dayjs(item.deadline).isBefore(dayjs(endParam).add(1, "day"), "date"),
       );
     }
 
+    const pageParam = req.url.searchParams.get("page") ?? "0";
+    const page = Number.parseInt(pageParam);
+
+    const size = receptions.length;
+    receptions = receptions.slice(page * 5, (page + 1) * 5);
+
     return res(
       ctx.status(200),
       ctx.json({
-        data,
+        data: {
+          receptions,
+          size,
+        },
       }),
     );
   },
