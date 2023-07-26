@@ -8,8 +8,8 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PopUp from "../common/PopUp";
 import Logo from "../common/Logo.tsx";
+import PopUp from "../common/PopUp";
 
 function JoinPage() {
   const [name, setName] = useState("");

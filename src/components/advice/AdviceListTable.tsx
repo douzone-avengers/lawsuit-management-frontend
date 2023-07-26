@@ -5,18 +5,17 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Advicedata } from "../../../mock/advice/advicedata.ts";
-// import { delimiter } from "../../lib/convert.ts";
+import { Advicedata } from "../../mock/advice/adviceTable.ts";
 
 // type Props = {
 //   cases: Array<Advicedata & { onClick: () => void }>;
 // };
 
 type Props = {
-  cases: (Advicedata & { onClick: () => void })[];
+  advices: (Advicedata & { onClick: () => void })[];
 };
 
-function AdviceListTable({ cases }: Props) {
+function AdviceListTable({ advices }: Props) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -29,7 +28,7 @@ function AdviceListTable({ cases }: Props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {cases.map((item, index) => (
+          {advices.map((item, index) => (
             <TableRow
               key={item.id}
               hover={true}

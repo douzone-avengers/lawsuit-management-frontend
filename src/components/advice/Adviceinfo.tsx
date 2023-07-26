@@ -2,55 +2,50 @@ import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import request, { RequestSuccessHandler } from "../../../lib/request.ts";
-import {
-  LawsuitData,
-  LawsuitStatus,
-} from "../../../mock/lawsuit/lawsuitTable.ts";
-import caseIdState from "../../../states/case/CaseIdState.tsx";
-import clientIdState from "../../../states/client/ClientIdState.tsx";
-import ClientInfoCard from "../../client/ClientInfoCard.tsx";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
+import request, { RequestSuccessHandler } from "../../lib/request.ts";
+import { Advicedata } from "../../mock/advice/adviceTable.ts";
+import adviceRegisterPopUpOpenState from "../../states/advice/AdviceRegisterPopUpOpenState.tsx";
+import adviceIdState from "../../states/advice/AdviceState.tsx";
+import caseIdState from "../../states/case/CaseIdState.tsx";
+import clientIdState from "../../states/client/ClientIdState.tsx";
+import ClientInfoCard from "../client/ClientInfoCard.tsx";
 import AdviceListTable from "./AdviceListTable.tsx";
-import { Advicedata } from "../../../mock/advice/advicedata.ts";
+import AdviceRegisterPopUp from "./AdviceRegisterPopUp.tsx";
+import AdviceRegisterPopUpButton from "./AdviceRegisterPopUpButton.tsx";
 
 function Adviceinfo() {
   const clientId = useRecoilValue(clientIdState);
-  const setCaseId = useSetRecoilState(caseIdState);
+  const lawsuitId = useRecoilValue(caseIdState);
+  const setAdviceId = useSetRecoilState(adviceIdState);
+  const adviceRegisterPopUpOpen = useRecoilValue(adviceRegisterPopUpOpenState);
+
   const navigate = useNavigate();
-  const [cases, setCases] = useState<Advicedata[]>([]);
-  // const [lawsuitStatus, setLawsuitStatus] = useState<Advicedata | null>(null);
+  const [advices, setAdvices] = useState<Advicedata[]>([]);
 
   useEffect(() => {
     if (typeof clientId !== "number") {
       // TODO
       return;
     }
+
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
       const body: { data: Advicedata[] } = res.data;
       const { data } = body;
-      setCases(data);
-      setCaseId(data[0]?.id);
+      setAdvices(data);
+      setAdviceId(data[0]?.id);
     };
 
-    request("GET", `/lawsuit/clients/${clientId}`, {
+    request("GET", `/lawsuit/${lawsuitId}/client/${clientId}/advices`, {
       onSuccess: handleRequestSuccess,
     });
-  }, [clientId]);
+  }, [lawsuitId]);
 
   // cases를 필터링하여 filteredCases에 할당
-  const filteredCases: Advicedata[] = cases.filter((item) => {
+  const filteredCases: Advicedata[] = advices.filter((item) => {
     // 원하는 필터링 로직을 여기에 추가
     // 예시: item.title이 "상담"을 포함하는 경우만 필터링
     return true;
   });
-
-  const handleCaseAddButtonClick = () => {
-    navigate("/cases/new");
-  };
 
   return (
     <Box
@@ -63,14 +58,12 @@ function Adviceinfo() {
     >
       {/* <ClientInfoCard /> */}
       <Box>
-        <Button variant="contained" sx={{ position: "revert" }}>
-          상담 등록
-        </Button>
+        <AdviceRegisterPopUpButton />
       </Box>
       <Box>
         {/* filteredCases를 AdviceListTable 컴포넌트에 전달 */}
         <AdviceListTable
-          cases={filteredCases.map((item) => ({
+          advices={filteredCases.map((item) => ({
             ...item,
             onClick: () => {
               navigate(`/cases/${item.id}?client=${clientId}`);
@@ -79,6 +72,7 @@ function Adviceinfo() {
           }))}
         />
       </Box>
+      {adviceRegisterPopUpOpen ? <AdviceRegisterPopUp /> : null}
     </Box>
   );
 }

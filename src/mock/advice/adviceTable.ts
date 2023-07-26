@@ -5,7 +5,7 @@ export type Advicedata = {
   date: Date;
 };
 
-const advicedata: Advicedata[] = [
+const adviceTable: Advicedata[] = [
   {
     id: 1,
     title: "횡령 사건 상담",
@@ -188,4 +188,4 @@ const advicedata: Advicedata[] = [
   },
 ];
 
-export default advicedata;
+export default adviceTable;

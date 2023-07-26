@@ -1,12 +1,6 @@
 import Button from "@mui/material/Button";
 import { useSetRecoilState } from "recoil";
-import adviceRegisterPopUpOpenState from "./AdviceRegisterPopUpOpenState.tsx";
-
-// function ClientRegisterPopUpButton() {
-//   const setClientRegisterPopUp = useSetRecoilState(clientRegisterPopUpState);
-//   const handleClick = () => {
-//     setClientRegisterPopUp(true);
-//     };
+import adviceRegisterPopUpOpenState from "../../states/advice/AdviceRegisterPopUpOpenState";
 
 function AdviceRegisterPopUpButton() {
   const setAdviceRegisterPopUp = useSetRecoilState(
@@ -15,7 +9,6 @@ function AdviceRegisterPopUpButton() {
   const handleClick = () => {
     setAdviceRegisterPopUp(true);
   };
-
   return (
     <Button size="large" variant="contained" onClick={handleClick}>
       상담 등록
