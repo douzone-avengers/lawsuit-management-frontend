@@ -20,10 +20,8 @@ type Props = {
 export default function KakaoMap({ parentWidth, parentHeight }: Props) {
   const clientId = useRecoilValue(clientIdState);
   const [address, setAddress] = useState("");
-  // 지도를 담을 영역의 DOM 레퍼런스
-  const container = useRef<HTMLDivElement>(null);
-  // container의 current 속성
-  const { current } = container;
+  const container = useRef<HTMLDivElement>(null); // 지도를 담을 영역의 DOM 레퍼런스
+  const { current } = container; // container의 current 속성
   // 지도를 생성할 때 필요한 기본 옵션
   const options = {
     center: new window.kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심 좌표.
@@ -34,12 +32,7 @@ export default function KakaoMap({ parentWidth, parentHeight }: Props) {
   const [width, setWidth] = useState<number>(parentWidth);
   const [height, setHeight] = useState<number>(parentHeight);
 
-  // 지도 확대, 축소 이벤트 등록
-  const [zoomControl, setZoomControl] = useState<any>(
-    new window.kakao.maps.ZoomControl(),
-  );
-
-  // 화면 크기가 변경될 때마다 지도 영역 크기를 업데이트하는 함수
+  // 부모 컴포넌트 크기가 변경될 때마다 지도 영역 크기를 업데이트하는 함수
   const updateMapSize = () => {
     if (current) {
       setWidth(parentWidth);
@@ -49,8 +42,7 @@ export default function KakaoMap({ parentWidth, parentHeight }: Props) {
 
   // 화면 크기 변경 이벤트 핸들러 등록
   useEffect(() => {
-    // 처음 컴포넌트가 마운트될 때 크기 업데이트
-    updateMapSize();
+    updateMapSize(); // 처음 컴포넌트가 마운트될 때 크기 업데이트
 
     // resize 이벤트 핸들러 등록
     const handleResize = () => {
@@ -66,6 +58,11 @@ export default function KakaoMap({ parentWidth, parentHeight }: Props) {
 
   // clientId가 변경될 때마다 해당 주소 가져옴
   useEffect(() => {
+    if (typeof clientId !== "number") {
+      // TODO
+      return;
+    }
+
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
       const body: { data: ClientData } = res.data;
       const { data } = body;
@@ -78,10 +75,6 @@ export default function KakaoMap({ parentWidth, parentHeight }: Props) {
     });
   }, [clientId]);
 
-  useEffect(() => {
-    setZoomControl(new window.kakao.maps.ZoomControl());
-  }, []);
-
   // address(주소)가 변경될 때마다 지도 렌더링
   useEffect(() => {
     if (address === "") {
@@ -91,12 +84,8 @@ export default function KakaoMap({ parentWidth, parentHeight }: Props) {
     if (!map) {
       setMap(new window.kakao.maps.Map(current, options));
     }
-    const geocoder = new window.kakao.maps.services.Geocoder(); // 주소를 좌표로 변환하기 위한 객체
 
-    if (typeof clientId !== "number") {
-      // TODO
-      return;
-    }
+    const geocoder = new window.kakao.maps.services.Geocoder(); // 주소를 좌표로 변환하기 위한 객체
 
     geocoder.addressSearch(address, function (result: any[], status: any) {
       // 정상적으로 검색 완료됐으면
@@ -114,10 +103,6 @@ export default function KakaoMap({ parentWidth, parentHeight }: Props) {
           content: `<div style="width:200px;text-align:center;padding:6px 0;">${address}</div>`,
         });
 
-        console.log("zoomControl: " + zoomControl);
-
-        map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
-
         // 마커에 마우스오버 이벤트 등록
         window.kakao.maps.event.addListener(marker, "mouseover", function () {
           infoWindow.open(map, marker);
@@ -128,19 +113,15 @@ export default function KakaoMap({ parentWidth, parentHeight }: Props) {
           infoWindow.close();
         });
 
-        // 지도의 중심을 결과값으로 받은 위치로 이동
-        map.setCenter(coords);
-        map.relayout();
+        map.setCenter(coords); // 지도의 중심을 결과값으로 받은 위치로 이동
+        map.relayout(); // 지도의 픽셀과 좌표 정보 새로 설정
       }
     });
   }, [address, map, width, height]);
 
   return (
-    <Card sx={{ minHeight: `${height}` }}>
-      <div
-        style={{ width: `${width}px`, height: `${height}px` }}
-        ref={container}
-      ></div>
+    <Card ref={container}>
+      <div style={{ width: `${width}px`, height: `${height}px` }}></div>
     </Card>
   );
 }
