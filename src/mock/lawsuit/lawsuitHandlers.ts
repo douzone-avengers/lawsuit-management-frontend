@@ -3,7 +3,6 @@ import clientLawsuitMapTable from "../mapper/clientLawsuitMapTable";
 import lawsuitTable from "./lawsuitTable";
 import memberLawsuitMapTable from "../mapper/memberLawsuitMapTable.ts";
 import memberTable from "../member/memberTable.ts";
-import hierarchyTable from "../hierarchy/hierarchyTable.ts";
 import clientTable from "../client/clientTable.ts";
 
 const lawsuitDetailHandler = rest.get(
@@ -23,11 +22,11 @@ const lawsuitDetailHandler = rest.get(
 
     const employees = memberTable
       .filter((item) => employeeIds.includes(item.id))
-      .map(({ name, hierarchyId }) => {
+      .map(({ id, name, email }) => {
         return {
+          id,
           name,
-          hierarchy: hierarchyTable.filter((item) => item.id === hierarchyId)[0]
-            .name,
+          email,
         };
       });
 
@@ -37,9 +36,11 @@ const lawsuitDetailHandler = rest.get(
 
     const clients = clientTable
       .filter((item) => clientIds.includes(item.id))
-      .map(({ name }) => {
+      .map(({ id, name, email }) => {
         return {
+          id,
           name,
+          email,
         };
       });
 

@@ -60,55 +60,70 @@ function CaseReceptionTable() {
   }, [caseId]);
 
   return (
-    <Box>
-      <Table sx={{ gap: 1, margin: 1 }}>
-        <Column>
+    <Box
+      sx={{
+        display: "flex",
+        width: "100%",
+        flexDirection: "column",
+      }}
+    >
+      <Table
+        sx={{
+          gap: 1,
+          margin: 1,
+          width: "100%",
+        }}
+      >
+        <Column sx={{ flexGrow: 1 }}>
           <TableHeader text="상태" />
           {receptions.map((item) => (
             <CaseReceptionIsDoneCell key={item.id} item={item} />
           ))}
         </Column>
-        <Column>
+        <Column sx={{ flexGrow: 1 }}>
           <TableHeader text="유형" />
           {receptions.map((item) => (
             <CaseReceptionReceptionTypeCell key={item.id} item={item} />
           ))}
         </Column>
-        <Column>
+        <Column sx={{ flexGrow: 1 }}>
           <TableHeader text="내용" />
           {receptions.map((item) => (
             <CaseReceptionContentsCell key={item.id} item={item} />
           ))}
         </Column>
-        <Column>
+        <Column sx={{ flexGrow: 1 }}>
           <TableHeader text="접수일" />
           {receptions.map((item) => (
             <CaseReceptionReceivedAtCell key={item.id} item={item} />
           ))}
         </Column>
-        <Column>
+        <Column
+          sx={{ flexGrow: 1, marginRight: receptions.length === 0 ? 2 : 0 }}
+        >
           <TableHeader text="마감일" />
           {receptions.map((item) => (
             <CaseReceptionDeadlineCell key={item.id} item={item} />
           ))}
         </Column>
-        <Column>
-          <TableHeader text="&nbsp;" />
-          {receptions.map((item) => (
-            <Box key={item.id} sx={{ display: "flex" }}>
-              {!item.editable ? (
-                <CaseReceptionEditButton item={item} />
-              ) : (
-                <CaseReceptionEditConfirmButton item={item} />
-              )}
-              <CaseReceptionDeleteButton item={item} />
-            </Box>
-          ))}
-        </Column>
+        {receptions.length !== 0 ? (
+          <Column sx={{ marginRight: 1 }}>
+            <TableHeader text="&nbsp;" hidden />
+            {receptions.map((item) => (
+              <Box key={item.id} sx={{ display: "flex" }}>
+                {!item.editable ? (
+                  <CaseReceptionEditButton item={item} />
+                ) : (
+                  <CaseReceptionEditConfirmButton item={item} />
+                )}
+                <CaseReceptionDeleteButton item={item} />
+              </Box>
+            ))}
+          </Column>
+        ) : null}
       </Table>
-
+      <Box sx={{ flexGrow: 1 }}></Box>
       <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
-
       <Box
         sx={{
           display: "flex",

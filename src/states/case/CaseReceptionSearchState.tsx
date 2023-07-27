@@ -6,8 +6,8 @@ import caseReceptionPageState from "./CaseReceptionPageState.tsx";
 type CaseReceptionSearchStateType = {
   status: string;
   category: string;
-  start: Dayjs | null;
-  end: Dayjs | null;
+  startDeadline: Dayjs | null;
+  endDeadLine: Dayjs | null;
 };
 
 const caseReceptionSearchState = atom<CaseReceptionSearchStateType>({
@@ -15,8 +15,8 @@ const caseReceptionSearchState = atom<CaseReceptionSearchStateType>({
   default: {
     status: "all",
     category: "all",
-    start: null,
-    end: null,
+    startDeadline: null,
+    endDeadLine: null,
   },
 });
 
@@ -25,21 +25,27 @@ export const caseReceptionSearchUrlState = selector({
   get: ({ get }) => {
     const caseId = get(caseIdState);
     const page = get(caseReceptionPageState);
-    const { status, category, start, end } = get(caseReceptionSearchState);
+    const { status, category, startDeadline, endDeadLine } = get(
+      caseReceptionSearchState,
+    );
 
     let startValue = null;
-    if (start) {
-      startValue = `${start.year()}-${start.month() + 1}-${start.date()}`;
+    if (startDeadline) {
+      startValue = `${startDeadline.year()}-${
+        startDeadline.month() + 1
+      }-${startDeadline.date()}`;
     }
 
     let endValue = null;
-    if (end) {
-      endValue = `${end.year()}-${end.month() + 1}-${end.date()}`;
+    if (endDeadLine) {
+      endValue = `${endDeadLine.year()}-${
+        endDeadLine.month() + 1
+      }-${endDeadLine.date()}`;
     }
 
     return `/receptions?lawsuit=${caseId}&page=${page}&status=${status}&category=${category}${
-      start !== null ? `&start=${startValue}` : ""
-    }${end !== null ? `&end=${endValue}` : ""}`;
+      startDeadline !== null ? `&start=${startValue}` : ""
+    }${endDeadLine !== null ? `&end=${endValue}` : ""}`;
   },
 });
 

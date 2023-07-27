@@ -46,14 +46,14 @@ function CaseReceptionSearchBox() {
   const handleStart = (start: any) => {
     setReceptionSearch({
       ...receptionSearch,
-      start,
+      startDeadline: start,
     });
   };
 
   const handleEnd = (end: any) => {
     setReceptionSearch({
       ...receptionSearch,
-      end,
+      endDeadLine: end,
     });
   };
 
@@ -129,13 +129,13 @@ function CaseReceptionSearchBox() {
         <DatePicker
           label="마감일(시작)"
           slotProps={{ textField: { size: "small" } }}
-          value={receptionSearch.start}
+          value={receptionSearch.startDeadline}
           onChange={handleStart}
         />
         <DatePicker
           label="마감일(종료)"
           slotProps={{ textField: { size: "small" } }}
-          value={receptionSearch.end}
+          value={receptionSearch.endDeadLine}
           onChange={handleEnd}
         />
       </Box>

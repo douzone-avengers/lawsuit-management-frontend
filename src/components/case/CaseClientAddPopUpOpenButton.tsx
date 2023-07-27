@@ -1,6 +1,6 @@
-import { Button } from "@mui/material";
 import { useSetRecoilState } from "recoil";
 import caseClientAddPopUpOpenState from "../../states/case/CaseClientAddPopUpOpenState.tsx";
+import PlusButton from "../common/PlusButton.tsx";
 
 function CaseClientAddPopUpOpenButton() {
   const setCaseClientAddPopUpOpen = useSetRecoilState(
@@ -9,11 +9,7 @@ function CaseClientAddPopUpOpenButton() {
   const handleClick = () => {
     setCaseClientAddPopUpOpen(true);
   };
-  return (
-    <Button size="large" variant="contained" onClick={handleClick}>
-      추가
-    </Button>
-  );
+  return <PlusButton onClick={handleClick} />;
 }
 
 export default CaseClientAddPopUpOpenButton;

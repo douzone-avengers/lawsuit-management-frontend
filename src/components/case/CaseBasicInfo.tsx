@@ -1,5 +1,4 @@
 import Card from "@mui/material/Card";
-import CaseBasicInfoHeader from "./CaseBasicInfoHeader.tsx";
 import CaseBasicInfoContent from "./CaseBasicContents.tsx";
 import { useRecoilValue } from "recoil";
 import caseClientAddPopUpOpenState from "../../states/case/CaseClientAddPopUpOpenState.tsx";
@@ -13,11 +12,11 @@ function CaseBasicInfo() {
         display: "flex",
         flexDirection: "column",
         gap: 2,
-        width: "50%",
-        alignItems: "flex-start",
+        width: 260,
+        minWidth: 260,
+        maxWidth: 260,
       }}
     >
-      <CaseBasicInfoHeader />
       <CaseBasicInfoContent />
       {caseClientAdd ? <CaseClientAddPopUp /> : null}
     </Card>
