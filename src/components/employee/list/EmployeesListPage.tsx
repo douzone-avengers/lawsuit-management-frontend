@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import request, { RequestSuccessHandler } from "../../lib/request";
-import { MemberInfo } from "../../mock/member/memberHandlers";
+import request, { RequestSuccessHandler } from "../../../lib/request";
+import { MemberInfo } from "../../../mock/member/memberHandlers";
 import { Box } from "@mui/material";
 import EmployeeListTable from "./EmployeeListTable";
 

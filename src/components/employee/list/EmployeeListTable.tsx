@@ -5,7 +5,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { MemberInfo } from "../../mock/member/memberHandlers";
+import { MemberInfo } from "../../../mock/member/memberHandlers";
 
 type Props = {
   memberInfos: (MemberInfo & { onClick: () => void })[];
