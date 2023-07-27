@@ -21,7 +21,7 @@ import Layout from "../layout/Layout";
 import LoginPage from "../login/LoginPage";
 import CaseNewPage from "../case/CaseNewPage.tsx";
 import EmployeeLayout from "../employee/EmployeeLayout";
-import EmployeePrivatePage from "../employee/EmployeePrivatePage";
+import EmployeePrivatePage from "../employee/private/EmployeePrivatePage";
 import employeeButtonIdState from "../../states/employee/EmployeeButtonIdState";
 import EmployeeListPage from "../employee/EmployeesListPage";
 import employeeIdState from "../../states/employee/EmployeeIdState";

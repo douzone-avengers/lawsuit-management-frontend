@@ -3,12 +3,12 @@ import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
-import request, { RequestSuccessHandler } from "../../lib/request.ts";
+import request, { RequestSuccessHandler } from "../../../lib/request.ts";
 import Button from "@mui/material/Button";
 import { Business, Email, LocationOn, PhoneIphone } from "@mui/icons-material";
 import { SvgIcon } from "@mui/material";
-import userState from "../../states/common/UserState";
-import { MemberInfo } from "../../mock/member/memberHandlers";
+import userState from "../../../states/common/UserState";
+import { MemberInfo } from "../../../mock/member/memberHandlers";
 
 type Props = {
   width?: string | number;
