@@ -3,8 +3,11 @@ import request, { RequestSuccessHandler } from "../../../lib/request";
 import { MemberInfo } from "../../../mock/member/memberHandlers";
 import { Box } from "@mui/material";
 import EmployeeListTable from "./EmployeeListTable";
+import { useNavigate } from "react-router-dom";
 
 function EmployeeListPage() {
+  const navigate = useNavigate();
+
   const [memberInfos, setMemberInfos] = useState<MemberInfo[]>([]);
 
   useEffect(() => {
@@ -25,7 +28,9 @@ function EmployeeListPage() {
       <EmployeeListTable
         memberInfos={memberInfos.map((item) => ({
           ...item,
-          onClick: () => {},
+          onClick: () => {
+            navigate(`/employees/${item.id}`);
+          },
         }))}
       />
     </Box>
