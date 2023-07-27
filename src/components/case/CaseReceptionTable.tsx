@@ -61,7 +61,7 @@ function CaseReceptionTable() {
 
   return (
     <Box>
-      <Table sx={{ gap: 1 }}>
+      <Table sx={{ gap: 1, margin: 1 }}>
         <Column>
           <TableHeader text="상태" />
           {receptions.map((item) => (

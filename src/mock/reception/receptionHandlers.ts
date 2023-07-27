@@ -58,7 +58,10 @@ const getReceptionsHandler = rest.get(
     const page = Number.parseInt(pageParam);
 
     const size = receptions.length;
-    receptions = receptions.slice(page * 5, (page + 1) * 5);
+
+    receptions = receptions
+      .sort((a, b) => b.id - a.id)
+      .slice(page * 5, (page + 1) * 5);
 
     return res(
       ctx.status(200),

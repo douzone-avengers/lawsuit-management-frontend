@@ -4,8 +4,8 @@ import { useRecoilValue } from "recoil";
 import caseIdState from "../../states/case/CaseIdState.tsx";
 import { useEffect, useState } from "react";
 import request, { RequestSuccessHandler } from "../../lib/request.ts";
-import { fromHierarchy } from "../../lib/convert.ts";
 import Box from "@mui/material/Box";
+import CaseClientAddPopUpOpenButton from "./CaseClientAddPopUpOpenButton.tsx";
 
 type CaseBasicEmployee = { name: string; hierarchy: Hierarchy };
 type CaseBasicClient = { name: string };
@@ -26,10 +26,10 @@ function CaseBasicContents() {
       return;
     }
 
-    const handleSuccessHandler: RequestSuccessHandler = async (res) => {
+    const handleSuccessHandler: RequestSuccessHandler = (res) => {
       setCaseBasicInfo(
         (
-          (await res.data) as {
+          res.data as {
             data: CaseBasicInfoType;
           }
         ).data,
@@ -50,9 +50,7 @@ function CaseBasicContents() {
       </Box>
       <Box sx={{ display: "flex" }}>
         {caseBasicInfo.employees.map((item) => (
-          <Box key={item.name}>
-            [{fromHierarchy(item.hierarchy)}] {item.name}
-          </Box>
+          <Box key={item.name}>{item.name}</Box>
         ))}
         <Box>({caseBasicInfo.employees.length}명)</Box>
       </Box>
@@ -61,6 +59,7 @@ function CaseBasicContents() {
           <Box key={item.name}>{item.name}</Box>
         ))}
         <Box>({caseBasicInfo.clients.length}명)</Box>
+        <CaseClientAddPopUpOpenButton />
       </Box>
     </Box>
   ) : null;
