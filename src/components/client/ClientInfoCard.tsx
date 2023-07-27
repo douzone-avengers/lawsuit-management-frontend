@@ -8,7 +8,9 @@ import request, { RequestSuccessHandler } from "../../lib/request.ts";
 import { ClientData } from "../../mock/client/clientTable.ts";
 import clientIdState from "../../states/client/ClientIdState.tsx";
 import Button from "@mui/material/Button";
+import { LocationOn, PhoneIphone, Email } from "@mui/icons-material";
 import ClientRemovePopUpButton from "./ClientRemovePopUpButton.tsx";
+import { SvgIcon } from "@mui/material";
 
 type Props = {
   width?: string | number;
@@ -47,14 +49,7 @@ function ClientInfoCard({ width, height }: Props) {
   return (
     <Card sx={{ width, height }}>
       <CardContent>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Typography
-            sx={{ display: "inline-block" }}
-            variant="h5"
-            contentEditable={editMode}
-          >
-            {name}
-          </Typography>
+        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
           <Box sx={{ display: "flex", justifyContent: "right", gap: 1 }}>
             {editMode ? (
               <Button
@@ -81,29 +76,42 @@ function ClientInfoCard({ width, height }: Props) {
           </Box>
         </Box>
         <Typography
-          sx={{ display: "inline-block", fontSize: 14 }}
+          sx={{ display: "inline-block" }}
+          variant="h4"
+          contentEditable={editMode}
+        >
+          {name}
+        </Typography>
+        <br />
+        <hr />
+        <br />
+        <Typography
+          sx={{ display: "inline-block", fontSize: 20 }}
           color="text.secondary"
           gutterBottom
           contentEditable={editMode}
         >
+          <SvgIcon component={Email} /> &nbsp;
           {email}
         </Typography>
         <br />
         <Typography
-          sx={{ display: "inline-block", fontSize: 14 }}
+          sx={{ display: "inline-block", fontSize: 20 }}
           color="text.secondary"
           gutterBottom
           contentEditable={editMode}
         >
+          <SvgIcon component={PhoneIphone} /> &nbsp;
           {phone}
         </Typography>
         <br />
         <Typography
-          sx={{ display: "inline-block", fontSize: 14 }}
+          sx={{ display: "inline-block", fontSize: 20 }}
           color="text.secondary"
           gutterBottom
           contentEditable={editMode}
         >
+          <SvgIcon component={LocationOn} /> &nbsp;
           {address}
         </Typography>
       </CardContent>
