@@ -1,9 +1,9 @@
 import caseReceptionsState, {
   CaseReceptionRowType,
-} from "../../states/case/CaseReceptionsState.tsx";
+} from "../../../../states/case/CaseReceptionsState.tsx";
 import { useRecoilState } from "recoil";
-import CheckButton from "../common/CheckButton.tsx";
-import request, { RequestSuccessHandler } from "../../lib/request.ts";
+import CheckButton from "../../../common/CheckButton.tsx";
+import request, { RequestSuccessHandler } from "../../../../lib/request.ts";
 import { produce } from "immer";
 
 type Props = {

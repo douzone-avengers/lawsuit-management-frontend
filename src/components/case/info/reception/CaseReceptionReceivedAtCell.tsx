@@ -1,6 +1,6 @@
 import caseReceptionsState, {
   CaseReceptionRowType,
-} from "../../states/case/CaseReceptionsState.tsx";
+} from "../../../../states/case/CaseReceptionsState.tsx";
 import * as dayjs from "dayjs";
 import { Dayjs } from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers";

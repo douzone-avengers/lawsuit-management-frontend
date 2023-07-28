@@ -1,11 +1,12 @@
-import CaseReceptionSearchBox from "./CaseReceptionSearchBox.tsx";
+import CaseReceptionSearchBox from "./info/reception/CaseReceptionSearchBox.tsx";
 import Card from "@mui/material/Card";
-import CaseReceptionTable from "./CaseReceptionTable.tsx";
+import CaseReceptionTable from "./info/reception/CaseReceptionTable.tsx";
 import { useRecoilValue } from "recoil";
 import caseReceptionAddPopUpOpenState from "../../states/case/CaseReceptionAddPopUpOpenState.tsx";
 import CaseReceptionAddPopUp from "./CaseReceptionAddPopUp.tsx";
 import Box from "@mui/material/Box";
 import { Divider } from "@mui/material";
+import CaseReceptionAddPopUpOpenButton from "./CaseReceptionAddPopUpOpenButton.tsx";
 
 function CaseReception() {
   const receptionAddPopUpOpen = useRecoilValue(caseReceptionAddPopUpOpenState);
@@ -26,7 +27,7 @@ function CaseReception() {
       >
         <CaseReceptionTable />
       </Box>
-      {/*<CaseReceptionAddPopUpOpenButton />*/}
+      <CaseReceptionAddPopUpOpenButton />
       {receptionAddPopUpOpen ? <CaseReceptionAddPopUp /> : null}
     </Card>
   );

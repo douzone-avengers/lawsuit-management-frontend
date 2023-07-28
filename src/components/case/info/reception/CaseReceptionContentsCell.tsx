@@ -1,6 +1,6 @@
 import caseReceptionsState, {
   CaseReceptionRowType,
-} from "../../states/case/CaseReceptionsState.tsx";
+} from "../../../../states/case/CaseReceptionsState.tsx";
 import { TextField } from "@mui/material";
 import { useRecoilState } from "recoil";
 import { ChangeEvent } from "react";

@@ -1,11 +1,11 @@
-import DeleteButton from "../common/DeleteButton.tsx";
+import DeleteButton from "../../../common/DeleteButton.tsx";
 import caseReceptionsState, {
   CaseReceptionRowType,
-} from "../../states/case/CaseReceptionsState.tsx";
-import request, { RequestSuccessHandler } from "../../lib/request.ts";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { caseReceptionSearchUrlState } from "../../states/case/CaseReceptionSearchState.tsx";
-import caseReceptionSizeState from "../../states/case/CaseReceptionSizeState.tsx";
+} from "../../../../states/case/CaseReceptionsState.tsx";
+import request, { RequestSuccessHandler } from "../../../../lib/request.ts";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { caseReceptionSearchUrlState } from "../../../../states/case/CaseReceptionSearchState.tsx";
+import caseReceptionSizeState from "../../../../states/case/CaseReceptionSizeState.tsx";
 
 type Props = {
   item: CaseReceptionRowType & { editable: boolean };
@@ -13,7 +13,7 @@ type Props = {
 
 function CaseReceptionDeleteButton({ item }: Props) {
   const setReceptions = useSetRecoilState(caseReceptionsState);
-  const [size, setSize] = useRecoilState(caseReceptionSizeState);
+  const setSize = useSetRecoilState(caseReceptionSizeState);
   const url = useRecoilValue(caseReceptionSearchUrlState);
 
   const handleClick = () => {

@@ -7,7 +7,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import { ChangeEvent, useState } from "react";
-import { AppBar, Button, TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import * as dayjs from "dayjs";
 import { Dayjs } from "dayjs";
@@ -98,18 +98,6 @@ function CaseReceptionAddPopUp() {
   return (
     <PopUp>
       <CloseButton onClick={handleCloseButtonClick} />
-      <AppBar
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          paddingTop: 1,
-          paddingBottom: 1,
-        }}
-        position="static"
-      >
-        접수
-      </AppBar>
       <FormControl size="small">
         <InputLabel>상태</InputLabel>
         <Select label="status" onChange={handleStatusChange} value={status}>

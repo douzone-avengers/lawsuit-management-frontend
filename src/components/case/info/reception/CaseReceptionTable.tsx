@@ -3,13 +3,13 @@ import { useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import caseReceptionsState, {
   CaseReceptionRowType,
-} from "../../states/case/CaseReceptionsState.tsx";
-import request, { RequestSuccessHandler } from "../../lib/request.ts";
-import caseIdState from "../../states/case/CaseIdState.tsx";
+} from "../../../../states/case/CaseReceptionsState.tsx";
+import request, { RequestSuccessHandler } from "../../../../lib/request.ts";
+import caseIdState from "../../../../states/case/CaseIdState.tsx";
 import { Button, Divider, useTheme } from "@mui/material";
-import caseReceptionPageState from "../../states/case/CaseReceptionPageState.tsx";
-import caseReceptionSizeState from "../../states/case/CaseReceptionSizeState.tsx";
-import { caseReceptionSearchUrlState } from "../../states/case/CaseReceptionSearchState.tsx";
+import caseReceptionPageState from "../../../../states/case/CaseReceptionPageState.tsx";
+import caseReceptionSizeState from "../../../../states/case/CaseReceptionSizeState.tsx";
+import { caseReceptionSearchUrlState } from "../../../../states/case/CaseReceptionSearchState.tsx";
 import CaseReceptionIsDoneCell from "./CaseReceptionIsDoneCell.tsx";
 import CaseReceptionReceptionTypeCell from "./CaseReceptionReceptionTypeCell.tsx";
 import CaseReceptionContentsCell from "./CaseReceptionContentsCell.tsx";
@@ -17,9 +17,9 @@ import CaseReceptionReceivedAtCell from "./CaseReceptionReceivedAtCell.tsx";
 import CaseReceptionDeadlineCell from "./CaseReceptionDeadlineCell.tsx";
 import CaseReceptionEditButton from "./CaseReceptionEditButton.tsx";
 import CaseReceptionDeleteButton from "./CaseReceptionDeleteButton.tsx";
-import TableHeader from "../common/TableHeader.tsx";
-import Column from "../common/Column.tsx";
-import Table from "../common/Table.tsx";
+import TableHeader from "../../../common/TableHeader.tsx";
+import Column from "../../../common/Column.tsx";
+import Table from "../../../common/Table.tsx";
 import CaseReceptionEditConfirmButton from "./CaseReceptionEditConfirmButton.tsx";
 
 export function updateUrl(url: string, newPage: number): string {

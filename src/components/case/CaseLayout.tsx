@@ -22,14 +22,6 @@ function CaseLayout() {
       }}
     >
       <ButtonGroup variant="outlined" size="large" fullWidth>
-        {/*<Button*/}
-        {/*  variant={caseButtonId === 0 ? "contained" : "outlined"}*/}
-        {/*  onClick={() => {*/}
-        {/*    navigate(`/cases/new`);*/}
-        {/*  }}*/}
-        {/*>*/}
-        {/*  사건 등록*/}
-        {/*</Button>*/}
         <Button
           variant={caseButtonId === 0 ? "contained" : "outlined"}
           onClick={() => {
