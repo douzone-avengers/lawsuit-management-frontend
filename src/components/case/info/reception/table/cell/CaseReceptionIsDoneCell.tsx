@@ -3,9 +3,10 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import caseReceptionsState, {
   CaseReceptionRowType,
-} from "../../../../states/case/CaseReceptionsState.tsx";
+} from "../../../../../../states/case/info/reception/CaseReceptionsState.tsx";
 import { useRecoilState } from "recoil";
 import { produce } from "immer";
+import { Typography } from "@mui/material";
 
 type Props = {
   item: CaseReceptionRowType & { editable: boolean };
@@ -25,8 +26,8 @@ function CaseReceptionIsDoneCell({ item }: Props) {
     }
   };
 
-  return (
-    <FormControl size="small" disabled={!item.editable}>
+  return item.editable ? (
+    <FormControl size="small" disabled={!item.editable} fullWidth>
       <Select
         value={item.isDone ? "complete" : "incomplete"}
         onChange={handleChange}
@@ -35,6 +36,17 @@ function CaseReceptionIsDoneCell({ item }: Props) {
         <MenuItem value="incomplete">미완료</MenuItem>
       </Select>
     </FormControl>
+  ) : (
+    <Typography
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: 40,
+      }}
+    >
+      {item.isDone ? "완료" : "미완료"}
+    </Typography>
   );
 }
 

@@ -1,10 +1,11 @@
 import caseReceptionsState, {
   CaseReceptionRowType,
-} from "../../../../states/case/CaseReceptionsState.tsx";
+} from "../../../../../../states/case/info/reception/CaseReceptionsState.tsx";
 import { TextField } from "@mui/material";
 import { useRecoilState } from "recoil";
 import { ChangeEvent } from "react";
 import { produce } from "immer";
+import Box from "@mui/material/Box";
 
 type Props = {
   item: CaseReceptionRowType & { editable: boolean };
@@ -24,13 +25,24 @@ function CaseReceptionContentsCell({ item }: Props) {
     }
   };
 
-  return (
+  return item.editable ? (
     <TextField
-      disabled={!item.editable}
       size="small"
       value={item.contents}
       onChange={handleChange}
+      fullWidth
     />
+  ) : (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: 40,
+      }}
+    >
+      {item.contents}
+    </Box>
   );
 }
 

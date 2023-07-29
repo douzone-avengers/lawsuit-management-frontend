@@ -3,15 +3,16 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import caseReceptionsState, {
   CaseReceptionRowType,
-} from "../../../../states/case/CaseReceptionsState.tsx";
+} from "../../../../../../states/case/info/reception/CaseReceptionsState.tsx";
 import { useRecoilState } from "recoil";
 import { produce } from "immer";
+import { Typography } from "@mui/material";
 
 type Props = {
   item: CaseReceptionRowType & { editable: boolean };
 };
 
-function CaseReceptionReceptionTypeCell({ item }: Props) {
+function CaseReceptionTypeCell({ item }: Props) {
   const [receptions, setReceptions] = useRecoilState(caseReceptionsState);
 
   const handleChange = (e: SelectChangeEvent) => {
@@ -27,8 +28,8 @@ function CaseReceptionReceptionTypeCell({ item }: Props) {
     }
   };
 
-  return (
-    <FormControl size="small" disabled={!item.editable}>
+  return item.editable ? (
+    <FormControl size="small" disabled={!item.editable} fullWidth>
       <Select
         value={
           item.receptionType === "기일"
@@ -43,7 +44,18 @@ function CaseReceptionReceptionTypeCell({ item }: Props) {
         <MenuItem value="fixed">불변</MenuItem>
       </Select>
     </FormControl>
+  ) : (
+    <Typography
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: 40,
+      }}
+    >
+      {item.receptionType}
+    </Typography>
   );
 }
 
-export default CaseReceptionReceptionTypeCell;
+export default CaseReceptionTypeCell;

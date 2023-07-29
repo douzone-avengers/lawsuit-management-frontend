@@ -17,6 +17,12 @@ const getReceptionsHandler = rest.get(
       (item) => item.lawsuitId === lawsuitParam && !item.isDeleted,
     );
 
+    const contentsParam = req.url.searchParams.get("contents") ?? "";
+    if (contentsParam !== "") {
+      const regex = new RegExp(contentsParam, "i");
+      receptions = receptions.filter((item) => regex.test(item.contents));
+    }
+
     const statusParam = req.url.searchParams.get("status") ?? "";
     switch (statusParam) {
       case "complete":
@@ -37,20 +43,45 @@ const getReceptionsHandler = rest.get(
         break;
     }
 
-    const startParam = req.url.searchParams.get("start") ?? "";
-    if (startParam !== "") {
+    const startReceivedAtParam =
+      req.url.searchParams.get("start-received-at") ?? "";
+    if (startReceivedAtParam !== "") {
       receptions = receptions.filter((item) =>
-        dayjs(item.deadline).isAfter(
-          dayjs(startParam).subtract(1, "day"),
+        dayjs(item.receivedAt).isAfter(
+          dayjs(startReceivedAtParam).subtract(1, "day"),
           "date",
         ),
       );
     }
 
-    const endParam = req.url.searchParams.get("end") ?? "";
-    if (endParam !== "") {
+    const endReceivedAtParam =
+      req.url.searchParams.get("end-received-at") ?? "";
+    if (endReceivedAtParam !== "") {
       receptions = receptions.filter((item) =>
-        dayjs(item.deadline).isBefore(dayjs(endParam).add(1, "day"), "date"),
+        dayjs(item.receivedAt).isBefore(
+          dayjs(endReceivedAtParam).add(1, "day"),
+          "date",
+        ),
+      );
+    }
+
+    const startDeadlineParam = req.url.searchParams.get("start-deadline") ?? "";
+    if (startDeadlineParam !== "") {
+      receptions = receptions.filter((item) =>
+        dayjs(item.deadline).isAfter(
+          dayjs(startDeadlineParam).subtract(1, "day"),
+          "date",
+        ),
+      );
+    }
+
+    const endDeadlineParam = req.url.searchParams.get("end-deadline") ?? "";
+    if (endDeadlineParam !== "") {
+      receptions = receptions.filter((item) =>
+        dayjs(item.deadline).isBefore(
+          dayjs(endDeadlineParam).add(1, "day"),
+          "date",
+        ),
       );
     }
 

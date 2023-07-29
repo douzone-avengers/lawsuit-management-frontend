@@ -9,11 +9,11 @@ import caseInfoState from "../../../../states/case/info/caseInfoState.tsx";
 import CardTitle from "../common/CardTitle.tsx";
 import ListProfileItem from "../common/ListProfileItem.tsx";
 
-function CaseInfoCard() {
+function CaseBasicInfoCard() {
   const caseInfo = useRecoilValue(caseInfoState);
 
   return (
-    <Card>
+    <Card sx={{ width: "50%" }}>
       <CardTitle text="사건" />
       <List sx={{ display: "flex", padding: 0 }}>
         <ListProfileItem
@@ -41,4 +41,4 @@ function CaseInfoCard() {
   );
 }
 
-export default CaseInfoCard;
+export default CaseBasicInfoCard;

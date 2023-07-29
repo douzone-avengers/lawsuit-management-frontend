@@ -1,11 +1,14 @@
-import DeleteButton from "../../../common/DeleteButton.tsx";
 import caseReceptionsState, {
   CaseReceptionRowType,
-} from "../../../../states/case/CaseReceptionsState.tsx";
-import request, { RequestSuccessHandler } from "../../../../lib/request.ts";
+} from "../../../../../../states/case/info/reception/CaseReceptionsState.tsx";
+import request, {
+  RequestSuccessHandler,
+} from "../../../../../../lib/request.ts";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { caseReceptionSearchUrlState } from "../../../../states/case/CaseReceptionSearchState.tsx";
-import caseReceptionSizeState from "../../../../states/case/CaseReceptionSizeState.tsx";
+import { caseReceptionSearchUrlState } from "../../../../../../states/case/info/reception/CaseReceptionSearchState.tsx";
+import caseReceptionSizeState from "../../../../../../states/case/info/reception/CaseReceptionSizeState.tsx";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { Button } from "@mui/material";
 
 type Props = {
   item: CaseReceptionRowType & { editable: boolean };
@@ -31,7 +34,6 @@ function CaseReceptionDeleteButton({ item }: Props) {
         );
         setSize(size);
       };
-      console.log(url);
       request("GET", url, {
         onSuccess: handleRequestSuccess2,
       });
@@ -40,7 +42,17 @@ function CaseReceptionDeleteButton({ item }: Props) {
       onSuccess: handleRequestSuccess,
     });
   };
-  return <DeleteButton onClick={handleClick} />;
+  return (
+    <Button
+      sx={{ marginLeft: 1, marginRight: 1 }}
+      size="small"
+      variant="outlined"
+      fullWidth
+      onClick={handleClick}
+    >
+      <DeleteIcon />
+    </Button>
+  );
 }
 
 export default CaseReceptionDeleteButton;

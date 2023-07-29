@@ -1,9 +1,9 @@
 import Box from "@mui/material/Box";
-import CaseInfoCard from "./basic/CaseInfoCard.tsx";
-import CaseEmployeeCard from "./basic/CaseEmployeeCard.tsx";
-import CaseClientCard from "./basic/CaseClientCard.tsx";
-import CaseCostCard from "./basic/CaseCostCard.tsx";
-import CaseReceptionCard from "./reception/CaseReceptionCard.tsx";
+import CaseBasicInfoCard from "./basic/CaseBasicInfoCard.tsx";
+import CaseEmployeeInfoCard from "./employee/CaseEmployeeInfoCard.tsx";
+import CaseClientInfoCard from "./client/CaseClientInfoCard.tsx";
+import CaseCostInfoCard from "./cost/CaseCostInfoCard.tsx";
+import CaseReceptionInfoCard from "./reception/CaseReceptionInfoCard.tsx";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import caseIdState from "../../../states/case/CaseIdState.tsx";
 import { useEffect } from "react";
@@ -39,11 +39,15 @@ function CaseInfoTab() {
         gap: 1,
       }}
     >
-      <CaseInfoCard />
-      <CaseEmployeeCard />
-      <CaseClientCard />
-      <CaseCostCard />
-      <CaseReceptionCard />
+      <Box sx={{ display: "flex", gap: 1 }}>
+        <CaseBasicInfoCard />
+        <CaseCostInfoCard />
+      </Box>
+      <Box sx={{ display: "flex", gap: 1 }}>
+        <CaseEmployeeInfoCard />
+        <CaseClientInfoCard />
+      </Box>
+      <CaseReceptionInfoCard />
     </Box>
   );
 }

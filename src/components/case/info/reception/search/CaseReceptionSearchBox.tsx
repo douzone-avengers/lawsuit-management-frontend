@@ -4,19 +4,20 @@ import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import { DatePicker } from "@mui/x-date-pickers";
-import { Button } from "@mui/material";
-import request, { RequestSuccessHandler } from "../../../../lib/request.ts";
+import { Button, TextField } from "@mui/material";
+import request, { RequestSuccessHandler } from "../../../../../lib/request.ts";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import caseReceptionsState, {
   CaseReceptionRowType,
-} from "../../../../states/case/CaseReceptionsState.tsx";
-import caseIdState from "../../../../states/case/CaseIdState.tsx";
+} from "../../../../../states/case/info/reception/CaseReceptionsState.tsx";
+import caseIdState from "../../../../../states/case/CaseIdState.tsx";
 import caseReceptionSearchState, {
   caseReceptionSearchUrlState,
-} from "../../../../states/case/CaseReceptionSearchState.tsx";
-import caseReceptionSizeState from "../../../../states/case/CaseReceptionSizeState.tsx";
-import caseReceptionPageState from "../../../../states/case/CaseReceptionPageState.tsx";
-import { updateUrl } from "./CaseReceptionTable.tsx";
+} from "../../../../../states/case/info/reception/CaseReceptionSearchState.tsx";
+import caseReceptionSizeState from "../../../../../states/case/info/reception/CaseReceptionSizeState.tsx";
+import caseReceptionPageState from "../../../../../states/case/info/reception/CaseReceptionPageState.tsx";
+import { updateUrl } from "../table/CaseReceptionTable.tsx";
+import { ChangeEvent } from "react";
 
 function CaseReceptionSearchBox() {
   const [receptionSearch, setReceptionSearch] = useRecoilState(
@@ -28,6 +29,13 @@ function CaseReceptionSearchBox() {
 
   const caseId = useRecoilValue(caseIdState);
   const setCaseReceptions = useSetRecoilState(caseReceptionsState);
+
+  const handleTextChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setReceptionSearch({
+      ...receptionSearch,
+      contents: e.target.value,
+    });
+  };
 
   const handleStatusChange = (e: SelectChangeEvent) => {
     setReceptionSearch({
@@ -43,14 +51,28 @@ function CaseReceptionSearchBox() {
     });
   };
 
-  const handleStart = (start: any) => {
+  const handleStartReceivedAt = (start: any) => {
+    setReceptionSearch({
+      ...receptionSearch,
+      startReceivedAt: start,
+    });
+  };
+
+  const handleEndReceivedAt = (end: any) => {
+    setReceptionSearch({
+      ...receptionSearch,
+      endReceivedAt: end,
+    });
+  };
+
+  const handleStartDeadline = (start: any) => {
     setReceptionSearch({
       ...receptionSearch,
       startDeadline: start,
     });
   };
 
-  const handleEnd = (end: any) => {
+  const handleEndDeadline = (end: any) => {
     setReceptionSearch({
       ...receptionSearch,
       endDeadLine: end,
@@ -62,7 +84,6 @@ function CaseReceptionSearchBox() {
       // TODO
       return;
     }
-
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
       const {
         receptions,
@@ -88,18 +109,28 @@ function CaseReceptionSearchBox() {
     <Box
       sx={{
         display: "flex",
-        gap: 1,
-        alignItems: "center",
-        justifyContent: "space-between",
+        flexDirection: "column",
+        gap: 2,
         margin: "0 10px",
       }}
     >
+      <Box sx={{ display: "flex", gap: 1 }}>
+        <TextField
+          sx={{ flexGrow: 1 }}
+          size="small"
+          value={receptionSearch.contents}
+          onChange={handleTextChange}
+        />
+        <Button variant="contained" onClick={handleSubmitButtonClick}>
+          검색
+        </Button>
+      </Box>
       <Box
         sx={{
           display: "flex",
           gap: 1,
           alignItems: "center",
-          justifyContent: "center",
+          justifyContent: "left",
         }}
       >
         <FormControl size="small" sx={{ width: 100 }}>
@@ -127,21 +158,32 @@ function CaseReceptionSearchBox() {
           </Select>
         </FormControl>
         <DatePicker
+          label="접수일(시작)"
+          slotProps={{ textField: { size: "small" } }}
+          value={receptionSearch.startReceivedAt}
+          onChange={handleStartReceivedAt}
+        />
+        <Box>–</Box>
+        <DatePicker
+          label="접수일(종료)"
+          slotProps={{ textField: { size: "small" } }}
+          value={receptionSearch.endReceivedAt}
+          onChange={handleEndReceivedAt}
+        />
+        <DatePicker
           label="마감일(시작)"
           slotProps={{ textField: { size: "small" } }}
           value={receptionSearch.startDeadline}
-          onChange={handleStart}
+          onChange={handleStartDeadline}
         />
+        <Box>–</Box>
         <DatePicker
           label="마감일(종료)"
           slotProps={{ textField: { size: "small" } }}
           value={receptionSearch.endDeadLine}
-          onChange={handleEnd}
+          onChange={handleEndDeadline}
         />
       </Box>
-      <Button variant="contained" onClick={handleSubmitButtonClick}>
-        검색
-      </Button>
     </Box>
   );
 }

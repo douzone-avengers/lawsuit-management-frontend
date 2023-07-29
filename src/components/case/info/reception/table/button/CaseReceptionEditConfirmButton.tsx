@@ -1,10 +1,13 @@
 import caseReceptionsState, {
   CaseReceptionRowType,
-} from "../../../../states/case/CaseReceptionsState.tsx";
+} from "../../../../../../states/case/info/reception/CaseReceptionsState.tsx";
 import { useRecoilState } from "recoil";
-import CheckButton from "../../../common/CheckButton.tsx";
-import request, { RequestSuccessHandler } from "../../../../lib/request.ts";
+import request, {
+  RequestSuccessHandler,
+} from "../../../../../../lib/request.ts";
 import { produce } from "immer";
+import { Button } from "@mui/material";
+import CheckIcon from "@mui/icons-material/Check";
 
 type Props = {
   item: CaseReceptionRowType & { editable: boolean };
@@ -50,8 +53,17 @@ function CaseReceptionEditConfirmButton({ item }: Props) {
       onSuccess: handleSuccess,
     });
   };
-
-  return <CheckButton onClick={handleClick} />;
+  return (
+    <Button
+      sx={{ marginLeft: 1, marginRight: 1 }}
+      size="small"
+      variant="contained"
+      fullWidth
+      onClick={handleClick}
+    >
+      <CheckIcon />
+    </Button>
+  );
 }
 
 export default CaseReceptionEditConfirmButton;

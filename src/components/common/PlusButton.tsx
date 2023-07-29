@@ -5,7 +5,7 @@ type Props = {
   onClick: () => void;
 };
 
-function CheckButton({ onClick }: Props) {
+function PlusButton({ onClick }: Props) {
   return (
     <IconButton onClick={onClick}>
       <AddCircleIcon />
@@ -13,4 +13,4 @@ function CheckButton({ onClick }: Props) {
   );
 }
 
-export default CheckButton;
+export default PlusButton;

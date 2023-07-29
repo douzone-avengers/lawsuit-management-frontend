@@ -19,7 +19,24 @@ function ListProfileItem({ SvgIcon, primary, secondary }: Props) {
           <SvgIcon />
         </Avatar>
       </ListItemAvatar>
-      <ListItemText primary={primary} secondary={secondary} />
+      <ListItemText
+        primary={primary}
+        secondary={secondary}
+        primaryTypographyProps={{
+          sx: {
+            textOverflow: "ellipsis",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+          },
+        }}
+        secondaryTypographyProps={{
+          sx: {
+            textOverflow: "ellipsis",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+          },
+        }}
+      />
     </ListItem>
   );
 }

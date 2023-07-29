@@ -1,9 +1,10 @@
-import EditButton from "../../../common/EditButton.tsx";
 import { useRecoilState } from "recoil";
 import caseReceptionsState, {
   CaseReceptionRowType,
-} from "../../../../states/case/CaseReceptionsState.tsx";
+} from "../../../../../../states/case/info/reception/CaseReceptionsState.tsx";
 import { produce } from "immer";
+import { Button } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 
 type Props = {
   item: CaseReceptionRowType & { editable: boolean };
@@ -20,7 +21,17 @@ function CaseReceptionEditButton({ item }: Props) {
     setReceptions(newReceptions);
   };
 
-  return <EditButton onClick={handleClick} />;
+  return (
+    <Button
+      sx={{ marginLeft: 1, marginRight: 1 }}
+      size="small"
+      variant="outlined"
+      fullWidth
+      onClick={handleClick}
+    >
+      <EditIcon />
+    </Button>
+  );
 }
 
 export default CaseReceptionEditButton;

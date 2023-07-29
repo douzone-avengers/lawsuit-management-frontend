@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import { useSetRecoilState } from "recoil";
-import caseReceptionAddPopUpOpenState from "../../states/case/CaseReceptionAddPopUpOpenState.tsx";
+import caseReceptionAddPopUpOpenState from "../../../../../../states/case/info/reception/CaseReceptionAddPopUpOpenState.tsx";
 
 function CaseReceptionAddPopUpOpenButton() {
   const setReceptionAddPopUpOpen = useSetRecoilState(

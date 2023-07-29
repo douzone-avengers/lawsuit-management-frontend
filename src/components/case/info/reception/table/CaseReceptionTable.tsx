@@ -3,24 +3,15 @@ import { useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import caseReceptionsState, {
   CaseReceptionRowType,
-} from "../../../../states/case/CaseReceptionsState.tsx";
-import request, { RequestSuccessHandler } from "../../../../lib/request.ts";
-import caseIdState from "../../../../states/case/CaseIdState.tsx";
+} from "../../../../../states/case/info/reception/CaseReceptionsState.tsx";
+import request, { RequestSuccessHandler } from "../../../../../lib/request.ts";
+import caseIdState from "../../../../../states/case/CaseIdState.tsx";
 import { Button, Divider, useTheme } from "@mui/material";
-import caseReceptionPageState from "../../../../states/case/CaseReceptionPageState.tsx";
-import caseReceptionSizeState from "../../../../states/case/CaseReceptionSizeState.tsx";
-import { caseReceptionSearchUrlState } from "../../../../states/case/CaseReceptionSearchState.tsx";
-import CaseReceptionIsDoneCell from "./CaseReceptionIsDoneCell.tsx";
-import CaseReceptionReceptionTypeCell from "./CaseReceptionReceptionTypeCell.tsx";
-import CaseReceptionContentsCell from "./CaseReceptionContentsCell.tsx";
-import CaseReceptionReceivedAtCell from "./CaseReceptionReceivedAtCell.tsx";
-import CaseReceptionDeadlineCell from "./CaseReceptionDeadlineCell.tsx";
-import CaseReceptionEditButton from "./CaseReceptionEditButton.tsx";
-import CaseReceptionDeleteButton from "./CaseReceptionDeleteButton.tsx";
-import TableHeader from "../../../common/TableHeader.tsx";
-import Column from "../../../common/Column.tsx";
-import Table from "../../../common/Table.tsx";
-import CaseReceptionEditConfirmButton from "./CaseReceptionEditConfirmButton.tsx";
+import caseReceptionPageState from "../../../../../states/case/info/reception/CaseReceptionPageState.tsx";
+import caseReceptionSizeState from "../../../../../states/case/info/reception/CaseReceptionSizeState.tsx";
+import { caseReceptionSearchUrlState } from "../../../../../states/case/info/reception/CaseReceptionSearchState.tsx";
+import CaseReceptionDataRow from "./row/CaseReceptionDataRow.tsx";
+import CaseReceptionHeaderRow from "./row/CaseReceptionHeaderRow.tsx";
 
 export function updateUrl(url: string, newPage: number): string {
   return url.replace(/(page=)\d+/, `$1${newPage}`);
@@ -32,6 +23,7 @@ function CaseReceptionTable() {
   const [receptions, setReceptions] = useRecoilState(caseReceptionsState);
   const [page, setPage] = useRecoilState(caseReceptionPageState);
   const [size, setSize] = useRecoilState(caseReceptionSizeState);
+
   const url = useRecoilValue(caseReceptionSearchUrlState);
 
   useEffect(() => {
@@ -67,62 +59,13 @@ function CaseReceptionTable() {
         flexDirection: "column",
       }}
     >
-      <Table
-        sx={{
-          gap: 1,
-          margin: 1,
-          width: "100%",
-        }}
-      >
-        <Column sx={{ flexGrow: 1 }}>
-          <TableHeader text="상태" />
-          {receptions.map((item) => (
-            <CaseReceptionIsDoneCell key={item.id} item={item} />
-          ))}
-        </Column>
-        <Column sx={{ flexGrow: 1 }}>
-          <TableHeader text="유형" />
-          {receptions.map((item) => (
-            <CaseReceptionReceptionTypeCell key={item.id} item={item} />
-          ))}
-        </Column>
-        <Column sx={{ flexGrow: 1 }}>
-          <TableHeader text="내용" />
-          {receptions.map((item) => (
-            <CaseReceptionContentsCell key={item.id} item={item} />
-          ))}
-        </Column>
-        <Column sx={{ flexGrow: 1 }}>
-          <TableHeader text="접수일" />
-          {receptions.map((item) => (
-            <CaseReceptionReceivedAtCell key={item.id} item={item} />
-          ))}
-        </Column>
-        <Column
-          sx={{ flexGrow: 1, marginRight: receptions.length === 0 ? 2 : 0 }}
-        >
-          <TableHeader text="마감일" />
-          {receptions.map((item) => (
-            <CaseReceptionDeadlineCell key={item.id} item={item} />
-          ))}
-        </Column>
-        {receptions.length !== 0 ? (
-          <Column sx={{ marginRight: 1 }}>
-            <TableHeader text="&nbsp;" hidden />
-            {receptions.map((item) => (
-              <Box key={item.id} sx={{ display: "flex" }}>
-                {!item.editable ? (
-                  <CaseReceptionEditButton item={item} />
-                ) : (
-                  <CaseReceptionEditConfirmButton item={item} />
-                )}
-                <CaseReceptionDeleteButton item={item} />
-              </Box>
-            ))}
-          </Column>
-        ) : null}
-      </Table>
-      <Box sx={{ flexGrow: 1 }}></Box>
+      <Box sx={{ marginBottom: 2 }}></Box>
+      <Divider />
+      <CaseReceptionHeaderRow />
+      <Divider />
+      {receptions.map((item) => (
+        <CaseReceptionDataRow key={item.id} item={item} />
+      ))}
       <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
       <Box
         sx={{

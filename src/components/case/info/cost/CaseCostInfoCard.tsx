@@ -7,12 +7,12 @@ import caseInfoState from "../../../../states/case/info/caseInfoState.tsx";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { delimiter } from "../../../../lib/convert.ts";
 
-function CaseCostCard() {
+function CaseCostInfoCard() {
   const caseInfo = useRecoilValue(caseInfoState);
 
   if (caseInfo)
     return (
-      <Card>
+      <Card sx={{ width: "50%" }}>
         <CardTitle text="비용" />
         <List sx={{ display: "flex", padding: 0 }}>
           <ListProfileItem
@@ -30,4 +30,4 @@ function CaseCostCard() {
     );
 }
 
-export default CaseCostCard;
+export default CaseCostInfoCard;
