@@ -30,7 +30,6 @@ const clientAddHandler = rest.post("/api/clients", async (req, res, ctx) => {
     email,
     address,
   });
-
   return res(ctx.status(200), ctx.json({ data: clientTable }));
 });
 

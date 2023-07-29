@@ -3,6 +3,7 @@ import { useState } from "react";
 import TabBar, { TabItem } from "../common/TabBar";
 import ClientCaseListTab from "./ClientCaseListTab";
 import ClientProfileTab from "./ClientProfileTab";
+import ClientCaseStatisticsTab from "./statistics/ClientCaseStatisticsTab.tsx";
 
 function ClientDetailPage() {
   const [clientTabId, setClientTabId] = useState(0);
@@ -17,6 +18,11 @@ function ClientDetailPage() {
       id: 1,
       name: "사건 정보",
       children: <ClientCaseListTab />,
+    },
+    {
+      id: 2,
+      name: "통계",
+      children: <ClientCaseStatisticsTab />,
     },
   ]);
 

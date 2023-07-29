@@ -1,9 +1,9 @@
 import { rest } from "msw";
 import clientLawsuitMapTable from "../mapper/clientLawsuitMapTable";
 import lawsuitTable from "./lawsuitTable";
-import memberLawsuitMapTable from "../mapper/memberLawsuitMapTable.ts";
 import memberTable from "../member/memberTable.ts";
 import clientTable from "../client/clientTable.ts";
+import memberLawsuitMapTable from "../mapper/memberLawsuitMapTable";
 
 const lawsuitDetailHandler = rest.get(
   "/api/lawsuits/:lawsuitId",
@@ -57,13 +57,13 @@ const lawsuitDetailHandler = rest.get(
   },
 );
 
-const lawsuitClientDetailHandler = rest.get(
-  "/api/lawsuits/clients/:clientId",
+const lawsuitByMemberHandler = rest.get(
+  "/api/lawsuits/members/:memberId",
   async (req, res, ctx) => {
-    const clientId = Number.parseInt(req.params["clientId"] as string);
+    const memberId = Number.parseInt(req.params["memberId"] as string);
 
-    const lawsuitIds = clientLawsuitMapTable
-      .filter((item) => item.clientId === clientId)
+    const lawsuitIds = memberLawsuitMapTable
+      .filter((item) => item.memberId === memberId)
       .map((item) => item.lawsuitId);
 
     const result = lawsuitTable.filter((item) => lawsuitIds.includes(item.id));
@@ -72,6 +72,6 @@ const lawsuitClientDetailHandler = rest.get(
   },
 );
 
-const lawsuitHandlers = [lawsuitDetailHandler, lawsuitClientDetailHandler];
+const lawsuitHandlers = [lawsuitDetailHandler, lawsuitByMemberHandler];
 
 export default lawsuitHandlers;

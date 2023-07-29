@@ -15,7 +15,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
 function CaseListPage() {
-  const clientId = useRecoilValue(clientIdState);
+  const memberId = useRecoilValue(clientIdState);
   const setCaseId = useSetRecoilState(caseIdState);
   const navigate = useNavigate();
   const [cases, setCases] = useState<LawsuitData[]>([]);
@@ -28,7 +28,7 @@ function CaseListPage() {
   const cLength = cases.filter((item) => item.lawsuitStatus === "종결").length;
 
   useEffect(() => {
-    if (typeof clientId !== "number") {
+    if (typeof memberId !== "number") {
       // TODO
       return;
     }
@@ -39,10 +39,10 @@ function CaseListPage() {
       setCaseId(data[0]?.id);
     };
 
-    request("GET", `/lawsuits/clients/${clientId}`, {
+    request("GET", `/lawsuits/members/${memberId}`, {
       onSuccess: handleRequestSuccess,
     });
-  }, [clientId]);
+  }, [memberId]);
 
   let filteredCases: LawsuitData[];
 
@@ -125,7 +125,7 @@ function CaseListPage() {
           cases={filteredCases.map((item) => ({
             ...item,
             onClick: () => {
-              navigate(`/cases/${item.id}?client=${clientId}`);
+              navigate(`/cases/${item.id}?client=${memberId}`);
             },
           }))}
         />

@@ -38,6 +38,14 @@ function CaseLayout() {
         >
           사원 상세
         </Button>
+        <Button
+          variant={employeeButtonId === 3 ? "contained" : "outlined"}
+          onClick={() => {
+            navigate(`/employees/${loginUser?.id}/cases`); //사건정보 탭 이동 시 기본값 자기자신
+          }}
+        >
+          사건 정보
+        </Button>
       </ButtonGroup>
       <Outlet />
     </Box>

@@ -6,15 +6,14 @@ import request, { RequestSuccessHandler } from "../../lib/request";
 import { LawsuitData } from "../../mock/lawsuit/lawsuitTable";
 import clientIdState from "../../states/client/ClientIdState";
 import CaseListTable from "../case/CaseListTable.tsx";
-import Placeholder from "../common/Placeholder.tsx";
 
 function ClientCaseListTab() {
-  const clientId = useRecoilValue(clientIdState);
+  const memberId = useRecoilValue(clientIdState);
   const navigate = useNavigate();
   const [cases, setCases] = useState<LawsuitData[]>([]);
 
   useEffect(() => {
-    if (typeof clientId !== "number") {
+    if (typeof memberId !== "number") {
       // TODO
       return;
     }
@@ -24,24 +23,21 @@ function ClientCaseListTab() {
       setCases(data);
     };
 
-    request("GET", `/lawsuits/clients/${clientId}`, {
+    request("GET", `/lawsuits/members/${memberId}`, {
       onSuccess: handleRequestSuccess,
     });
-  }, [clientId]);
+  }, [memberId]);
 
   return (
-    <Box sx={{ display: "flex", gap: 3, flexDirection: "column" }}>
+    <Box>
       <CaseListTable
         cases={cases.map((item) => ({
           ...item,
           onClick: () => {
-            navigate(`/cases/${item.id}?client=${clientId}`);
+            navigate(`/cases/${item.id}?client=${memberId}`);
           },
         }))}
       />
-      <Box sx={{ flexGrow: 1, height: 480 }}>
-        <Placeholder />
-      </Box>
     </Box>
   );
 }

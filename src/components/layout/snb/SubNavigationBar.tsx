@@ -17,15 +17,17 @@ import SubNavigationBarItem, {
 import ClientRegisterPopUpButton from "../../client/ClientRegisterPopUpButton.tsx";
 import { MemberInfo } from "../../../mock/member/memberHandlers";
 import employeeIdState from "../../../states/employee/EmployeeIdState";
+import employeeButtonIdState from "../../../states/employee/EmployeeButtonIdState";
 
 function SubNavigationBar() {
-  const clientId = useRecoilValue(clientIdState);
+  const memberId = useRecoilValue(clientIdState);
   const caseId = useRecoilValue(caseIdState);
   const employeeId = useRecoilValue(employeeIdState);
   const [subNavigationBar, setSubNavigationBar] = useRecoilState(
     subNavigationBarState,
   );
   const subNavigationBarType = useRecoilValue(subNavigationBarTypeState);
+  const employeeButton = useRecoilValue(employeeButtonIdState);
 
   useEffect(() => {
     if (subNavigationBarType === "client") {
@@ -68,13 +70,13 @@ function SubNavigationBar() {
             id: item.id,
             text: item.name,
             subText: item.lawsuitNum,
-            url: `cases/${item.id}?client=${clientId}`,
+            url: `cases/${item.id}?client=${memberId}`,
             SvgIcon: BalanceIcon,
           };
         });
         setSubNavigationBar({ ...subNavigationBar, items: newItems });
       };
-      request("GET", `/lawsuits/clients/${clientId}`, {
+      request("GET", `/lawsuits/members/${memberId}`, {
         onSuccess: handleRequestSuccess,
       });
     } else if (subNavigationBarType === "employee") {
@@ -85,7 +87,10 @@ function SubNavigationBar() {
             id: item.id,
             text: item.name,
             subText: item.role,
-            url: `employees/${item.id}`,
+            url:
+              employeeButton === 2
+                ? `employees/${item.id}`
+                : `employees/${item.id}/cases`,
             SvgIcon: BalanceIcon,
           };
         });
@@ -113,7 +118,7 @@ function SubNavigationBar() {
             selected={
               (subNavigationBarType === "client" ||
                 subNavigationBarType === "caseClient") &&
-              clientId === item.id
+              memberId === item.id
                 ? true
                 : subNavigationBarType === "case" && caseId === item.id
                 ? true

@@ -1,29 +1,20 @@
-import Box from "@mui/material/Box";
+import { useRecoilValue } from "recoil";
+import clientIdState from "../../../states/client/ClientIdState.tsx";
+import { useEffect, useState } from "react";
+import request, { RequestSuccessHandler } from "../../../lib/request.ts";
+import { ClientData } from "../../../mock/client/clientTable.ts";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
-import request, { RequestSuccessHandler } from "../../lib/request.ts";
-import { ClientData } from "../../mock/client/clientTable.ts";
-import clientIdState from "../../states/client/ClientIdState.tsx";
-import Button from "@mui/material/Button";
-import { LocationOn, PhoneIphone, Email } from "@mui/icons-material";
-import ClientRemovePopUpButton from "./ClientRemovePopUpButton.tsx";
 import { SvgIcon } from "@mui/material";
+import { Email, LocationOn, PhoneIphone } from "@mui/icons-material";
 
-type Props = {
-  width?: string | number;
-  height?: string | number;
-};
-
-function ClientInfoCard({ width, height }: Props) {
+function ClientCaseStatisticsInfoCard() {
   const clientId = useRecoilValue(clientIdState);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
-  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
     if (typeof clientId !== "number") {
@@ -47,39 +38,9 @@ function ClientInfoCard({ width, height }: Props) {
   }, [clientId]);
 
   return (
-    <Card sx={{ width, height }}>
+    <Card sx={{ width: "100%" }}>
       <CardContent>
-        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <Box sx={{ display: "flex", justifyContent: "right", gap: 1 }}>
-            {editMode ? (
-              <Button
-                variant="contained"
-                size="small"
-                onClick={() => {
-                  setEditMode(false);
-                }}
-              >
-                확인
-              </Button>
-            ) : (
-              <Button
-                variant="contained"
-                size="small"
-                onClick={() => {
-                  setEditMode(true);
-                }}
-              >
-                수정
-              </Button>
-            )}
-            <ClientRemovePopUpButton />
-          </Box>
-        </Box>
-        <Typography
-          sx={{ display: "inline-block" }}
-          variant="h4"
-          contentEditable={editMode}
-        >
+        <Typography sx={{ display: "inline-block" }} variant="h4">
           {name}
         </Typography>
         <br />
@@ -89,7 +50,6 @@ function ClientInfoCard({ width, height }: Props) {
           sx={{ display: "inline-block", fontSize: 20 }}
           color="text.secondary"
           gutterBottom
-          contentEditable={editMode}
         >
           <SvgIcon component={Email} /> &nbsp;
           {email}
@@ -99,7 +59,6 @@ function ClientInfoCard({ width, height }: Props) {
           sx={{ display: "inline-block", fontSize: 20 }}
           color="text.secondary"
           gutterBottom
-          contentEditable={editMode}
         >
           <SvgIcon component={PhoneIphone} /> &nbsp;
           {phone}
@@ -109,7 +68,6 @@ function ClientInfoCard({ width, height }: Props) {
           sx={{ display: "inline-block", fontSize: 20 }}
           color="text.secondary"
           gutterBottom
-          contentEditable={editMode}
         >
           <SvgIcon component={LocationOn} /> &nbsp;
           {address}
@@ -119,4 +77,4 @@ function ClientInfoCard({ width, height }: Props) {
   );
 }
 
-export default ClientInfoCard;
+export default ClientCaseStatisticsInfoCard;

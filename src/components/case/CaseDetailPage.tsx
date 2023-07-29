@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import { useState } from "react";
+import Info from "../advice/Adviceinfo";
 import TabBar, { TabItem } from "../common/TabBar";
 import CaseInfoTab from "./info/CaseInfoTab.tsx";
 
@@ -15,7 +16,11 @@ function CaseDetailPage() {
     {
       id: 1,
       name: "상담 정보",
-      children: <div>상담 정보</div>,
+      children: (
+        <div>
+          <Info></Info>
+        </div>
+      ),
     },
     {
       id: 2,

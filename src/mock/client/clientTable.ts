@@ -12,7 +12,7 @@ const clientTable: ClientData[] = [
     name: "홍길동",
     phone: "010-1234-5678",
     email: "honggildong@gmail.com",
-    address: "서울특별시 강남구 역삼동 123번지",
+    address: "부산 해운대구 센텀동로 41 센텀벤처타운",
   },
   {
     id: 2,

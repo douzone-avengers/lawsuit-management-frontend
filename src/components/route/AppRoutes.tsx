@@ -12,7 +12,7 @@ import CaseListPage from "../case/CaseListPage";
 import CasesPage from "../case/CasesPage";
 import ClientDetailPage from "../client/ClientDetailPage";
 import ClientsPage from "../client/ClientsPage";
-import EmployeeDetailPage from "../employee/EmployeeDetailPage";
+import EmployeeDetailPage from "../employee/detail/EmployeeDetailPage";
 import EmployeePage from "../employee/EmployeePage";
 import NotFoundPage from "../error/NotFoundPage";
 import HomePage from "../home/HomePage";
@@ -21,10 +21,11 @@ import Layout from "../layout/Layout";
 import LoginPage from "../login/LoginPage";
 import CaseNewPage from "../case/CaseNewPage.tsx";
 import EmployeeLayout from "../employee/EmployeeLayout";
-import EmployeePrivatePage from "../employee/EmployeePrivatePage";
+import EmployeePrivatePage from "../employee/private/EmployeePrivatePage";
 import employeeButtonIdState from "../../states/employee/EmployeeButtonIdState";
-import EmployeeListPage from "../employee/EmployeesListPage";
+import EmployeeListPage from "../employee/list/EmployeesListPage";
 import employeeIdState from "../../states/employee/EmployeeIdState";
+import EmployeeCasePage from "../employee/case/EmployeeCasePage";
 
 function AppRoutes() {
   const location = useLocation();
@@ -188,6 +189,24 @@ function AppRoutes() {
       return;
     }
 
+    // /employees/:employeeId/cases
+    if (
+      length === 3 &&
+      paths[1] === "employees" &&
+      paths[2] &&
+      !isNaN(Number(paths[2])) &&
+      paths[3] === "cases"
+    ) {
+      setEmployeeId(Number.parseInt(paths[2]));
+      setMainNavigationBar({
+        ...mainNavigationBar,
+        curId: 2,
+      });
+      setSubNavigationBarType("employee");
+      setEmployeeButtonId(3);
+      return;
+    }
+
     // /login
     if (length === 1 && paths[1] === "login") {
       cleanUp();
@@ -257,6 +276,7 @@ function AppRoutes() {
           <Route path={"list"} element={<EmployeeListPage />} />
           {/* /employees/:employeeId */}
           <Route path=":employeeId" element={<EmployeeDetailPage />} />
+          <Route path=":employeeId/cases" element={<EmployeeCasePage />} />
         </Route>
       </Route>
       {/* /login */}
