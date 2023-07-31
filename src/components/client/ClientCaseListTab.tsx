@@ -6,7 +6,6 @@ import request, { RequestSuccessHandler } from "../../lib/request";
 import { LawsuitData } from "../../mock/lawsuit/lawsuitTable";
 import clientIdState from "../../states/client/ClientIdState";
 import CaseListTable from "../case/CaseListTable.tsx";
-import Chart from "./Chart.tsx";
 function ClientCaseListTab() {
   const clientId = useRecoilValue(clientIdState);
   const navigate = useNavigate();
@@ -29,15 +28,7 @@ function ClientCaseListTab() {
   }, [clientId]);
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        gap: 3,
-        flexDirection: "column",
-        width: "100%",
-        overflow: "hidden",
-      }}
-    >
+    <Box>
       <CaseListTable
         cases={cases.map((item) => ({
           ...item,
@@ -46,8 +37,6 @@ function ClientCaseListTab() {
           },
         }))}
       />
-      <br />
-      <Chart cases={cases} />
     </Box>
   );
 }
