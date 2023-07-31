@@ -18,6 +18,10 @@ function PopUp({ width = 360, popUpType = "form", children }: Props) {
           width,
           padding: popUpType === "form" ? 3 : 0,
           gap: popUpType === "form" ? 2 : 0,
+          overflow: "hidden",
+          "&::-webkit-scrollbar": {
+            display: "none",
+          },
         }}
       >
         {children}
