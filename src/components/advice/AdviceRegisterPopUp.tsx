@@ -3,32 +3,22 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
-//import requestd, { RequestSuccessHandler } from "../../lib/request.ts";
 import request, { RequestSuccessHandler } from "../../lib/request.ts";
-
-//import PopUp from "../common/PopUp.tsx";
-
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import { SelectChangeEvent } from "@mui/material/Select";
 import { Advicedata } from "../../mock/advice/adviceTable.ts";
 import adviceRegisterPopUpOpenState from "../../states/advice/AdviceRegisterPopUpOpenState.tsx";
 import adviceIdState from "../../states/advice/AdviceState.tsx";
 import CloseButton from "../common/CloseButton.tsx";
 import PopUp from "../common/PopUp.tsx";
-
+import "../../stylesheet/calendar.css";
 function AdviceRegisterPopUp() {
-  // const [name, setName] = useState("");
-  // const [email, setEmail] = useState("");
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
+  const [Clients, setClients] = useState<string[]>([]);
+  const [Members, setMembers] = useState<string[]>([]);
   const [date, setDate] = useState("");
-  const [advices, setAdvices] = useState<Advicedata[]>([]);
-  const [member, setMember] = useState("");
+  const [_, setAdvices] = useState<Advicedata[]>([]);
   const setAdviceId = useSetRecoilState(adviceIdState);
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setMember(event.target.value as string);
-  };
 
   const setAdviceRegisterPopUpOpen = useSetRecoilState(
     adviceRegisterPopUpOpenState,
@@ -61,20 +51,36 @@ function AdviceRegisterPopUp() {
   };
 
   return (
-    <PopUp>
+    <PopUp width={600}>
       <CloseButton onClick={handleCloseButtonClick} />
       <Typography variant="h5" sx={{ textAlign: "center" }}>
         상담 등록
       </Typography>
       <FormControl fullWidth>
         <InputLabel id="member">상담관</InputLabel>
-        <Select labelId="member" label="상담관">
-          <MenuItem value={10}>김더존</MenuItem>
+        <Select
+          labelId="member"
+          label="상담관"
+          multiple
+          value={Members}
+          onChange={(e) => setMembers(e.target.value as string[])}
+        >
+          <MenuItem value={0}>김세종</MenuItem>
+          <MenuItem value={1}>박지혁</MenuItem>
+          <MenuItem value={2}>오경민</MenuItem>
+          <MenuItem value={3}>한상진</MenuItem>
         </Select>
       </FormControl>
+
       <FormControl fullWidth>
         <InputLabel id="client">상담자</InputLabel>
-        <Select labelId="client" label="상담자">
+        <Select
+          labelId="client"
+          label="상담자"
+          multiple
+          value={Clients}
+          onChange={(e) => setClients(e.target.value as string[])}
+        >
           <MenuItem value={0}>홍길동</MenuItem>
           <MenuItem value={1}>김철수</MenuItem>
           <MenuItem value={2}>이영희</MenuItem>
@@ -88,7 +94,6 @@ function AdviceRegisterPopUp() {
         </Select>
       </FormControl>
       <TextField
-        rows={5}
         type="text"
         size="small"
         label="상담 제목"
@@ -101,12 +106,13 @@ function AdviceRegisterPopUp() {
         size="medium"
         label="상담 내용"
         multiline
+        rows={7}
         value={contents}
         onChange={(e) => setContents(e.target.value)}
       />
       <TextField
         type="date"
-        size="small"
+        size="medium"
         value={date}
         onChange={(e) => setDate(e.target.value)}
       />
