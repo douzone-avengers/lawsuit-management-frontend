@@ -20,7 +20,7 @@ import employeeIdState from "../../../states/employee/EmployeeIdState";
 import employeeButtonIdState from "../../../states/employee/EmployeeButtonIdState";
 
 function SubNavigationBar() {
-  const clientId = useRecoilValue(clientIdState);
+  const memberId = useRecoilValue(clientIdState);
   const caseId = useRecoilValue(caseIdState);
   const employeeId = useRecoilValue(employeeIdState);
   const [subNavigationBar, setSubNavigationBar] = useRecoilState(
@@ -70,13 +70,13 @@ function SubNavigationBar() {
             id: item.id,
             text: item.name,
             subText: item.lawsuitNum,
-            url: `cases/${item.id}?client=${clientId}`,
+            url: `cases/${item.id}?client=${memberId}`,
             SvgIcon: BalanceIcon,
           };
         });
         setSubNavigationBar({ ...subNavigationBar, items: newItems });
       };
-      request("GET", `/lawsuits/clients/${clientId}`, {
+      request("GET", `/lawsuits/members/${memberId}`, {
         onSuccess: handleRequestSuccess,
       });
     } else if (subNavigationBarType === "employee") {
@@ -94,8 +94,6 @@ function SubNavigationBar() {
             SvgIcon: BalanceIcon,
           };
         });
-        console.log("newItems ***");
-        console.log(newItems);
         setSubNavigationBar({ ...subNavigationBar, items: newItems });
       };
       request("GET", `/members?role=ADMIN,EMPLOYEE`, {
@@ -120,7 +118,7 @@ function SubNavigationBar() {
             selected={
               (subNavigationBarType === "client" ||
                 subNavigationBarType === "caseClient") &&
-              clientId === item.id
+              memberId === item.id
                 ? true
                 : subNavigationBarType === "case" && caseId === item.id
                 ? true

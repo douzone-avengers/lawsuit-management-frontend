@@ -2,7 +2,9 @@ import { Box } from "@mui/material";
 import { useState } from "react";
 import Info from "../advice/Adviceinfo";
 import TabBar, { TabItem } from "../common/TabBar";
+import CaseInfoTab from "./info/CaseInfoTab.tsx";
 import ExpenseInfo from "./expense/ExpenseInfo.tsx";
+
 function CaseDetailPage() {
   const [caseTabId, setCaseTabId] = useState(0);
 
@@ -10,7 +12,7 @@ function CaseDetailPage() {
     {
       id: 0,
       name: "사건 정보",
-      children: <div>사건 정보</div>,
+      children: <CaseInfoTab />,
     },
     {
       id: 1,

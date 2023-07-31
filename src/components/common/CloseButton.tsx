@@ -7,11 +7,10 @@ type Props = {
 
 function CloseButton({ onClick }: Props) {
   return (
-    <Box
-      sx={{ display: "flex", justifyContent: "right", cursor: "pointer" }}
-      onClick={onClick}
-    >
-      <CloseIcon />
+    <Box sx={{ display: "flex", justifyContent: "right" }}>
+      <Box sx={{ cursor: "pointer" }} onClick={onClick}>
+        <CloseIcon />
+      </Box>
     </Box>
   );
 }

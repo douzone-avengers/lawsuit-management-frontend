@@ -10,13 +10,13 @@ import Card from "@mui/material/Card";
 type EChartsOption = echarts.EChartsOption;
 
 function ClientCaseStatisticsChart() {
-  const clientId = useRecoilValue(clientIdState);
+  const memberId = useRecoilValue(clientIdState);
   const [cases, setCases] = useState<LawsuitData[]>([]);
   const totalAmountByStatusChartRef = useRef<HTMLDivElement>(null);
   const unreceivedAmountChartRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (typeof clientId !== "number") {
+    if (typeof memberId !== "number") {
       // TODO
       return;
     }
@@ -27,10 +27,10 @@ function ClientCaseStatisticsChart() {
       setCases(data);
     };
 
-    request("GET", `/lawsuits/clients/${clientId}`, {
+    request("GET", `/lawsuits/members/${memberId}`, {
       onSuccess: handleRequestSuccess,
     });
-  }, [clientId]);
+  }, [memberId]);
 
   // cases 데이터를 비동기로 처리해야함..
   function totalAmountByStatus(status: string): number {
