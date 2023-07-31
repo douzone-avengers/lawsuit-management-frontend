@@ -40,13 +40,6 @@ function Adviceinfo() {
     });
   }, [lawsuitId]);
 
-  // cases를 필터링하여 filteredCases에 할당
-  const filteredCases: Advicedata[] = advices.filter((item) => {
-    // 원하는 필터링 로직을 여기에 추가
-    // 예시: item.title이 "상담"을 포함하는 경우만 필터링
-    return true;
-  });
-
   return (
     <Box
       sx={{
@@ -61,9 +54,8 @@ function Adviceinfo() {
         <AdviceRegisterPopUpButton />
       </Box>
       <Box>
-        {/* filteredCases를 AdviceListTable 컴포넌트에 전달 */}
         <AdviceListTable
-          advices={filteredCases.map((item) => ({
+          advices={advices.map((item) => ({
             ...item,
             onClick: () => {
               navigate(`/cases/${item.id}?client=${clientId}`);
