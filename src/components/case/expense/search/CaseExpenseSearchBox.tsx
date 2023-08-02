@@ -16,6 +16,8 @@ import caseExpenseState, {
 import caseIdState from "../../../../states/case/CaseIdState.tsx";
 import request, { RequestSuccessHandler } from "../../../../lib/request.ts";
 import { updateUrl } from "../../info/reception/table/CaseReceptionTable.tsx";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import IconButton from "@mui/material/IconButton";
 
 function CaseExpenseSearchBox() {
   const [expenseSearch, setExpenseSearch] = useRecoilState(
@@ -81,17 +83,17 @@ function CaseExpenseSearchBox() {
     });
   };
 
-  // function formatDate(curDate: string): string {
-  //   const date = new Date(curDate);
-  //
-  //   const year = date.getFullYear();
-  //   const month = String(date.getMonth() + 1).padStart(2, "0");
-  //   const day = String(date.getDate()).padStart(2, "0");
-  //
-  //   const formattedDate = `${year}-${month}-${day}`;
-  //
-  //   return formattedDate;
-  // }
+  const handleResetClick = () => {
+    setSelectedStartDate("");
+    setExpenseSearch({
+      ...expenseSearch,
+      startSpeningAt: null,
+      endSpeningAt: null,
+      contents: "",
+      startAmount: 0,
+      endAmount: 0,
+    });
+  };
 
   const handleSubmitButtonClick = () => {
     if (caseId === null) {
@@ -137,6 +139,7 @@ function CaseExpenseSearchBox() {
       >
         <DatePicker
           label="시작일"
+          value={expenseSearch.startSpeningAt}
           format="YYYY-MM-DD"
           formatDensity="spacious"
           onChange={handleStartSpeningAt}
@@ -144,6 +147,7 @@ function CaseExpenseSearchBox() {
         <Box>–</Box>
         <DatePicker
           label="마지막일"
+          value={expenseSearch.endSpeningAt}
           format="YYYY-MM-DD"
           minDate={selectedStartDate}
           formatDensity="spacious"
@@ -185,6 +189,15 @@ function CaseExpenseSearchBox() {
             onClick: handleEndAmountClick,
           }}
         />
+      </Box>
+
+      <Box sx={{ width: "3%" }}>
+        <IconButton
+          sx={{ width: "100%", height: "100%" }}
+          onClick={handleResetClick}
+        >
+          <RefreshIcon color="primary" />
+        </IconButton>
       </Box>
       <Box sx={{ width: "11%" }}>
         <Button
