@@ -98,7 +98,7 @@ const getDetailExpenseHandler = rest.get(
 const postExpenseHandler = rest.post("/api/expense", async (req, res, ctx) => {
   const body: {
     lawsuitId: number;
-    spendingAt: string;
+    speningAt: string;
     contents: string;
     amount: number;
   } = await req.json();
@@ -106,7 +106,7 @@ const postExpenseHandler = rest.post("/api/expense", async (req, res, ctx) => {
   expenseTable.push({
     id: expenseTable.length + 1,
     ...body,
-    speningAt: new Date(body.spendingAt),
+    speningAt: new Date(body.speningAt),
     isDeleted: false,
   });
 
