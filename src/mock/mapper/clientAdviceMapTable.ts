@@ -36,6 +36,7 @@ const clientAdviceMapTable: clientAdviceMapTable[] = [
   { id: 28, clientId: 10, lawsuitId: 28, adviceId: 28 },
   { id: 29, clientId: 10, lawsuitId: 29, adviceId: 29 },
   { id: 30, clientId: 10, lawsuitId: 30, adviceId: 30 },
+  { id: 30, clientId: 1, lawsuitId: 1, adviceId: 25 },
 ];
 
 export default clientAdviceMapTable;

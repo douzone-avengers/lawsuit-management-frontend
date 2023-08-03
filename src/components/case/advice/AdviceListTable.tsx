@@ -5,7 +5,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Advicedata } from "../../mock/advice/adviceTable.ts";
+import { Advicedata } from "../../../mock/advice/adviceTable.ts";
 
 // type Props = {
 //   cases: Array<Advicedata & { onClick: () => void }>;
@@ -24,6 +24,7 @@ function AdviceListTable({ advices }: Props) {
             <TableCell></TableCell>
             <TableCell align="left">상담 제목</TableCell>
             <TableCell align="left">상담 내용</TableCell>
+            <TableCell align="left">상담 일시</TableCell>
             <TableCell align="left">상담 일시</TableCell>
           </TableRow>
         </TableHead>
@@ -46,6 +47,7 @@ function AdviceListTable({ advices }: Props) {
               <TableCell align="left">
                 {new Date(item.date).toLocaleDateString()}
               </TableCell>
+              <TableCell align="left"></TableCell>
             </TableRow>
           ))}
         </TableBody>

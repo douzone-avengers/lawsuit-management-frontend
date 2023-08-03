@@ -15,6 +15,10 @@ function ClientCaseStatisticsChart() {
   const totalAmountByStatusChartRef = useRef<HTMLDivElement>(null);
   const unreceivedAmountChartRef = useRef<HTMLDivElement>(null);
 
+  const [valueA, setValueA] = useState(0); // totalAmountByStatus("등록")
+  const [valueB, setValueB] = useState(0); // totalAmountByStatus("진행")
+  const [valueC, setValueC] = useState(0); //totalAmountByStatus("종결")
+
   useEffect(() => {
     if (typeof memberId !== "number") {
       // TODO
@@ -24,6 +28,8 @@ function ClientCaseStatisticsChart() {
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
       const body: { data: LawsuitData[] } = res.data;
       const { data } = body;
+      console.log("request success");
+
       setCases(data);
     };
 
@@ -32,30 +38,11 @@ function ClientCaseStatisticsChart() {
     });
   }, [memberId]);
 
-  // cases 데이터를 비동기로 처리해야함..
-  function totalAmountByStatus(status: string): number {
-    const total = cases.reduce((acc, item) => {
-      return item.lawsuitStatus === status ? acc + item.commissionFee : acc;
-    }, 0);
-
-    return total;
-  }
-
-  function unreceivedAmountByStatus(status: string): number {
-    const total = cases.reduce((acc, item) => {
-      return item.lawsuitStatus === status ? acc + item.commissionFee : acc;
-    }, 0);
-
-    return total;
-  }
-
-  function calculateSuccessAmount(): number {
-    const total = cases.reduce((acc, item) => {
-      return acc + item.contingentFee;
-    }, 0);
-
-    return total;
-  }
+  useEffect(() => {
+    setValueA(totalAmountByStatus("등록"));
+    setValueB(totalAmountByStatus("진행"));
+    setValueC(totalAmountByStatus("종결"));
+  }, [cases]);
 
   useEffect(() => {
     const totalAmountByStatusChart = echarts.init(
@@ -88,17 +75,17 @@ function ClientCaseStatisticsChart() {
           radius: "70%",
           data: [
             {
-              value: totalAmountByStatus("등록"),
+              value: valueA,
               name: "접수중",
               itemStyle: { color: "#BACDF4" },
             },
             {
-              value: totalAmountByStatus("진행"),
+              value: valueB,
               name: "진행중",
               itemStyle: { color: "#59B0F7" },
             },
             {
-              value: totalAmountByStatus("종결"),
+              value: valueC,
               name: "종결",
               itemStyle: { color: "#5B73C9" },
             },
@@ -174,7 +161,34 @@ function ClientCaseStatisticsChart() {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [valueA, valueB, valueC]);
+
+  // cases 데이터를 비동기로 처리해야함..
+  function totalAmountByStatus(status: string): number {
+    const total = cases.reduce((acc, item) => {
+      return item.lawsuitStatus === status ? acc + item.commissionFee : acc;
+    }, 0);
+
+    return total;
+  }
+
+  function unreceivedAmountByStatus(status: string): number {
+    const total = cases.reduce((acc, item) => {
+      return item.lawsuitStatus === status ? acc + item.commissionFee : acc;
+    }, 0);
+
+    return total;
+  }
+
+  function calculateSuccessAmount(): number {
+    const total = cases.reduce((acc, item) => {
+      return acc + item.contingentFee;
+    }, 0);
+
+    return total;
+  }
+
+  console.log("render");
 
   return (
     <Box

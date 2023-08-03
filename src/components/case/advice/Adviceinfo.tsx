@@ -1,26 +1,30 @@
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import request, { RequestSuccessHandler } from "../../lib/request.ts";
-import { Advicedata } from "../../mock/advice/adviceTable.ts";
-import adviceRegisterPopUpOpenState from "../../states/advice/AdviceRegisterPopUpOpenState.tsx";
-import adviceIdState from "../../states/advice/AdviceState.tsx";
-import caseIdState from "../../states/case/CaseIdState.tsx";
-import clientIdState from "../../states/client/ClientIdState.tsx";
-import ClientInfoCard from "../client/ClientInfoCard.tsx";
+import { useRecoilState, useRecoilValue } from "recoil";
+import request, { RequestSuccessHandler } from "../../../lib/request.ts";
+import { Advicedata } from "../../../mock/advice/adviceTable.ts";
+import adviceRegisterPopUpOpenState from "../../../states/advice/AdviceRegisterPopUpOpenState.tsx";
+import adviceIdState from "../../../states/advice/AdviceState.tsx";
+import caseIdState from "../../../states/case/CaseIdState.tsx";
+import clientIdState from "../../../states/client/ClientIdState.tsx";
 import AdviceListTable from "./AdviceListTable.tsx";
 import AdviceRegisterPopUp from "./AdviceRegisterPopUp.tsx";
 import AdviceRegisterPopUpButton from "./AdviceRegisterPopUpButton.tsx";
+import adviceDisplayState from "../../../states/advice/AdviceDisplayState.tsx";
+import AdviceDetailTable from "./AdviceDetailTable.tsx";
 
 function Adviceinfo() {
   const clientId = useRecoilValue(clientIdState);
   const lawsuitId = useRecoilValue(caseIdState);
-  const setAdviceId = useSetRecoilState(adviceIdState);
+  const [, setAdviceId] = useRecoilState(adviceIdState);
   const adviceRegisterPopUpOpen = useRecoilValue(adviceRegisterPopUpOpenState);
+  const [adviceDisplay, setAdviceDisplay] = useRecoilState(adviceDisplayState);
 
-  const navigate = useNavigate();
   const [advices, setAdvices] = useState<Advicedata[]>([]);
+
+  useEffect(() => {
+    setAdviceDisplay(0);
+  }, []);
 
   useEffect(() => {
     if (typeof clientId !== "number") {
@@ -54,15 +58,19 @@ function Adviceinfo() {
         <AdviceRegisterPopUpButton />
       </Box>
       <Box>
-        <AdviceListTable
-          advices={advices.map((item) => ({
-            ...item,
-            onClick: () => {
-              navigate(`/cases/${item.id}?client=${clientId}`);
-              <ClientInfoCard></ClientInfoCard>;
-            },
-          }))}
-        />
+        {adviceDisplay === 0 ? (
+          <AdviceListTable
+            advices={advices.map((item) => ({
+              ...item,
+              onClick: () => {
+                setAdviceId(item.id);
+                setAdviceDisplay(1);
+              },
+            }))}
+          />
+        ) : adviceDisplay === 1 ? (
+          <AdviceDetailTable />
+        ) : null}
       </Box>
       {adviceRegisterPopUpOpen ? <AdviceRegisterPopUp /> : null}
     </Box>
