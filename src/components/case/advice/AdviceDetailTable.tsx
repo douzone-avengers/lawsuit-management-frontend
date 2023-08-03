@@ -18,7 +18,7 @@ function AdviceDetailTable() {
   const [, setClientId] = useRecoilState(clientIdState);
 
   const [advices, setAdvices] = useState<Advicedata[]>([]);
-  const [clients, setClients] = useState<ClientData[]>([]);
+  const [client, setClient] = useState<ClientData | null>(null);
 
   useEffect(() => {
     if (typeof clientId !== "number") {
@@ -34,13 +34,13 @@ function AdviceDetailTable() {
     };
 
     const handleRequest: RequestSuccessHandler = (res) => {
-      const body: { data: ClientData[] } = res.data;
+      const body: { data: ClientData } = res.data;
       const { data } = body;
-      setClients(data);
-      setClientId(data[0]?.id);
+      setClient(data);
+      setClientId(data?.id);
     };
 
-    request("GET", `/clients/:${clientId}`, {
+    request("GET", `/clients/${clientId}`, {
       onSuccess: handleRequest,
     });
 
@@ -60,7 +60,7 @@ function AdviceDetailTable() {
     >
       <Box></Box>
       <Box>
-        <AdviceDetailPage advices={advices} clients={clients} />
+        <AdviceDetailPage advices={advices} client={client} />
       </Box>
     </Box>
   );

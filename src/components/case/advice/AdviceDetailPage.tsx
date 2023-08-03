@@ -10,39 +10,15 @@ import { ClientData } from "../../../mock/client/clientTable.ts";
 
 type Props = {
   advices: Advicedata[];
-  clients: ClientData[];
+  client: ClientData | null;
 };
 
-function AdviceDetailPage({ advices, clients }: Props) {
+function AdviceDetailPage({ advices, client }: Props) {
+  console.dir(client);
+
   return (
     <div>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell></TableCell>
-              <TableCell align="left">상담자</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {clients.map((item, index) => (
-              <TableRow
-                key={item.id}
-                hover={true}
-                sx={{
-                  "&:last-child td, &:last-child th": { border: 0 },
-                  cursor: "pointer",
-                }}
-              >
-                <TableCell component="th" scope="row">
-                  {index + 1}
-                </TableCell>
-                <TableCell align="left">{item.name}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <div>{client?.name}</div>
 
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -55,7 +31,7 @@ function AdviceDetailPage({ advices, clients }: Props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {advices.map((item, index) => (
+            {advices?.map((item, index) => (
               <TableRow
                 key={item.id}
                 hover={true}
