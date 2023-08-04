@@ -1,15 +1,24 @@
 import Box from "@mui/material/Box";
-import ExpenseSearch from "./ExpenseSearch";
-import ExpenseListTable from "./ExpenseListTable";
+import CaseExpenseSearchBox from "./search/CaseExpenseSearchBox.tsx";
+import CaseExpenseTable from "./table/CaseExpenseTable.tsx";
+import Card from "@mui/material/Card";
+import caseExpenseAddPopUpOpenState from "../../../states/case/info/expense/CaseExpenseAddPopUpOpenState.tsx";
+import { useRecoilValue } from "recoil";
+import CaseExpenseAddPopUp from "./table/popup/CaseExpenseAddPopUp.tsx";
 
 function ExpenseInfo() {
+  const expenseAddPopUpOpen = useRecoilValue(caseExpenseAddPopUpOpenState);
+
   return (
-    <Box
-      sx={{ display: "flex", gap: 3, flexDirection: "column", height: "100%" }}
-    >
-      <ExpenseSearch />
-      <ExpenseListTable />
-    </Box>
+    <>
+      <Card>
+        <Box sx={{ marginTop: 2 }}>
+          <CaseExpenseSearchBox />
+          <CaseExpenseTable />
+        </Box>
+      </Card>
+      {expenseAddPopUpOpen ? <CaseExpenseAddPopUp /> : null}
+    </>
   );
 }
 
