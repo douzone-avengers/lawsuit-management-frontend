@@ -1,11 +1,11 @@
 import Card from "@mui/material/Card";
-import CardTitle from "../common/CardTitle.tsx";
+import CardTitle from "../../common/CardTitle.tsx";
 import List from "@mui/material/List";
-import ListProfileItem from "../common/ListProfileItem.tsx";
+import ListProfileItem from "../../common/ListProfileItem.tsx";
 import { useRecoilValue } from "recoil";
-import caseInfoState from "../../../../states/case/info/caseInfoState.tsx";
+import caseInfoState from "../../../states/case/info/caseInfoState.tsx";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import { delimiter } from "../../../../lib/convert.ts";
+import { delimiter } from "../../../lib/convert.ts";
 
 function CaseCostInfoCard() {
   const caseInfo = useRecoilValue(caseInfoState);

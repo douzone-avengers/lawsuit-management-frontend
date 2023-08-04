@@ -1,12 +1,12 @@
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import caseReceptionsState, {
-  CaseReceptionRowType,
-} from "../../../../../../states/case/info/reception/CaseReceptionsState.tsx";
 import { useRecoilState } from "recoil";
 import { produce } from "immer";
 import { Typography } from "@mui/material";
+import caseReceptionsState, {
+  CaseReceptionRowType,
+} from "../../../../../states/case/info/reception/CaseReceptionsState.tsx";
 
 type Props = {
   item: CaseReceptionRowType & { editable: boolean };

@@ -1,14 +1,12 @@
-import caseReceptionsState, {
-  CaseReceptionRowType,
-} from "../../../../../../states/case/info/reception/CaseReceptionsState.tsx";
-import request, {
-  RequestSuccessHandler,
-} from "../../../../../../lib/request.ts";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { caseReceptionSearchUrlState } from "../../../../../../states/case/info/reception/CaseReceptionSearchState.tsx";
-import caseReceptionSizeState from "../../../../../../states/case/info/reception/CaseReceptionSizeState.tsx";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Button } from "@mui/material";
+import caseReceptionsState, {
+  CaseReceptionRowType,
+} from "../../../../../states/case/info/reception/CaseReceptionsState.tsx";
+import caseReceptionSizeState from "../../../../../states/case/info/reception/CaseReceptionSizeState.tsx";
+import { caseReceptionSearchUrlState } from "../../../../../states/case/info/reception/CaseReceptionSearchState.tsx";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import request, { RequestSuccessHandler } from "../../../../../lib/request.ts";
 
 type Props = {
   item: CaseReceptionRowType & { editable: boolean };

@@ -5,9 +5,9 @@ import TextFieldsIcon from "@mui/icons-material/TextFields";
 import TagIcon from "@mui/icons-material/Tag";
 import BalanceIcon from "@mui/icons-material/Balance";
 import { useRecoilValue } from "recoil";
-import caseInfoState from "../../../../states/case/info/caseInfoState.tsx";
-import CardTitle from "../common/CardTitle.tsx";
-import ListProfileItem from "../common/ListProfileItem.tsx";
+import caseInfoState from "../../../states/case/info/caseInfoState.tsx";
+import CardTitle from "../../common/CardTitle.tsx";
+import ListProfileItem from "../../common/ListProfileItem.tsx";
 
 function CaseBasicInfoCard() {
   const caseInfo = useRecoilValue(caseInfoState);

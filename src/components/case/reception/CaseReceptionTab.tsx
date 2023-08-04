@@ -1,18 +1,14 @@
 import Box from "@mui/material/Box";
-import CaseBasicInfoCard from "./basic/CaseBasicInfoCard.tsx";
-import CaseEmployeeInfoCard from "./employee/CaseEmployeeInfoCard.tsx";
-import CaseClientInfoCard from "./client/CaseClientInfoCard.tsx";
-import CaseCostInfoCard from "./cost/CaseCostInfoCard.tsx";
-import CaseReceptionInfoCard from "./reception/CaseReceptionInfoCard.tsx";
+import CaseReceptionInfoCard from "./CaseReceptionInfoCard.tsx";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import caseIdState from "../../../states/case/CaseIdState.tsx";
 import { useEffect } from "react";
-import request, { RequestSuccessHandler } from "../../../lib/request.ts";
+import caseIdState from "../../../states/case/CaseIdState.tsx";
 import caseInfoState, {
   CaseInfoType,
 } from "../../../states/case/info/caseInfoState.tsx";
+import request, { RequestSuccessHandler } from "../../../lib/request.ts";
 
-function CaseInfoTab() {
+function CaseReceptionTab() {
   const caseId = useRecoilValue(caseIdState);
   const setCaseInfo = useSetRecoilState(caseInfoState);
 
@@ -39,17 +35,9 @@ function CaseInfoTab() {
         gap: 1,
       }}
     >
-      <Box sx={{ display: "flex", gap: 1 }}>
-        <CaseBasicInfoCard />
-        <CaseCostInfoCard />
-      </Box>
-      <Box sx={{ display: "flex", gap: 1 }}>
-        <CaseEmployeeInfoCard />
-        <CaseClientInfoCard />
-      </Box>
       <CaseReceptionInfoCard />
     </Box>
   );
 }
 
-export default CaseInfoTab;
+export default CaseReceptionTab;

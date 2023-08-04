@@ -26,6 +26,7 @@ import employeeButtonIdState from "../../states/employee/EmployeeButtonIdState";
 import EmployeeListPage from "../employee/list/EmployeesListPage";
 import employeeIdState from "../../states/employee/EmployeeIdState";
 import EmployeeCasePage from "../employee/case/EmployeeCasePage";
+import caseTabIdState from "../../states/case/CaseTabIdState.tsx";
 
 function AppRoutes() {
   const location = useLocation();
@@ -38,9 +39,9 @@ function AppRoutes() {
   );
   const setSubNavigationBarType = useSetRecoilState(subNavigationBarTypeState);
   const setCaseButtonId = useSetRecoilState(caseButtonIdState);
-
   const setEmployeeButtonId = useSetRecoilState(employeeButtonIdState);
   const setEmployeeId = useSetRecoilState(employeeIdState);
+  const setCaseTabId = useSetRecoilState(caseTabIdState);
 
   useEffect(() => {
     const { pathname, search } = location;
@@ -57,6 +58,9 @@ function AppRoutes() {
       }
     }
     const length = paths.length - 1;
+
+    // *
+    setCaseTabId(0);
 
     // /
     if (length === 1 && paths[1] === "") {

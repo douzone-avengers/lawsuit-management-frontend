@@ -5,19 +5,19 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import { DatePicker } from "@mui/x-date-pickers";
 import { Button, TextField } from "@mui/material";
-import request, { RequestSuccessHandler } from "../../../../../lib/request.ts";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import caseReceptionsState, {
-  CaseReceptionRowType,
-} from "../../../../../states/case/info/reception/CaseReceptionsState.tsx";
-import caseIdState from "../../../../../states/case/CaseIdState.tsx";
+import { ChangeEvent } from "react";
+import { updateUrl } from "../table/CaseReceptionTable.tsx";
 import caseReceptionSearchState, {
   caseReceptionSearchUrlState,
-} from "../../../../../states/case/info/reception/CaseReceptionSearchState.tsx";
-import caseReceptionSizeState from "../../../../../states/case/info/reception/CaseReceptionSizeState.tsx";
-import caseReceptionPageState from "../../../../../states/case/info/reception/CaseReceptionPageState.tsx";
-import { updateUrl } from "../table/CaseReceptionTable.tsx";
-import { ChangeEvent } from "react";
+} from "../../../../states/case/info/reception/CaseReceptionSearchState.tsx";
+import caseReceptionPageState from "../../../../states/case/info/reception/CaseReceptionPageState.tsx";
+import caseReceptionSizeState from "../../../../states/case/info/reception/CaseReceptionSizeState.tsx";
+import caseIdState from "../../../../states/case/CaseIdState.tsx";
+import caseReceptionsState, {
+  CaseReceptionRowType,
+} from "../../../../states/case/info/reception/CaseReceptionsState.tsx";
+import request, { RequestSuccessHandler } from "../../../../lib/request.ts";
 
 function CaseReceptionSearchBox() {
   const [receptionSearch, setReceptionSearch] = useRecoilState(

@@ -1,8 +1,7 @@
 import Box from "@mui/material/Box";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import IconButton from "@mui/material/IconButton";
 import { useSetRecoilState } from "recoil";
-import caseReceptionAddPopUpOpenState from "../../../../../../states/case/info/reception/CaseReceptionAddPopUpOpenState.tsx";
+import caseReceptionAddPopUpOpenState from "../../../../../states/case/info/reception/CaseReceptionAddPopUpOpenState.tsx";
+import Button from "@mui/material/Button";
 
 function CaseReceptionHeaderRow() {
   const setReceptionAddPopUpOpen = useSetRecoilState(
@@ -14,10 +13,19 @@ function CaseReceptionHeaderRow() {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box
+      sx={{
+        display: "flex",
+        background: "#2196f3",
+        fontWeight: 700,
+        color: "white",
+        width: "100%",
+      }}
+    >
+      <Box sx={{ width: 20 }}></Box>
       <Box
         sx={{
-          width: "15%",
+          width: 100,
           height: 40,
           display: "flex",
           justifyContent: "center",
@@ -28,7 +36,7 @@ function CaseReceptionHeaderRow() {
       </Box>
       <Box
         sx={{
-          width: "15%",
+          width: 100,
           height: 40,
           display: "flex",
           justifyContent: "center",
@@ -39,7 +47,7 @@ function CaseReceptionHeaderRow() {
       </Box>
       <Box
         sx={{
-          width: "15%",
+          flexGrow: 1,
           height: 40,
           display: "flex",
           justifyContent: "center",
@@ -50,7 +58,7 @@ function CaseReceptionHeaderRow() {
       </Box>
       <Box
         sx={{
-          width: "15%",
+          width: 150,
           height: 40,
           display: "flex",
           justifyContent: "center",
@@ -61,7 +69,7 @@ function CaseReceptionHeaderRow() {
       </Box>
       <Box
         sx={{
-          width: "15%",
+          width: 150,
           height: 40,
           display: "flex",
           justifyContent: "center",
@@ -72,16 +80,20 @@ function CaseReceptionHeaderRow() {
       </Box>
       <Box
         sx={{
-          width: "25%",
+          width: 200,
           height: 40,
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
         }}
       >
-        <IconButton onClick={handleReceptionAddButtonClick}>
-          <AddCircleIcon color="primary" />
-        </IconButton>
+        <Button
+          variant="contained"
+          sx={{ color: "secondary" }}
+          onClick={handleReceptionAddButtonClick}
+        >
+          등록
+        </Button>
       </Box>
     </Box>
   );

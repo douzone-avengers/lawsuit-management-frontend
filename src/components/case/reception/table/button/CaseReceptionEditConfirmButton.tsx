@@ -1,13 +1,11 @@
-import caseReceptionsState, {
-  CaseReceptionRowType,
-} from "../../../../../../states/case/info/reception/CaseReceptionsState.tsx";
 import { useRecoilState } from "recoil";
-import request, {
-  RequestSuccessHandler,
-} from "../../../../../../lib/request.ts";
 import { produce } from "immer";
 import { Button } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
+import caseReceptionsState, {
+  CaseReceptionRowType,
+} from "../../../../../states/case/info/reception/CaseReceptionsState.tsx";
+import request, { RequestSuccessHandler } from "../../../../../lib/request.ts";
 
 type Props = {
   item: CaseReceptionRowType & { editable: boolean };
