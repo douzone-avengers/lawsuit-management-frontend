@@ -17,6 +17,7 @@ function request(
   method: HttpMethod,
   path: string,
   config?: {
+    withToken?: boolean;
     body?: Record<string, unknown>;
     params?: Record<string, string>;
     headers?: Record<string, string>;
@@ -28,22 +29,26 @@ function request(
   const ROOT = import.meta.env.DEV ? "http://localhost:3000/api" : ""; // TODO: 배포되고 난 다음
   const url = path.startsWith("/") ? `${ROOT}${path}` : `${ROOT}/${path}`;
 
-  const accessToken = localStorage.getItem("accessToken");
-
-  const headersWithAuthorization = {
+  const requestHeader = {
     ...config?.headers,
   };
-  if (accessToken !== null) {
-    headersWithAuthorization["Authorization"] = `Bearer ${accessToken}`;
-  }
 
+  const withToken = config?.withToken ?? true;
+
+  if (withToken) {
+    const accessToken = localStorage.getItem("accessToken");
+
+    if (accessToken !== null) {
+      requestHeader["Authorization"] = `Bearer ${accessToken}`;
+    }
+  }
   axios
     .request({
       method,
       url,
       data: config?.body,
       params: config?.params,
-      headers: headersWithAuthorization,
+      headers: { ...requestHeader },
       timeout: config?.timeout,
     })
     .then((res) => {
