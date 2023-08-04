@@ -12,7 +12,7 @@ import caseReceptionSizeState from "../../../../states/case/info/reception/CaseR
 import { caseExpenseSearchUrlState } from "../../../../states/case/info/expense/CaseExpenseSearchState.tsx";
 import CaseExpenseHeaderRow from "./row/CaseExpenseHeaderRow.tsx";
 import CaseExpenseDataRow from "./row/CaseExpenseDataRow.tsx";
-import { updateUrl } from "../../info/reception/table/CaseReceptionTable.tsx";
+import { updateUrl } from "../../reception/table/CaseReceptionTable.tsx";
 
 function CaseExpenseTable() {
   const theme = useTheme();

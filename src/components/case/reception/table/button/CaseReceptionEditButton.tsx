@@ -1,10 +1,10 @@
 import { useRecoilState } from "recoil";
-import caseReceptionsState, {
-  CaseReceptionRowType,
-} from "../../../../../../states/case/info/reception/CaseReceptionsState.tsx";
 import { produce } from "immer";
 import { Button } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import caseReceptionsState, {
+  CaseReceptionRowType,
+} from "../../../../../states/case/info/reception/CaseReceptionsState.tsx";
 
 type Props = {
   item: CaseReceptionRowType & { editable: boolean };

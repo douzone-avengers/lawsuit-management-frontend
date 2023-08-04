@@ -1,9 +1,9 @@
 import { useRecoilValue } from "recoil";
-import caseInfoState from "../../../../states/case/info/caseInfoState.tsx";
+import caseInfoState from "../../../states/case/info/caseInfoState.tsx";
 import Card from "@mui/material/Card";
-import CardTitle from "../common/CardTitle.tsx";
+import CardTitle from "../../common/CardTitle.tsx";
 import List from "@mui/material/List";
-import ListProfileItem from "../common/ListProfileItem.tsx";
+import ListProfileItem from "../../common/ListProfileItem.tsx";
 import PersonIcon from "@mui/icons-material/Person";
 
 function CaseClientInfoCard() {

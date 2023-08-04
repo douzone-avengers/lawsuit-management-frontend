@@ -1,11 +1,11 @@
-import caseReceptionsState, {
-  CaseReceptionRowType,
-} from "../../../../../../states/case/info/reception/CaseReceptionsState.tsx";
 import { TextField } from "@mui/material";
 import { useRecoilState } from "recoil";
 import { ChangeEvent } from "react";
 import { produce } from "immer";
 import Box from "@mui/material/Box";
+import caseReceptionsState, {
+  CaseReceptionRowType,
+} from "../../../../../states/case/info/reception/CaseReceptionsState.tsx";
 
 type Props = {
   item: CaseReceptionRowType & { editable: boolean };

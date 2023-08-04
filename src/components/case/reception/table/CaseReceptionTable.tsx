@@ -1,17 +1,17 @@
 import Box from "@mui/material/Box";
 import { useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import caseReceptionsState, {
-  CaseReceptionRowType,
-} from "../../../../../states/case/info/reception/CaseReceptionsState.tsx";
-import request, { RequestSuccessHandler } from "../../../../../lib/request.ts";
-import caseIdState from "../../../../../states/case/CaseIdState.tsx";
 import { Button, Divider, useTheme } from "@mui/material";
-import caseReceptionPageState from "../../../../../states/case/info/reception/CaseReceptionPageState.tsx";
-import caseReceptionSizeState from "../../../../../states/case/info/reception/CaseReceptionSizeState.tsx";
-import { caseReceptionSearchUrlState } from "../../../../../states/case/info/reception/CaseReceptionSearchState.tsx";
 import CaseReceptionDataRow from "./row/CaseReceptionDataRow.tsx";
 import CaseReceptionHeaderRow from "./row/CaseReceptionHeaderRow.tsx";
+import caseIdState from "../../../../states/case/CaseIdState.tsx";
+import caseReceptionsState, {
+  CaseReceptionRowType,
+} from "../../../../states/case/info/reception/CaseReceptionsState.tsx";
+import caseReceptionPageState from "../../../../states/case/info/reception/CaseReceptionPageState.tsx";
+import caseReceptionSizeState from "../../../../states/case/info/reception/CaseReceptionSizeState.tsx";
+import { caseReceptionSearchUrlState } from "../../../../states/case/info/reception/CaseReceptionSearchState.tsx";
+import request, { RequestSuccessHandler } from "../../../../lib/request.ts";
 
 export function updateUrl(url: string, newPage: number): string {
   return url.replace(/(page=)\d+/, `$1${newPage}`);

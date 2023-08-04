@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import IconButton from "@mui/material/IconButton";
 import { useSetRecoilState } from "recoil";
-import caseReceptionAddPopUpOpenState from "../../../../../../states/case/info/reception/CaseReceptionAddPopUpOpenState.tsx";
+import caseReceptionAddPopUpOpenState from "../../../../../states/case/info/reception/CaseReceptionAddPopUpOpenState.tsx";
 
 function CaseReceptionHeaderRow() {
   const setReceptionAddPopUpOpen = useSetRecoilState(

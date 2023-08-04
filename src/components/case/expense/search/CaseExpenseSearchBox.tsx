@@ -15,9 +15,9 @@ import caseExpenseState, {
 } from "../../../../states/case/info/expense/CaseExpenseState.tsx";
 import caseIdState from "../../../../states/case/CaseIdState.tsx";
 import request, { RequestSuccessHandler } from "../../../../lib/request.ts";
-import { updateUrl } from "../../info/reception/table/CaseReceptionTable.tsx";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import IconButton from "@mui/material/IconButton";
+import { updateUrl } from "../../reception/table/CaseReceptionTable.tsx";
 
 function CaseExpenseSearchBox() {
   const [expenseSearch, setExpenseSearch] = useRecoilState(

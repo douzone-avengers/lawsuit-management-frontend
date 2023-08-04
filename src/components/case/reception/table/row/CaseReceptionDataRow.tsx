@@ -1,4 +1,3 @@
-import { CaseReceptionRowType } from "../../../../../../states/case/info/reception/CaseReceptionsState.tsx";
 import Box from "@mui/material/Box";
 import CaseReceptionContentsCell from "../cell/CaseReceptionContentsCell.tsx";
 import CaseReceptionReceivedAtCell from "../cell/CaseReceptionReceivedAtCell.tsx";
@@ -8,6 +7,7 @@ import CaseReceptionEditButton from "../button/CaseReceptionEditButton.tsx";
 import CaseReceptionEditConfirmButton from "../button/CaseReceptionEditConfirmButton.tsx";
 import CaseReceptionDeadlineCell from "../cell/CaseReceptionDeadlineCell.tsx";
 import CaseReceptionDeleteButton from "../button/CaseReceptionDeleteButton.tsx";
+import { CaseReceptionRowType } from "../../../../../states/case/info/reception/CaseReceptionsState.tsx";
 
 type Props = {
   item: CaseReceptionRowType & { editable: boolean };

@@ -2,9 +2,13 @@ import { Box } from "@mui/material";
 import { useState } from "react";
 import Info from "./advice/Adviceinfo";
 import TabBar, { TabItem } from "../common/TabBar";
-import CaseInfoTab from "./info/CaseInfoTab.tsx";
 import ExpenseInfo from "./expense/ExpenseInfo.tsx";
 import Closing from "./closing/ClosingInfo.tsx";
+import CaseReceptionTab from "./reception/CaseReceptionTab.tsx";
+import CaseBasicInfoCard from "./common/CaseBasicInfoCard.tsx";
+import CaseCostInfoCard from "./common/CaseCostInfoCard.tsx";
+import CaseEmployeeInfoCard from "./common/CaseEmployeeInfoCard.tsx";
+import CaseClientInfoCard from "./common/CaseClientInfoCard.tsx";
 
 function CaseDetailPage() {
   const [caseTabId, setCaseTabId] = useState(0);
@@ -13,7 +17,7 @@ function CaseDetailPage() {
     {
       id: 0,
       name: "사건 정보",
-      children: <CaseInfoTab />,
+      children: <CaseReceptionTab />,
     },
     {
       id: 1,
@@ -46,6 +50,14 @@ function CaseDetailPage() {
 
   return (
     <Box>
+      <Box sx={{ display: "flex", gap: 1 }}>
+        <CaseBasicInfoCard />
+        <CaseCostInfoCard />
+      </Box>
+      <Box sx={{ display: "flex", gap: 1 }}>
+        <CaseEmployeeInfoCard />
+        <CaseClientInfoCard />
+      </Box>
       <TabBar items={clientTab} value={caseTabId} setValue={setCaseTabId} />
     </Box>
   );
