@@ -5,7 +5,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Advicedata } from "../../mock/advice/adviceTable.ts";
+import { Advicedata } from "../../../mock/advice/adviceTable.ts";
 
 // type Props = {
 //   cases: Array<Advicedata & { onClick: () => void }>;
@@ -16,6 +16,16 @@ type Props = {
 };
 
 function AdviceListTable({ advices }: Props) {
+  const maxContentLength = 20;
+
+  const trimContent = (content: string) => {
+    if (content.length <= maxContentLength) {
+      return content;
+    } else {
+      return content.slice(0, maxContentLength) + " ...";
+    }
+  };
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -42,10 +52,11 @@ function AdviceListTable({ advices }: Props) {
                 {index + 1}
               </TableCell>
               <TableCell align="left">{item.title}</TableCell>
-              <TableCell align="left">{item.contents}</TableCell>
+              <TableCell align="left">{trimContent(item.contents)}</TableCell>
               <TableCell align="left">
                 {new Date(item.date).toLocaleDateString()}
               </TableCell>
+              <TableCell align="left"></TableCell>
             </TableRow>
           ))}
         </TableBody>

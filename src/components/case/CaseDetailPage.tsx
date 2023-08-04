@@ -1,9 +1,10 @@
 import { Box } from "@mui/material";
 import { useState } from "react";
-import Info from "../advice/Adviceinfo";
+import Info from "./advice/Adviceinfo";
 import TabBar, { TabItem } from "../common/TabBar";
 import CaseInfoTab from "./info/CaseInfoTab.tsx";
 import ExpenseInfo from "./expense/ExpenseInfo.tsx";
+import Closing from "./closing/ClosingInfo.tsx";
 
 function CaseDetailPage() {
   const [caseTabId, setCaseTabId] = useState(0);
@@ -35,7 +36,11 @@ function CaseDetailPage() {
     {
       id: 3,
       name: "종결",
-      children: <div>종결 정보</div>,
+      children: (
+        <div>
+          <Closing />
+        </div>
+      ),
     },
   ]);
 

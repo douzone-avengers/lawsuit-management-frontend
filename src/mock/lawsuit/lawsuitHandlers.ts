@@ -72,6 +72,28 @@ const lawsuitByMemberHandler = rest.get(
   },
 );
 
-const lawsuitHandlers = [lawsuitDetailHandler, lawsuitByMemberHandler];
+const closingHandler = rest.get(
+  "/api/lawsuit/:lawsuitId/client/:clientId",
+  async (req, res, ctx) => {
+    const clientId = Number.parseInt(req.params["clientId"] as string);
+    const lawsuitId = Number.parseInt(req.params["lawsuitId"] as string);
+
+    const lawsuitIds = clientLawsuitMapTable
+      .filter(
+        (item) => item.clientId === clientId && item.lawsuitId === lawsuitId,
+      )
+      .map((item) => item.lawsuitId);
+
+    const result = lawsuitTable.filter((item) => lawsuitIds.includes(item.id));
+
+    return res(ctx.status(200), ctx.json({ data: result }));
+  },
+);
+
+const lawsuitHandlers = [
+  lawsuitDetailHandler,
+  lawsuitByMemberHandler,
+  closingHandler,
+];
 
 export default lawsuitHandlers;
