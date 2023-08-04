@@ -9,9 +9,11 @@ import CaseBasicInfoCard from "./common/CaseBasicInfoCard.tsx";
 import CaseCostInfoCard from "./common/CaseCostInfoCard.tsx";
 import CaseEmployeeInfoCard from "./common/CaseEmployeeInfoCard.tsx";
 import CaseClientInfoCard from "./common/CaseClientInfoCard.tsx";
+import { useRecoilState } from "recoil";
+import caseTabIdState from "../../states/case/CaseTabIdState.tsx";
 
 function CaseDetailPage() {
-  const [caseTabId, setCaseTabId] = useState(0);
+  const [caseTabId, setCaseTabId] = useRecoilState(caseTabIdState);
 
   const [clientTab] = useState<TabItem[]>([
     {
