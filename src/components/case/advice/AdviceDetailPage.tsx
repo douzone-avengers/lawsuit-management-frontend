@@ -14,8 +14,6 @@ type Props = {
 };
 
 function AdviceDetailPage({ advices, client }: Props) {
-  console.dir(client);
-
   return (
     <div>
       <div>{client?.name}</div>
@@ -28,6 +26,8 @@ function AdviceDetailPage({ advices, client }: Props) {
               <TableCell align="left">상담 제목</TableCell>
               <TableCell align="left">상담 내용</TableCell>
               <TableCell align="left">상담 일시</TableCell>
+              <TableCell align="left">상담자</TableCell>
+              <TableCell align="left">상담관</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -48,6 +48,8 @@ function AdviceDetailPage({ advices, client }: Props) {
                 <TableCell align="left">
                   {new Date(item.date).toLocaleDateString()}
                 </TableCell>
+                <TableCell align="left">홍길동,김철수</TableCell>
+                <TableCell align="left">김더존,김길동</TableCell>
               </TableRow>
             ))}
           </TableBody>

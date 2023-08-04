@@ -9,8 +9,8 @@ import { LawsuitData } from "../../../mock/lawsuit/lawsuitTable.ts";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { useState } from "react";
-import FormControl from "@mui/material/FormControl";
-import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
+import { Stack } from "@mui/material";
 
 type Props = {
   lawsuits: (LawsuitData & { onClick: () => void })[];
@@ -70,15 +70,11 @@ function ClosingTable({ lawsuits }: Props) {
                 </ButtonGroup>
               </TableCell>
               <TableCell align="left">
-                <FormControl>
-                  <RadioGroup>
-                    <FormControlLabel
-                      value="Closing"
-                      control={<Radio />}
-                      label="종결"
-                    />
-                  </RadioGroup>
-                </FormControl>
+                <Stack>
+                  <Button variant="contained" endIcon={<SendIcon />}>
+                    종결
+                  </Button>
+                </Stack>
               </TableCell>
             </TableRow>
           ))}

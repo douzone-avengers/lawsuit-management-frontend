@@ -16,6 +16,16 @@ type Props = {
 };
 
 function AdviceListTable({ advices }: Props) {
+  const maxContentLength = 20;
+
+  const trimContent = (content: string) => {
+    if (content.length <= maxContentLength) {
+      return content;
+    } else {
+      return content.slice(0, maxContentLength) + " ...";
+    }
+  };
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -24,7 +34,6 @@ function AdviceListTable({ advices }: Props) {
             <TableCell></TableCell>
             <TableCell align="left">상담 제목</TableCell>
             <TableCell align="left">상담 내용</TableCell>
-            <TableCell align="left">상담 일시</TableCell>
             <TableCell align="left">상담 일시</TableCell>
           </TableRow>
         </TableHead>
@@ -43,7 +52,7 @@ function AdviceListTable({ advices }: Props) {
                 {index + 1}
               </TableCell>
               <TableCell align="left">{item.title}</TableCell>
-              <TableCell align="left">{item.contents}</TableCell>
+              <TableCell align="left">{trimContent(item.contents)}</TableCell>
               <TableCell align="left">
                 {new Date(item.date).toLocaleDateString()}
               </TableCell>
