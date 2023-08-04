@@ -26,7 +26,6 @@ function CaseExpenseEditButton({ item }: Props) {
       sx={{ marginLeft: 1, marginRight: 1 }}
       size="small"
       variant="outlined"
-      fullWidth
       onClick={handleClick}
     >
       <EditIcon />
