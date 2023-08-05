@@ -101,7 +101,7 @@ function LoginPage() {
           sx={{ cursor: "pointer" }}
           variant="caption"
           onClick={() => {
-            navigate("/join");
+            navigate("/validate");
           }}
         >
           회원가입

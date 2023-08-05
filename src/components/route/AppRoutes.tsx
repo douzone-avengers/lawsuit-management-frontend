@@ -27,6 +27,7 @@ import EmployeeListPage from "../employee/list/EmployeesListPage";
 import employeeIdState from "../../states/employee/EmployeeIdState";
 import EmployeeCasePage from "../employee/case/EmployeeCasePage";
 import caseTabIdState from "../../states/case/CaseTabIdState.tsx";
+import ValidatePage from "../join/ValidatePage";
 
 function AppRoutes() {
   const location = useLocation();
@@ -217,6 +218,12 @@ function AppRoutes() {
       return;
     }
 
+    // /validate
+    if (length === 1 && paths[1] === "validate") {
+      cleanUp();
+      return;
+    }
+
     // /join
     if (length === 1 && paths[1] === "join") {
       cleanUp();
@@ -285,6 +292,8 @@ function AppRoutes() {
       </Route>
       {/* /login */}
       <Route path="login" element={<LoginPage />} />
+      {/* /validate */}
+      <Route path="validate" element={<ValidatePage />} />
       {/* /join */}
       <Route path="join" element={<JoinPage />} />
       <Route path="*" element={<NotFoundPage />} />
