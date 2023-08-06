@@ -18,6 +18,7 @@ function request(
   path: string,
   config?: {
     withToken?: boolean;
+    useMock?: boolean;
     body?: Record<string, unknown>;
     params?: Record<string, string>;
     headers?: Record<string, string>;
@@ -26,7 +27,11 @@ function request(
     onFail?: RequestFailHandler;
   },
 ) {
-  const ROOT = import.meta.env.DEV ? "http://localhost:3000/api" : ""; // TODO: 배포되고 난 다음
+  const useMock = config?.useMock ?? true;
+
+  //const ROOT = import.meta.env.DEV ? "http://localhost:3000/api" : ""; // TODO: 배포되고 난 다음
+  const ROOT = useMock ? "http://localhost:3000/api" : "http://localhost:8080";
+
   const url = path.startsWith("/") ? `${ROOT}${path}` : `${ROOT}/${path}`;
 
   const requestHeader = {
