@@ -8,9 +8,7 @@ function JoinPage() {
   const validatedClient = useRecoilValue(validatedClientState);
 
   return (
-    <Box>
-      validatedClient ? <ClientJoinPage /> : <EmployeeJoinPage />
-    </Box>
+    <Box>{validatedClient ? <ClientJoinPage /> : <EmployeeJoinPage />}</Box>
   );
 }
 

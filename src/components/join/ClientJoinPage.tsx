@@ -14,7 +14,7 @@ import request, {
   RequestSuccessHandler,
 } from "../../lib/request";
 
-function JoinPage() {
+function ClientJoinPage() {
   const validatedClient = useRecoilValue(validatedClientState);
   const [promotionKey, setPromotionKey] = useState("");
 
@@ -39,8 +39,6 @@ function JoinPage() {
   const [phoneMessage, setPhoneMessage] = useState("");
 
   const [address, setAddress] = useState("");
-  const [isAddressOk, setIsAddressOk] = useState(true);
-  const [addressMessage, setAddressMessage] = useState("");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -68,25 +66,17 @@ function JoinPage() {
     }
   }, [validatedClient]);
 
-  const addressCheck = () => {
-    if (address === "") {
-      setIsAddressOk(false);
-      setAddressMessage("주소를 입력하세요.");
-      return false;
-    }
-    return true;
-  };
-
   const canRequest = () => {
     const hasRequiredFields =
-      promotionKey || email || password || passwordConfirm || name || address;
+      promotionKey ||
+      email ||
+      password ||
+      passwordConfirm ||
+      name ||
+      phone ||
+      address;
     const isDataValid =
-      isEmailOk &&
-      isPasswordOk &&
-      isPasswordConfirmOk &&
-      isNameOk &&
-      isPhoneOk &&
-      addressCheck();
+      isEmailOk && isPasswordOk && isPasswordConfirmOk && isNameOk && isPhoneOk;
 
     return !hasRequiredFields && isDataValid;
   };
@@ -230,7 +220,6 @@ function JoinPage() {
           onComplete={(data) => {
             // handle the complete event with selected data
             setAddress(data.address);
-            setIsAddressOk(true);
             setIsModalOpen(false);
           }}
           autoClose={false}
@@ -295,14 +284,7 @@ function JoinPage() {
       />
 
       <Box>
-        <TextField
-          {...(isAddressOk ? { disabled: true } : { error: true })}
-          type="text"
-          size="small"
-          label="주소"
-          value={address}
-          helperText={addressMessage}
-        />
+        <TextField type="text" size="small" label="주소" value={address} />
         <Button
           size="small"
           onClick={() => {
@@ -320,4 +302,4 @@ function JoinPage() {
   );
 }
 
-export default JoinPage;
+export default ClientJoinPage;

@@ -13,6 +13,7 @@ import request, {
 import { ValidatedClientInfo } from "./type/ValidatedClientInfo";
 import { useSetRecoilState } from "recoil";
 import validatedClientState from "../../states/join/ValidatedClientState";
+import validatedEmployeeKeyState from "../../states/join/ValidatedEmployeeKeyState";
 
 function JoinPage() {
   const [key, setKey] = useState("");
@@ -20,6 +21,7 @@ function JoinPage() {
   const navigate = useNavigate();
 
   const setValidatedClient = useSetRecoilState(validatedClientState);
+  const setValidatedEmployeeKey = useSetRecoilState(validatedEmployeeKeyState);
 
   useEffect(() => {
     setValidatedClient(null);
@@ -35,6 +37,8 @@ function JoinPage() {
         promotionKey: key,
       };
       setValidatedClient(validatedClient);
+    } else {
+      setValidatedEmployeeKey(key);
     }
     navigate("/join");
   };

@@ -4,8 +4,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../common/Logo.tsx";
 import PopUp from "../common/PopUp";
-import { useRecoilValue } from "recoil";
-import validatedClientState from "../../states/join/ValidatedClientState";
 import DaumPostcode from "react-daum-postcode";
 import ReactModal from "react-modal";
 import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
@@ -13,8 +11,19 @@ import request, {
   RequestFailHandler,
   RequestSuccessHandler,
 } from "../../lib/request";
+import { useRecoilValue } from "recoil";
+import validatedEmployeeKeyState from "../../states/join/ValidatedEmployeeKeyState";
 
-function JoinPage() {
+type Hierarchy = {
+  id: number;
+  nameEng: string;
+  nameKr: string;
+};
+
+function EmployeeJoinPage() {
+  const validatedEmployeeKey = useRecoilValue(validatedEmployeeKeyState);
+
+  const [hierarchyMenuList, setHierarchyMenuList] = useState<Hierarchy[]>([]);
   const [promotionKey, setPromotionKey] = useState("");
 
   const [email, setEmail] = useState("");
@@ -38,8 +47,7 @@ function JoinPage() {
   const [phoneMessage, setPhoneMessage] = useState("");
 
   const [address, setAddress] = useState("");
-  const [isAddressOk, setIsAddressOk] = useState(true);
-  const [addressMessage, setAddressMessage] = useState("");
+  const [hierarchyId, setHierarchyId] = useState(2);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -48,48 +56,69 @@ function JoinPage() {
   // };
   const navigate = useNavigate();
 
-  useEffect(() => {});
+  useEffect(() => {
+    setPromotionKey(validatedEmployeeKey);
+  }, [validatedEmployeeKey]);
 
-  const addressCheck = () => {
-    if (address === "") {
-      setIsAddressOk(false);
-      setAddressMessage("주소를 입력하세요.");
-      return false;
-    }
-    return true;
-  };
+  useEffect(() => {
+    hierarchyRequest();
+  }, []);
 
-  const canRequest = () => {
-    const hasRequiredFields =
-      promotionKey || email || password || passwordConfirm || name || address;
-    const isDataValid =
-      isEmailOk &&
-      isPasswordOk &&
-      isPasswordConfirmOk &&
-      isNameOk &&
-      isPhoneOk &&
-      addressCheck();
+  const hierarchyRequest = () => {
+    const handelRequestSuccess: RequestSuccessHandler = (res) => {
+      setHierarchyMenuList(res.data);
+      console.log(hierarchyMenuList);
+      // hi
+    };
 
-    return !hasRequiredFields && isDataValid;
-  };
-
-  const handelRequestSuccess: RequestSuccessHandler = () => {
-    alert("가입 되었습니다.");
-    navigate("/login");
-  };
-
-  const handelRequestFail: RequestFailHandler = (e) => {
-    alert(e?.name);
-    // const body: { data: MemberInfo[] } = res.data;
-    // const { data } = body;
+    request("GET", `/hierarchy`, {
+      withToken: false,
+      useMock: false,
+      onSuccess: handelRequestSuccess,
+      // onFail: {() => {}}
+    });
   };
 
   const joinRequest = () => {
+    const handelRequestSuccess: RequestSuccessHandler = () => {
+      alert("가입 되었습니다.");
+      navigate("/login");
+    };
+
+    const handelRequestFail: RequestFailHandler = (e) => {
+      alert(e?.name);
+      console.log(e);
+      // const body: { data: MemberInfo[] } = res.data;
+      // const { data } = body;
+    };
+
+    const canRequest = () => {
+      const hasRequiredFields =
+        promotionKey &&
+        email &&
+        password &&
+        passwordConfirm &&
+        name &&
+        phone &&
+        address &&
+        hierarchyId;
+
+      const isDataValid =
+        isEmailOk &&
+        isPasswordOk &&
+        isPasswordConfirmOk &&
+        isNameOk &&
+        isPhoneOk;
+
+      return hasRequiredFields && isDataValid;
+    };
+
     if (!canRequest()) {
       alert("입력되지 않은 정보가 있습니다.");
       return;
     }
-    request("POST", `/members/clients`, {
+    console.log(hierarchyId);
+    request("POST", `/members/employees`, {
       withToken: false,
       useMock: false,
       onSuccess: handelRequestSuccess,
@@ -101,6 +130,8 @@ function JoinPage() {
         name,
         phone,
         address,
+        hierarchyId,
+        roleId: 2, //일반사원
       },
     });
   };
@@ -212,7 +243,6 @@ function JoinPage() {
           onComplete={(data) => {
             // handle the complete event with selected data
             setAddress(data.address);
-            setIsAddressOk(true);
             setIsModalOpen(false);
           }}
           autoClose={false}
@@ -277,14 +307,7 @@ function JoinPage() {
       />
 
       <Box>
-        <TextField
-          {...(isAddressOk ? { disabled: true } : { error: true })}
-          type="text"
-          size="small"
-          label="주소"
-          value={address}
-          helperText={addressMessage}
-        />
+        <TextField type="text" size="small" label="주소" value={address} />
         <Button
           size="small"
           onClick={() => {
@@ -296,17 +319,18 @@ function JoinPage() {
       </Box>
 
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Age</InputLabel>
+        <InputLabel>직책</InputLabel>
         <Select
           labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={age}
+          value={hierarchyId}
           label="Age"
-          onChange={handleChange}
+          onChange={(e) => setHierarchyId(parseInt(e.target.value as string))}
         >
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+          {hierarchyMenuList.map((hierarchy) => (
+            <MenuItem key={hierarchy.id} value={hierarchy.id}>
+              {hierarchy.nameKr}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
 
@@ -317,4 +341,4 @@ function JoinPage() {
   );
 }
 
-export default JoinPage;
+export default EmployeeJoinPage;
