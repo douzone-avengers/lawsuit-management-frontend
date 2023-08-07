@@ -1,5 +1,5 @@
 import { rest } from "msw";
-import receptionTable, { ReceptionType } from "./receptionTable.ts";
+import receptionTable, { Category } from "./receptionTable.ts";
 import * as dayjs from "dayjs";
 
 const getReceptionsHandler = rest.get(
@@ -26,20 +26,20 @@ const getReceptionsHandler = rest.get(
     const statusParam = req.url.searchParams.get("status") ?? "";
     switch (statusParam) {
       case "complete":
-        receptions = receptions.filter((item) => item.isDone);
+        receptions = receptions.filter((item) => item.status);
         break;
       case "incomplete":
-        receptions = receptions.filter((item) => !item.isDone);
+        receptions = receptions.filter((item) => !item.status);
         break;
     }
 
     const categoryParam = req.url.searchParams.get("category") ?? "";
     switch (categoryParam) {
       case "scheduled":
-        receptions = receptions.filter((item) => item.receptionType === "기일");
+        receptions = receptions.filter((item) => item.category === "scheduled");
         break;
       case "fixed":
-        receptions = receptions.filter((item) => item.receptionType === "불변");
+        receptions = receptions.filter((item) => item.category === "fixed");
         break;
     }
 
@@ -135,8 +135,8 @@ const postReceptionHandler = rest.post(
   async (req, res, ctx) => {
     const body: {
       lawsuitId: number;
-      isDone: boolean;
-      receptionType: ReceptionType;
+      status: boolean;
+      category: Category;
       contents: string;
       receivedAt: string;
       deadline: string;
@@ -158,8 +158,8 @@ const updateReceptionHandler = rest.put(
   "/api/receptions/update/:receptionId",
   async (req, res, ctx) => {
     const body: {
-      isDone: boolean;
-      receptionType: ReceptionType;
+      status: boolean;
+      category: Category;
       contents: string;
       receivedAt: string;
       deadline: string;
@@ -181,12 +181,12 @@ const updateReceptionHandler = rest.put(
       return res(ctx.status(400));
     }
 
-    if (body["isDone"] !== undefined) {
-      foundReception.isDone = body["isDone"];
+    if (body["status"] !== undefined) {
+      foundReception.status = body["status"];
     }
 
-    if (body["receptionType"] !== undefined) {
-      foundReception.receptionType = body["receptionType"];
+    if (body["category"] !== undefined) {
+      foundReception.category = body["category"];
     }
 
     if (body["contents"] !== undefined) {
