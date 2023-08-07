@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Info from "./advice/Adviceinfo";
 import TabBar, { TabItem } from "../common/TabBar";
 import ExpenseInfo from "./expense/ExpenseInfo.tsx";
@@ -9,8 +9,13 @@ import CaseBasicInfoCard from "./common/CaseBasicInfoCard.tsx";
 import CaseCostInfoCard from "./common/CaseCostInfoCard.tsx";
 import CaseEmployeeInfoCard from "./common/CaseEmployeeInfoCard.tsx";
 import CaseClientInfoCard from "./common/CaseClientInfoCard.tsx";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import caseTabIdState from "../../states/case/CaseTabIdState.tsx";
+import caseIdState from "../../states/case/CaseIdState.tsx";
+import caseInfoState, {
+  CaseInfoType,
+} from "../../states/case/info/caseInfoState.tsx";
+import request, { RequestSuccessHandler } from "../../lib/request.ts";
 
 function CaseDetailPage() {
   const [caseTabId, setCaseTabId] = useRecoilState(caseTabIdState);
@@ -49,6 +54,24 @@ function CaseDetailPage() {
       ),
     },
   ]);
+
+  const caseId = useRecoilValue(caseIdState);
+  const setCaseInfo = useSetRecoilState(caseInfoState);
+
+  useEffect(() => {
+    if (caseId === null) {
+      return;
+    }
+
+    const handleSuccessHandler: RequestSuccessHandler = (res) => {
+      const newCaseInfo: CaseInfoType = res.data["data"];
+      setCaseInfo(newCaseInfo);
+    };
+
+    request("GET", `/lawsuits/${caseId}`, {
+      onSuccess: handleSuccessHandler,
+    });
+  }, [caseId]);
 
   return (
     <Box>
