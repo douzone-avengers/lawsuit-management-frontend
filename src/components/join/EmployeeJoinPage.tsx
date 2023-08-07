@@ -70,12 +70,15 @@ function EmployeeJoinPage() {
       console.log(hierarchyMenuList);
       // hi
     };
+    const handelRequestFail: RequestFailHandler = (e) => {
+      alert((e.response.data as { code: string; message: string }).message);
+    };
 
     request("GET", `/hierarchy`, {
       withToken: false,
       useMock: false,
       onSuccess: handelRequestSuccess,
-      // onFail: {() => {}}
+      onFail: handelRequestFail,
     });
   };
 
@@ -86,10 +89,7 @@ function EmployeeJoinPage() {
     };
 
     const handelRequestFail: RequestFailHandler = (e) => {
-      alert(e?.name);
-      console.log(e);
-      // const body: { data: MemberInfo[] } = res.data;
-      // const { data } = body;
+      alert((e.response.data as { code: string; message: string }).message);
     };
 
     const canRequest = () => {

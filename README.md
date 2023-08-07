@@ -65,9 +65,9 @@ npm run dev
 
 ## 전역 상태
 
-### UserState.tsx
+### IsLoginState.tsx
 
-- 로그인한 유저의 상태
+- 로그인한 유무
 
 ### Client(Case, Employee)IdState.tsx
 
