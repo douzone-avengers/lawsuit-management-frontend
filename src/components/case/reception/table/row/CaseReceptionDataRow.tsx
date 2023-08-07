@@ -1,8 +1,8 @@
 import Box from "@mui/material/Box";
 import CaseReceptionContentsCell from "../cell/CaseReceptionContentsCell.tsx";
 import CaseReceptionReceivedAtCell from "../cell/CaseReceptionReceivedAtCell.tsx";
-import CaseReceptionTypeCell from "../cell/CaseReceptionTypeCell.tsx";
-import CaseReceptionIsDoneCell from "../cell/CaseReceptionIsDoneCell.tsx";
+import CaseReceptionCategoryCell from "../cell/CaseReceptionCategoryCell.tsx";
+import CaseReceptionStatusCell from "../cell/CaseReceptionStatusCell.tsx";
 import CaseReceptionDeadlineCell from "../cell/CaseReceptionDeadlineCell.tsx";
 import { CaseReceptionRowType } from "../../../../../states/case/info/reception/CaseReceptionsState.tsx";
 import CaseReceptionEditConfirmButton from "../button/CaseReceptionEditConfirmButton.tsx";
@@ -23,10 +23,10 @@ function CaseReceptionDataRow({ item }: Props) {
     >
       <Box sx={{ width: 20 }}></Box>
       <Box sx={{ width: 100 }}>
-        <CaseReceptionIsDoneCell item={item} />
+        <CaseReceptionStatusCell item={item} />
       </Box>
       <Box sx={{ width: 100 }}>
-        <CaseReceptionTypeCell item={item} />
+        <CaseReceptionCategoryCell item={item} />
       </Box>
       <Box
         sx={{

@@ -1,4 +1,5 @@
 import { Hierarchy, Role } from "../states/common/UserState";
+import { Category } from "../mock/reception/receptionTable.ts";
 
 export function fromHierarchy(hierarchy: Hierarchy): string {
   switch (hierarchy) {
@@ -56,4 +57,15 @@ export function toDateValue(dateStr: string) {
     return "";
   }
   return dateStr.split("T")[0];
+}
+
+export function toCategoryName(category: Category) {
+  switch (category) {
+    case "fixed":
+      return "불변";
+    case "scheduled":
+      return "기일";
+    default:
+      return category;
+  }
 }
