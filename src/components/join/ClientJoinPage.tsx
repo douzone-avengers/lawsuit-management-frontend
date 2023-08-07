@@ -87,9 +87,7 @@ function ClientJoinPage() {
   };
 
   const handelRequestFail: RequestFailHandler = (e) => {
-    alert(e?.name);
-    // const body: { data: MemberInfo[] } = res.data;
-    // const { data } = body;
+    alert((e.response.data as { code: string; message: string }).message);
   };
 
   const joinRequest = () => {
