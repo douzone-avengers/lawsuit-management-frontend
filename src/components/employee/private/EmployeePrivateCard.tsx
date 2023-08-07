@@ -7,7 +7,7 @@ import request, { RequestSuccessHandler } from "../../../lib/request.ts";
 import Button from "@mui/material/Button";
 import { Business, Email, LocationOn, PhoneIphone } from "@mui/icons-material";
 import { SvgIcon } from "@mui/material";
-import userState from "../../../states/common/UserState";
+import userState from "../../../states/common/IsLoginState";
 import { MemberInfo } from "../../../mock/member/memberHandlers";
 
 type Props = {

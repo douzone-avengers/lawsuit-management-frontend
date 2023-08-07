@@ -1,5 +1,5 @@
 import { rest } from "msw";
-import { Hierarchy, Role } from "../../states/common/UserState";
+import { Hierarchy, Role } from "../../states/common/IsLoginState";
 import hierarchyTable from "../hierarchy/hierarchyTable";
 import roleTable from "../role/roleTable";
 import memberTable, { MemberData } from "./memberTable";

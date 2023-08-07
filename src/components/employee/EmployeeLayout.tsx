@@ -4,7 +4,7 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import employeeButtonIdState from "../../states/employee/EmployeeButtonIdState";
-import userState from "../../states/common/UserState";
+import userState from "../../states/common/IsLoginState";
 
 function CaseLayout() {
   const employeeButtonId = useRecoilValue(employeeButtonIdState);

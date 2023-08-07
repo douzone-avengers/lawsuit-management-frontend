@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import request, { RequestSuccessHandler } from "../../../lib/request";
 import { MemberInfo } from "../../../mock/member/memberHandlers";
 import { useRecoilValue } from "recoil";
-import userState from "../../../states/common/UserState";
+import userState from "../../../states/common/IsLoginState";
 
 function EmployeePrivatePage() {
   const [width, height] = useWindowSize();

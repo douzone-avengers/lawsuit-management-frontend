@@ -1,4 +1,4 @@
-import { Hierarchy } from "../../states/common/UserState";
+import { Hierarchy } from "../../states/common/IsLoginState";
 
 export type HierarchyData = {
   id: number;

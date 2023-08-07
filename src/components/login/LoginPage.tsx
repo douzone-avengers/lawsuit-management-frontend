@@ -1,72 +1,57 @@
 import { Button, Divider, TextField, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-import ButtonGroup from "@mui/material/ButtonGroup";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
-import request, { RequestSuccessHandler } from "../../lib/request";
-import { MemberInfo } from "../../mock/member/memberHandlers";
-import { TokenData } from "../../mock/token/tokenTable";
-import userState from "../../states/common/UserState";
+import request, {
+  RequestFailHandler,
+  RequestSuccessHandler,
+} from "../../lib/request";
+import isLoginState from "../../states/common/IsLoginState";
 import PopUp from "../common/PopUp";
 import Logo from "../common/Logo.tsx";
 
 function LoginPage() {
-  const setUserState = useSetRecoilState(userState);
+  const setIsLoginState = useSetRecoilState(isLoginState);
   const navigate = useNavigate();
-  const [isEmployeeLogin, setIsEmployeeLogin] = useState(true);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLoginButtonClick = () => {
+    type TokenData = {
+      accessToken: string;
+      refreshToken: string;
+    };
     const handleLoginRequestSuccess: RequestSuccessHandler = (res) => {
-      const body: { data: TokenData & { accessToken: string } } = res.data;
-      const token = body.data;
-      localStorage.setItem("accessToken", token.accessToken);
-      localStorage.setItem("refreshToken", token.refreshToken);
+      console.dir(res);
+      const tokenData: TokenData = res.data;
+      localStorage.setItem("accessToken", tokenData.accessToken);
+      localStorage.setItem("refreshToken", tokenData.refreshToken);
+      setIsLoginState(true);
+      alert("로그인 성공");
+      navigate("/");
+    };
 
-      const handleMemberRequestSuccess: RequestSuccessHandler = (res) => {
-        const body: { data: MemberInfo } = res.data;
-        const newUser = body.data;
-        setUserState(newUser);
-        navigate("/");
-      };
-
-      request("GET", `/members/${token.memberId}`, {
-        onSuccess: handleMemberRequestSuccess,
-      });
+    const handelLoginRequestFail: RequestFailHandler = (e) => {
+      alert((e.response.data as { code: string; message: string }).message);
     };
 
     request("POST", "/tokens/login", {
+      withToken: false,
+      useMock: false,
       body: {
         email,
         password,
       },
       onSuccess: handleLoginRequestSuccess,
+      onFail: handelLoginRequestFail,
     });
   };
 
   return (
     <PopUp>
       <Logo sx={{ width: "50%", marginBottom: 2 }} />
-      <ButtonGroup variant="outlined" size="large" fullWidth>
-        <Button
-          variant={isEmployeeLogin ? "contained" : "outlined"}
-          onClick={() => {
-            setIsEmployeeLogin(true);
-          }}
-        >
-          직원
-        </Button>
-        <Button
-          variant={isEmployeeLogin ? "outlined" : "contained"}
-          onClick={() => {
-            setIsEmployeeLogin(false);
-          }}
-        >
-          의뢰인
-        </Button>
-      </ButtonGroup>
       <TextField
         type="email"
         size="small"

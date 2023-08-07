@@ -1,4 +1,4 @@
-import { Hierarchy, Role } from "../states/common/UserState";
+import { Hierarchy, Role } from "../states/common/IsLoginState";
 
 export function fromHierarchy(hierarchy: Hierarchy): string {
   switch (hierarchy) {
