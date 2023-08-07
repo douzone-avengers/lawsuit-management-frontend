@@ -30,6 +30,8 @@ function CaseExpenseContentsCell({ item }: Props) {
       size="small"
       value={item.contents}
       onChange={handleChange}
+      multiline
+      rows={1}
       fullWidth
     />
   ) : (
@@ -38,6 +40,7 @@ function CaseExpenseContentsCell({ item }: Props) {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        overflow: "hidden",
         height: 40,
       }}
     >

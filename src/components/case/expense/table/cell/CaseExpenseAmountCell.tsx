@@ -6,6 +6,7 @@ import { ChangeEvent } from "react";
 import { produce } from "immer";
 import { TextField } from "@mui/material";
 import Box from "@mui/material/Box";
+import { delimiter } from "../../../../../lib/convert.ts";
 
 type Props = {
   item: CaseExpenseRowType & { editable: boolean };
@@ -31,6 +32,11 @@ function CaseExpenseAmountCell({ item }: Props) {
       value={item.amount}
       onChange={handleChange}
       fullWidth
+      sx={{
+        Input: {
+          textAlign: "center",
+        },
+      }}
     />
   ) : (
     <Box
@@ -41,7 +47,7 @@ function CaseExpenseAmountCell({ item }: Props) {
         height: 40,
       }}
     >
-      {item.amount}
+      {delimiter(item.amount)}
     </Box>
   );
 }
