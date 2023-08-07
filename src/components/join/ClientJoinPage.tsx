@@ -68,17 +68,17 @@ function ClientJoinPage() {
 
   const canRequest = () => {
     const hasRequiredFields =
-      promotionKey ||
-      email ||
-      password ||
-      passwordConfirm ||
-      name ||
-      phone ||
+      promotionKey &&
+      email &&
+      password &&
+      passwordConfirm &&
+      name &&
+      phone &&
       address;
     const isDataValid =
       isEmailOk && isPasswordOk && isPasswordConfirmOk && isNameOk && isPhoneOk;
 
-    return !hasRequiredFields && isDataValid;
+    return hasRequiredFields && isDataValid;
   };
 
   const handelRequestSuccess: RequestSuccessHandler = () => {
