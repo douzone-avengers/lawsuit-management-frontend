@@ -85,8 +85,8 @@ function CaseReceptionAddPopUp() {
     request("POST", `/receptions`, {
       body: {
         lawsuitId: caseId,
-        isDone: status === "complete",
-        receptionType: category === "scheduled" ? "기일" : "불변",
+        status: status === "complete",
+        category,
         contents,
         receivedAt,
         deadline,

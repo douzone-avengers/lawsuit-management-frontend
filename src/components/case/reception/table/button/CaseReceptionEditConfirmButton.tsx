@@ -19,19 +19,18 @@ function CaseReceptionEditConfirmButton({ item }: Props) {
       const body: {
         data: {
           id: number;
-          isDone: boolean;
-          receptionType: string;
+          status: boolean;
+          category: string;
           contents: string;
           receivedAt: string;
           deadline: string;
         };
       } = res.data;
-      const { isDone, receptionType, contents, receivedAt, deadline } =
-        body.data;
+      const { status, category, contents, receivedAt, deadline } = body.data;
       const newReceptions = produce(receptions, (draft) => {
         const reception = draft.filter((item2) => item2.id === item.id)[0];
-        reception.isDone = isDone;
-        reception.receptionType = receptionType;
+        reception.status = status;
+        reception.category = category;
         reception.contents = contents;
         reception.receivedAt = receivedAt;
         reception.deadline = deadline;
@@ -42,8 +41,8 @@ function CaseReceptionEditConfirmButton({ item }: Props) {
 
     request("PUT", `/receptions/update/${item.id}`, {
       body: {
-        isDone: item.isDone,
-        receptionType: item.receptionType,
+        status: item.status,
+        category: item.category,
         contents: item.contents,
         receivedAt: item.receivedAt,
         deadline: item.deadline,

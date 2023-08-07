@@ -12,17 +12,15 @@ type Props = {
   item: CaseReceptionRowType & { editable: boolean };
 };
 
-function CaseReceptionTypeCell({ item }: Props) {
+function CaseReceptionStatusCell({ item }: Props) {
   const [receptions, setReceptions] = useRecoilState(caseReceptionsState);
 
   const handleChange = (e: SelectChangeEvent) => {
     if (item.editable) {
-      const { value } = e.target;
-      const newReceptionType =
-        value === "scheduled" ? "기일" : value === "fixed" ? "불변" : "";
+      const newStatus = e.target.value;
       const newReceptions = produce(receptions, (draft) => {
         const reception = draft.filter((item2) => item2.id === item.id)[0];
-        reception.receptionType = newReceptionType;
+        reception.status = newStatus === "complete";
       });
       setReceptions(newReceptions);
     }
@@ -31,17 +29,11 @@ function CaseReceptionTypeCell({ item }: Props) {
   return item.editable ? (
     <FormControl size="small" disabled={!item.editable} fullWidth>
       <Select
-        value={
-          item.receptionType === "기일"
-            ? "scheduled"
-            : item.receptionType === "불변"
-            ? "fixed"
-            : ""
-        }
+        value={item.status ? "complete" : "incomplete"}
         onChange={handleChange}
       >
-        <MenuItem value="scheduled">기일</MenuItem>
-        <MenuItem value="fixed">불변</MenuItem>
+        <MenuItem value="complete">완료</MenuItem>
+        <MenuItem value="incomplete">미완료</MenuItem>
       </Select>
     </FormControl>
   ) : (
@@ -53,9 +45,9 @@ function CaseReceptionTypeCell({ item }: Props) {
         height: 40,
       }}
     >
-      {item.receptionType}
+      {item.status ? "완료" : "미완료"}
     </Typography>
   );
 }
 
-export default CaseReceptionTypeCell;
+export default CaseReceptionStatusCell;
