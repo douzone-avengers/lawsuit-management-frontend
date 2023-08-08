@@ -17,7 +17,12 @@ function ClientInformation() {
   const [phone, setPhone] = useState("");
 
   useEffect(() => {
+    if (!clientId) {
+      return;
+    }
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
+      console.log("res = " + res.data.toString());
+
       const {
         data: { name, email, phone },
       }: { data: ClientData } = res.data;
@@ -26,7 +31,11 @@ function ClientInformation() {
       setPhone(phone);
     };
 
+    console.log("clientId = " + clientId);
+
     request("GET", `/clients/${clientId}`, {
+      useMock: false,
+      withToken: true,
       onSuccess: handleRequestSuccess,
     });
   }, [clientId]);
