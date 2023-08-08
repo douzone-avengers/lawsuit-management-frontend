@@ -1,4 +1,14 @@
-import { Hierarchy, Role } from "../../../states/common/IsLoginState";
+export type Hierarchy = {
+  id: number;
+  nameKr: string;
+  nameEng: string;
+};
+
+export type Role = {
+  id: number;
+  nameKr: string;
+  nameEng: string;
+};
 
 export type MemberInfo = {
   id: number;
@@ -6,6 +16,6 @@ export type MemberInfo = {
   name: string;
   phone: string;
   address: string;
-  hierarchy: string;
-  role: string;
+  hierarchyId: number;
+  roleId: number;
 };
