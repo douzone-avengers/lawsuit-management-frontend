@@ -229,9 +229,6 @@ function EmployeePrivateCard({ width = "50%", memberInfo }: Props) {
             label="주소"
             name="address"
             value={address}
-            onChange={(e) => {
-              setAddress(e.target.value);
-            }}
             margin="normal"
             fullWidth
           />
