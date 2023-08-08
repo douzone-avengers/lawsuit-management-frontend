@@ -6,6 +6,7 @@ import caseReceptionsState, {
   CaseReceptionRowType,
 } from "../../../../../states/case/info/reception/CaseReceptionsState.tsx";
 import request, { RequestSuccessHandler } from "../../../../../lib/request.ts";
+import * as dayjs from "dayjs";
 
 type Props = {
   item: CaseReceptionRowType & { editable: boolean };
@@ -17,16 +18,14 @@ function CaseReceptionEditConfirmButton({ item }: Props) {
   const handleClick = () => {
     const handleSuccess: RequestSuccessHandler = (res) => {
       const body: {
-        data: {
-          id: number;
-          status: boolean;
-          category: string;
-          contents: string;
-          receivedAt: string;
-          deadline: string;
-        };
+        id: number;
+        status: boolean;
+        category: string;
+        contents: string;
+        receivedAt: string;
+        deadline: string;
       } = res.data;
-      const { status, category, contents, receivedAt, deadline } = body.data;
+      const { status, category, contents, receivedAt, deadline } = body;
       const newReceptions = produce(receptions, (draft) => {
         const reception = draft.filter((item2) => item2.id === item.id)[0];
         reception.status = status;
@@ -41,13 +40,14 @@ function CaseReceptionEditConfirmButton({ item }: Props) {
 
     request("PUT", `/receptions/update/${item.id}`, {
       body: {
-        status: item.status,
+        status: item.status ? "complete" : "incomplete",
         category: item.category,
         contents: item.contents,
-        receivedAt: item.receivedAt,
-        deadline: item.deadline,
+        receivedAt: dayjs(item.receivedAt).add(1, "day").toISOString(),
+        deadline: dayjs(item.deadline).add(1, "day").toISOString(),
       },
       onSuccess: handleSuccess,
+      useMock: false,
     });
   };
   return (

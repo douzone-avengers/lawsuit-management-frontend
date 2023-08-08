@@ -66,8 +66,7 @@ function CaseReceptionAddPopUp() {
         const {
           receptions,
           size,
-        }: { receptions: CaseReceptionRowType[]; size: number } =
-          res.data["data"];
+        }: { receptions: CaseReceptionRowType[]; size: number } = res.data;
         setReceptions(
           receptions.map((item) => {
             return { ...item, editable: false };
@@ -79,19 +78,21 @@ function CaseReceptionAddPopUp() {
 
       request("GET", url, {
         onSuccess: handleRequestSuccess2,
+        useMock: false,
       });
     };
 
     request("POST", `/receptions`, {
       body: {
         lawsuitId: caseId,
-        status: status === "complete",
+        status: status,
         category,
         contents,
         receivedAt,
         deadline,
       },
       onSuccess: handleRequestSuccess,
+      useMock: false,
     });
   };
 

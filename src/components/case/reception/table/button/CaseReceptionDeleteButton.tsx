@@ -23,8 +23,7 @@ function CaseReceptionDeleteButton({ item }: Props) {
         const {
           receptions,
           size,
-        }: { receptions: CaseReceptionRowType[]; size: number } =
-          res.data["data"];
+        }: { receptions: CaseReceptionRowType[]; size: number } = res.data;
         setReceptions(
           receptions.map((item) => {
             return { ...item, editable: false };
@@ -34,10 +33,12 @@ function CaseReceptionDeleteButton({ item }: Props) {
       };
       request("GET", url, {
         onSuccess: handleRequestSuccess2,
+        useMock: false,
       });
     };
     request("PUT", `/receptions/delete/${item.id}`, {
       onSuccess: handleRequestSuccess,
+      useMock: false,
     });
   };
   return (
