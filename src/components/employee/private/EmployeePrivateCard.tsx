@@ -235,14 +235,18 @@ function EmployeePrivateCard({ width = "50%", memberInfo }: Props) {
             margin="normal"
             fullWidth
           />
-          <Button
-            size="small"
-            onClick={() => {
-              setIsModalOpen(true);
-            }}
-          >
-            주소검색
-          </Button>
+          {isEditMode ? (
+            <Button
+              size="small"
+              onClick={() => {
+                setIsModalOpen(true);
+              }}
+            >
+              주소검색
+            </Button>
+          ) : (
+            ""
+          )}
         </Grid>
         <Grid item xs={6}>
           <FormControl margin="normal" fullWidth disabled={!isEditMode}>

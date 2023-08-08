@@ -321,8 +321,9 @@ function EmployeeJoinPage() {
       <FormControl fullWidth>
         <InputLabel>직책</InputLabel>
         <Select
+          labelId="demo-simple-select-label"
           value={hierarchyId}
-          label="hierarchy"
+          label="Age"
           onChange={(e) => setHierarchyId(parseInt(e.target.value as string))}
         >
           {hierarchyMenuList.map((hierarchy) => (
