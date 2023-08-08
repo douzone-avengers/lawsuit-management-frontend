@@ -88,8 +88,7 @@ function CaseReceptionSearchBox() {
       const {
         receptions,
         size,
-      }: { receptions: CaseReceptionRowType[]; size: number } =
-        res.data["data"];
+      }: { receptions: CaseReceptionRowType[]; size: number } = res.data;
       setCaseReceptions(
         receptions.map((item) => {
           return { ...item, editable: false };
@@ -102,6 +101,7 @@ function CaseReceptionSearchBox() {
     const newUrl = updateUrl(url, 0);
     request("GET", newUrl, {
       onSuccess: handleRequestSuccess,
+      useMock: false,
     });
   };
 

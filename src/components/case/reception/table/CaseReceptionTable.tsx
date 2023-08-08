@@ -34,11 +34,13 @@ function CaseReceptionTable() {
     }
 
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
+      console.log(res);
       const {
         receptions,
         size,
-      }: { receptions: CaseReceptionRowType[]; size: number } =
-        res.data["data"];
+      }: { receptions: CaseReceptionRowType[]; size: number } = res.data;
+      console.dir(receptions);
+      console.dir(size);
       setReceptions(
         receptions.map((item) => {
           return { ...item, editable: false };
@@ -46,8 +48,10 @@ function CaseReceptionTable() {
       );
       setSize(size);
     };
+    console.log("request");
     request("GET", url, {
       onSuccess: handleRequestSuccess,
+      useMock: false,
     });
   }, [caseId]);
 
@@ -85,7 +89,7 @@ function CaseReceptionTable() {
                   receptions,
                   size,
                 }: { receptions: CaseReceptionRowType[]; size: number } =
-                  res.data["data"];
+                  res.data;
                 setReceptions(
                   receptions.map((item) => {
                     return { ...item, editable: false };
@@ -96,6 +100,7 @@ function CaseReceptionTable() {
 
               request("GET", updateUrl(url, page), {
                 onSuccess: handleRequestSuccess,
+                useMock: false,
               });
 
               return page;
@@ -118,7 +123,7 @@ function CaseReceptionTable() {
                   receptions,
                   size,
                 }: { receptions: CaseReceptionRowType[]; size: number } =
-                  res.data["data"];
+                  res.data;
                 setReceptions(
                   receptions.map((item) => {
                     return { ...item, editable: false };
@@ -129,6 +134,7 @@ function CaseReceptionTable() {
 
               request("GET", updateUrl(url, page), {
                 onSuccess: handleRequestSuccess,
+                useMock: false,
               });
 
               return page;
