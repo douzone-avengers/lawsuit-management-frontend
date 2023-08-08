@@ -1,12 +1,15 @@
-import EmployeePrivateCard from "./EmployeePrivateCard";
 import Box from "@mui/material/Box";
 import KakaoMap from "../../common/KaKaoMap";
 import useWindowSize from "../../../hook/useWindowSize";
 import { useEffect, useRef, useState } from "react";
-import request, { RequestSuccessHandler } from "../../../lib/request";
-import { MemberInfo } from "../../../mock/member/memberHandlers";
+import request, {
+  RequestFailHandler,
+  RequestSuccessHandler,
+} from "../../../lib/request";
+import { MemberInfo } from "../type/MemberInfo";
+import EmployeePrivateCard from "./EmployeePrivateCard";
 import { useRecoilValue } from "recoil";
-import userState from "../../../states/common/IsLoginState";
+import curMemberAddressState from "../../../states/employee/CurMemberAddressState";
 
 function EmployeePrivatePage() {
   const [width, height] = useWindowSize();
@@ -14,8 +17,8 @@ function EmployeePrivatePage() {
   const [boxHeight, setBoxHeight] = useState<number | undefined>(undefined);
   const parentContainer = useRef<HTMLDivElement>(null);
 
-  const loginUser = useRecoilValue(userState);
   const [memberInfo, setMemberInfo] = useState<MemberInfo>();
+  const recoilAddress = useRecoilValue(curMemberAddressState);
 
   useEffect(() => {
     if (parentContainer.current) {
@@ -25,19 +28,38 @@ function EmployeePrivatePage() {
   }, [width, height]);
 
   useEffect(() => {
+    if (recoilAddress !== undefined) {
+      setMemberInfo((prev) => {
+        if (!prev) return; // 혹은 기본 값을 반환
+
+        return {
+          ...prev,
+          address: recoilAddress,
+        };
+      });
+    }
+  }, [recoilAddress]);
+
+  useEffect(() => {
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      const body: { data: MemberInfo } = res.data;
-      const { data } = body;
-      setMemberInfo(data);
+      const memberInfo: MemberInfo = res.data;
+      setMemberInfo(memberInfo);
     };
-    request("GET", `/members/${loginUser?.id}`, {
+    const handelRequestFail: RequestFailHandler = (e) => {
+      alert((e.response.data as { code: string; message: string }).message);
+    };
+
+    request("GET", `/members/me`, {
+      withToken: true,
+      useMock: false,
       onSuccess: handleRequestSuccess,
+      onFail: handelRequestFail,
     });
-  }, [loginUser]);
+  }, []);
 
   return (
     <Box sx={{ display: "flex", gap: 3, flexDirection: "row", height: "100%" }}>
-      <EmployeePrivateCard width={"50%"} />
+      <EmployeePrivateCard width={"50%"} memberInfo={memberInfo} />
 
       <Box
         ref={parentContainer}
