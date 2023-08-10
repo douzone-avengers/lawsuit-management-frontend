@@ -64,13 +64,13 @@ export default function KakaoMap({ parentWidth, parentHeight }: Props) {
     }
 
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      const body: { data: ClientData } = res.data;
-      const { data } = body;
-      const { address } = data;
-      setAddress(address);
+      const clientData: ClientData = res.data;
+      setAddress(clientData.address);
     };
 
     request("GET", `/clients/${clientId}`, {
+      useMock: false,
+      withToken: true,
       onSuccess: handleRequestSuccess,
     });
   }, [clientId]);
