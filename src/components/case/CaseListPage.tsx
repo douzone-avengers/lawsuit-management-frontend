@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import request, { RequestSuccessHandler } from "../../lib/request";
-import { LawsuitData, LawsuitStatus } from "../../mock/lawsuit/lawsuitTable";
+import { LawsuitStatus } from "../../mock/lawsuit/lawsuitTable";
 import caseIdState from "../../states/case/CaseIdState";
 import clientIdState from "../../states/client/ClientIdState";
 import ClientInfoCard from "../client/ClientInfoCard.tsx";
@@ -13,12 +13,13 @@ import CardContent from "@mui/material/CardContent";
 import Chip from "@mui/material/Chip";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { LawsuitInfo } from "./type/LawsuitInfo.tsx";
 
 function CaseListPage() {
   const memberId = useRecoilValue(clientIdState);
   const setCaseId = useSetRecoilState(caseIdState);
   const navigate = useNavigate();
-  const [cases, setCases] = useState<LawsuitData[]>([]);
+  const [cases, setCases] = useState<LawsuitInfo[]>([]);
   const [lawsuitStatus, setLawsuitStatus] = useState<LawsuitStatus | null>(
     null,
   );
@@ -33,7 +34,7 @@ function CaseListPage() {
       return;
     }
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      const body: { data: LawsuitData[] } = res.data;
+      const body: { data: LawsuitInfo[] } = res.data;
       const { data } = body;
       setCases(data);
       setCaseId(data[0]?.id);
@@ -44,7 +45,7 @@ function CaseListPage() {
     });
   }, [memberId]);
 
-  let filteredCases: LawsuitData[];
+  let filteredCases: LawsuitInfo[];
 
   switch (lawsuitStatus) {
     case "등록":

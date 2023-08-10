@@ -5,11 +5,11 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { LawsuitData } from "../../mock/lawsuit/lawsuitTable.ts";
 import { delimiter } from "../../lib/convert.ts";
+import { LawsuitInfo } from "./type/LawsuitInfo.tsx";
 
 type Props = {
-  cases: (LawsuitData & { onClick: () => void })[];
+  cases: (LawsuitInfo & { onClick: () => void })[];
 };
 
 function CaseListTable({ cases }: Props) {
