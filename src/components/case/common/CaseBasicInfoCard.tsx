@@ -34,7 +34,7 @@ function CaseBasicInfoCard() {
         <ListProfileItem
           SvgIcon={BalanceIcon}
           primary="법원"
-          secondary={caseInfo?.lawsuit?.court}
+          secondary={caseInfo?.lawsuit?.courtId}
         />
       </List>
     </Card>

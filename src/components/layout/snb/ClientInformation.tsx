@@ -17,16 +17,19 @@ function ClientInformation() {
   const [phone, setPhone] = useState("");
 
   useEffect(() => {
+    if (!clientId) {
+      return;
+    }
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      const {
-        data: { name, email, phone },
-      }: { data: ClientData } = res.data;
-      setName(name);
-      setEmail(email);
-      setPhone(phone);
+      const clientData: ClientData = res.data;
+      setName(clientData.name);
+      setEmail(clientData.email);
+      setPhone(clientData.phone);
     };
 
     request("GET", `/clients/${clientId}`, {
+      useMock: false,
+      withToken: true,
       onSuccess: handleRequestSuccess,
     });
   }, [clientId]);

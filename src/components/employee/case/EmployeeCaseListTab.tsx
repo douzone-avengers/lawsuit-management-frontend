@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
 import request, { RequestSuccessHandler } from "../../../lib/request";
-import { LawsuitData } from "../../../mock/lawsuit/lawsuitTable";
 import { useRecoilValue } from "recoil";
 import employeeIdState from "../../../states/employee/EmployeeIdState";
 import Box from "@mui/material/Box";
 import CaseListTable from "../../case/CaseListTable";
+import { LawsuitInfo } from "../../case/type/LawsuitInfo.tsx";
 
 function EmployeeCaseListTab() {
   const employeeId = useRecoilValue(employeeIdState);
-  const [cases, setCases] = useState<LawsuitData[]>([]);
+  const [cases, setCases] = useState<LawsuitInfo[]>([]);
 
   useEffect(() => {
     console.log(employeeId);
 
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      const body: { data: LawsuitData[] } = res.data;
+      const body: { data: LawsuitInfo[] } = res.data;
       const { data } = body;
       setCases(data);
 
