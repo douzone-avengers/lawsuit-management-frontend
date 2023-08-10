@@ -167,11 +167,9 @@ function ClientCaseStatisticsChart() {
       return 0;
     }
 
-    const total = cases.reduce((acc, item) => {
+    return cases.reduce((acc, item) => {
       return item.lawsuitStatus === status ? acc + item.commissionFee : acc;
     }, 0);
-
-    return total;
   }
 
   function unreceivedAmountByStatus(status: string): number {
@@ -179,11 +177,9 @@ function ClientCaseStatisticsChart() {
       return 0;
     }
 
-    const total = cases.reduce((acc, item) => {
+    return cases.reduce((acc, item) => {
       return item.lawsuitStatus === status ? acc + item.commissionFee : acc;
     }, 0);
-
-    return total;
   }
 
   function calculateSuccessAmount(): number {
@@ -191,11 +187,9 @@ function ClientCaseStatisticsChart() {
       return 0;
     }
 
-    const total = cases.reduce((acc, item) => {
+    return cases.reduce((acc, item) => {
       return acc + item.contingentFee;
     }, 0);
-
-    return total;
   }
 
   return (
