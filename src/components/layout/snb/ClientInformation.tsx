@@ -21,17 +21,11 @@ function ClientInformation() {
       return;
     }
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      console.log("res = " + res.data.toString());
-
-      const {
-        data: { name, email, phone },
-      }: { data: ClientData } = res.data;
-      setName(name);
-      setEmail(email);
-      setPhone(phone);
+      const clientData: ClientData = res.data;
+      setName(clientData.name);
+      setEmail(clientData.email);
+      setPhone(clientData.phone);
     };
-
-    console.log("clientId = " + clientId);
 
     request("GET", `/clients/${clientId}`, {
       useMock: false,
