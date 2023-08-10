@@ -121,10 +121,12 @@ function EmployeeListPage() {
       const allHierarchy: Hierarchy = {
         id: 0,
         nameKr: "전체",
-        nameEng: "all",
+        nameEng: "ALL",
       };
-
-      setHierarchyList([allHierarchy, ...res.data]);
+      const filteredData = res.data.filter(
+        (item: Hierarchy) => item.nameEng !== "NONE",
+      );
+      setHierarchyList([allHierarchy, ...filteredData]);
     };
     const handelRequestFail: RequestFailHandler = (e) => {
       alert((e.response.data as { code: string; message: string }).message);
@@ -138,17 +140,20 @@ function EmployeeListPage() {
     });
   };
 
-  //직급 리스트
+  //권한 리스트
   const roleRequest = () => {
     const handelRequestSuccess: RequestSuccessHandler = (res) => {
       const allRole: Role = {
         id: 0,
         nameKr: "전체",
-        nameEng: "all",
+        nameEng: "ALL",
       };
 
+      const filteredData = res.data.filter(
+        (item: Role) => item.nameEng !== "CLIENT",
+      );
       // res.data에 allRole 추가
-      setRoleList([allRole, ...res.data]);
+      setRoleList([allRole, ...filteredData]);
     };
     const handelRequestFail: RequestFailHandler = (e) => {
       alert((e.response.data as { code: string; message: string }).message);
