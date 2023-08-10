@@ -3,15 +3,15 @@ import * as echarts from "echarts";
 import Box from "@mui/material/Box";
 import { useRecoilValue } from "recoil";
 import clientIdState from "../../../states/client/ClientIdState.tsx";
-import { LawsuitData } from "../../../mock/lawsuit/lawsuitTable.ts";
 import request, { RequestSuccessHandler } from "../../../lib/request.ts";
 import Card from "@mui/material/Card";
+import { LawsuitInfo } from "../../case/type/LawsuitInfo.tsx";
 
 type EChartsOption = echarts.EChartsOption;
 
 function ClientCaseStatisticsChart() {
-  const memberId = useRecoilValue(clientIdState);
-  const [cases, setCases] = useState<LawsuitData[]>([]);
+  const clientId = useRecoilValue(clientIdState);
+  const [cases, setCases] = useState<LawsuitInfo[]>([]);
   const totalAmountByStatusChartRef = useRef<HTMLDivElement>(null);
   const unreceivedAmountChartRef = useRef<HTMLDivElement>(null);
 
@@ -20,28 +20,27 @@ function ClientCaseStatisticsChart() {
   const [valueC, setValueC] = useState(0); //totalAmountByStatus("종결")
 
   useEffect(() => {
-    if (typeof memberId !== "number") {
+    if (typeof clientId !== "number") {
       // TODO
       return;
     }
 
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      const body: { data: LawsuitData[] } = res.data;
-      const { data } = body;
-      console.log("request success");
-
-      setCases(data);
+      const lawsuitData: LawsuitInfo[] = res.data;
+      setCases(lawsuitData);
     };
 
-    request("GET", `/lawsuits/members/${memberId}`, {
+    request("GET", `/lawsuits/${clientId}`, {
+      useMock: false,
+      withToken: true,
       onSuccess: handleRequestSuccess,
     });
-  }, [memberId]);
+  }, [clientId]);
 
   useEffect(() => {
-    setValueA(totalAmountByStatus("등록"));
-    setValueB(totalAmountByStatus("진행"));
-    setValueC(totalAmountByStatus("종결"));
+    setValueA(totalAmountByStatus("REGISTRATION"));
+    setValueB(totalAmountByStatus("PROCEEDING"));
+    setValueC(totalAmountByStatus("CLOSING"));
   }, [cases]);
 
   useEffect(() => {
@@ -163,8 +162,11 @@ function ClientCaseStatisticsChart() {
     };
   }, [valueA, valueB, valueC]);
 
-  // cases 데이터를 비동기로 처리해야함..
   function totalAmountByStatus(status: string): number {
+    if (!cases) {
+      return 0;
+    }
+
     const total = cases.reduce((acc, item) => {
       return item.lawsuitStatus === status ? acc + item.commissionFee : acc;
     }, 0);
@@ -173,6 +175,10 @@ function ClientCaseStatisticsChart() {
   }
 
   function unreceivedAmountByStatus(status: string): number {
+    if (!cases) {
+      return 0;
+    }
+
     const total = cases.reduce((acc, item) => {
       return item.lawsuitStatus === status ? acc + item.commissionFee : acc;
     }, 0);
@@ -181,14 +187,16 @@ function ClientCaseStatisticsChart() {
   }
 
   function calculateSuccessAmount(): number {
+    if (!cases) {
+      return 0;
+    }
+
     const total = cases.reduce((acc, item) => {
       return acc + item.contingentFee;
     }, 0);
 
     return total;
   }
-
-  console.log("render");
 
   return (
     <Box
