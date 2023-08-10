@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import request, {
   RequestFailHandler,
   RequestSuccessHandler,
@@ -33,24 +33,56 @@ function EmployeeListPage() {
   const [sortOrder, setSortOrder] = useState("desc");
 
   //for paging
-  const [page, setPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(20);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [count, setCount] = useState(0);
 
   useEffect(() => {
     hierarchyRequest();
     roleRequest();
-    searchRequest();
   }, []);
 
-  //검색버튼 클릭
-  const onClickSearchButton = (e: React.MouseEvent) => {
-    searchRequest();
-  };
+  const prevDependencies = useRef({
+    searchHierarchy,
+    searchRole,
+    sortKey,
+    sortOrder,
+    rowsPerPage,
+    page,
+  });
+
+  useEffect(() => {
+    // page만 변화했는지 체크
+    if (
+      prevDependencies.current.searchHierarchy === searchHierarchy &&
+      prevDependencies.current.searchRole === searchRole &&
+      prevDependencies.current.sortKey === sortKey &&
+      prevDependencies.current.sortOrder === sortOrder &&
+      prevDependencies.current.rowsPerPage === rowsPerPage &&
+      prevDependencies.current.page !== page
+    ) {
+      searchRequest(false);
+    } else {
+      searchRequest(true);
+    }
+
+    // 의존성 변수들의 마지막 값을 저장
+    prevDependencies.current = {
+      searchHierarchy,
+      searchRole,
+      sortKey,
+      sortOrder,
+      rowsPerPage,
+      page,
+    };
+  }, [searchHierarchy, searchRole, sortKey, sortOrder, rowsPerPage, page]);
 
   //검색
-  const searchRequest = () => {
+  const searchRequest = (isInitPage?: boolean) => {
+    if (isInitPage) {
+      setPage(0);
+    }
     const handelRequestSuccess: RequestSuccessHandler = (res) => {
       setMemberInfos(res.data.memberDtoNonPassList);
       setCount(res.data.count);
@@ -68,7 +100,7 @@ function EmployeeListPage() {
         searchRole.nameEng !== "all" ? `roleId=${searchRole.id}` : null,
         sortKey ? `sortKey=${sortKey}` : null,
         sortOrder ? `sortOrder=${sortOrder}` : null,
-        `page=${page}`,
+        `page=${page + 1}`,
         `rowsPerPage=${rowsPerPage}`,
       ];
 
@@ -145,7 +177,7 @@ function EmployeeListPage() {
         setSortKey={setSortKey}
         sortOrder={sortOrder}
         setSortOrder={setSortOrder}
-        onClickSearchButton={onClickSearchButton}
+        searchRequest={searchRequest}
       />
 
       <EmployeeListTable
@@ -157,6 +189,11 @@ function EmployeeListPage() {
         }))}
         hierarchyList={hierarchyList}
         roleList={roleList}
+        count={count}
+        page={page}
+        setPage={setPage}
+        rowsPerPage={rowsPerPage}
+        setRowsPerPage={setRowsPerPage}
       />
     </Box>
   );

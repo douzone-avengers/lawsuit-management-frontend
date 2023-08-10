@@ -14,9 +14,34 @@ type Props = {
   memberInfos: (MemberInfo & { onClick: () => void })[];
   hierarchyList: Hierarchy[];
   roleList: Role[];
+  count: number;
+  page: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+  rowsPerPage: number;
+  setRowsPerPage: React.Dispatch<React.SetStateAction<number>>;
 };
 
-function EmployeeListTable({ memberInfos, hierarchyList, roleList }: Props) {
+function EmployeeListTable({
+  memberInfos,
+  hierarchyList,
+  roleList,
+  count,
+  page,
+  setPage,
+  rowsPerPage,
+  setRowsPerPage,
+}: Props) {
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
   return (
     <Card sx={{ marginBottom: 3, marginTop: 5 }}>
       <CardTitle text="사원 리스트" />
@@ -45,7 +70,7 @@ function EmployeeListTable({ memberInfos, hierarchyList, roleList }: Props) {
                 onClick={item.onClick}
               >
                 <TableCell align="left" component="th" scope="row">
-                  {index + 1}
+                  {page * rowsPerPage + index + 1}
                 </TableCell>
                 <TableCell align="left">{item.name}</TableCell>
                 <TableCell align="left">
@@ -70,11 +95,11 @@ function EmployeeListTable({ memberInfos, hierarchyList, roleList }: Props) {
                   sx={{ display: "inline-flex", verticalAlign: "middle" }}
                   rowsPerPageOptions={[5, 10, 25]}
                   component="div"
-                  count={100}
-                  page={0}
-                  onPageChange={() => {}}
-                  rowsPerPage={5}
-                  onRowsPerPageChange={() => {}}
+                  count={count}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  rowsPerPage={rowsPerPage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
                 />
               </TableCell>
             </TableRow>
