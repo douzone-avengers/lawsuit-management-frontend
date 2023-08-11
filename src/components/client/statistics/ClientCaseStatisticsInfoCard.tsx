@@ -23,16 +23,16 @@ function ClientCaseStatisticsInfoCard() {
     }
 
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      const body: { data: ClientData } = res.data;
-      const { data } = body;
-      const { name, email, phone, address } = data;
-      setName(name);
-      setPhone(phone);
-      setEmail(email);
-      setAddress(address);
+      const clientData: ClientData = res.data;
+      setName(clientData.name);
+      setPhone(clientData.phone);
+      setEmail(clientData.email);
+      setAddress(clientData.address);
     };
 
     request("GET", `/clients/${clientId}`, {
+      useMock: false,
+      withToken: true,
       onSuccess: handleRequestSuccess,
     });
   }, [clientId]);

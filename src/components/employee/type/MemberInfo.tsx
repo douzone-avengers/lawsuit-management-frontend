@@ -18,4 +18,5 @@ export type MemberInfo = {
   address: string;
   hierarchyId: number;
   roleId: number;
+  createdAt: string;
 };

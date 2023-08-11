@@ -6,9 +6,9 @@ import request, { RequestSuccessHandler } from "../../../lib/request.ts";
 import caseIdState from "../../../states/case/CaseIdState.tsx";
 import clientIdState from "../../../states/client/ClientIdState.tsx";
 import ClientInfoCard from "../../client/ClientInfoCard.tsx";
-import { LawsuitData } from "../../../mock/lawsuit/lawsuitTable.ts";
 import ClosingTable from "./ClosingTable.tsx";
 import adviceIdState from "../../../states/advice/AdviceState.tsx";
+import { LawsuitInfo } from "../type/LawsuitInfo.tsx";
 
 function ClosingInfo() {
   const clientId = useRecoilValue(clientIdState);
@@ -16,7 +16,7 @@ function ClosingInfo() {
   const adviceId = useRecoilValue(adviceIdState);
   const setLawsuitId = useSetRecoilState(caseIdState);
   const navigate = useNavigate();
-  const [lawsuits, setLawsuits] = useState<LawsuitData[]>([]);
+  const [lawsuits, setLawsuits] = useState<LawsuitInfo[]>([]);
 
   useEffect(() => {
     if (typeof clientId !== "number") {
@@ -25,7 +25,7 @@ function ClosingInfo() {
     }
 
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      const body: { data: LawsuitData[] } = res.data;
+      const body: { data: LawsuitInfo[] } = res.data;
       const { data } = body;
       setLawsuits(data);
       setLawsuitId(data[0]?.id);

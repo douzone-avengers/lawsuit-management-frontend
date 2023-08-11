@@ -6,7 +6,6 @@ import { useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import request, { RequestSuccessHandler } from "../../../lib/request.ts";
 import { ClientData } from "../../../mock/client/clientTable.ts";
-import { LawsuitData } from "../../../mock/lawsuit/lawsuitTable.ts";
 import caseIdState from "../../../states/case/CaseIdState.tsx";
 import clientIdState from "../../../states/client/ClientIdState.tsx";
 import subNavigationBarState from "../../../states/layout/SubNavigationBarState.tsx";
@@ -18,6 +17,7 @@ import ClientRegisterPopUpButton from "../../client/ClientRegisterPopUpButton.ts
 import { MemberInfo } from "../../../mock/member/memberHandlers";
 import employeeIdState from "../../../states/employee/EmployeeIdState";
 import employeeButtonIdState from "../../../states/employee/EmployeeButtonIdState";
+import { LawsuitInfo } from "../../case/type/LawsuitInfo.tsx";
 
 function SubNavigationBar() {
   const memberId = useRecoilValue(clientIdState);
@@ -32,8 +32,8 @@ function SubNavigationBar() {
   useEffect(() => {
     if (subNavigationBarType === "client") {
       const handleRequestSuccess: RequestSuccessHandler = (res) => {
-        const body: { data: ClientData[] } = res.data;
-        const newItems: SubNavigationBarItemState[] = body.data.map((item) => {
+        const body: ClientData[] = res.data;
+        const newItems: SubNavigationBarItemState[] = body.map((item) => {
           return {
             id: item.id,
             text: item.name,
@@ -44,6 +44,8 @@ function SubNavigationBar() {
         setSubNavigationBar({ ...subNavigationBar, items: newItems });
       };
       request("GET", "/clients", {
+        useMock: false,
+        withToken: true,
         onSuccess: handleRequestSuccess,
       });
     } else if (subNavigationBarType === "caseClient") {
@@ -66,7 +68,7 @@ function SubNavigationBar() {
       });
     } else if (subNavigationBarType === "case") {
       const handleRequestSuccess: RequestSuccessHandler = (res) => {
-        const body: { data: LawsuitData[] } = res.data;
+        const body: { data: LawsuitInfo[] } = res.data;
         const newItems: SubNavigationBarItemState[] = body.data.map((item) => {
           return {
             id: item.id,

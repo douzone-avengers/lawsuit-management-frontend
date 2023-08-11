@@ -3,30 +3,40 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import request, { RequestSuccessHandler } from "../../lib/request";
-import { LawsuitData } from "../../mock/lawsuit/lawsuitTable";
 import clientIdState from "../../states/client/ClientIdState";
 import CaseListTable from "../case/CaseListTable.tsx";
+import { LawsuitInfo } from "../case/type/LawsuitInfo.tsx";
+import { PagingInfo } from "../common/type/PagingInfo.tsx";
 
 function ClientCaseListTab() {
-  const memberId = useRecoilValue(clientIdState);
+  const clientId = useRecoilValue(clientIdState);
   const navigate = useNavigate();
-  const [cases, setCases] = useState<LawsuitData[]>([]);
+  const [cases, setCases] = useState<LawsuitInfo[]>([]);
 
   useEffect(() => {
-    if (typeof memberId !== "number") {
+    if (typeof clientId !== "number") {
       // TODO
       return;
     }
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      const body: { data: LawsuitData[] } = res.data;
-      const { data } = body;
-      setCases(data);
+      const lawsuitData: {
+        lawsuitList: LawsuitInfo[];
+        pageRange: PagingInfo;
+      } = res.data;
+      console.log(lawsuitData);
+      setCases(lawsuitData.lawsuitList);
     };
 
-    request("GET", `/lawsuits/members/${memberId}`, {
+    request("GET", `/lawsuits/clients/${clientId}`, {
+      useMock: false,
+      withToken: true,
+      params: {
+        curPage: "1",
+        itemsPerPage: "10",
+      },
       onSuccess: handleRequestSuccess,
     });
-  }, [memberId]);
+  }, [clientId]);
 
   return (
     <Box>
@@ -34,7 +44,7 @@ function ClientCaseListTab() {
         cases={cases.map((item) => ({
           ...item,
           onClick: () => {
-            navigate(`/cases/${item.id}?client=${memberId}`);
+            navigate(`/cases/${item.id}?client=${clientId}`);
           },
         }))}
       />

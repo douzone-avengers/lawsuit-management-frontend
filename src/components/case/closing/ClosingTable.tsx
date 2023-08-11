@@ -5,15 +5,15 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { LawsuitData } from "../../../mock/lawsuit/lawsuitTable.ts";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
 import { Stack } from "@mui/material";
+import { LawsuitInfo } from "../type/LawsuitInfo.tsx";
 
 type Props = {
-  lawsuits: (LawsuitData & { onClick: () => void })[];
+  lawsuits: (LawsuitInfo & { onClick: () => void })[];
 };
 
 function ClosingTable({ lawsuits }: Props) {
