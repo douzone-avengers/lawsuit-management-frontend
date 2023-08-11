@@ -28,6 +28,7 @@ import employeeIdState from "../../states/employee/EmployeeIdState";
 import EmployeeCasePage from "../employee/case/EmployeeCasePage";
 import caseTabIdState from "../../states/case/CaseTabIdState.tsx";
 import ValidatePage from "../join/ValidatePage";
+import SchedulePage from "../schedule/SchedulePage.tsx";
 
 function AppRoutes() {
   const location = useLocation();
@@ -212,6 +213,19 @@ function AppRoutes() {
       return;
     }
 
+    // /schedule
+    if (length === 1 && paths[1] === "schedule") {
+      setClientId(null);
+      setCaseId(null);
+      setEmployeeId(null);
+      setSubNavigationBarType("none");
+      setMainNavigationBar({
+        ...mainNavigationBar,
+        curId: -1,
+      });
+      return;
+    }
+
     // /login
     if (length === 1 && paths[1] === "login") {
       cleanUp();
@@ -289,6 +303,7 @@ function AppRoutes() {
           <Route path=":employeeId" element={<EmployeeDetailPage />} />
           <Route path=":employeeId/cases" element={<EmployeeCasePage />} />
         </Route>
+        <Route path="schedule" element={<SchedulePage />} />
       </Route>
       {/* /login */}
       <Route path="login" element={<LoginPage />} />

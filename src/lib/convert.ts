@@ -15,7 +15,6 @@ export function delimiter(num: number): string {
 }
 
 export function toDateValue(dateStr: string) {
-  console.log("dateStr = " + dateStr);
   if (dateStr === null) {
     return "";
   }

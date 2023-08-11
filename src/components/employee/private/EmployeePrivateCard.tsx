@@ -60,7 +60,6 @@ function EmployeePrivateCard({ width = "50%", memberInfo }: Props) {
     if (memberInfo?.roleId) {
       setRoleId(memberInfo.roleId);
     }
-    console.dir(memberInfo);
   }, [memberInfo]);
 
   useEffect(() => {

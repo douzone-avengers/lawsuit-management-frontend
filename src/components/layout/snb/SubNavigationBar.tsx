@@ -17,10 +17,9 @@ import ClientRegisterPopUpButton from "../../client/ClientRegisterPopUpButton.ts
 import { MemberInfo } from "../../../mock/member/memberHandlers";
 import employeeIdState from "../../../states/employee/EmployeeIdState";
 import employeeButtonIdState from "../../../states/employee/EmployeeButtonIdState";
-import { LawsuitInfo } from "../../case/type/LawsuitInfo.tsx";
 
 function SubNavigationBar() {
-  const memberId = useRecoilValue(clientIdState);
+  const clientId = useRecoilValue(clientIdState);
   const caseId = useRecoilValue(caseIdState);
   const employeeId = useRecoilValue(employeeIdState);
   const [subNavigationBar, setSubNavigationBar] = useRecoilState(
@@ -50,8 +49,8 @@ function SubNavigationBar() {
       });
     } else if (subNavigationBarType === "caseClient") {
       const handleRequestSuccess: RequestSuccessHandler = (res) => {
-        const body: { data: ClientData[] } = res.data;
-        const newItems: SubNavigationBarItemState[] = body.data.map((item) => {
+        const body: { id: number; name: string }[] = res.data;
+        const newItems: SubNavigationBarItemState[] = body.map((item) => {
           return {
             id: item.id,
             text: item.name,
@@ -63,23 +62,31 @@ function SubNavigationBar() {
       };
       request("GET", "/clients", {
         onSuccess: handleRequestSuccess,
+        useMock: false,
       });
     } else if (subNavigationBarType === "case") {
       const handleRequestSuccess: RequestSuccessHandler = (res) => {
-        const body: { data: LawsuitInfo[] } = res.data;
-        const newItems: SubNavigationBarItemState[] = body.data.map((item) => {
-          return {
-            id: item.id,
-            text: item.name,
-            subText: item.lawsuitNum,
-            url: `cases/${item.id}?client=${memberId}`,
-            SvgIcon: BalanceIcon,
-          };
-        });
+        const body: {
+          lawsuitList: { id: number; name: string; lawsuitNum: string }[];
+          pageRange: { startPage: number; endPage: number };
+        } = res.data;
+
+        const newItems: SubNavigationBarItemState[] = body.lawsuitList.map(
+          (item) => {
+            return {
+              id: item.id,
+              text: item.name,
+              subText: item.lawsuitNum,
+              url: `cases/${item.id}?client=${clientId}`,
+              SvgIcon: BalanceIcon,
+            };
+          },
+        );
         setSubNavigationBar({ ...subNavigationBar, items: newItems });
       };
-      request("GET", `/lawsuits/members/${memberId}`, {
+      request("GET", `/lawsuits/clients/${clientId}?curPage=1&itemsPerPage=5`, {
         onSuccess: handleRequestSuccess,
+        useMock: false,
       });
     } else if (subNavigationBarType === "employee") {
       const handleRequestSuccess: RequestSuccessHandler = (res) => {
@@ -120,7 +127,7 @@ function SubNavigationBar() {
             selected={
               (subNavigationBarType === "client" ||
                 subNavigationBarType === "caseClient") &&
-              memberId === item.id
+              clientId === item.id
                 ? true
                 : subNavigationBarType === "case" && caseId === item.id
                 ? true

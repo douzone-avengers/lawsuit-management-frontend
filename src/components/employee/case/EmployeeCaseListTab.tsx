@@ -11,14 +11,10 @@ function EmployeeCaseListTab() {
   const [cases, setCases] = useState<LawsuitInfo[]>([]);
 
   useEffect(() => {
-    console.log(employeeId);
-
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
       const body: { data: LawsuitInfo[] } = res.data;
       const { data } = body;
       setCases(data);
-
-      console.log(cases);
     };
 
     request("GET", `/lawsuits/members/${employeeId}`, {

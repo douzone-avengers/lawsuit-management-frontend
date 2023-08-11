@@ -12,10 +12,9 @@ import CaseClientInfoCard from "./common/CaseClientInfoCard.tsx";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import caseTabIdState from "../../states/case/CaseTabIdState.tsx";
 import caseIdState from "../../states/case/CaseIdState.tsx";
-import caseInfoState, {
-  CaseInfoType,
-} from "../../states/case/info/caseInfoState.tsx";
+import caseInfoState from "../../states/case/info/caseInfoState.tsx";
 import request, { RequestSuccessHandler } from "../../lib/request.ts";
+import { LawsuitInfo } from "./type/LawsuitInfo.tsx";
 
 function CaseDetailPage() {
   const [caseTabId, setCaseTabId] = useRecoilState(caseTabIdState);
@@ -64,12 +63,15 @@ function CaseDetailPage() {
     }
 
     const handleSuccessHandler: RequestSuccessHandler = (res) => {
-      const newCaseInfo: CaseInfoType = res.data["data"];
-      setCaseInfo(newCaseInfo);
+      console.dir();
+      const body: LawsuitInfo = res.data;
+      setCaseInfo({ lawsuit: body, employees: [], clients: [] });
     };
+    console.log("CaseDetailPage");
 
     request("GET", `/lawsuits/${caseId}`, {
       onSuccess: handleSuccessHandler,
+      useMock: false,
     });
   }, [caseId]);
 
