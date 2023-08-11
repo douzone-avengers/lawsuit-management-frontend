@@ -5,7 +5,7 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import { Button, TextField } from "@mui/material";
 import { Hierarchy, Role } from "../type/MemberInfo";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import CardTitle from "../../common/CardTitle";
 
@@ -18,11 +18,14 @@ type Props = {
   setSearchRole: React.Dispatch<React.SetStateAction<Role>>;
   searchWord: string;
   setSearchWord: React.Dispatch<React.SetStateAction<string>>;
+
+  curSearchWord: string;
+  setCurSearchWord: React.Dispatch<React.SetStateAction<string>>;
   sortKey: string;
   setSortKey: React.Dispatch<React.SetStateAction<string>>;
   sortOrder: string;
   setSortOrder: React.Dispatch<React.SetStateAction<string>>;
-  searchRequest: void;
+  searchRequest: (isInitPage?: boolean, isGetBackWord?: boolean) => void;
 };
 
 function EmployeeListSearchBox({
@@ -32,14 +35,22 @@ function EmployeeListSearchBox({
   setSearchHierarchy,
   searchRole,
   setSearchRole,
-  searchWord,
   setSearchWord,
+  curSearchWord,
+  setCurSearchWord,
   sortKey,
   setSortKey,
   sortOrder,
   setSortOrder,
   searchRequest,
 }: Props) {
+  const [triggerSearch, setTriggerSearch] = useState(false);
+  useEffect(() => {
+    if (triggerSearch) {
+      searchRequest(true, false);
+      setTriggerSearch(false);
+    }
+  }, [triggerSearch]);
   return (
     <Card sx={{ marginBottom: 3, marginTop: 2 }}>
       <CardTitle text="검색 조건" />
@@ -146,13 +157,14 @@ function EmployeeListSearchBox({
             sx={{ flexGrow: 1 }}
             placeholder="이름, 전화번호, email 검색"
             size="small"
-            value={searchWord}
-            onChange={(e) => setSearchWord(e.target.value)}
+            value={curSearchWord}
+            onChange={(e) => setCurSearchWord(e.target.value)}
           />
           <Button
             variant="contained"
-            onClick={(e) => {
-              searchRequest(true);
+            onClick={() => {
+              setSearchWord(curSearchWord);
+              setTriggerSearch(true);
             }}
           >
             검색
