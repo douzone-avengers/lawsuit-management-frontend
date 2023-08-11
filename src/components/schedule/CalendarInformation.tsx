@@ -18,7 +18,7 @@ function CalendarInformation({ item }: Props) {
   };
 
   const handleClick = () => {
-    request("GET", `/schedules/info/${item.receptionId}`, {
+    request("GET", `/schedules/${item.receptionId}/info`, {
       onSuccess: handleSuccess,
       useMock: false,
     });

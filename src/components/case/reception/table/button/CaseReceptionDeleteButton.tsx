@@ -36,7 +36,7 @@ function CaseReceptionDeleteButton({ item }: Props) {
         useMock: false,
       });
     };
-    request("PUT", `/receptions/delete/${item.id}`, {
+    request("PATCH", `/receptions/delete/${item.id}`, {
       onSuccess: handleRequestSuccess,
       useMock: false,
     });
