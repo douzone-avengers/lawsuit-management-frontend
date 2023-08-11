@@ -38,6 +38,8 @@ function EmployeeListPage() {
 
   const [count, setCount] = useState(0);
 
+  const [curSearchWord, setCurSearchWord] = useState("");
+
   useEffect(() => {
     hierarchyRequest();
     roleRequest();
@@ -62,9 +64,9 @@ function EmployeeListPage() {
       prevDependencies.current.rowsPerPage === rowsPerPage &&
       prevDependencies.current.page !== page
     ) {
-      searchRequest(false);
+      searchRequest(false, true);
     } else {
-      searchRequest(true);
+      searchRequest(true, true);
     }
 
     // 의존성 변수들의 마지막 값을 저장
@@ -79,9 +81,12 @@ function EmployeeListPage() {
   }, [searchHierarchy, searchRole, sortKey, sortOrder, rowsPerPage, page]);
 
   //검색
-  const searchRequest = (isInitPage?: boolean) => {
+  const searchRequest = (isInitPage?: boolean, isGetBackWord?: boolean) => {
     if (isInitPage) {
       setPage(0);
+    }
+    if (isGetBackWord) {
+      setCurSearchWord(searchWord);
     }
     const handelRequestSuccess: RequestSuccessHandler = (res) => {
       setMemberInfos(res.data.memberDtoNonPassList);
@@ -178,6 +183,8 @@ function EmployeeListPage() {
         setSearchRole={setSearchRole}
         searchWord={searchWord}
         setSearchWord={setSearchWord}
+        curSearchWord={curSearchWord}
+        setCurSearchWord={setCurSearchWord}
         sortKey={sortKey}
         setSortKey={setSortKey}
         sortOrder={sortOrder}
