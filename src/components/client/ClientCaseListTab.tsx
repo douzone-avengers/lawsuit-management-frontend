@@ -23,7 +23,6 @@ function ClientCaseListTab() {
         lawsuitList: LawsuitInfo[];
         pageRange: PagingInfo;
       } = res.data;
-      console.log(lawsuitData);
       setCases(lawsuitData.lawsuitList);
     };
 

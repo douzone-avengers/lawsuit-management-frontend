@@ -80,8 +80,6 @@ const getDetailExpenseHandler = rest.get(
   async (req, res, ctx) => {
     const expenseId = Number.parseInt(req.params["expenseId"] as string) ?? "";
 
-    console.log("api/expense/:expenseId = " + expenseId);
-
     if (Number.isNaN(expenseId)) {
       return res(ctx.status(400));
     }
@@ -123,7 +121,6 @@ const updateExpenseHandler = rest.put(
       amount: number;
     } = await req.json();
 
-    console.log(body.speningAt);
     const expenseId = Number.parseInt(
       (req.params["expenseId"] as string) ?? "",
     );

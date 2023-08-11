@@ -24,7 +24,6 @@ function LoginPage() {
       refreshToken: string;
     };
     const handleLoginRequestSuccess: RequestSuccessHandler = (res) => {
-      console.dir(res);
       const tokenData: TokenData = res.data;
       localStorage.setItem("accessToken", tokenData.accessToken);
       localStorage.setItem("refreshToken", tokenData.refreshToken);

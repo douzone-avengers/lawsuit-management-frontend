@@ -80,12 +80,6 @@ function Calendar() {
       const prevDay = dayjs(
         `${newCalendarItems[0].year}-${newCalendarItems[0].month}-${newCalendarItems[0].date}`,
       ).subtract(1, "day");
-      console.dir({
-        year: prevDay.year(),
-        month: prevDay.month() + 1,
-        date: prevDay.date(),
-        dayOfWeek: prevDay.day(),
-      });
 
       newCalendarItems.unshift({
         year: prevDay.year(),

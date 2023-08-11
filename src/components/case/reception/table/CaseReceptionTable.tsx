@@ -34,13 +34,10 @@ function CaseReceptionTable() {
     }
 
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      console.log(res);
       const {
         receptions,
         size,
       }: { receptions: CaseReceptionRowType[]; size: number } = res.data;
-      console.dir(receptions);
-      console.dir(size);
       setReceptions(
         receptions.map((item) => {
           return { ...item, editable: false };
@@ -48,7 +45,6 @@ function CaseReceptionTable() {
       );
       setSize(size);
     };
-    console.log("request");
     request("GET", url, {
       onSuccess: handleRequestSuccess,
       useMock: false,

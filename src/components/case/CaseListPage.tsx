@@ -16,7 +16,7 @@ import Button from "@mui/material/Button";
 import { LawsuitInfo } from "./type/LawsuitInfo.tsx";
 
 function CaseListPage() {
-  const memberId = useRecoilValue(clientIdState);
+  const clientId = useRecoilValue(clientIdState);
   const setCaseId = useSetRecoilState(caseIdState);
   const navigate = useNavigate();
   const [cases, setCases] = useState<LawsuitInfo[]>([]);
@@ -29,21 +29,24 @@ function CaseListPage() {
   const cLength = cases.filter((item) => item.lawsuitStatus === "종결").length;
 
   useEffect(() => {
-    if (typeof memberId !== "number") {
+    if (typeof clientId !== "number") {
       // TODO
       return;
     }
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      const body: { data: LawsuitInfo[] } = res.data;
-      const { data } = body;
-      setCases(data);
-      setCaseId(data[0]?.id);
+      const body: {
+        lawsuitList: LawsuitInfo[];
+        pageRange: { startPage: number; endPage: number };
+      } = res.data;
+      setCases(body.lawsuitList);
+      setCaseId(body.lawsuitList[0]?.id);
     };
 
-    request("GET", `/lawsuits/members/${memberId}`, {
+    request("GET", `/lawsuits/clients/${clientId}?curPage=1&itemsPerPage=5`, {
       onSuccess: handleRequestSuccess,
+      useMock: false,
     });
-  }, [memberId]);
+  }, [clientId]);
 
   let filteredCases: LawsuitInfo[];
 
@@ -126,7 +129,7 @@ function CaseListPage() {
           cases={filteredCases.map((item) => ({
             ...item,
             onClick: () => {
-              navigate(`/cases/${item.id}?client=${memberId}`);
+              navigate(`/cases/${item.id}?client=${clientId}`);
             },
           }))}
         />

@@ -8,9 +8,8 @@ import caseIdState from "../../states/case/CaseIdState";
 import clientIdState from "../../states/client/ClientIdState";
 import { useEffect } from "react";
 import request, { RequestSuccessHandler } from "../../lib/request.ts";
-import caseInfoState, {
-  CaseInfoType,
-} from "../../states/case/info/caseInfoState.tsx";
+import caseInfoState from "../../states/case/info/caseInfoState.tsx";
+import { LawsuitInfo } from "./type/LawsuitInfo.tsx";
 
 function CaseLayout() {
   const caseButtonId = useRecoilValue(caseButtonIdState);
@@ -26,12 +25,15 @@ function CaseLayout() {
     }
 
     const handleSuccessHandler: RequestSuccessHandler = (res) => {
-      const newCaseInfo: CaseInfoType = res.data["data"];
-      setCaseInfo(newCaseInfo);
+      const body: LawsuitInfo = res.data;
+      console.dir(body);
+      setCaseInfo({ lawsuit: body, employees: [], clients: [] });
     };
 
+    console.log("CaseLayout");
     request("GET", `/lawsuits/${caseId}`, {
       onSuccess: handleSuccessHandler,
+      useMock: false,
     });
   }, [caseId]);
 

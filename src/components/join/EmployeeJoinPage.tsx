@@ -67,8 +67,6 @@ function EmployeeJoinPage() {
   const hierarchyRequest = () => {
     const handelRequestSuccess: RequestSuccessHandler = (res) => {
       setHierarchyMenuList(res.data);
-      console.log(hierarchyMenuList);
-      // hi
     };
     const handelRequestFail: RequestFailHandler = (e) => {
       alert((e.response.data as { code: string; message: string }).message);
@@ -117,7 +115,6 @@ function EmployeeJoinPage() {
       alert("입력되지 않은 정보가 있습니다.");
       return;
     }
-    console.log(hierarchyId);
     request("POST", `/members/employees`, {
       withToken: false,
       useMock: false,
