@@ -12,7 +12,12 @@ function LogoutButton() {
   };
 
   return (
-    <Button variant="contained" disableElevation onClick={handleClick}>
+    <Button
+      sx={{ height: "100%" }}
+      variant="contained"
+      disableElevation
+      onClick={handleClick}
+    >
       로그아웃
     </Button>
   );

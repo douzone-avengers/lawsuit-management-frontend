@@ -70,7 +70,7 @@ export const caseReceptionSearchUrlState = selector({
     }
 
     return decodeURIComponent(
-      `/receptions?lawsuit=${caseId}&page=${page}&status=${status}&category=${category}${
+      `/receptions?lawsuit=${caseId}&page=${page}&count=5&status=${status}&category=${category}${
         contents !== "" ? `&contents=${contents}` : ""
       }${
         startReceivedAt !== null

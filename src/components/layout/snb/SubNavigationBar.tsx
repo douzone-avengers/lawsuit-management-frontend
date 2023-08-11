@@ -48,8 +48,8 @@ function SubNavigationBar() {
       });
     } else if (subNavigationBarType === "caseClient") {
       const handleRequestSuccess: RequestSuccessHandler = (res) => {
-        const body: { data: ClientData[] } = res.data;
-        const newItems: SubNavigationBarItemState[] = body.data.map((item) => {
+        const body: { id: number; name: string }[] = res.data;
+        const newItems: SubNavigationBarItemState[] = body.map((item) => {
           return {
             id: item.id,
             text: item.name,
@@ -57,10 +57,12 @@ function SubNavigationBar() {
             SvgIcon: PersonIcon,
           };
         });
+        console.log(newItems);
         setSubNavigationBar({ ...subNavigationBar, items: newItems });
       };
       request("GET", "/clients", {
         onSuccess: handleRequestSuccess,
+        useMock: false,
       });
     } else if (subNavigationBarType === "case") {
       const handleRequestSuccess: RequestSuccessHandler = (res) => {

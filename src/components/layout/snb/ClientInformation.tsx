@@ -8,7 +8,6 @@ import { useRecoilValue } from "recoil";
 import clientIdState from "../../../states/client/ClientIdState.tsx";
 import { useEffect, useState } from "react";
 import request, { RequestSuccessHandler } from "../../../lib/request.ts";
-import { ClientData } from "../../../mock/client/clientTable.ts";
 
 function ClientInformation() {
   const clientId = useRecoilValue(clientIdState);
@@ -19,8 +18,10 @@ function ClientInformation() {
   useEffect(() => {
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
       const {
-        data: { name, email, phone },
-      }: { data: ClientData } = res.data;
+        name,
+        email,
+        phone,
+      }: { name: string; email: string; phone: string } = res.data;
       setName(name);
       setEmail(email);
       setPhone(phone);
@@ -28,6 +29,7 @@ function ClientInformation() {
 
     request("GET", `/clients/${clientId}`, {
       onSuccess: handleRequestSuccess,
+      useMock: false,
     });
   }, [clientId]);
 
