@@ -7,11 +7,11 @@ import caseExpenseState, {
   CaseExpenseRowType,
 } from "../../../../../states/case/info/expense/CaseExpenseState.tsx";
 import caseExpenseSizeState from "../../../../../states/case/info/expense/CaseExpenseSizeState.tsx";
+import * as dayjs from "dayjs";
 import { Dayjs } from "dayjs";
 import request, { RequestSuccessHandler } from "../../../../../lib/request.ts";
 import PopUp from "../../../../common/PopUp.tsx";
 import CloseButton from "../../../../common/CloseButton.tsx";
-import * as dayjs from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers";
 import { Button, TextField, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -37,7 +37,6 @@ function CaseExpenseAddPopUp() {
 
   const handleSpeningAtChange = (e: Dayjs | null) => {
     setSpeningAt(e?.toDate().toISOString() ?? "");
-    console.log("PopUp_speningAt = " + speningAt);
   };
 
   const handleContentsChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -69,7 +68,6 @@ function CaseExpenseAddPopUp() {
       });
     };
 
-    console.log("speningAt = " + speningAt);
     request("POST", `/expense`, {
       body: {
         lawsuitId: caseId,

@@ -40,7 +40,7 @@ function ClientCaseListTab() {
         lawsuitList: LawsuitInfo[];
         count: number;
       } = res.data;
-
+      
       setCases(lawsuitData.lawsuitList);
       setCount(lawsuitData.count);
     };
