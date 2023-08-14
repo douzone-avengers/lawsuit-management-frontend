@@ -1,12 +1,11 @@
 import Box from "@mui/material/Box";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import request, { RequestSuccessHandler } from "../../lib/request";
 import clientIdState from "../../states/client/ClientIdState";
 import CaseListTable from "../case/CaseListTable.tsx";
 import { LawsuitInfo } from "../case/type/LawsuitInfo.tsx";
-import lawsuitsPageState from "../../states/case/info/lawsuitsPaging/LawsuitsPageState.tsx";
 
 function ClientCaseListTab() {
   const clientId = useRecoilValue(clientIdState);
@@ -14,8 +13,7 @@ function ClientCaseListTab() {
   const [cases, setCases] = useState<LawsuitInfo[]>([]);
 
   //for paging
-  const page = useRecoilValue(lawsuitsPageState);
-  const setPage = useSetRecoilState(lawsuitsPageState);
+  const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [count, setCount] = useState(0);
 
@@ -36,12 +34,30 @@ function ClientCaseListTab() {
     };
 
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
+      function mapLawsuitStatus(status: string) {
+        switch (status) {
+          case "REGISTRATION":
+            return "등록";
+          case "PROCEEDING":
+            return "진행";
+          case "CLOSING":
+            return "종결";
+          default:
+            return status;
+        }
+      }
+
       const lawsuitData: {
         lawsuitList: LawsuitInfo[];
         count: number;
       } = res.data;
-      
-      setCases(lawsuitData.lawsuitList);
+
+      const mappedLawsuitList = lawsuitData.lawsuitList.map((item) => ({
+        ...item,
+        lawsuitStatus: mapLawsuitStatus(item.lawsuitStatus),
+      }));
+
+      setCases(mappedLawsuitList);
       setCount(lawsuitData.count);
     };
 
@@ -51,6 +67,7 @@ function ClientCaseListTab() {
       params: {
         curPage: (page + 1).toString(),
         rowsPerPage: rowsPerPage.toString(),
+        searchWord: "",
       },
       onSuccess: handleRequestSuccess,
     });
