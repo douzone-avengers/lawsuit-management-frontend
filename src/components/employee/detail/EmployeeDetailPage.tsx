@@ -10,6 +10,7 @@ import { MemberInfo } from "../type/MemberInfo";
 import { useRecoilValue } from "recoil";
 import curMemberAddressState from "../../../states/employee/CurMemberAddressState";
 import EmployeeInfoCard from "./EmployeeInfoCard";
+import employeeIdState from "../../../states/employee/EmployeeIdState";
 
 function EmployeeDetailPage() {
   const [width, height] = useWindowSize();
@@ -19,6 +20,7 @@ function EmployeeDetailPage() {
 
   const [memberInfo, setMemberInfo] = useState<MemberInfo>();
   const recoilAddress = useRecoilValue(curMemberAddressState);
+  const employeeId = useRecoilValue(employeeIdState);
 
   useEffect(() => {
     if (parentContainer.current) {
@@ -49,13 +51,13 @@ function EmployeeDetailPage() {
       alert((e.response.data as { code: string; message: string }).message);
     };
 
-    request("GET", `/members/me`, {
+    request("GET", `/members/employees/${employeeId}`, {
       withToken: true,
       useMock: false,
       onSuccess: handleRequestSuccess,
       onFail: handelRequestFail,
     });
-  }, []);
+  }, [employeeId]);
 
   return (
     <Box sx={{ display: "flex", gap: 3, flexDirection: "row", height: "100%" }}>

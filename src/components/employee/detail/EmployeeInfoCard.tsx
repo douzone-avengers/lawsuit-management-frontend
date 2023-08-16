@@ -18,8 +18,9 @@ import {
 import { Hierarchy, MemberInfo, Role } from "../type/MemberInfo";
 import ReactModal from "react-modal";
 import DaumPostcode from "react-daum-postcode";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import curMemberAddressState from "../../../states/employee/CurMemberAddressState";
+import employeeIdState from "../../../states/employee/EmployeeIdState";
 
 type Props = {
   width?: string | number;
@@ -41,6 +42,7 @@ function EmployeeInfoCard({ width = "50%", memberInfo }: Props) {
   const [roleId, setRoleId] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const setRecoilAddress = useSetRecoilState(curMemberAddressState);
+  const employeeId = useRecoilValue(employeeIdState);
   useEffect(() => {
     if (memberInfo?.email) {
       setEmail(memberInfo.email);
@@ -107,7 +109,7 @@ function EmployeeInfoCard({ width = "50%", memberInfo }: Props) {
       alert((e.response.data as { code: string; message: string }).message);
     };
 
-    request("PUT", `/members/me`, {
+    request("PUT", `/members/employees/${employeeId}`, {
       withToken: true,
       useMock: false,
       onSuccess: handelRequestSuccess,

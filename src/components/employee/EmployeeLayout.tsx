@@ -32,7 +32,7 @@ function CaseLayout() {
           variant={employeeButtonId === 2 ? "contained" : "outlined"}
           onClick={() => {
             // navigate(`/employees/${loginUser?.id}`); //사원 상세 탭 이동 시 기본값 자기자신
-            navigate(`/employees/1`); //임시
+            navigate(`/employees/13`); //임시
           }}
         >
           사원 상세
@@ -41,7 +41,7 @@ function CaseLayout() {
           variant={employeeButtonId === 3 ? "contained" : "outlined"}
           onClick={() => {
             // navigate(`/employees/${loginUser?.id}/cases`); //사건정보 탭 이동 시 기본값 자기자신
-            navigate(`/employees/1/cases`);
+            navigate(`/employees/13/cases`);
           }}
         >
           사건 정보
