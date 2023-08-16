@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import clientIdState from "../../states/client/ClientIdState.tsx";
 import { useRecoilValue } from "recoil";
-import request, { RequestSuccessHandler } from "../../lib/request.ts";
-import { ClientData } from "../../mock/client/clientTable.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../lib/requestDeprecated.ts";
 import Card from "@mui/material/Card";
+import { ClientData } from "../../type/ResponseType.ts";
 
 // window.kakao에 대한 타입 선언
 declare global {
@@ -68,7 +70,7 @@ export default function KakaoMap({ parentWidth, parentHeight }: Props) {
       setAddress(clientData.address);
     };
 
-    request("GET", `/clients/${clientId}`, {
+    requestDeprecated("GET", `/clients/${clientId}`, {
       useMock: false,
       withToken: true,
       onSuccess: handleRequestSuccess,

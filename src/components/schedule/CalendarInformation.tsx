@@ -1,7 +1,9 @@
 import { CalendarInformationType } from "../../states/schedule/calendarInformationsState.ts";
 import { useSetRecoilState } from "recoil";
 import calendarPopUpOpenState from "../../states/schedule/calendarPopUpOpenState.ts";
-import request, { RequestSuccessHandler } from "../../lib/request.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../lib/requestDeprecated.ts";
 import calendarPopUpInfoState from "../../states/schedule/calendarPopUpInfoState.ts";
 
 type Props = {
@@ -18,7 +20,7 @@ function CalendarInformation({ item }: Props) {
   };
 
   const handleClick = () => {
-    request("GET", `/schedules/info/${item.receptionId}`, {
+    requestDeprecated("GET", `/schedules/${item.receptionId}/info`, {
       onSuccess: handleSuccess,
       useMock: false,
     });

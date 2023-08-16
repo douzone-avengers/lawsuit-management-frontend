@@ -5,7 +5,9 @@ import CheckIcon from "@mui/icons-material/Check";
 import caseReceptionsState, {
   CaseReceptionRowType,
 } from "../../../../../states/case/info/reception/CaseReceptionsState.tsx";
-import request, { RequestSuccessHandler } from "../../../../../lib/request.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../../../../lib/requestDeprecated.ts";
 import * as dayjs from "dayjs";
 
 type Props = {
@@ -38,7 +40,7 @@ function CaseReceptionEditConfirmButton({ item }: Props) {
       setReceptions(newReceptions);
     };
 
-    request("PUT", `/receptions/update/${item.id}`, {
+    requestDeprecated("PUT", `/receptions/update/${item.id}`, {
       body: {
         status: item.status ? "complete" : "incomplete",
         category: item.category,

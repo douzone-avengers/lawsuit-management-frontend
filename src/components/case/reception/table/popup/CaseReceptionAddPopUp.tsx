@@ -15,7 +15,9 @@ import caseReceptionsState, {
   CaseReceptionRowType,
 } from "../../../../../states/case/info/reception/CaseReceptionsState.tsx";
 import caseReceptionSizeState from "../../../../../states/case/info/reception/CaseReceptionSizeState.tsx";
-import request, { RequestSuccessHandler } from "../../../../../lib/request.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../../../../lib/requestDeprecated.ts";
 import PopUp from "../../../../common/PopUp.tsx";
 import CloseButton from "../../../../common/CloseButton.tsx";
 
@@ -76,13 +78,13 @@ function CaseReceptionAddPopUp() {
         setReceptionAddPopUpOpen(false);
       };
 
-      request("GET", url, {
+      requestDeprecated("GET", url, {
         onSuccess: handleRequestSuccess2,
         useMock: false,
       });
     };
 
-    request("POST", `/receptions`, {
+    requestDeprecated("POST", `/receptions`, {
       body: {
         lawsuitId: caseId,
         status: status,

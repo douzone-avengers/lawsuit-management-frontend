@@ -11,7 +11,9 @@ import caseReceptionsState, {
 import caseReceptionPageState from "../../../../states/case/info/reception/CaseReceptionPageState.tsx";
 import caseReceptionSizeState from "../../../../states/case/info/reception/CaseReceptionSizeState.tsx";
 import { caseReceptionSearchUrlState } from "../../../../states/case/info/reception/CaseReceptionSearchState.tsx";
-import request, { RequestSuccessHandler } from "../../../../lib/request.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../../../lib/requestDeprecated.ts";
 
 export function updateUrl(url: string, newPage: number): string {
   return url.replace(/(page=)\d+/, `$1${newPage}`);
@@ -45,7 +47,7 @@ function CaseReceptionTable() {
       );
       setSize(size);
     };
-    request("GET", url, {
+    requestDeprecated("GET", url, {
       onSuccess: handleRequestSuccess,
       useMock: false,
     });
@@ -94,7 +96,7 @@ function CaseReceptionTable() {
                 setSize(size);
               };
 
-              request("GET", updateUrl(url, page), {
+              requestDeprecated("GET", updateUrl(url, page), {
                 onSuccess: handleRequestSuccess,
                 useMock: false,
               });
@@ -128,7 +130,7 @@ function CaseReceptionTable() {
                 setSize(size);
               };
 
-              request("GET", updateUrl(url, page), {
+              requestDeprecated("GET", updateUrl(url, page), {
                 onSuccess: handleRequestSuccess,
                 useMock: false,
               });

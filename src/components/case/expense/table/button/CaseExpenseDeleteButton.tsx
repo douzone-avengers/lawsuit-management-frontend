@@ -6,7 +6,9 @@ import caseExpenseSizeState from "../../../../../states/case/info/expense/CaseEx
 import { caseExpenseSearchUrlState } from "../../../../../states/case/info/expense/CaseExpenseSearchState.tsx";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Button } from "@mui/material";
-import request, { RequestSuccessHandler } from "../../../../../lib/request.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../../../../lib/requestDeprecated.ts";
 
 type Props = {
   item: CaseExpenseRowType & { editable: boolean };
@@ -31,11 +33,11 @@ function CaseExpenseDeleteButton({ item }: Props) {
         );
         setSize(size);
       };
-      request("GET", url, {
+      requestDeprecated("GET", url, {
         onSuccess: handleRequestSuccess2,
       });
     };
-    request("PUT", `/expense/delete/${item.id}`, {
+    requestDeprecated("PUT", `/expense/delete/${item.id}`, {
       onSuccess: handleRequestSuccess,
     });
   };

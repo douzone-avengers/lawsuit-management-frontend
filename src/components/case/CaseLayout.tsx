@@ -7,7 +7,9 @@ import caseButtonIdState from "../../states/case/CaseButtonIdState";
 import caseIdState from "../../states/case/CaseIdState";
 import clientIdState from "../../states/client/ClientIdState";
 import { useEffect } from "react";
-import request, { RequestSuccessHandler } from "../../lib/request.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../lib/requestDeprecated.ts";
 import caseInfoState from "../../states/case/info/caseInfoState.tsx";
 import { LawsuitInfo } from "./type/LawsuitInfo.tsx";
 
@@ -31,7 +33,7 @@ function CaseLayout() {
     };
 
     console.log("CaseLayout");
-    request("GET", `/lawsuits/${caseId}`, {
+    requestDeprecated("GET", `/lawsuits/${caseId}`, {
       onSuccess: handleSuccessHandler,
       useMock: false,
     });

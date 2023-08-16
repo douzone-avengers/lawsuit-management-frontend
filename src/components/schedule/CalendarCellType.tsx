@@ -12,8 +12,6 @@ type Props = {
 };
 
 function CalendarCell({ item: { calendar, informations } }: Props) {
-  const handleClick = () => {};
-
   return (
     <div
       style={{
@@ -22,7 +20,6 @@ function CalendarCell({ item: { calendar, informations } }: Props) {
         overflowX: "hidden",
         height: 60,
       }}
-      onClick={handleClick}
     >
       <div style={{ height: 20 }}>{calendar.date}</div>
       <div

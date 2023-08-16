@@ -18,34 +18,38 @@ function CalendarPopUp() {
     <PopUp>
       <CloseButton onClick={handleCloseButtonClick} />
       {info !== null ? (
-        <div>
-          <Property name="사건명" value={info.lawsuit.name} />
-          <Property name="사건번호" value={info.lawsuit.num} />
-          <Property name="사건종류" value={info.lawsuit.type} />
-          <Property
-            name="의뢰비"
-            value={`${delimiter(info.lawsuit.commissionFee)}원`}
-          />
-          <Property
-            name="성공보수"
-            value={`${delimiter(info.lawsuit.contingentFee)}원`}
-          />
-          <div style={{ display: "flex", gap: 5 }}>
-            <div>담당자</div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <div>
+            <div>사건</div>
+            <Property name="사건명" value={info.lawsuit.name} />
+            <Property name="사건번호" value={info.lawsuit.num} />
+            <Property name="사건종류" value={info.lawsuit.type} />
+            <Property
+              name="의뢰비"
+              value={`${delimiter(info.lawsuit.commissionFee)}원`}
+            />
+            <Property
+              name="성공보수"
+              value={`${delimiter(info.lawsuit.contingentFee)}원`}
+            />
             <div style={{ display: "flex", gap: 5 }}>
-              {info.members.map((item) => (
-                <div key={item.id}>{item.name}</div>
-              ))}
+              <div>담당자</div>
+              <div style={{ display: "flex", gap: 5 }}>
+                {info.members.map((item) => (
+                  <div key={item.id}>{item.name}</div>
+                ))}
+              </div>
+            </div>
+            <div style={{ display: "flex", gap: 5 }}>
+              <div>당사자</div>
+              <div style={{ display: "flex", gap: 5 }}>
+                {info.clients.map((item) => (
+                  <div key={item.id}>{item.name}</div>
+                ))}
+              </div>
             </div>
           </div>
-          <div style={{ display: "flex", gap: 5 }}>
-            <div>당사자</div>
-            <div style={{ display: "flex", gap: 5 }}>
-              {info.clients.map((item) => (
-                <div key={item.id}>{item.name}</div>
-              ))}
-            </div>
-          </div>
+
           <div>
             <div>접수</div>
             <Property
