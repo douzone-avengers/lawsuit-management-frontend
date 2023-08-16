@@ -4,11 +4,10 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import employeeButtonIdState from "../../states/employee/EmployeeButtonIdState";
-import userState from "../../states/common/IsLoginState";
 
 function CaseLayout() {
   const employeeButtonId = useRecoilValue(employeeButtonIdState);
-  const loginUser = useRecoilValue(userState);
+  // const loginUser = useRecoilValue(userState);
   const navigate = useNavigate();
 
   return (
@@ -33,7 +32,7 @@ function CaseLayout() {
         <Button
           variant={employeeButtonId === 2 ? "contained" : "outlined"}
           onClick={() => {
-            navigate(`/employees/${loginUser?.id}`); //사원 상세 탭 이동 시 기본값 자기자신
+            // navigate(`/employees/${loginUser?.id}`); //사원 상세 탭 이동 시 기본값 자기자신
           }}
         >
           사원 상세
@@ -41,7 +40,7 @@ function CaseLayout() {
         <Button
           variant={employeeButtonId === 3 ? "contained" : "outlined"}
           onClick={() => {
-            navigate(`/employees/${loginUser?.id}/cases`); //사건정보 탭 이동 시 기본값 자기자신
+            // navigate(`/employees/${loginUser?.id}/cases`); //사건정보 탭 이동 시 기본값 자기자신
           }}
         >
           사건 정보
