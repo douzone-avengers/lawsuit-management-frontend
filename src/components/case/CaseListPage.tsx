@@ -17,6 +17,7 @@ import Button from "@mui/material/Button";
 import { LawsuitInfo } from "./type/LawsuitInfo.tsx";
 import caseIdState from "../../states/case/CaseIdState.tsx";
 import { LawsuitStatus } from "../../type/ResponseType.ts";
+import { mapLawsuitStatus } from "../../lib/convert.ts";
 
 function CaseListPage() {
   const clientId = useRecoilValue(clientIdState);
@@ -84,19 +85,6 @@ function CaseListPage() {
     }
 
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      function mapLawsuitStatus(status: string) {
-        switch (status) {
-          case "REGISTRATION":
-            return "등록";
-          case "PROCEEDING":
-            return "진행";
-          case "CLOSING":
-            return "종결";
-          default:
-            return status as LawsuitStatus;
-        }
-      }
-
       const lawsuitData: {
         lawsuitList: LawsuitInfo[];
         count: number;

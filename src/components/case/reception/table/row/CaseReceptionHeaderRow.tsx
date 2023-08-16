@@ -16,9 +16,6 @@ function CaseReceptionHeaderRow() {
     <Box
       sx={{
         display: "flex",
-        background: "#2196f3",
-        fontWeight: 700,
-        color: "white",
         width: "100%",
       }}
     >
@@ -88,8 +85,8 @@ function CaseReceptionHeaderRow() {
         }}
       >
         <Button
-          variant="contained"
-          sx={{ color: "secondary" }}
+          sx={{ width: 185 }}
+          variant="outlined"
           onClick={handleReceptionAddButtonClick}
         >
           등록

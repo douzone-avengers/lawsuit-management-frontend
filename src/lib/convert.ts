@@ -1,3 +1,5 @@
+import { LawsuitStatus } from "../type/ResponseType.ts";
+
 type Category = "fixed" | "scheduled";
 
 export function delimiter(num: number): string {
@@ -29,5 +31,18 @@ export function toCategoryName(category: Category) {
       return "기일";
     default:
       return category;
+  }
+}
+
+export function mapLawsuitStatus(status: string) {
+  switch (status) {
+    case "REGISTRATION":
+      return "등록";
+    case "PROCEEDING":
+      return "진행";
+    case "CLOSING":
+      return "종결";
+    default:
+      return status as LawsuitStatus;
   }
 }
