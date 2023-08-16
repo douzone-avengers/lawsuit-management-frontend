@@ -2,10 +2,10 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 
-import request, {
+import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
-} from "../../../lib/request.ts";
+} from "../../../lib/requestDeprecated.ts";
 import Button from "@mui/material/Button";
 import {
   FormControl,
@@ -75,7 +75,7 @@ function EmployeePrivateCard({ width = "50%", memberInfo }: Props) {
       alert((e.response.data as { code: string; message: string }).message);
     };
 
-    request("GET", `/hierarchy`, {
+    requestDeprecated("GET", `/hierarchy`, {
       withToken: false,
       useMock: false,
       onSuccess: handelRequestSuccess,
@@ -91,7 +91,7 @@ function EmployeePrivateCard({ width = "50%", memberInfo }: Props) {
       alert((e.response.data as { code: string; message: string }).message);
     };
 
-    request("GET", `/role`, {
+    requestDeprecated("GET", `/role`, {
       withToken: false,
       useMock: false,
       onSuccess: handelRequestSuccess,
@@ -107,7 +107,7 @@ function EmployeePrivateCard({ width = "50%", memberInfo }: Props) {
       alert((e.response.data as { code: string; message: string }).message);
     };
 
-    request("PUT", `/members/me`, {
+    requestDeprecated("PUT", `/members/me`, {
       withToken: true,
       useMock: false,
       onSuccess: handelRequestSuccess,

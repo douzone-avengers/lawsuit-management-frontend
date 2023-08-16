@@ -2,7 +2,9 @@ import { useRecoilState } from "recoil";
 import CaseExpenseState, {
   CaseExpenseRowType,
 } from "../../../../../states/case/info/expense/CaseExpenseState.tsx";
-import request, { RequestSuccessHandler } from "../../../../../lib/request.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../../../../lib/requestDeprecated.ts";
 import { produce } from "immer";
 import { Button } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
@@ -36,7 +38,7 @@ function CaseExpenseEditConfirmButton({ item }: Props) {
       setExpense(newExpense);
     };
 
-    request("PUT", `/expense/update/${item.id}`, {
+    requestDeprecated("PUT", `/expense/update/${item.id}`, {
       body: {
         speningAt: item.speningAt,
         contents: item.contents,

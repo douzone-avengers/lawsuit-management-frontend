@@ -17,7 +17,9 @@ import caseIdState from "../../../../states/case/CaseIdState.tsx";
 import caseReceptionsState, {
   CaseReceptionRowType,
 } from "../../../../states/case/info/reception/CaseReceptionsState.tsx";
-import request, { RequestSuccessHandler } from "../../../../lib/request.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../../../lib/requestDeprecated.ts";
 
 function CaseReceptionSearchBox() {
   const [receptionSearch, setReceptionSearch] = useRecoilState(
@@ -99,7 +101,7 @@ function CaseReceptionSearchBox() {
     };
 
     const newUrl = updateUrl(url, 0);
-    request("GET", newUrl, {
+    requestDeprecated("GET", newUrl, {
       onSuccess: handleRequestSuccess,
       useMock: false,
     });

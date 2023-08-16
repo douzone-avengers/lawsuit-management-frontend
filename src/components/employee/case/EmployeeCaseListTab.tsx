@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import request, { RequestSuccessHandler } from "../../../lib/request";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../../lib/requestDeprecated.ts";
 import { useRecoilValue } from "recoil";
 import employeeIdState from "../../../states/employee/EmployeeIdState";
 import Box from "@mui/material/Box";
@@ -16,7 +18,7 @@ function EmployeeCaseListTab() {
       setCases(data);
     };
 
-    request("GET", `/lawsuits/members/${employeeId}`, {
+    requestDeprecated("GET", `/lawsuits/members/${employeeId}`, {
       onSuccess: handleRequestSuccess,
     });
   }, [employeeId]);

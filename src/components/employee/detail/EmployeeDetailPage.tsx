@@ -1,6 +1,8 @@
 import { useRecoilValue } from "recoil";
 import employeeIdState from "../../../states/employee/EmployeeIdState";
-import request, { RequestSuccessHandler } from "../../../lib/request";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../../lib/requestDeprecated.ts";
 import { useEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import EmployeeInfoCard from "./EmployeeInfoCard";
@@ -30,7 +32,7 @@ function EmployeeDetailPage() {
       const { data } = body;
       setMemberInfo(data);
     };
-    request("GET", `/members/${employeeId}`, {
+    requestDeprecated("GET", `/members/${employeeId}`, {
       onSuccess: handleRequestSuccess,
     });
   }, [employeeId]);

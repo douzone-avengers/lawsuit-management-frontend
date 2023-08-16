@@ -1,13 +1,14 @@
 import adviceIdState from "../../../states/advice/AdviceState.tsx";
 import { useRecoilState, useRecoilValue } from "recoil";
-import request, { RequestSuccessHandler } from "../../../lib/request.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../../lib/requestDeprecated.ts";
 import { useEffect, useState } from "react";
 import clientIdState from "../../../states/client/ClientIdState.tsx";
 import caseIdState from "../../../states/case/CaseIdState.tsx";
 import AdviceDetailPage from "./AdviceDetailPage.tsx";
 import Box from "@mui/material/Box";
 import { Advicedata, ClientData } from "../../../type/ResponseType.ts";
-
 
 function AdviceDetailTable() {
   const clientId = useRecoilValue(clientIdState);
@@ -39,13 +40,17 @@ function AdviceDetailTable() {
       setClientId(data?.id);
     };
 
-    request("GET", `/clients/${clientId}`, {
+    requestDeprecated("GET", `/clients/${clientId}`, {
       onSuccess: handleRequest,
     });
 
-    request("GET", `/lawsuit/${lawsuitId}/client/${clientId}/advices`, {
-      onSuccess: handleRequestSuccess,
-    });
+    requestDeprecated(
+      "GET",
+      `/lawsuit/${lawsuitId}/client/${clientId}/advices`,
+      {
+        onSuccess: handleRequestSuccess,
+      },
+    );
   }, [lawsuitId]);
 
   return (

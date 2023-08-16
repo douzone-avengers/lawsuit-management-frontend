@@ -6,10 +6,10 @@ import Logo from "../common/Logo.tsx";
 import PopUp from "../common/PopUp";
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material/Select";
-import request, {
+import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
-} from "../../lib/request";
+} from "../../lib/requestDeprecated.ts";
 import { ValidatedClientInfo } from "./type/ValidatedClientInfo";
 import { useSetRecoilState } from "recoil";
 import validatedClientState from "../../states/join/ValidatedClientState";
@@ -48,7 +48,7 @@ function JoinPage() {
   };
   const validateRequest = () => {
     if (userType === "employee") {
-      request("GET", `/promotions/employees?key=${key}`, {
+      requestDeprecated("GET", `/promotions/employees?key=${key}`, {
         withToken: false,
         useMock: false,
         onSuccess: handelRequestSuccess,
@@ -57,7 +57,7 @@ function JoinPage() {
     }
 
     if (userType === "client") {
-      request("GET", `/promotions/clients?key=${key}`, {
+      requestDeprecated("GET", `/promotions/clients?key=${key}`, {
         withToken: false,
         useMock: false,
         onSuccess: handelRequestSuccess,

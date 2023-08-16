@@ -4,7 +4,9 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import request, { RequestSuccessHandler } from "../../lib/request.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../lib/requestDeprecated.ts";
 import clientRegisterPopUpState from "../../states/layout/ClientRegisterPopUpOpenState.tsx";
 import subNavigationBarState from "../../states/layout/SubNavigationBarState.tsx";
 import { MainNavigationBarItemState } from "../layout/snb/MainNavigationBarItem.tsx";
@@ -46,7 +48,7 @@ function ClientRegisterPopUp() {
       setAddress("");
     };
 
-    request("POST", "/clients", {
+    requestDeprecated("POST", "/clients", {
       body: {
         name,
         phone,

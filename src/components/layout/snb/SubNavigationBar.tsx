@@ -4,12 +4,16 @@ import { Box } from "@mui/material";
 import List from "@mui/material/List";
 import { useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import request, { RequestSuccessHandler } from "../../../lib/request.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../../lib/requestDeprecated.ts";
 import caseIdState from "../../../states/case/CaseIdState.tsx";
 import clientIdState from "../../../states/client/ClientIdState.tsx";
 import subNavigationBarState from "../../../states/layout/SubNavigationBarState.tsx";
 import subNavigationBarTypeState from "../../../states/layout/SubNavigationBarTypeState.tsx";
-import SubNavigationBarItem, { SubNavigationBarItemState } from "./SubNavigationBarItem.tsx";
+import SubNavigationBarItem, {
+  SubNavigationBarItemState,
+} from "./SubNavigationBarItem.tsx";
 import ClientRegisterPopUpButton from "../../client/ClientRegisterPopUpButton.tsx";
 import employeeIdState from "../../../states/employee/EmployeeIdState";
 import employeeButtonIdState from "../../../states/employee/EmployeeButtonIdState";
@@ -40,7 +44,7 @@ function SubNavigationBar() {
         });
         setSubNavigationBar({ ...subNavigationBar, items: newItems });
       };
-      request("GET", "/clients", {
+      requestDeprecated("GET", "/clients", {
         useMock: false,
         withToken: true,
         onSuccess: handleRequestSuccess,
@@ -58,7 +62,7 @@ function SubNavigationBar() {
         });
         setSubNavigationBar({ ...subNavigationBar, items: newItems });
       };
-      request("GET", "/clients", {
+      requestDeprecated("GET", "/clients", {
         onSuccess: handleRequestSuccess,
         useMock: false,
       });
@@ -82,10 +86,14 @@ function SubNavigationBar() {
         );
         setSubNavigationBar({ ...subNavigationBar, items: newItems });
       };
-      request("GET", `/lawsuits/clients/${clientId}?curPage=1&itemsPerPage=5`, {
-        onSuccess: handleRequestSuccess,
-        useMock: false,
-      });
+      requestDeprecated(
+        "GET",
+        `/lawsuits/clients/${clientId}?curPage=1&itemsPerPage=5`,
+        {
+          onSuccess: handleRequestSuccess,
+          useMock: false,
+        },
+      );
     } else if (subNavigationBarType === "employee") {
       const handleRequestSuccess: RequestSuccessHandler = (res) => {
         const body: { data: MemberInfo[] } = res.data;
@@ -103,7 +111,7 @@ function SubNavigationBar() {
         });
         setSubNavigationBar({ ...subNavigationBar, items: newItems });
       };
-      request("GET", `/members?role=ADMIN,EMPLOYEE`, {
+      requestDeprecated("GET", `/members?role=ADMIN,EMPLOYEE`, {
         onSuccess: handleRequestSuccess,
       });
     }

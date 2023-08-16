@@ -9,7 +9,9 @@ import calendarInformationsState, {
   CalendarInformationType,
 } from "../../states/schedule/calendarInformationsState.ts";
 import CalendarCell, { CalendarCellType } from "./CalendarCellType.tsx";
-import request, { RequestSuccessHandler } from "../../lib/request.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../lib/requestDeprecated.ts";
 
 export function toYyyyMmDd(year: number, month: number, date: number) {
   return `${year}-${String(month).padStart(2, "0")}-${String(date).padStart(
@@ -122,7 +124,7 @@ function Calendar() {
         setCalendarInformations(e.data as CalendarInformationType[]);
       };
 
-      request(
+      requestDeprecated(
         "GET",
         `/schedules?start-deadline=${startDeadline}&end-deadline=${endDeadline}`,
         {

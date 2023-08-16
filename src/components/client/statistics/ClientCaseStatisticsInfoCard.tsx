@@ -1,7 +1,9 @@
 import { useRecoilValue } from "recoil";
 import clientIdState from "../../../states/client/ClientIdState.tsx";
 import { useEffect, useState } from "react";
-import request, { RequestSuccessHandler } from "../../../lib/request.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../../lib/requestDeprecated.ts";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -30,7 +32,7 @@ function ClientCaseStatisticsInfoCard() {
       setAddress(clientData.address);
     };
 
-    request("GET", `/clients/${clientId}`, {
+    requestDeprecated("GET", `/clients/${clientId}`, {
       useMock: false,
       withToken: true,
       onSuccess: handleRequestSuccess,
