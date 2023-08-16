@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import request, {
   RequestFailHandler,
   RequestSuccessHandler,
@@ -16,6 +16,7 @@ import Chip from "@mui/material/Chip";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { LawsuitInfo } from "./type/LawsuitInfo.tsx";
+import caseIdState from "../../states/case/CaseIdState.tsx";
 
 function CaseListPage() {
   const clientId = useRecoilValue(clientIdState);
@@ -30,6 +31,7 @@ function CaseListPage() {
     useState<LawsuitStatus | null>(null);
   const [searchWord, setSearchWord] = useState<string | null>(null);
   const [curSearchWord, setCurSearchWord] = useState<string | null>(null);
+  const setCaseId = useSetRecoilState(caseIdState);
 
   const totalLength = caseList.length;
   const aLength = caseList.filter(
@@ -105,6 +107,8 @@ function CaseListPage() {
         lawsuitStatus: mapLawsuitStatus(item.lawsuitStatus),
       }));
 
+      console.log(lawsuitData);
+
       setCases(mappedLawsuitList);
       setCount(lawsuitData.count);
     };
@@ -126,6 +130,12 @@ function CaseListPage() {
     });
   };
 
+  useEffect(() => {
+    if (cases && cases.length > 0) {
+      setCaseId(cases[0].id);
+    }
+  }, [cases]);
+
   // 의뢰인별 전체 사건 리스트
   useEffect(() => {
     if (count === 0) {
@@ -139,6 +149,8 @@ function CaseListPage() {
 
       setCaseList(lawsuitData.lawsuitList);
     };
+
+    console.dir(count);
 
     request("GET", `/lawsuits/clients/${clientId}`, {
       useMock: false,
