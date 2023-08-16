@@ -26,13 +26,18 @@ function ClientCaseStatisticsChart() {
     }
 
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      const lawsuitData: LawsuitInfo[] = res.data;
+      const lawsuitData: LawsuitInfo[] = res.data.lawsuitList;
       setCases(lawsuitData);
     };
 
-    request("GET", `/lawsuits/${clientId}`, {
+    request("GET", `/lawsuits/clients/${clientId}`, {
       useMock: false,
       withToken: true,
+      params: {
+        curPage: "0",
+        rowsPerPage: "0",
+        searchWord: "",
+      },
       onSuccess: handleRequestSuccess,
     });
   }, [clientId]);
