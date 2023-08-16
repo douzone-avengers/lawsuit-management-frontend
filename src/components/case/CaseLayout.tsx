@@ -28,11 +28,9 @@ function CaseLayout() {
 
     const handleSuccessHandler: RequestSuccessHandler = (res) => {
       const body: LawsuitInfo = res.data;
-      console.dir(body);
       setCaseInfo({ lawsuit: body, employees: [], clients: [] });
     };
 
-    console.log("CaseLayout");
     requestDeprecated("GET", `/lawsuits/${caseId}`, {
       onSuccess: handleSuccessHandler,
       useMock: false,

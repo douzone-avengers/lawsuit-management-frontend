@@ -65,11 +65,9 @@ function CaseDetailPage() {
     }
 
     const handleSuccessHandler: RequestSuccessHandler = (res) => {
-      console.dir();
       const body: LawsuitInfo = res.data;
       setCaseInfo({ lawsuit: body, employees: [], clients: [] });
     };
-    console.log("CaseDetailPage");
 
     requestDeprecated("GET", `/lawsuits/${caseId}`, {
       onSuccess: handleSuccessHandler,
