@@ -14,9 +14,9 @@ import SubNavigationBarItem, {
   SubNavigationBarItemState,
 } from "./SubNavigationBarItem.tsx";
 import ClientRegisterPopUpButton from "../../client/ClientRegisterPopUpButton.tsx";
-import { MemberInfo } from "../../../mock/member/memberHandlers";
 import employeeIdState from "../../../states/employee/EmployeeIdState";
 import employeeButtonIdState from "../../../states/employee/EmployeeButtonIdState";
+import { MemberInfo } from "../../employee/type/MemberInfo";
 
 function SubNavigationBar() {
   const clientId = useRecoilValue(clientIdState);
@@ -90,22 +90,30 @@ function SubNavigationBar() {
       });
     } else if (subNavigationBarType === "employee") {
       const handleRequestSuccess: RequestSuccessHandler = (res) => {
-        const body: { data: MemberInfo[] } = res.data;
-        const newItems: SubNavigationBarItemState[] = body.data.map((item) => {
-          return {
-            id: item.id,
-            text: item.name,
-            subText: item.role,
-            url:
-              employeeButton === 2
-                ? `employees/${item.id}`
-                : `employees/${item.id}/cases`,
-            SvgIcon: BalanceIcon,
-          };
-        });
+        const memberInfos: MemberInfo[] = res.data.memberDtoNonPassList;
+
+        const newItems: SubNavigationBarItemState[] = memberInfos.map(
+          (item) => {
+            return {
+              id: item.id,
+              text: item.name,
+              subText: item.roleId.toString(),
+              url:
+                employeeButton === 2
+                  ? `employees/${item.id}`
+                  : `employees/${item.id}/cases`,
+              SvgIcon: BalanceIcon,
+            };
+          },
+        );
+
+        //타겟
         setSubNavigationBar({ ...subNavigationBar, items: newItems });
       };
-      request("GET", `/members?role=ADMIN,EMPLOYEE`, {
+
+      request("GET", `/members/employees`, {
+        useMock: false,
+        withToken: true,
         onSuccess: handleRequestSuccess,
       });
     }

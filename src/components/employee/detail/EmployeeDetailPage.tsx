@@ -1,21 +1,24 @@
-import { useRecoilValue } from "recoil";
-import employeeIdState from "../../../states/employee/EmployeeIdState";
-import request, { RequestSuccessHandler } from "../../../lib/request";
-import { MemberInfo } from "../../../mock/member/memberHandlers";
-import { useEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
-import EmployeeInfoCard from "./EmployeeInfoCard";
-import useWindowSize from "../../../hook/useWindowSize";
 import KakaoMap from "../../common/KaKaoMap";
+import useWindowSize from "../../../hook/useWindowSize";
+import { useEffect, useRef, useState } from "react";
+import request, {
+  RequestFailHandler,
+  RequestSuccessHandler,
+} from "../../../lib/request";
+import { MemberInfo } from "../type/MemberInfo";
+import { useRecoilValue } from "recoil";
+import curMemberAddressState from "../../../states/employee/CurMemberAddressState";
+import EmployeeInfoCard from "./EmployeeInfoCard";
 
 function EmployeeDetailPage() {
-  const [memberInfo, setMemberInfo] = useState<MemberInfo>();
   const [width, height] = useWindowSize();
   const [boxWidth, setBoxWidth] = useState<number | undefined>(undefined);
   const [boxHeight, setBoxHeight] = useState<number | undefined>(undefined);
-
-  const employeeId = useRecoilValue(employeeIdState);
   const parentContainer = useRef<HTMLDivElement>(null);
+
+  const [memberInfo, setMemberInfo] = useState<MemberInfo>();
+  const recoilAddress = useRecoilValue(curMemberAddressState);
 
   useEffect(() => {
     if (parentContainer.current) {
@@ -25,15 +28,34 @@ function EmployeeDetailPage() {
   }, [width, height]);
 
   useEffect(() => {
+    if (recoilAddress !== undefined) {
+      setMemberInfo((prev) => {
+        if (!prev) return; // 혹은 기본 값을 반환
+
+        return {
+          ...prev,
+          address: recoilAddress,
+        };
+      });
+    }
+  }, [recoilAddress]);
+
+  useEffect(() => {
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      const body: { data: MemberInfo } = res.data;
-      const { data } = body;
-      setMemberInfo(data);
+      const memberInfo: MemberInfo = res.data;
+      setMemberInfo(memberInfo);
     };
-    request("GET", `/members/${employeeId}`, {
+    const handelRequestFail: RequestFailHandler = (e) => {
+      alert((e.response.data as { code: string; message: string }).message);
+    };
+
+    request("GET", `/members/me`, {
+      withToken: true,
+      useMock: false,
       onSuccess: handleRequestSuccess,
+      onFail: handelRequestFail,
     });
-  }, [employeeId]);
+  }, []);
 
   return (
     <Box sx={{ display: "flex", gap: 3, flexDirection: "row", height: "100%" }}>
