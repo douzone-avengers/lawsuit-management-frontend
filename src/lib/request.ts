@@ -11,12 +11,16 @@ type HttpMethod =
 
 export type RequestSuccessHandler = (res: AxiosResponse<any, any>) => void;
 
-export type RequestFailHandler = (e?: Error) => void;
+export type RequestFailHandler = (e: {
+  response: { data: any; status: number };
+}) => void;
 
 function request(
   method: HttpMethod,
   path: string,
   config?: {
+    withToken?: boolean;
+    useMock?: boolean;
     body?: Record<string, unknown>;
     params?: Record<string, string>;
     headers?: Record<string, string>;
@@ -25,25 +29,33 @@ function request(
     onFail?: RequestFailHandler;
   },
 ) {
-  const ROOT = import.meta.env.DEV ? "http://localhost:3000/api" : ""; // TODO: 배포되고 난 다음
+  const useMock = config?.useMock ?? true;
+
+  //const ROOT = import.meta.env.DEV ? "http://localhost:3000/api" : ""; // TODO: 배포되고 난 다음
+  const ROOT = useMock ? "http://localhost:3000/api" : "http://localhost:8080";
+
   const url = path.startsWith("/") ? `${ROOT}${path}` : `${ROOT}/${path}`;
 
-  const accessToken = localStorage.getItem("accessToken");
-
-  const headersWithAuthorization = {
+  const requestHeader = {
     ...config?.headers,
   };
-  if (accessToken !== null) {
-    headersWithAuthorization["Authorization"] = `Bearer ${accessToken}`;
-  }
 
+  const withToken = config?.withToken ?? true;
+
+  if (withToken) {
+    const accessToken = localStorage.getItem("accessToken");
+
+    if (accessToken !== null) {
+      requestHeader["Authorization"] = `Bearer ${accessToken}`;
+    }
+  }
   axios
     .request({
       method,
       url,
       data: config?.body,
       params: config?.params,
-      headers: headersWithAuthorization,
+      headers: { ...requestHeader },
       timeout: config?.timeout,
     })
     .then((res) => {

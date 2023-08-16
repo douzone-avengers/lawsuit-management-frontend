@@ -12,14 +12,23 @@ import CaseListPage from "../case/CaseListPage";
 import CasesPage from "../case/CasesPage";
 import ClientDetailPage from "../client/ClientDetailPage";
 import ClientsPage from "../client/ClientsPage";
-import EmployeeDetailPage from "../employee/EmployeeDetailPage";
-import EmployeesPage from "../employee/EmployeesPage";
+import EmployeeDetailPage from "../employee/detail/EmployeeDetailPage";
+import EmployeePage from "../employee/EmployeePage";
 import NotFoundPage from "../error/NotFoundPage";
 import HomePage from "../home/HomePage";
 import JoinPage from "../join/JoinPage";
 import Layout from "../layout/Layout";
 import LoginPage from "../login/LoginPage";
 import CaseNewPage from "../case/CaseNewPage.tsx";
+import EmployeeLayout from "../employee/EmployeeLayout";
+import EmployeePrivatePage from "../employee/private/EmployeePrivatePage";
+import employeeButtonIdState from "../../states/employee/EmployeeButtonIdState";
+import EmployeeListPage from "../employee/list/EmployeesListPage";
+import employeeIdState from "../../states/employee/EmployeeIdState";
+import EmployeeCasePage from "../employee/case/EmployeeCasePage";
+import caseTabIdState from "../../states/case/CaseTabIdState.tsx";
+import ValidatePage from "../join/ValidatePage";
+import SchedulePage from "../schedule/SchedulePage.tsx";
 
 function AppRoutes() {
   const location = useLocation();
@@ -32,6 +41,9 @@ function AppRoutes() {
   );
   const setSubNavigationBarType = useSetRecoilState(subNavigationBarTypeState);
   const setCaseButtonId = useSetRecoilState(caseButtonIdState);
+  const setEmployeeButtonId = useSetRecoilState(employeeButtonIdState);
+  const setEmployeeId = useSetRecoilState(employeeIdState);
+  const setCaseTabId = useSetRecoilState(caseTabIdState);
 
   useEffect(() => {
     const { pathname, search } = location;
@@ -48,6 +60,9 @@ function AppRoutes() {
       }
     }
     const length = paths.length - 1;
+
+    // *
+    setCaseTabId(0);
 
     // /
     if (length === 1 && paths[1] === "") {
@@ -93,7 +108,7 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 1,
       });
-      setCaseButtonId(0);
+      setClientId(null);
       setSubNavigationBarType("none");
       return;
     }
@@ -112,7 +127,7 @@ function AppRoutes() {
         curId: 1,
       });
       setSubNavigationBarType("caseClient");
-      setCaseButtonId(1);
+      setCaseButtonId(0);
       return;
     }
 
@@ -127,7 +142,7 @@ function AppRoutes() {
         curId: 1,
       });
       setSubNavigationBarType("case");
-      setCaseButtonId(2);
+      setCaseButtonId(1);
       return;
     }
 
@@ -135,14 +150,90 @@ function AppRoutes() {
     if (length === 1 && paths[1] === "employees") {
       setMainNavigationBar({
         ...mainNavigationBar,
-        curId: 2,
+        curId: 2, //사원
       });
       setSubNavigationBarType("none");
       return;
     }
 
+    // /employees/private
+    if (length === 2 && paths[1] === "employees" && paths[2] === "private") {
+      setMainNavigationBar({
+        ...mainNavigationBar,
+        curId: 2,
+      });
+      setEmployeeButtonId(0);
+      setSubNavigationBarType("none");
+      return;
+    }
+
+    // /employees/list
+    if (length === 2 && paths[1] === "employees" && paths[2] === "list") {
+      setMainNavigationBar({
+        ...mainNavigationBar,
+        curId: 2,
+      });
+      setEmployeeButtonId(1);
+      setSubNavigationBarType("none");
+      return;
+    }
+
+    // /employees/:employeeId
+    if (
+      length === 2 &&
+      paths[1] === "employees" &&
+      paths[2] &&
+      !isNaN(Number(paths[2]))
+    ) {
+      setEmployeeId(Number.parseInt(paths[2]));
+      setMainNavigationBar({
+        ...mainNavigationBar,
+        curId: 2,
+      });
+      setSubNavigationBarType("employee");
+      setEmployeeButtonId(2);
+      return;
+    }
+
+    // /employees/:employeeId/cases
+    if (
+      length === 3 &&
+      paths[1] === "employees" &&
+      paths[2] &&
+      !isNaN(Number(paths[2])) &&
+      paths[3] === "cases"
+    ) {
+      setEmployeeId(Number.parseInt(paths[2]));
+      setMainNavigationBar({
+        ...mainNavigationBar,
+        curId: 2,
+      });
+      setSubNavigationBarType("employee");
+      setEmployeeButtonId(3);
+      return;
+    }
+
+    // /schedule
+    if (length === 1 && paths[1] === "schedule") {
+      setClientId(null);
+      setCaseId(null);
+      setEmployeeId(null);
+      setSubNavigationBarType("none");
+      setMainNavigationBar({
+        ...mainNavigationBar,
+        curId: -1,
+      });
+      return;
+    }
+
     // /login
     if (length === 1 && paths[1] === "login") {
+      cleanUp();
+      return;
+    }
+
+    // /validate
+    if (length === 1 && paths[1] === "validate") {
       cleanUp();
       return;
     }
@@ -172,6 +263,8 @@ function AppRoutes() {
       });
       setSubNavigationBarType("none");
       setCaseButtonId(0);
+      setEmployeeId(null);
+      setEmployeeButtonId(0);
     }
   }, [location]);
 
@@ -188,25 +281,34 @@ function AppRoutes() {
             <Route index element={<ClientDetailPage />} />
           </Route>
         </Route>
+        {/* /cases/new */}
+        <Route path="cases/new" element={<CaseNewPage />} />
         <Route path="cases" element={<CaseLayout />}>
           {/* /cases */}
           <Route index element={<CasesPage />} />
-          {/* /cases/new */}
-          <Route path="new" element={<CaseNewPage />} />
+
           {/* /cases/list?client=:clientId */}
           <Route path="list" element={<CaseListPage />} />
           {/* /cases/:caseId?client=:clientId */}
           <Route path=":caseId" element={<CaseDetailPage />} />
         </Route>
-        <Route path="employees">
+        <Route path="employees" element={<EmployeeLayout />}>
           {/* /employees */}
-          <Route index element={<EmployeesPage />} />
+          <Route index element={<EmployeePage />} />
+          {/*/employees/private*/}
+          <Route path="private" element={<EmployeePrivatePage />} />
+          {/*/employees/list*/}
+          <Route path={"list"} element={<EmployeeListPage />} />
           {/* /employees/:employeeId */}
           <Route path=":employeeId" element={<EmployeeDetailPage />} />
+          <Route path=":employeeId/cases" element={<EmployeeCasePage />} />
         </Route>
+        <Route path="schedule" element={<SchedulePage />} />
       </Route>
       {/* /login */}
       <Route path="login" element={<LoginPage />} />
+      {/* /validate */}
+      <Route path="validate" element={<ValidatePage />} />
       {/* /join */}
       <Route path="join" element={<JoinPage />} />
       <Route path="*" element={<NotFoundPage />} />

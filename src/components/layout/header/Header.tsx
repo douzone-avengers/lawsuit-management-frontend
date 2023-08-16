@@ -7,6 +7,8 @@ import LogoutButton from "./LogoutButton.tsx";
 import SideNavigationBarDisplayButton from "./SideNavigationBarDisplayButton.tsx";
 import Title from "./Title.tsx";
 import subNavigationBarTypeState from "../../../states/layout/SubNavigationBarTypeState.tsx";
+import Box from "@mui/material/Box";
+import ScheduleButton from "./ScheduleButton.tsx";
 
 interface HeaderProps extends MuiAppBarProps {
   open?: boolean;
@@ -51,7 +53,12 @@ function Header() {
         <SideNavigationBarDisplayButton />
         <Title />
       </Toolbar>
-      <LogoutButton />
+      <Box
+        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+      >
+        <ScheduleButton />
+        <LogoutButton />
+      </Box>
     </HeaderContainer>
   );
 }

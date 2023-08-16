@@ -1,4 +1,4 @@
-import { Role } from "../../states/common/UserState";
+import { Role } from "../../states/common/IsLoginState";
 
 export type RoleData = {
   id: number;
