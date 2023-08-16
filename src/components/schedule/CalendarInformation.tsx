@@ -5,6 +5,8 @@ import requestDeprecated, {
   RequestSuccessHandler,
 } from "../../lib/requestDeprecated.ts";
 import calendarPopUpInfoState from "../../states/schedule/calendarPopUpInfoState.ts";
+import Chip from "@mui/material/Chip";
+import { useTheme } from "@mui/material";
 
 type Props = {
   item: CalendarInformationType;
@@ -13,6 +15,7 @@ type Props = {
 function CalendarInformation({ item }: Props) {
   const setCalendarPopUpOpen = useSetRecoilState(calendarPopUpOpenState);
   const setCalendarPopUpInfo = useSetRecoilState(calendarPopUpInfoState);
+  const theme = useTheme();
 
   const handleSuccess: RequestSuccessHandler = (e) => {
     setCalendarPopUpInfo(e.data);
@@ -31,17 +34,16 @@ function CalendarInformation({ item }: Props) {
   } (${item.employeeNames.join(",")})`;
 
   return (
-    <div
-      style={{
-        whiteSpace: "nowrap",
-        overflowX: "hidden",
-        textOverflow: "ellipsis",
-        cursor: "pointer",
+    <Chip
+      variant="filled"
+      sx={{
+        width: "100%",
+        background: theme.palette.primary.main,
+        color: "white",
       }}
+      label={contents}
       onClick={handleClick}
-    >
-      {contents}
-    </div>
+    />
   );
 }
 

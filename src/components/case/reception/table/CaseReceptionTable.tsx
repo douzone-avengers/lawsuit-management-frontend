@@ -65,9 +65,23 @@ function CaseReceptionTable() {
       <Divider />
       <CaseReceptionHeaderRow />
       <Divider />
-      {receptions.map((item) => (
-        <CaseReceptionDataRow key={item.id} item={item} />
-      ))}
+      {receptions.length > 0 ? (
+        receptions.map((item) => (
+          <CaseReceptionDataRow key={item.id} item={item} />
+        ))
+      ) : (
+        <Box
+          sx={{
+            width: "100%",
+            height: 120,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          접수가 존재하지 않습니다.
+        </Box>
+      )}
       <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
       <Box
         sx={{

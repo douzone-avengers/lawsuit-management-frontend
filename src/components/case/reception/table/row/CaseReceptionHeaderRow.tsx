@@ -86,7 +86,7 @@ function CaseReceptionHeaderRow() {
       >
         <Button
           sx={{ width: 185 }}
-          variant="outlined"
+          variant="contained"
           onClick={handleReceptionAddButtonClick}
         >
           등록
