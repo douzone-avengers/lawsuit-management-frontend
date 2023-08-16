@@ -2,10 +2,6 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 
-import request, {
-  RequestFailHandler,
-  RequestSuccessHandler,
-} from "../../../lib/request.ts";
 import Button from "@mui/material/Button";
 import {
   FormControl,
@@ -21,6 +17,10 @@ import DaumPostcode from "react-daum-postcode";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import curMemberAddressState from "../../../states/employee/CurMemberAddressState";
 import employeeIdState from "../../../states/employee/EmployeeIdState";
+import requestDeprecated, {
+  RequestFailHandler,
+  RequestSuccessHandler,
+} from "../../../lib/requestDeprecated";
 
 type Props = {
   width?: string | number;
@@ -77,7 +77,7 @@ function EmployeeInfoCard({ width = "50%", memberInfo }: Props) {
       alert((e.response.data as { code: string; message: string }).message);
     };
 
-    request("GET", `/hierarchy`, {
+    requestDeprecated("GET", `/hierarchy`, {
       withToken: false,
       useMock: false,
       onSuccess: handelRequestSuccess,
@@ -93,7 +93,7 @@ function EmployeeInfoCard({ width = "50%", memberInfo }: Props) {
       alert((e.response.data as { code: string; message: string }).message);
     };
 
-    request("GET", `/role`, {
+    requestDeprecated("GET", `/role`, {
       withToken: false,
       useMock: false,
       onSuccess: handelRequestSuccess,
@@ -109,7 +109,7 @@ function EmployeeInfoCard({ width = "50%", memberInfo }: Props) {
       alert((e.response.data as { code: string; message: string }).message);
     };
 
-    request("PUT", `/members/employees/${employeeId}`, {
+    requestDeprecated("PUT", `/members/employees/${employeeId}`, {
       withToken: true,
       useMock: false,
       onSuccess: handelRequestSuccess,

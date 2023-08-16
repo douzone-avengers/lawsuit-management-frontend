@@ -2,15 +2,15 @@ import Box from "@mui/material/Box";
 import KakaoMap from "../../common/KaKaoMap";
 import useWindowSize from "../../../hook/useWindowSize";
 import { useEffect, useRef, useState } from "react";
-import request, {
-  RequestFailHandler,
-  RequestSuccessHandler,
-} from "../../../lib/request";
 import { MemberInfo } from "../type/MemberInfo";
 import { useRecoilValue } from "recoil";
 import curMemberAddressState from "../../../states/employee/CurMemberAddressState";
 import EmployeeInfoCard from "./EmployeeInfoCard";
 import employeeIdState from "../../../states/employee/EmployeeIdState";
+import requestDeprecated, {
+  RequestFailHandler,
+  RequestSuccessHandler,
+} from "../../../lib/requestDeprecated";
 
 function EmployeeDetailPage() {
   const [width, height] = useWindowSize();
@@ -51,7 +51,7 @@ function EmployeeDetailPage() {
       alert((e.response.data as { code: string; message: string }).message);
     };
 
-    request("GET", `/members/employees/${employeeId}`, {
+    requestDeprecated("GET", `/members/employees/${employeeId}`, {
       withToken: true,
       useMock: false,
       onSuccess: handleRequestSuccess,
