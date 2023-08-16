@@ -36,6 +36,7 @@ function ClientCaseStatisticsChart() {
       params: {
         curPage: "0",
         rowsPerPage: "0",
+        searchWord: "",
       },
       onSuccess: handleRequestSuccess,
     });
