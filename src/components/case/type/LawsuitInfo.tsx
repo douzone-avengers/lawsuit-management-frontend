@@ -1,5 +1,4 @@
 export type LawsuitType = "형사" | "민사";
-export type LawsuitStatus = "등록" | "진행" | "종결";
 
 export type LawsuitInfo = {
   id: number;
@@ -8,7 +7,7 @@ export type LawsuitInfo = {
   courtId: number;
   commissionFee: number;
   contingentFee: number;
-  lawsuitStatus: LawsuitStatus;
+  lawsuitStatus: string;
   lawsuitNum: string;
   result: string;
   judgementDate: Date;
