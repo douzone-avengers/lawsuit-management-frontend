@@ -107,8 +107,6 @@ function CaseListPage() {
         lawsuitStatus: mapLawsuitStatus(item.lawsuitStatus),
       }));
 
-      console.log(lawsuitData);
-
       setCases(mappedLawsuitList);
       setCount(lawsuitData.count);
     };
@@ -149,8 +147,6 @@ function CaseListPage() {
 
       setCaseList(lawsuitData.lawsuitList);
     };
-
-    console.dir(count);
 
     request("GET", `/lawsuits/clients/${clientId}`, {
       useMock: false,
