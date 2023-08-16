@@ -6,15 +6,17 @@ import ExpenseInfo from "./expense/ExpenseInfo.tsx";
 import Closing from "./closing/ClosingInfo.tsx";
 import CaseReceptionTab from "./reception/CaseReceptionTab.tsx";
 import CaseBasicInfoCard from "./common/CaseBasicInfoCard.tsx";
-import CaseCostInfoCard from "./common/CaseCostInfoCard.tsx";
-import CaseEmployeeInfoCard from "./common/CaseEmployeeInfoCard.tsx";
 import CaseClientInfoCard from "./common/CaseClientInfoCard.tsx";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import caseTabIdState from "../../states/case/CaseTabIdState.tsx";
 import caseIdState from "../../states/case/CaseIdState.tsx";
-import caseInfoState from "../../states/case/info/caseInfoState.tsx";
-import request, { RequestSuccessHandler } from "../../lib/request.ts";
-import { LawsuitInfo } from "./type/LawsuitInfo.tsx";
+import caseInfoState, {
+  CaseInfoType,
+} from "../../states/case/info/caseInfoState.tsx";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../lib/requestDeprecated.ts";
+import CaseEmployeeInfoCard from "./common/CaseEmployeeInfoCard.tsx";
 
 function CaseDetailPage() {
   const [caseTabId, setCaseTabId] = useRecoilState(caseTabIdState);
@@ -63,23 +65,20 @@ function CaseDetailPage() {
     }
 
     const handleSuccessHandler: RequestSuccessHandler = (res) => {
-      console.dir();
-      const body: LawsuitInfo = res.data;
-      setCaseInfo({ lawsuit: body, employees: [], clients: [] });
+      const body: CaseInfoType = res.data;
+      setCaseInfo(body);
     };
-    console.log("CaseDetailPage");
 
-    request("GET", `/lawsuits/${caseId}`, {
+    requestDeprecated("GET", `/lawsuits/${caseId}/basic`, {
       onSuccess: handleSuccessHandler,
       useMock: false,
     });
   }, [caseId]);
 
   return (
-    <Box>
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
       <Box sx={{ display: "flex", gap: 1 }}>
         <CaseBasicInfoCard />
-        <CaseCostInfoCard />
       </Box>
       <Box sx={{ display: "flex", gap: 1 }}>
         <CaseEmployeeInfoCard />

@@ -1,8 +1,9 @@
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import request, { RequestSuccessHandler } from "../../../lib/request.ts";
-import { Advicedata } from "../../../mock/advice/adviceTable.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../../lib/requestDeprecated.ts";
 import adviceRegisterPopUpOpenState from "../../../states/advice/AdviceRegisterPopUpOpenState.tsx";
 import adviceIdState from "../../../states/advice/AdviceState.tsx";
 import caseIdState from "../../../states/case/CaseIdState.tsx";
@@ -12,6 +13,7 @@ import AdviceRegisterPopUp from "./AdviceRegisterPopUp.tsx";
 import AdviceRegisterPopUpButton from "./AdviceRegisterPopUpButton.tsx";
 import adviceDisplayState from "../../../states/advice/AdviceDisplayState.tsx";
 import AdviceDetailTable from "./AdviceDetailTable.tsx";
+import { Advicedata } from "../../../type/ResponseType.ts";
 
 function Adviceinfo() {
   const clientId = useRecoilValue(clientIdState);
@@ -39,9 +41,13 @@ function Adviceinfo() {
       setAdviceId(data[0]?.id);
     };
 
-    request("GET", `/lawsuit/${lawsuitId}/client/${clientId}/advices`, {
-      onSuccess: handleRequestSuccess,
-    });
+    requestDeprecated(
+      "GET",
+      `/lawsuit/${lawsuitId}/client/${clientId}/advices`,
+      {
+        onSuccess: handleRequestSuccess,
+      },
+    );
   }, [lawsuitId]);
 
   return (

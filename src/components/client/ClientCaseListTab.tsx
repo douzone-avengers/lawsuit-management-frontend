@@ -1,41 +1,79 @@
 import Box from "@mui/material/Box";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import request, { RequestSuccessHandler } from "../../lib/request";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../lib/requestDeprecated.ts";
 import clientIdState from "../../states/client/ClientIdState";
 import CaseListTable from "../case/CaseListTable.tsx";
 import { LawsuitInfo } from "../case/type/LawsuitInfo.tsx";
-import { PagingInfo } from "../common/type/PagingInfo.tsx";
 
 function ClientCaseListTab() {
   const clientId = useRecoilValue(clientIdState);
   const navigate = useNavigate();
   const [cases, setCases] = useState<LawsuitInfo[]>([]);
 
+  //for paging
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [count, setCount] = useState(0);
+
+  const prevDependencies = useRef({
+    rowsPerPage,
+    page,
+  });
+
   useEffect(() => {
     if (typeof clientId !== "number") {
       // TODO
       return;
     }
-    const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      const lawsuitData: {
-        lawsuitList: LawsuitInfo[];
-        pageRange: PagingInfo;
-      } = res.data;
-      setCases(lawsuitData.lawsuitList);
+
+    prevDependencies.current = {
+      rowsPerPage,
+      page,
     };
 
-    request("GET", `/lawsuits/clients/${clientId}`, {
+    const handleRequestSuccess: RequestSuccessHandler = (res) => {
+      function mapLawsuitStatus(status: string) {
+        switch (status) {
+          case "REGISTRATION":
+            return "등록";
+          case "PROCEEDING":
+            return "진행";
+          case "CLOSING":
+            return "종결";
+          default:
+            return status;
+        }
+      }
+
+      const lawsuitData: {
+        lawsuitList: LawsuitInfo[];
+        count: number;
+      } = res.data;
+
+      const mappedLawsuitList = lawsuitData.lawsuitList.map((item) => ({
+        ...item,
+        lawsuitStatus: mapLawsuitStatus(item.lawsuitStatus),
+      }));
+
+      setCases(mappedLawsuitList);
+      setCount(lawsuitData.count);
+    };
+
+    requestDeprecated("GET", `/lawsuits/clients/${clientId}`, {
       useMock: false,
       withToken: true,
       params: {
-        curPage: "1",
-        itemsPerPage: "10",
+        curPage: (page + 1).toString(),
+        rowsPerPage: rowsPerPage.toString(),
+        searchWord: "",
       },
       onSuccess: handleRequestSuccess,
     });
-  }, [clientId]);
+  }, [clientId, rowsPerPage, page]);
 
   return (
     <Box>
@@ -46,6 +84,11 @@ function ClientCaseListTab() {
             navigate(`/cases/${item.id}?client=${clientId}`);
           },
         }))}
+        count={count}
+        page={page}
+        setPage={setPage}
+        rowsPerPage={rowsPerPage}
+        setRowsPerPage={setRowsPerPage}
       />
     </Box>
   );

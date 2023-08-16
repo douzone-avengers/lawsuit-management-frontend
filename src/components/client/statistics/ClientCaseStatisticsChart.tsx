@@ -3,7 +3,9 @@ import * as echarts from "echarts";
 import Box from "@mui/material/Box";
 import { useRecoilValue } from "recoil";
 import clientIdState from "../../../states/client/ClientIdState.tsx";
-import request, { RequestSuccessHandler } from "../../../lib/request.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../../lib/requestDeprecated.ts";
 import Card from "@mui/material/Card";
 import { LawsuitInfo } from "../../case/type/LawsuitInfo.tsx";
 
@@ -26,13 +28,18 @@ function ClientCaseStatisticsChart() {
     }
 
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      const lawsuitData: LawsuitInfo[] = res.data;
+      const lawsuitData: LawsuitInfo[] = res.data.lawsuitList;
       setCases(lawsuitData);
     };
 
-    request("GET", `/lawsuits/${clientId}`, {
+    requestDeprecated("GET", `/lawsuits/clients/${clientId}`, {
       useMock: false,
       withToken: true,
+      params: {
+        curPage: "0",
+        rowsPerPage: "0",
+        searchWord: "",
+      },
       onSuccess: handleRequestSuccess,
     });
   }, [clientId]);

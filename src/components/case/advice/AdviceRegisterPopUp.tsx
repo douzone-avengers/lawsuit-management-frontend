@@ -3,14 +3,17 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
-import request, { RequestSuccessHandler } from "../../../lib/request.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../../lib/requestDeprecated.ts";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import { Advicedata } from "../../../mock/advice/adviceTable.ts";
 import adviceRegisterPopUpOpenState from "../../../states/advice/AdviceRegisterPopUpOpenState.tsx";
 import adviceIdState from "../../../states/advice/AdviceState.tsx";
 import CloseButton from "../../common/CloseButton.tsx";
 import PopUp from "../../common/PopUp.tsx";
 import "../../../stylesheet/calendar.css";
+import { Advicedata } from "../../../type/ResponseType.ts";
+
 function AdviceRegisterPopUp() {
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
@@ -40,7 +43,7 @@ function AdviceRegisterPopUp() {
     setTitle("");
     setContents("");
     setDate("");
-    request("POST", "/advices", {
+    requestDeprecated("POST", "/advices", {
       body: {
         title,
         contents,

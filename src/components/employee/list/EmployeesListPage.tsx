@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import request, {
+import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
-} from "../../../lib/request";
+} from "../../../lib/requestDeprecated.ts";
 import { Box } from "@mui/material";
 import EmployeeListTable from "./EmployeeListTable";
 import { useNavigate } from "react-router-dom";
@@ -112,7 +112,7 @@ function EmployeeListPage() {
       return queryParts.filter(Boolean).join("&");
     };
 
-    request("GET", `/members/employees?${getQueryString()}`, {
+    requestDeprecated("GET", `/members/employees?${getQueryString()}`, {
       withToken: true,
       useMock: false,
       onSuccess: handelRequestSuccess,
@@ -137,7 +137,7 @@ function EmployeeListPage() {
       alert((e.response.data as { code: string; message: string }).message);
     };
 
-    request("GET", `/hierarchy`, {
+    requestDeprecated("GET", `/hierarchy`, {
       withToken: false,
       useMock: false,
       onSuccess: handelRequestSuccess,
@@ -164,7 +164,7 @@ function EmployeeListPage() {
       alert((e.response.data as { code: string; message: string }).message);
     };
 
-    request("GET", `/role`, {
+    requestDeprecated("GET", `/role`, {
       withToken: false,
       useMock: false,
       onSuccess: handelRequestSuccess,

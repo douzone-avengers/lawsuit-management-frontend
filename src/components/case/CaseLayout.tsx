@@ -2,40 +2,16 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { Outlet, useNavigate } from "react-router-dom";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import caseButtonIdState from "../../states/case/CaseButtonIdState";
 import caseIdState from "../../states/case/CaseIdState";
 import clientIdState from "../../states/client/ClientIdState";
-import { useEffect } from "react";
-import request, { RequestSuccessHandler } from "../../lib/request.ts";
-import caseInfoState from "../../states/case/info/caseInfoState.tsx";
-import { LawsuitInfo } from "./type/LawsuitInfo.tsx";
 
 function CaseLayout() {
   const caseButtonId = useRecoilValue(caseButtonIdState);
   const clientId = useRecoilValue(clientIdState);
   const caseId = useRecoilValue(caseIdState);
   const navigate = useNavigate();
-
-  const setCaseInfo = useSetRecoilState(caseInfoState);
-
-  useEffect(() => {
-    if (caseId === null) {
-      return;
-    }
-
-    const handleSuccessHandler: RequestSuccessHandler = (res) => {
-      const body: LawsuitInfo = res.data;
-      console.dir(body);
-      setCaseInfo({ lawsuit: body, employees: [], clients: [] });
-    };
-
-    console.log("CaseLayout");
-    request("GET", `/lawsuits/${caseId}`, {
-      onSuccess: handleSuccessHandler,
-      useMock: false,
-    });
-  }, [caseId]);
 
   return (
     <Box

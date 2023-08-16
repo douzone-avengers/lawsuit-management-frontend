@@ -7,8 +7,10 @@ import ListItemText from "@mui/material/ListItemText";
 import { useRecoilValue } from "recoil";
 import clientIdState from "../../../states/client/ClientIdState.tsx";
 import { useEffect, useState } from "react";
-import request, { RequestSuccessHandler } from "../../../lib/request.ts";
-import { ClientData } from "../../../mock/client/clientTable.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../../lib/requestDeprecated.ts";
+import { ClientData } from "../../../type/ResponseType.ts";
 
 function ClientInformation() {
   const clientId = useRecoilValue(clientIdState);
@@ -27,7 +29,7 @@ function ClientInformation() {
       setPhone(clientData.phone);
     };
 
-    request("GET", `/clients/${clientId}`, {
+    requestDeprecated("GET", `/clients/${clientId}`, {
       useMock: false,
       withToken: true,
       onSuccess: handleRequestSuccess,
