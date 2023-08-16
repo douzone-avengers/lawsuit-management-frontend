@@ -5,18 +5,16 @@ import List from "@mui/material/List";
 import { useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import request, { RequestSuccessHandler } from "../../../lib/request.ts";
-import { ClientData } from "../../../mock/client/clientTable.ts";
 import caseIdState from "../../../states/case/CaseIdState.tsx";
 import clientIdState from "../../../states/client/ClientIdState.tsx";
 import subNavigationBarState from "../../../states/layout/SubNavigationBarState.tsx";
 import subNavigationBarTypeState from "../../../states/layout/SubNavigationBarTypeState.tsx";
-import SubNavigationBarItem, {
-  SubNavigationBarItemState,
-} from "./SubNavigationBarItem.tsx";
+import SubNavigationBarItem, { SubNavigationBarItemState } from "./SubNavigationBarItem.tsx";
 import ClientRegisterPopUpButton from "../../client/ClientRegisterPopUpButton.tsx";
-import { MemberInfo } from "../../../mock/member/memberHandlers";
 import employeeIdState from "../../../states/employee/EmployeeIdState";
 import employeeButtonIdState from "../../../states/employee/EmployeeButtonIdState";
+import { ClientData } from "../../../type/ResponseType.ts";
+import { MemberInfo } from "../../employee/type/MemberInfo.tsx";
 
 function SubNavigationBar() {
   const clientId = useRecoilValue(clientIdState);
@@ -95,7 +93,7 @@ function SubNavigationBar() {
           return {
             id: item.id,
             text: item.name,
-            subText: item.role,
+            subText: String(item.roleId),
             url:
               employeeButton === 2
                 ? `employees/${item.id}`

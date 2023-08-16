@@ -1,12 +1,12 @@
 import { useRecoilValue } from "recoil";
 import employeeIdState from "../../../states/employee/EmployeeIdState";
 import request, { RequestSuccessHandler } from "../../../lib/request";
-import { MemberInfo } from "../../../mock/member/memberHandlers";
 import { useEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import EmployeeInfoCard from "./EmployeeInfoCard";
 import useWindowSize from "../../../hook/useWindowSize";
 import KakaoMap from "../../common/KaKaoMap";
+import { MemberInfo } from "../type/MemberInfo.tsx";
 
 function EmployeeDetailPage() {
   const [memberInfo, setMemberInfo] = useState<MemberInfo>();

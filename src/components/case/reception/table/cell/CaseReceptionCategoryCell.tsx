@@ -5,10 +5,10 @@ import { useRecoilState } from "recoil";
 import { produce } from "immer";
 import { Typography } from "@mui/material";
 import caseReceptionsState, {
-  CaseReceptionRowType,
+  CaseReceptionRowType
 } from "../../../../../states/case/info/reception/CaseReceptionsState.tsx";
 import { toCategoryName } from "../../../../../lib/convert.ts";
-import { Category } from "../../../../../mock/reception/receptionTable.ts";
+import { Category } from "../../../../../type/ResponseType.ts";
 
 type Props = {
   item: CaseReceptionRowType & { editable: boolean };

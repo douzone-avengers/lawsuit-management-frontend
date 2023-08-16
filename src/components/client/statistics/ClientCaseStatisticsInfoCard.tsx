@@ -2,12 +2,12 @@ import { useRecoilValue } from "recoil";
 import clientIdState from "../../../states/client/ClientIdState.tsx";
 import { useEffect, useState } from "react";
 import request, { RequestSuccessHandler } from "../../../lib/request.ts";
-import { ClientData } from "../../../mock/client/clientTable.ts";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { SvgIcon } from "@mui/material";
 import { Email, LocationOn, PhoneIphone } from "@mui/icons-material";
+import { ClientData } from "../../../type/ResponseType.ts";
 
 function ClientCaseStatisticsInfoCard() {
   const clientId = useRecoilValue(clientIdState);

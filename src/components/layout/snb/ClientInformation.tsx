@@ -8,7 +8,7 @@ import { useRecoilValue } from "recoil";
 import clientIdState from "../../../states/client/ClientIdState.tsx";
 import { useEffect, useState } from "react";
 import request, { RequestSuccessHandler } from "../../../lib/request.ts";
-import { ClientData } from "../../../mock/client/clientTable.ts";
+import { ClientData } from "../../../type/ResponseType.ts";
 
 function ClientInformation() {
   const clientId = useRecoilValue(clientIdState);

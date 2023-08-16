@@ -1,14 +1,13 @@
 import adviceIdState from "../../../states/advice/AdviceState.tsx";
 import { useRecoilState, useRecoilValue } from "recoil";
 import request, { RequestSuccessHandler } from "../../../lib/request.ts";
-import { Advicedata } from "../../../mock/advice/adviceTable.ts";
 import { useEffect, useState } from "react";
 import clientIdState from "../../../states/client/ClientIdState.tsx";
 import caseIdState from "../../../states/case/CaseIdState.tsx";
 import AdviceDetailPage from "./AdviceDetailPage.tsx";
 import Box from "@mui/material/Box";
+import { Advicedata, ClientData } from "../../../type/ResponseType.ts";
 
-import { ClientData } from "../../../mock/client/clientTable.ts";
 
 function AdviceDetailTable() {
   const clientId = useRecoilValue(clientIdState);

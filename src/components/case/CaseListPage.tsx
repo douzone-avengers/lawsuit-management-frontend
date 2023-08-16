@@ -2,11 +2,7 @@ import Box from "@mui/material/Box";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import request, {
-  RequestFailHandler,
-  RequestSuccessHandler,
-} from "../../lib/request";
-import { LawsuitStatus } from "../../mock/lawsuit/lawsuitTable";
+import request, { RequestFailHandler, RequestSuccessHandler } from "../../lib/request";
 import clientIdState from "../../states/client/ClientIdState";
 import ClientInfoCard from "../client/ClientInfoCard.tsx";
 import CaseListTable from "./CaseListTable.tsx";
@@ -17,6 +13,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { LawsuitInfo } from "./type/LawsuitInfo.tsx";
 import caseIdState from "../../states/case/CaseIdState.tsx";
+import { LawsuitStatus } from "../../type/ResponseType.ts";
 
 function CaseListPage() {
   const clientId = useRecoilValue(clientIdState);
