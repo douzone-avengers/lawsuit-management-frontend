@@ -2,11 +2,10 @@ import Box from "@mui/material/Box";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import request, {
+import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
-} from "../../lib/request";
-import { LawsuitStatus } from "../../mock/lawsuit/lawsuitTable";
+} from "../../lib/requestDeprecated.ts";
 import clientIdState from "../../states/client/ClientIdState";
 import ClientInfoCard from "../client/ClientInfoCard.tsx";
 import CaseListTable from "./CaseListTable.tsx";
@@ -17,6 +16,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { LawsuitInfo } from "./type/LawsuitInfo.tsx";
 import caseIdState from "../../states/case/CaseIdState.tsx";
+import { LawsuitStatus } from "../../type/ResponseType.ts";
 
 function CaseListPage() {
   const clientId = useRecoilValue(clientIdState);
@@ -117,7 +117,7 @@ function CaseListPage() {
       alert((e.response.data as { code: string; message: string }).message);
     };
 
-    request("GET", `/lawsuits/clients/${clientId}`, {
+    requestDeprecated("GET", `/lawsuits/clients/${clientId}`, {
       withToken: true,
       useMock: false,
       params: {
@@ -152,7 +152,7 @@ function CaseListPage() {
 
     console.dir(count);
 
-    request("GET", `/lawsuits/clients/${clientId}`, {
+    requestDeprecated("GET", `/lawsuits/clients/${clientId}`, {
       useMock: false,
       withToken: true,
       params: {

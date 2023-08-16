@@ -1,4 +1,4 @@
-import { Category } from "../mock/reception/receptionTable.ts";
+type Category = "fixed" | "scheduled";
 
 export function delimiter(num: number): string {
   const numStr = num.toString().split("").reverse().join("");

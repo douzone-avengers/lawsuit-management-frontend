@@ -4,13 +4,15 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
-import request, { RequestSuccessHandler } from "../../lib/request.ts";
-import { ClientData } from "../../mock/client/clientTable.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../lib/requestDeprecated.ts";
 import clientIdState from "../../states/client/ClientIdState.tsx";
 import Button from "@mui/material/Button";
-import { LocationOn, PhoneIphone, Email } from "@mui/icons-material";
+import { Email, LocationOn, PhoneIphone } from "@mui/icons-material";
 import ClientRemovePopUpButton from "./ClientRemovePopUpButton.tsx";
 import { SvgIcon } from "@mui/material";
+import { ClientData } from "../../type/ResponseType.ts";
 
 type Props = {
   width?: string | number;
@@ -39,7 +41,7 @@ function ClientInfoCard({ width, height }: Props) {
       setAddress(clientData.address);
     };
 
-    request("GET", `/clients/${clientId}`, {
+    requestDeprecated("GET", `/clients/${clientId}`, {
       useMock: false,
       withToken: true,
       onSuccess: handleRequestSuccess,

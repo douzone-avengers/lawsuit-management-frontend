@@ -7,10 +7,10 @@ import PopUp from "../common/PopUp";
 import DaumPostcode from "react-daum-postcode";
 import ReactModal from "react-modal";
 import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import request, {
+import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
-} from "../../lib/request";
+} from "../../lib/requestDeprecated.ts";
 import { useRecoilValue } from "recoil";
 import validatedEmployeeKeyState from "../../states/join/ValidatedEmployeeKeyState";
 
@@ -72,7 +72,7 @@ function EmployeeJoinPage() {
       alert((e.response.data as { code: string; message: string }).message);
     };
 
-    request("GET", `/hierarchy`, {
+    requestDeprecated("GET", `/hierarchy`, {
       withToken: false,
       useMock: false,
       onSuccess: handelRequestSuccess,
@@ -115,7 +115,7 @@ function EmployeeJoinPage() {
       alert("입력되지 않은 정보가 있습니다.");
       return;
     }
-    request("POST", `/members/employees`, {
+    requestDeprecated("POST", `/members/employees`, {
       withToken: false,
       useMock: false,
       onSuccess: handelRequestSuccess,

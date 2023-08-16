@@ -13,7 +13,9 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import caseTabIdState from "../../states/case/CaseTabIdState.tsx";
 import caseIdState from "../../states/case/CaseIdState.tsx";
 import caseInfoState from "../../states/case/info/caseInfoState.tsx";
-import request, { RequestSuccessHandler } from "../../lib/request.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../lib/requestDeprecated.ts";
 import { LawsuitInfo } from "./type/LawsuitInfo.tsx";
 
 function CaseDetailPage() {
@@ -69,7 +71,7 @@ function CaseDetailPage() {
     };
     console.log("CaseDetailPage");
 
-    request("GET", `/lawsuits/${caseId}`, {
+    requestDeprecated("GET", `/lawsuits/${caseId}`, {
       onSuccess: handleSuccessHandler,
       useMock: false,
     });

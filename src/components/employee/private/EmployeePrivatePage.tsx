@@ -2,10 +2,10 @@ import Box from "@mui/material/Box";
 import KakaoMap from "../../common/KaKaoMap";
 import useWindowSize from "../../../hook/useWindowSize";
 import { useEffect, useRef, useState } from "react";
-import request, {
+import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
-} from "../../../lib/request";
+} from "../../../lib/requestDeprecated.ts";
 import { MemberInfo } from "../type/MemberInfo";
 import EmployeePrivateCard from "./EmployeePrivateCard";
 import { useRecoilValue } from "recoil";
@@ -49,7 +49,7 @@ function EmployeePrivatePage() {
       alert((e.response.data as { code: string; message: string }).message);
     };
 
-    request("GET", `/members/me`, {
+    requestDeprecated("GET", `/members/me`, {
       withToken: true,
       useMock: false,
       onSuccess: handleRequestSuccess,

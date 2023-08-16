@@ -3,10 +3,10 @@ import Box from "@mui/material/Box";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
-import request, {
+import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
-} from "../../lib/request";
+} from "../../lib/requestDeprecated.ts";
 import isLoginState from "../../states/common/IsLoginState";
 import PopUp from "../common/PopUp";
 import Logo from "../common/Logo.tsx";
@@ -36,7 +36,7 @@ function LoginPage() {
       alert((e.response.data as { code: string; message: string }).message);
     };
 
-    request("POST", "/tokens/login", {
+    requestDeprecated("POST", "/tokens/login", {
       withToken: false,
       useMock: false,
       body: {
