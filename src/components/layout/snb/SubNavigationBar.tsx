@@ -88,7 +88,7 @@ function SubNavigationBar() {
       };
       requestDeprecated(
         "GET",
-        `/lawsuits/clients/${clientId}?curPage=1&itemsPerPage=5`,
+        `/lawsuits/clients/${clientId}?curPage=1&rowsPerPage=5&searchWord=`,
         {
           onSuccess: handleRequestSuccess,
           useMock: false,

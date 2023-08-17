@@ -1,16 +1,24 @@
 import Box from "@mui/material/Box";
 import Dialog from "@mui/material/Dialog";
 import { ReactNode } from "react";
+import { SxProps, Theme } from "@mui/material";
 
 type Props = {
+  sx?: SxProps<Theme>;
   width?: number | string;
   popUpType?: "form" | "alert";
   children?: ReactNode;
 };
 
-function PopUp({ width = 360, popUpType = "form", children }: Props) {
+function PopUp({ width = 360, popUpType = "form", children, sx }: Props) {
   return (
-    <Dialog open={true} sx={{ backdropFilter: "blur(3px)" }}>
+    <Dialog
+      open={true}
+      sx={{
+        backdropFilter: "blur(3px)",
+        ...sx,
+      }}
+    >
       <Box
         sx={{
           display: "flex",
