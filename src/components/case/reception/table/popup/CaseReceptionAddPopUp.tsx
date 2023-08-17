@@ -20,6 +20,9 @@ import requestDeprecated, {
 } from "../../../../../lib/requestDeprecated.ts";
 import PopUp from "../../../../common/PopUp.tsx";
 import CloseButton from "../../../../common/CloseButton.tsx";
+import caseInfoState, {
+  CaseInfoType,
+} from "../../../../../states/case/info/caseInfoState.tsx";
 
 function CaseReceptionAddPopUp() {
   const [status, setStatus] = useState("incomplete");
@@ -29,6 +32,7 @@ function CaseReceptionAddPopUp() {
   const [deadline, setDeadline] = useState(new Date().toISOString());
 
   const caseId = useRecoilValue(caseIdState);
+  const setCaseInfo = useSetRecoilState(caseInfoState);
 
   const url = useRecoilValue(caseReceptionSearchUrlState);
 
@@ -76,6 +80,15 @@ function CaseReceptionAddPopUp() {
         );
         setSize(size);
         setReceptionAddPopUpOpen(false);
+        const handleRequestSuccess3: RequestSuccessHandler = (res) => {
+          const body: CaseInfoType = res.data;
+          setCaseInfo(body);
+        };
+
+        requestDeprecated("GET", `/lawsuits/${caseId}/basic`, {
+          onSuccess: handleRequestSuccess3,
+          useMock: false,
+        });
       };
 
       requestDeprecated("GET", url, {
