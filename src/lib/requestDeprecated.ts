@@ -15,7 +15,7 @@ export type RequestFailHandler = (e: {
   response: { data: any; status: number };
 }) => void;
 
-function request(
+function requestDeprecated(
   method: HttpMethod,
   path: string,
   config?: {
@@ -70,4 +70,4 @@ function request(
     });
 }
 
-export default request;
+export default requestDeprecated;

@@ -1,9 +1,20 @@
 import { atom } from "recoil";
-import { LawsuitInfo } from "../../../components/case/type/LawsuitInfo.tsx";
+
 type PersonInfo = { id: number; name: string; email: string };
 
+type LawsuitType = {
+  lawsuitId: number;
+  lawsuitNum: string;
+  lawsuitName: string;
+  lawsuitType: string;
+  lawsuitCommissionFee: number;
+  lawsuitContingentFee: number;
+  lawsuitStatus: string;
+  courtName: string;
+};
+
 export type CaseInfoType = {
-  lawsuit: LawsuitInfo;
+  lawsuit: LawsuitType;
   employees: PersonInfo[];
   clients: PersonInfo[];
 };

@@ -11,7 +11,9 @@ import caseReceptionsState, {
 import caseReceptionPageState from "../../../../states/case/info/reception/CaseReceptionPageState.tsx";
 import caseReceptionSizeState from "../../../../states/case/info/reception/CaseReceptionSizeState.tsx";
 import { caseReceptionSearchUrlState } from "../../../../states/case/info/reception/CaseReceptionSearchState.tsx";
-import request, { RequestSuccessHandler } from "../../../../lib/request.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../../../lib/requestDeprecated.ts";
 
 export function updateUrl(url: string, newPage: number): string {
   return url.replace(/(page=)\d+/, `$1${newPage}`);
@@ -45,7 +47,7 @@ function CaseReceptionTable() {
       );
       setSize(size);
     };
-    request("GET", url, {
+    requestDeprecated("GET", url, {
       onSuccess: handleRequestSuccess,
       useMock: false,
     });
@@ -63,9 +65,23 @@ function CaseReceptionTable() {
       <Divider />
       <CaseReceptionHeaderRow />
       <Divider />
-      {receptions.map((item) => (
-        <CaseReceptionDataRow key={item.id} item={item} />
-      ))}
+      {receptions.length > 0 ? (
+        receptions.map((item) => (
+          <CaseReceptionDataRow key={item.id} item={item} />
+        ))
+      ) : (
+        <Box
+          sx={{
+            width: "100%",
+            height: 120,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          접수가 존재하지 않습니다.
+        </Box>
+      )}
       <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
       <Box
         sx={{
@@ -94,7 +110,7 @@ function CaseReceptionTable() {
                 setSize(size);
               };
 
-              request("GET", updateUrl(url, page), {
+              requestDeprecated("GET", updateUrl(url, page), {
                 onSuccess: handleRequestSuccess,
                 useMock: false,
               });
@@ -128,7 +144,7 @@ function CaseReceptionTable() {
                 setSize(size);
               };
 
-              request("GET", updateUrl(url, page), {
+              requestDeprecated("GET", updateUrl(url, page), {
                 onSuccess: handleRequestSuccess,
                 useMock: false,
               });

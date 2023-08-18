@@ -2,7 +2,9 @@ import Box from "@mui/material/Box";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import request, { RequestSuccessHandler } from "../../lib/request";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../lib/requestDeprecated.ts";
 import clientIdState from "../../states/client/ClientIdState";
 import CaseListTable from "../case/CaseListTable.tsx";
 import { LawsuitInfo } from "../case/type/LawsuitInfo.tsx";
@@ -61,7 +63,7 @@ function ClientCaseListTab() {
       setCount(lawsuitData.count);
     };
 
-    request("GET", `/lawsuits/clients/${clientId}`, {
+    requestDeprecated("GET", `/lawsuits/clients/${clientId}`, {
       useMock: false,
       withToken: true,
       params: {

@@ -6,7 +6,9 @@ import caseReceptionsState, {
 import caseReceptionSizeState from "../../../../../states/case/info/reception/CaseReceptionSizeState.tsx";
 import { caseReceptionSearchUrlState } from "../../../../../states/case/info/reception/CaseReceptionSearchState.tsx";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import request, { RequestSuccessHandler } from "../../../../../lib/request.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../../../../lib/requestDeprecated.ts";
 
 type Props = {
   item: CaseReceptionRowType & { editable: boolean };
@@ -31,12 +33,12 @@ function CaseReceptionDeleteButton({ item }: Props) {
         );
         setSize(size);
       };
-      request("GET", url, {
+      requestDeprecated("GET", url, {
         onSuccess: handleRequestSuccess2,
         useMock: false,
       });
     };
-    request("PATCH", `/receptions/delete/${item.id}`, {
+    requestDeprecated("PATCH", `/receptions/delete/${item.id}`, {
       onSuccess: handleRequestSuccess,
       useMock: false,
     });
@@ -45,7 +47,7 @@ function CaseReceptionDeleteButton({ item }: Props) {
     <Button
       sx={{ marginLeft: 1, marginRight: 1 }}
       size="small"
-      variant="outlined"
+      variant="contained"
       fullWidth
       onClick={handleClick}
     >

@@ -9,10 +9,10 @@ import validatedClientState from "../../states/join/ValidatedClientState";
 import DaumPostcode from "react-daum-postcode";
 import ReactModal from "react-modal";
 import { Box } from "@mui/material";
-import request, {
+import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
-} from "../../lib/request";
+} from "../../lib/requestDeprecated.ts";
 
 function ClientJoinPage() {
   const validatedClient = useRecoilValue(validatedClientState);
@@ -95,7 +95,7 @@ function ClientJoinPage() {
       alert("입력되지 않은 정보가 있습니다.");
       return;
     }
-    request("POST", `/members/clients`, {
+    requestDeprecated("POST", `/members/clients`, {
       withToken: false,
       useMock: false,
       onSuccess: handelRequestSuccess,

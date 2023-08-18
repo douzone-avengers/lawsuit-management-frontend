@@ -14,7 +14,9 @@ import caseExpensesState, {
   CaseExpenseRowType,
 } from "../../../../states/case/info/expense/CaseExpensesState.tsx";
 import caseIdState from "../../../../states/case/CaseIdState.tsx";
-import request, { RequestSuccessHandler } from "../../../../lib/request.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../../../lib/requestDeprecated.ts";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import IconButton from "@mui/material/IconButton";
 import { updateUrl } from "../../reception/table/CaseReceptionTable.tsx";
@@ -115,7 +117,7 @@ function CaseExpenseSearchBox() {
 
     // updateUrl은 CaseReceptionTable에 있는 updateUrl
     const newUrl = updateUrl(url, 0);
-    request("GET", newUrl, {
+    requestDeprecated("GET", newUrl, {
       onSuccess: handleRequestSuccess,
       useMock: false,
     });

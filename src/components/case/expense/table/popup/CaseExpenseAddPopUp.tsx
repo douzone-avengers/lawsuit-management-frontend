@@ -9,7 +9,9 @@ import caseExpensesState, {
 import caseExpenseSizeState from "../../../../../states/case/info/expense/CaseExpenseSizeState.tsx";
 import * as dayjs from "dayjs";
 import { Dayjs } from "dayjs";
-import request, { RequestSuccessHandler } from "../../../../../lib/request.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../../../../lib/requestDeprecated.ts";
 import PopUp from "../../../../common/PopUp.tsx";
 import CloseButton from "../../../../common/CloseButton.tsx";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -63,13 +65,13 @@ function CaseExpenseAddPopUp() {
         setExpenseAddPopUpOpen(false);
       };
 
-      request("GET", url, {
+      requestDeprecated("GET", url, {
         onSuccess: handleRequestSuccess2,
         useMock: false,
       });
     };
 
-    request("POST", `/expenses`, {
+    requestDeprecated("POST", `/expense`, {
       body: {
         lawsuitId: caseId,
         speningAt,

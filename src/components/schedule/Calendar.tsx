@@ -9,7 +9,16 @@ import calendarInformationsState, {
   CalendarInformationType,
 } from "../../states/schedule/calendarInformationsState.ts";
 import CalendarCell, { CalendarCellType } from "./CalendarCellType.tsx";
-import request, { RequestSuccessHandler } from "../../lib/request.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../lib/requestDeprecated.ts";
+import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import { AppBar } from "@mui/material";
+import styled from "styled-components";
+import Card from "@mui/material/Card";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
 
 export function toYyyyMmDd(year: number, month: number, date: number) {
   return `${year}-${String(month).padStart(2, "0")}-${String(date).padStart(
@@ -17,6 +26,21 @@ export function toYyyyMmDd(year: number, month: number, date: number) {
     "0",
   )}`;
 }
+
+const ButtonContainer = styled.div`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px;
+`;
+
+const CalendarHeader = styled.div<{ color?: string }>`
+  display: flex;
+  align-items: center;
+  color: ${(props) => props?.color ?? "black"};
+  margin-bottom: 10px;
+`;
 
 function Calendar() {
   const [calendarDate, setCalendarDate] = useRecoilState(calendarDateState);
@@ -122,7 +146,7 @@ function Calendar() {
         setCalendarInformations(e.data as CalendarInformationType[]);
       };
 
-      request(
+      requestDeprecated(
         "GET",
         `/schedules?start-deadline=${startDeadline}&end-deadline=${endDeadline}`,
         {
@@ -149,56 +173,89 @@ function Calendar() {
   });
 
   return (
-    <div
+    <Card
       style={{
         display: "flex",
         flexDirection: "column",
-        gap: 30,
+        gap: 10,
         width: "100%",
       }}
     >
-      <div style={{ textAlign: "center" }}>
-        {calendarDate.year}년 {calendarDate.month}월
-      </div>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div style={{ cursor: "pointer" }} onClick={handlePrevMonthButton}>
-          이전
-        </div>
-        <div style={{ cursor: "pointer" }} onClick={handleNextMonthButton}>
-          다음
-        </div>
-      </div>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(7, 1fr)",
+      <AppBar
+        position="static"
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
           height: 60,
-          gap: 30,
         }}
       >
-        <div>일</div>
-        <div>월</div>
-        <div>화</div>
-        <div>수</div>
-        <div>목</div>
-        <div>금</div>
-        <div>토</div>
+        <ButtonContainer onClick={handlePrevMonthButton}>
+          <IconButton sx={{ color: "white" }}>
+            <KeyboardArrowLeftIcon />
+          </IconButton>
+        </ButtonContainer>
+        <div
+          style={{
+            display: "flex",
+            textAlign: "center",
+            fontSize: 20,
+            gap: 10,
+          }}
+        >
+          <div>{calendarDate.year}년</div>
+          <div>{String(calendarDate.month).padStart(2, "0")}월</div>
+        </div>
+        <ButtonContainer onClick={handleNextMonthButton}>
+          <IconButton sx={{ color: "white" }}>
+            <KeyboardArrowRightIcon />
+          </IconButton>
+        </ButtonContainer>
+      </AppBar>
+      <div style={{ padding: 20 }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(7, 1fr)",
+          }}
+        >
+          <CalendarHeader color="red">일</CalendarHeader>
+          <CalendarHeader>월</CalendarHeader>
+          <CalendarHeader>화</CalendarHeader>
+          <CalendarHeader>수</CalendarHeader>
+          <CalendarHeader>목</CalendarHeader>
+          <CalendarHeader>금</CalendarHeader>
+          <CalendarHeader color="blue">토</CalendarHeader>
+        </div>
+        <Divider sx={{ marginBottom: 2 }} />
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(7, 1fr)",
+          }}
+        >
+          {calendarCells.map((item) => (
+            <CalendarCell
+              key={`${item.calendar.year}${item.calendar.month}${item.calendar.date}`}
+              item={item}
+              color={
+                item.calendar.dayOfWeek % 7 === 0
+                  ? "red"
+                  : item.calendar.dayOfWeek % 7 === 6
+                  ? "blue"
+                  : "black"
+              }
+              background={
+                item.calendar.month !== calendarDate.month
+                  ? "rgba(0, 0, 0, 0.05)"
+                  : ""
+              }
+            />
+          ))}
+        </div>
       </div>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(7, 1fr)",
-          gap: 30,
-        }}
-      >
-        {calendarCells.map((item) => (
-          <CalendarCell
-            key={`${item.calendar.year}${item.calendar.month}${item.calendar.date}`}
-            item={item}
-          />
-        ))}
-      </div>
-    </div>
+    </Card>
   );
 }
 

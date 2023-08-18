@@ -6,6 +6,8 @@ export type CalendarPopUpInfoType = {
     name: string;
     num: string;
     type: string;
+    status: string;
+    courtName: string;
     commissionFee: number;
     contingentFee: number;
   };

@@ -3,7 +3,7 @@ import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import { Business, Email, LocationOn, PhoneIphone } from "@mui/icons-material";
 import { SvgIcon } from "@mui/material";
-import { MemberInfo } from "../../../mock/member/memberHandlers";
+import { MemberInfo } from "../type/MemberInfo.tsx";
 
 type Props = {
   width?: string | number;
@@ -75,7 +75,7 @@ function EmployeeInfoCard({ width, height, memberInfo }: Props) {
         gutterBottom
       >
         <SvgIcon component={Business} /> &nbsp;
-        {memberInfo.hierarchy}
+        {memberInfo.hierarchyId}
       </Typography>
       <br />
       <Typography
@@ -84,7 +84,7 @@ function EmployeeInfoCard({ width, height, memberInfo }: Props) {
         gutterBottom
       >
         <SvgIcon component={Business} /> &nbsp;
-        {memberInfo.role}
+        {memberInfo.roleId}
       </Typography>
     </Card>
   );

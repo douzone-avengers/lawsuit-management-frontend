@@ -3,7 +3,9 @@ import { useEffect } from "react";
 import Box from "@mui/material/Box";
 import caseIdState from "../../../../states/case/CaseIdState.tsx";
 import { useRecoilState, useRecoilValue } from "recoil";
-import request, { RequestSuccessHandler } from "../../../../lib/request.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../../../lib/requestDeprecated.ts";
 import caseExpensesState, {
   CaseExpenseRowType,
 } from "../../../../states/case/info/expense/CaseExpensesState.tsx";
@@ -43,7 +45,7 @@ function CaseExpenseTable() {
       setSize(size);
     };
 
-    request("GET", url, {
+    requestDeprecated("GET", url, {
       onSuccess: handleRequestSuccess,
       useMock: false,
     });
@@ -85,7 +87,7 @@ function CaseExpenseTable() {
                 setSize(size);
               };
 
-              request("GET", updateUrl(url, page), {
+              requestDeprecated("GET", updateUrl(url, page), {
                 onSuccess: handleRequestSuccess,
                 useMock: false,
               });
@@ -118,7 +120,7 @@ function CaseExpenseTable() {
                 setSize(size);
               };
 
-              request("GET", updateUrl(url, page), {
+              requestDeprecated("GET", updateUrl(url, page), {
                 onSuccess: handleRequestSuccess,
                 useMock: false,
               });
