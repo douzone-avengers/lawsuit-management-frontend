@@ -11,14 +11,14 @@ type Props = {
 };
 
 function CaseExpenseEditButton({ item }: Props) {
-  const [expense, setExpense] = useRecoilState(CaseExpenseState);
+  const [expenses, setExpenses] = useRecoilState(CaseExpenseState);
 
   const handleClick = () => {
-    const newExpense = produce(expense, (draft) => {
-      const expense = draft.filter((item2) => item2.id === item.id)[0];
-      expense.editable = true;
+    const newExpenses = produce(expenses, (draft) => {
+      const expenses = draft.filter((item2) => item2.id === item.id)[0];
+      expenses.editable = true;
     });
-    setExpense(newExpense);
+    setExpenses(newExpenses);
   };
 
   return (

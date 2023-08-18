@@ -1,6 +1,7 @@
 import { Category } from "../mock/reception/receptionTable.ts";
 
 export function delimiter(num: number): string {
+  console.log(num);
   const numStr = num.toString().split("").reverse().join("");
 
   let result = "";

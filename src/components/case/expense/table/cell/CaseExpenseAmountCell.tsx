@@ -13,16 +13,16 @@ type Props = {
 };
 
 function CaseExpenseAmountCell({ item }: Props) {
-  const [expense, setExpense] = useRecoilState(CaseExpenseState);
+  const [expenses, setExpenses] = useRecoilState(CaseExpenseState);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (item.editable) {
       const newAmount = e.target.value;
-      const newExpense = produce(expense, (draft) => {
-        const expense = draft.filter((item2) => item2.id === item.id)[0];
-        expense.amount = Number(newAmount);
+      const newExpenses = produce(expenses, (draft) => {
+        const expenses = draft.filter((item2) => item2.id === item.id)[0];
+        expenses.amount = Number(newAmount);
       });
-      setExpense(newExpense);
+      setExpenses(newExpenses);
     }
   };
 
