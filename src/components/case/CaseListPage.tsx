@@ -85,19 +85,6 @@ function CaseListPage() {
     }
 
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      function mapLawsuitStatus(status: string) {
-        switch (status) {
-          case "REGISTRATION":
-            return "등록";
-          case "PROCEEDING":
-            return "진행";
-          case "CLOSING":
-            return "종결";
-          default:
-            return status as LawsuitStatus;
-        }
-      }
-
       const lawsuitData: {
         lawsuitList: LawsuitInfo[];
         count: number;
