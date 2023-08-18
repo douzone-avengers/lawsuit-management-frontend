@@ -13,7 +13,7 @@ type Props = {
 };
 
 function CaseExpenseDeleteButton({ item }: Props) {
-  const setExpense = useSetRecoilState(caseExpensesState);
+  const setExpenses = useSetRecoilState(caseExpensesState);
   const setSize = useSetRecoilState(caseExpenseSizeState);
   const url = useRecoilValue(caseExpenseSearchUrlState);
 
@@ -21,22 +21,26 @@ function CaseExpenseDeleteButton({ item }: Props) {
     const handleRequestSuccess: RequestSuccessHandler = () => {
       const handleRequestSuccess2: RequestSuccessHandler = (res) => {
         const {
-          expense,
+          expenses,
           size,
-        }: { expense: CaseExpenseRowType[]; size: number } = res.data["data"];
-        setExpense(
-          expense.map((item) => {
+        }: { expenses: CaseExpenseRowType[]; size: number } = res.data;
+        setExpenses(
+          expenses.map((item) => {
             return { ...item, editable: false };
           }),
         );
         setSize(size);
       };
+
       request("GET", url, {
         onSuccess: handleRequestSuccess2,
+        useMock: false,
       });
     };
-    request("PUT", `/expense/delete/${item.id}`, {
+
+    request("PATCH", `/expenses/delete/${item.id}`, {
       onSuccess: handleRequestSuccess,
+      useMock: false,
     });
   };
 
