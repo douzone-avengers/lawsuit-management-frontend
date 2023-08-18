@@ -1,7 +1,7 @@
 import { useRecoilState } from "recoil";
 import CaseExpenseState, {
   CaseExpenseRowType,
-} from "../../../../../states/case/info/expense/CaseExpenseState.tsx";
+} from "../../../../../states/case/info/expense/CaseExpensesState.tsx";
 import request, { RequestSuccessHandler } from "../../../../../lib/request.ts";
 import { produce } from "immer";
 import { Button } from "@mui/material";

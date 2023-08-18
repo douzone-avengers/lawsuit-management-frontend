@@ -1,6 +1,6 @@
 import CaseExpenseState, {
   CaseExpenseRowType,
-} from "../../../../../states/case/info/expense/CaseExpenseState.tsx";
+} from "../../../../../states/case/info/expense/CaseExpensesState.tsx";
 import { useRecoilState } from "recoil";
 import { ChangeEvent } from "react";
 import { produce } from "immer";

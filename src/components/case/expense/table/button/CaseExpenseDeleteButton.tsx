@@ -1,6 +1,6 @@
-import caseExpenseState, {
+import caseExpensesState, {
   CaseExpenseRowType,
-} from "../../../../../states/case/info/expense/CaseExpenseState.tsx";
+} from "../../../../../states/case/info/expense/CaseExpensesState.tsx";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import caseExpenseSizeState from "../../../../../states/case/info/expense/CaseExpenseSizeState.tsx";
 import { caseExpenseSearchUrlState } from "../../../../../states/case/info/expense/CaseExpenseSearchState.tsx";
@@ -13,7 +13,7 @@ type Props = {
 };
 
 function CaseExpenseDeleteButton({ item }: Props) {
-  const setExpense = useSetRecoilState(caseExpenseState);
+  const setExpense = useSetRecoilState(caseExpensesState);
   const setSize = useSetRecoilState(caseExpenseSizeState);
   const url = useRecoilValue(caseExpenseSearchUrlState);
 

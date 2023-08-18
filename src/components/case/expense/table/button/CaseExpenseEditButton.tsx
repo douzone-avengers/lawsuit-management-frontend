@@ -1,6 +1,6 @@
 import CaseExpenseState, {
   CaseExpenseRowType,
-} from "../../../../../states/case/info/expense/CaseExpenseState.tsx";
+} from "../../../../../states/case/info/expense/CaseExpensesState.tsx";
 import { useRecoilState } from "recoil";
 import { Button } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
