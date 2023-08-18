@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import Info from "./advice/Adviceinfo";
 import TabBar, { TabItem } from "../common/TabBar";
-import ExpenseInfo from "./expense/ExpenseInfo.tsx";
+import ExpenseInfoPage from "./expense/ExpenseInfoPage.tsx";
 import Closing from "./closing/ClosingInfo.tsx";
 import CaseReceptionTab from "./reception/CaseReceptionTab.tsx";
 import CaseBasicInfoCard from "./common/CaseBasicInfoCard.tsx";
@@ -39,7 +39,7 @@ function CaseDetailPage() {
       name: "지출 정보",
       children: (
         <div>
-          <ExpenseInfo />
+          <ExpenseInfoPage />
         </div>
       ),
     },
@@ -67,7 +67,6 @@ function CaseDetailPage() {
       const body: LawsuitInfo = res.data;
       setCaseInfo({ lawsuit: body, employees: [], clients: [] });
     };
-    console.log("CaseDetailPage");
 
     request("GET", `/lawsuits/${caseId}`, {
       onSuccess: handleSuccessHandler,
