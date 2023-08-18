@@ -4,9 +4,9 @@ import Box from "@mui/material/Box";
 import caseIdState from "../../../../states/case/CaseIdState.tsx";
 import { useRecoilState, useRecoilValue } from "recoil";
 import request, { RequestSuccessHandler } from "../../../../lib/request.ts";
-import caseExpenseState, {
+import caseExpensesState, {
   CaseExpenseRowType,
-} from "../../../../states/case/info/expense/CaseExpenseState.tsx";
+} from "../../../../states/case/info/expense/CaseExpensesState.tsx";
 import caseReceptionPageState from "../../../../states/case/info/reception/CaseReceptionPageState.tsx";
 import caseReceptionSizeState from "../../../../states/case/info/reception/CaseReceptionSizeState.tsx";
 import { caseExpenseSearchUrlState } from "../../../../states/case/info/expense/CaseExpenseSearchState.tsx";
@@ -17,7 +17,7 @@ import { updateUrl } from "../../reception/table/CaseReceptionTable.tsx";
 function CaseExpenseTable() {
   const theme = useTheme();
   const caseId = useRecoilValue(caseIdState);
-  const [expense, setExpense] = useRecoilState(caseExpenseState);
+  const [expenses, setExpenses] = useRecoilState(caseExpensesState);
   const [page, setPage] = useRecoilState(caseReceptionPageState);
   const [size, setSize] = useRecoilState(caseReceptionSizeState);
 
@@ -29,11 +29,13 @@ function CaseExpenseTable() {
     }
 
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      const { expense, size }: { expense: CaseExpenseRowType[]; size: number } =
-        res.data["data"];
+      const {
+        expenses,
+        size,
+      }: { expenses: CaseExpenseRowType[]; size: number } = res.data;
 
-      setExpense(
-        expense.map((item) => {
+      setExpenses(
+        expenses.map((item) => {
           return { ...item, editable: false };
         }),
       );
@@ -42,6 +44,7 @@ function CaseExpenseTable() {
 
     request("GET", url, {
       onSuccess: handleRequestSuccess,
+      useMock: false,
     });
   }, [caseId]);
 
@@ -51,7 +54,7 @@ function CaseExpenseTable() {
       <Divider />
       <CaseExpenseHeaderRow />
       <Divider />
-      {expense.map((item) => (
+      {expenses.map((item) => (
         <CaseExpenseDataRow key={item.id} item={item} />
       ))}
       <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
@@ -70,12 +73,11 @@ function CaseExpenseTable() {
 
               const handleRequestSuccess: RequestSuccessHandler = (res) => {
                 const {
-                  expense,
+                  expenses,
                   size,
-                }: { expense: CaseExpenseRowType[]; size: number } =
-                  res.data["data"];
-                setExpense(
-                  expense.map((item) => {
+                }: { expenses: CaseExpenseRowType[]; size: number } = res.data;
+                setExpenses(
+                  expenses.map((item) => {
                     return { ...item, editable: false };
                   }),
                 );
@@ -84,6 +86,7 @@ function CaseExpenseTable() {
 
               request("GET", updateUrl(url, page), {
                 onSuccess: handleRequestSuccess,
+                useMock: false,
               });
 
               return page;
@@ -96,19 +99,18 @@ function CaseExpenseTable() {
           <Box sx={{ color: theme.palette.primary.main }}>{page + 1}</Box>
         </Button>
         <Button
-          disabled={size / 5 <= page + 1}
+          disabled={size / 5 < page + 1}
           onClick={() => {
             setPage((prevPage) => {
               const page = prevPage + 1;
 
               const handleRequestSuccess: RequestSuccessHandler = (res) => {
                 const {
-                  expense,
+                  expenses,
                   size,
-                }: { expense: CaseExpenseRowType[]; size: number } =
-                  res.data["data"];
-                setExpense(
-                  expense.map((item) => {
+                }: { expenses: CaseExpenseRowType[]; size: number } = res.data;
+                setExpenses(
+                  expenses.map((item) => {
                     return { ...item, editable: false };
                   }),
                 );
@@ -117,6 +119,7 @@ function CaseExpenseTable() {
 
               request("GET", updateUrl(url, page), {
                 onSuccess: handleRequestSuccess,
+                useMock: false,
               });
 
               return page;
