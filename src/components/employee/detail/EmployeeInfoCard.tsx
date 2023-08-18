@@ -266,7 +266,7 @@ function EmployeeInfoCard({ width = "50%", memberInfo }: Props) {
         </Grid>
 
         <Grid item xs={6}>
-          <FormControl margin="normal" fullWidth disabled>
+          <FormControl margin="normal" fullWidth disabled={!isEditMode}>
             <InputLabel>권한</InputLabel>
             <Select
               value={roleId}

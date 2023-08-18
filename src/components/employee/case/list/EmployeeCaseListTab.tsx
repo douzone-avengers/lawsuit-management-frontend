@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import requestDeprecated, {
   RequestSuccessHandler,
-} from "../../../lib/requestDeprecated.ts";
+} from "../../../../lib/requestDeprecated.ts";
 import { useRecoilValue } from "recoil";
-import employeeIdState from "../../../states/employee/EmployeeIdState";
+import employeeIdState from "../../../../states/employee/EmployeeIdState";
 import Box from "@mui/material/Box";
-import { LawsuitInfo } from "../../case/type/LawsuitInfo.tsx";
+import { LawsuitInfo } from "../../../case/type/LawsuitInfo.tsx";
 
 function EmployeeCaseListTab() {
   const employeeId = useRecoilValue(employeeIdState);

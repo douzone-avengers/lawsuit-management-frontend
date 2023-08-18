@@ -1,8 +1,8 @@
 import Box from "@mui/material/Box";
 import EmployeeCaseListTab from "./EmployeeCaseListTab";
 import { useState } from "react";
-import TabBar, { TabItem } from "../../common/TabBar";
-import EmployeeCaseStatisticsTab from "./EmployeeCaseStatisticsTab";
+import TabBar, { TabItem } from "../../../common/TabBar";
+import EmployeeCaseStatisticsTab from "../statistics/EmployeeCaseStatisticsTab";
 
 function EmployeeCasePage() {
   const [tabId, setTabId] = useState(0);
