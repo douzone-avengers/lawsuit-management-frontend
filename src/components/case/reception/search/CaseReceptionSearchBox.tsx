@@ -53,7 +53,7 @@ function CaseReceptionSearchBox() {
     });
   };
 
-  const handleStartReceivedAt = (start: any) => {
+  /* const handleStartReceivedAt = (start: any) => {
     setReceptionSearch({
       ...receptionSearch,
       startReceivedAt: start,
@@ -66,7 +66,7 @@ function CaseReceptionSearchBox() {
       endReceivedAt: end,
     });
   };
-
+*/
   const handleStartDeadline = (start: any) => {
     setReceptionSearch({
       ...receptionSearch,
@@ -116,17 +116,7 @@ function CaseReceptionSearchBox() {
         margin: "0 10px",
       }}
     >
-      <Box sx={{ display: "flex", gap: 1 }}>
-        <TextField
-          sx={{ flexGrow: 1 }}
-          size="small"
-          value={receptionSearch.contents}
-          onChange={handleTextChange}
-        />
-        <Button variant="contained" onClick={handleSubmitButtonClick}>
-          검색
-        </Button>
-      </Box>
+      <Box sx={{ display: "flex", gap: 1 }}></Box>
       <Box
         sx={{
           display: "flex",
@@ -160,19 +150,6 @@ function CaseReceptionSearchBox() {
           </Select>
         </FormControl>
         <DatePicker
-          label="접수일(시작)"
-          slotProps={{ textField: { size: "small" } }}
-          value={receptionSearch.startReceivedAt}
-          onChange={handleStartReceivedAt}
-        />
-        <Box>–</Box>
-        <DatePicker
-          label="접수일(종료)"
-          slotProps={{ textField: { size: "small" } }}
-          value={receptionSearch.endReceivedAt}
-          onChange={handleEndReceivedAt}
-        />
-        <DatePicker
           label="마감일(시작)"
           slotProps={{ textField: { size: "small" } }}
           value={receptionSearch.startDeadline}
@@ -185,6 +162,28 @@ function CaseReceptionSearchBox() {
           value={receptionSearch.endDeadLine}
           onChange={handleEndDeadline}
         />
+        {/*<DatePicker*/}
+        {/*  label="완료일(시작)"*/}
+        {/*  slotProps={{ textField: { size: "small" } }}*/}
+        {/*  value={receptionSearch.startReceivedAt}*/}
+        {/*  onChange={handleStartReceivedAt}*/}
+        {/*/>*/}
+        {/*<Box>–</Box>*/}
+        {/*<DatePicker*/}
+        {/*  label="완료일(종료)"*/}
+        {/*  slotProps={{ textField: { size: "small" } }}*/}
+        {/*  value={receptionSearch.endReceivedAt}*/}
+        {/*  onChange={handleEndReceivedAt}*/}
+        {/*/>*/}
+        <TextField
+          sx={{ flexGrow: 1 }}
+          size="small"
+          value={receptionSearch.contents}
+          onChange={handleTextChange}
+        />
+        <Button variant="contained" onClick={handleSubmitButtonClick}>
+          검색
+        </Button>
       </Box>
     </Box>
   );

@@ -55,7 +55,6 @@ function CalendarPopUp() {
               primary="사건 상태"
               secondary={mapLawsuitStatus(info?.lawsuit.status ?? "미정")}
             />
-
             <ListProfileItem
               SvgIcon={FormatListNumberedIcon}
               primary="사건 번호"
@@ -89,13 +88,17 @@ function CalendarPopUp() {
             <ListProfileItem
               SvgIcon={PersonIcon}
               primary="담당자"
-              secondary={info.members.map((item) => item.name).join(", ")}
+              secondary={
+                info.members.map((item) => item.name).join(", ") ?? "미정"
+              }
             />
 
             <ListProfileItem
               SvgIcon={PersonIcon}
               primary="당사자"
-              secondary={info.clients.map((item) => item.name).join(", ")}
+              secondary={
+                info.clients.map((item) => item.name).join(", ") ?? "미정"
+              }
             />
           </List>
           <List>
@@ -124,17 +127,19 @@ function CalendarPopUp() {
             <ListProfileItem
               SvgIcon={ContentCopyIcon}
               primary="내용"
-              secondary={info.reception.contents}
+              secondary={
+                info.reception.contents ? info.reception.contents : "없음"
+              }
             />
             <ListProfileItem
               SvgIcon={CalendarTodayIcon}
               primary="접수일"
-              secondary={info.reception.receivedAt}
+              secondary={info.reception.receivedAt ?? "미정"}
             />
             <ListProfileItem
               SvgIcon={CalendarTodayIcon}
               primary="마감일"
-              secondary={info.reception.deadline}
+              secondary={info.reception.deadline ?? "미정"}
             />
           </List>
         </div>
