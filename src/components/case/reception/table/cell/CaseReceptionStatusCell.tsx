@@ -21,6 +21,8 @@ function CaseReceptionStatusCell({ item }: Props) {
       const newReceptions = produce(receptions, (draft) => {
         const reception = draft.filter((item2) => item2.id === item.id)[0];
         reception.status = newStatus === "complete";
+        reception.receivedAt =
+          newStatus === "complete" ? new Date().toISOString() : "";
       });
       setReceptions(newReceptions);
     }

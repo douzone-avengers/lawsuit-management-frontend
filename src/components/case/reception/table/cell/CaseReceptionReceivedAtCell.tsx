@@ -8,6 +8,7 @@ import caseReceptionsState, {
   CaseReceptionRowType,
 } from "../../../../../states/case/info/reception/CaseReceptionsState.tsx";
 import { toDateValue } from "../../../../../lib/convert.ts";
+import { useEffect } from "react";
 
 type Props = {
   item: CaseReceptionRowType & { editable: boolean };
@@ -26,7 +27,9 @@ function CaseReceptionReceivedAtCell({ item }: Props) {
     }
   };
 
-  return item.editable ? (
+  useEffect(() => {}, [receptions]);
+
+  return item.editable && item.status ? (
     <DatePicker
       key={item.id}
       disabled={!item.editable}
