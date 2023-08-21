@@ -46,8 +46,6 @@ function EmployeeListPage() {
   }, []);
 
   const prevDependencies = useRef({
-    searchHierarchy,
-    searchRole,
     sortKey,
     sortOrder,
     rowsPerPage,
@@ -57,8 +55,6 @@ function EmployeeListPage() {
   useEffect(() => {
     // page만 변화했는지 체크
     if (
-      prevDependencies.current.searchHierarchy === searchHierarchy &&
-      prevDependencies.current.searchRole === searchRole &&
       prevDependencies.current.sortKey === sortKey &&
       prevDependencies.current.sortOrder === sortOrder &&
       prevDependencies.current.rowsPerPage === rowsPerPage &&
@@ -71,14 +67,12 @@ function EmployeeListPage() {
 
     // 의존성 변수들의 마지막 값을 저장
     prevDependencies.current = {
-      searchHierarchy,
-      searchRole,
       sortKey,
       sortOrder,
       rowsPerPage,
       page,
     };
-  }, [searchHierarchy, searchRole, sortKey, sortOrder, rowsPerPage, page]);
+  }, [sortKey, sortOrder, rowsPerPage, page]);
 
   //검색
   const searchRequest = (isInitPage?: boolean, isGetBackWord?: boolean) => {

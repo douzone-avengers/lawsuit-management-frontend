@@ -45,8 +45,8 @@ function EmployeeListSearchBox({
   }, [triggerSearch]);
   return (
     <Box sx={{ display: "flex", gap: 3, width: "100%" }}>
-      <Card sx={{ marginBottom: 1, marginTop: 1, flexGrow: 1 }}>
-        <CardTitle text="필터링" />
+      <Card sx={{ marginBottom: 1, marginTop: 1, flexGrow: 15 }}>
+        <CardTitle text="검색" />
         <Box
           sx={{
             display: "flex",
@@ -76,8 +76,7 @@ function EmployeeListSearchBox({
               ))}
             </Select>
           </FormControl>
-
-          <FormControl size="small" sx={{ width: 100 }}>
+          <FormControl size="small" sx={{ width: 120 }}>
             <InputLabel>권한</InputLabel>
             <Select
               label="Role"
@@ -95,21 +94,6 @@ function EmployeeListSearchBox({
               ))}
             </Select>
           </FormControl>
-        </Box>
-      </Card>
-      <Card sx={{ marginBottom: 1, marginTop: 1, flexGrow: 15 }}>
-        <CardTitle text="검색" />
-        <Box
-          sx={{
-            display: "flex",
-            gap: 2,
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 1,
-            marginTop: 1,
-            marginBottom: 1,
-          }}
-        >
           <Box sx={{ display: "flex", gap: 1, flexGrow: 1 }}>
             <TextField
               sx={{ flexGrow: 1 }}
