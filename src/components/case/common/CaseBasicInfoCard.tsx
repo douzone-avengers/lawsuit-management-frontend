@@ -18,7 +18,10 @@ function CaseBasicInfoCard() {
   return (
     <Card sx={{ width: "100%" }}>
       <CardTitle text="사건" />
-      <List sx={{ display: "flex", padding: 0 }}>
+      <List
+        className="custom-scroll"
+        sx={{ display: "flex", padding: 0, overflowX: "scroll" }}
+      >
         <ListProfileItem
           SvgIcon={WorkHistoryIcon}
           primary="사건 상태"

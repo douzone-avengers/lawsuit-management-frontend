@@ -18,13 +18,18 @@ function CaseReceptionEditConfirmButton({ item }: Props) {
   const [receptions, setReceptions] = useRecoilState(caseReceptionsState);
 
   const handleClick = () => {
+    if (item.status && !item.receivedAt) {
+      alert("완료일을 입력해주세요.");
+      return;
+    }
+
     const handleSuccess: RequestSuccessHandler = (res) => {
       const body: {
         id: number;
         status: boolean;
         category: string;
         contents: string;
-        receivedAt: string;
+        receivedAt: string | null;
         deadline: string;
       } = res.data;
       const { status, category, contents, receivedAt, deadline } = body;
@@ -33,21 +38,26 @@ function CaseReceptionEditConfirmButton({ item }: Props) {
         reception.status = status;
         reception.category = category;
         reception.contents = contents;
-        reception.receivedAt = receivedAt;
+        reception.receivedAt = receivedAt ?? "";
         reception.deadline = deadline;
         reception.editable = false;
       });
       setReceptions(newReceptions);
     };
 
+    const body: Record<string, string> = {
+      status: item.status ? "complete" : "incomplete",
+      category: item.category,
+      contents: item.contents,
+      deadline: dayjs(item.deadline).add(1, "day").toISOString(),
+    };
+
+    if (item.receivedAt) {
+      body["receivedAt"] = dayjs(item.receivedAt).add(1, "day").toISOString();
+    }
+
     requestDeprecated("PUT", `/receptions/update/${item.id}`, {
-      body: {
-        status: item.status ? "complete" : "incomplete",
-        category: item.category,
-        contents: item.contents,
-        receivedAt: dayjs(item.receivedAt).add(1, "day").toISOString(),
-        deadline: dayjs(item.deadline).add(1, "day").toISOString(),
-      },
+      body,
       onSuccess: handleSuccess,
       useMock: false,
     });

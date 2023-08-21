@@ -38,8 +38,14 @@ function CalendarInformation({ item }: Props) {
       variant="filled"
       sx={{
         width: "100%",
-        background: theme.palette.primary.main,
-        color: "white",
+        background: item.receptionStatus
+          ? "transparent"
+          : theme.palette.primary.main,
+        border: item.receptionStatus
+          ? `1px solid ${theme.palette.primary.main}`
+          : "",
+        color: item.receptionStatus ? theme.palette.primary.main : "white",
+        textDecoration: item.receptionStatus ? "line-through" : "",
       }}
       label={contents}
       onClick={handleClick}
