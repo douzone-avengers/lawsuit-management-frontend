@@ -43,7 +43,7 @@ function EmployeeListTable({
   };
 
   return (
-    <Card sx={{ marginBottom: 3, marginTop: 5 }}>
+    <Card sx={{ marginBottom: 3, marginTop: 3 }}>
       <CardTitle text="사원 리스트" />
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
