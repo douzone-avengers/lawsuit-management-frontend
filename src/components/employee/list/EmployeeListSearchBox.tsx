@@ -21,10 +21,6 @@ type Props = {
 
   curSearchWord: string;
   setCurSearchWord: React.Dispatch<React.SetStateAction<string>>;
-  sortKey: string;
-  setSortKey: React.Dispatch<React.SetStateAction<string>>;
-  sortOrder: string;
-  setSortOrder: React.Dispatch<React.SetStateAction<string>>;
   searchRequest: (isInitPage?: boolean, isGetBackWord?: boolean) => void;
 };
 
@@ -38,10 +34,6 @@ function EmployeeListSearchBox({
   setSearchWord,
   curSearchWord,
   setCurSearchWord,
-  sortKey,
-  setSortKey,
-  sortOrder,
-  setSortOrder,
   searchRequest,
 }: Props) {
   const [triggerSearch, setTriggerSearch] = useState(false);
@@ -101,48 +93,6 @@ function EmployeeListSearchBox({
                   {role.nameKr}
                 </MenuItem>
               ))}
-            </Select>
-          </FormControl>
-
-          <FormControl size="small" sx={{ width: 100 }}>
-            <InputLabel>정렬기준</InputLabel>
-            <Select
-              label="SortKey"
-              onChange={(e) => {
-                setSortKey(e.target.value as string);
-              }}
-              value={sortKey}
-            >
-              <MenuItem key="createdAt" value="createdAt">
-                가입일
-              </MenuItem>
-              <MenuItem key="hierarchy" value="hierarchy">
-                직급
-              </MenuItem>
-              <MenuItem key="role" value="role">
-                권한
-              </MenuItem>
-              <MenuItem key="email" value="email">
-                이메일
-              </MenuItem>
-            </Select>
-          </FormControl>
-
-          <FormControl size="small" sx={{ width: 120 }}>
-            <InputLabel>정렬순서</InputLabel>
-            <Select
-              label="SortOrder"
-              onChange={(e) => {
-                setSortOrder(e.target.value as string);
-              }}
-              value={sortOrder}
-            >
-              <MenuItem key="asc" value="asc">
-                오름차순
-              </MenuItem>
-              <MenuItem key="desc" value="desc">
-                내림차순
-              </MenuItem>
             </Select>
           </FormControl>
         </Box>

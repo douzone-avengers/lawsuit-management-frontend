@@ -30,7 +30,7 @@ function EmployeeListPage() {
   });
   const [searchWord, setSearchWord] = useState("");
   const [sortKey, setSortKey] = useState("createdAt");
-  const [sortOrder, setSortOrder] = useState("desc");
+  const [sortOrder, setSortOrder] = useState<"desc" | "asc">("desc");
 
   //for paging
   const [page, setPage] = useState(0);
@@ -185,10 +185,6 @@ function EmployeeListPage() {
         setSearchWord={setSearchWord}
         curSearchWord={curSearchWord}
         setCurSearchWord={setCurSearchWord}
-        sortKey={sortKey}
-        setSortKey={setSortKey}
-        sortOrder={sortOrder}
-        setSortOrder={setSortOrder}
         searchRequest={searchRequest}
       />
 
@@ -206,6 +202,10 @@ function EmployeeListPage() {
         setPage={setPage}
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}
+        sortKey={sortKey}
+        setSortKey={setSortKey}
+        sortOrder={sortOrder}
+        setSortOrder={setSortOrder}
       />
     </Box>
   );
