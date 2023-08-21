@@ -3,6 +3,7 @@ import { LawsuitStatus } from "../type/ResponseType.ts";
 type Category = "fixed" | "scheduled";
 
 export function delimiter(num: number): string {
+  console.log(num);
   const numStr = num.toString().split("").reverse().join("");
 
   let result = "";

@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import { CaseExpenseRowType } from "../../../../../states/case/info/expense/CaseExpenseState.tsx";
+import { CaseExpenseRowType } from "../../../../../states/case/info/expense/CaseExpensesState.tsx";
 import CaseExpenseContentsCell from "../cell/CaseExpenseContentsCell.tsx";
 import CaseExpenseSpeningAtCell from "../cell/CaseExpenseSpeningAtCell.tsx";
 import CaseExpenseAmountCell from "../cell/CaseExpenseAmountCell.tsx";

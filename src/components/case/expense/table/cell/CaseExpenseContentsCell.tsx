@@ -1,6 +1,6 @@
-import caseExpenseState, {
+import caseExpensesState, {
   CaseExpenseRowType,
-} from "../../../../../states/case/info/expense/CaseExpenseState.tsx";
+} from "../../../../../states/case/info/expense/CaseExpensesState.tsx";
 import { TextField } from "@mui/material";
 import { useRecoilState } from "recoil";
 import { produce } from "immer";
@@ -12,7 +12,7 @@ type Props = {
 };
 
 function CaseExpenseContentsCell({ item }: Props) {
-  const [expense, setExpense] = useRecoilState(caseExpenseState);
+  const [expense, setExpense] = useRecoilState(caseExpensesState);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (item.editable) {
