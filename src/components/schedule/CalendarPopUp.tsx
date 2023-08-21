@@ -14,17 +14,25 @@ import TagIcon from "@mui/icons-material/Tag";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import PersonIcon from "@mui/icons-material/Person";
 import BalanceIcon from "@mui/icons-material/Balance";
-import Box from "@mui/material/Box";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import CategoryIcon from "@mui/icons-material/Category";
+import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
+import Divider from "@mui/material/Divider";
 
 function CalendarPopUp() {
   const setCalendarPopUpOpen = useSetRecoilState(calendarPopUpOpenState);
   const info = useRecoilValue(calendarPopUpInfoState);
+  const navigate = useNavigate();
 
   const handleCloseButtonClick = () => {
     setCalendarPopUpOpen(false);
+  };
+
+  const handleToLawsuit = () => {
+    setCalendarPopUpOpen(false);
+    navigate(`/cases/${info?.lawsuit.id}?client=${info?.clients[0].id}`);
   };
 
   return (
@@ -38,18 +46,6 @@ function CalendarPopUp() {
           style={{ height: 400, overflowY: "scroll" }}
         >
           <List sx={{ display: "flex", flexDirection: "column", padding: 0 }}>
-            <Box
-              sx={{
-                background: "gray",
-                color: "white",
-                display: "flex",
-                height: 40,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              사건
-            </Box>
             <ListProfileItem
               SvgIcon={WorkHistoryIcon}
               primary="사건 상태"
@@ -101,19 +97,8 @@ function CalendarPopUp() {
               }
             />
           </List>
+          <Divider />
           <List>
-            <Box
-              sx={{
-                background: "gray",
-                color: "white",
-                display: "flex",
-                height: 40,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              접수
-            </Box>
             <ListProfileItem
               SvgIcon={WorkHistoryIcon}
               primary="상태"
@@ -133,15 +118,27 @@ function CalendarPopUp() {
             />
             <ListProfileItem
               SvgIcon={CalendarTodayIcon}
-              primary="접수일"
-              secondary={info.reception.receivedAt ?? "미정"}
-            />
-            <ListProfileItem
-              SvgIcon={CalendarTodayIcon}
               primary="마감일"
               secondary={info.reception.deadline ?? "미정"}
             />
+            <ListProfileItem
+              SvgIcon={CalendarTodayIcon}
+              primary="완료일"
+              secondary={info.reception.receivedAt ?? "미정"}
+            />
           </List>
+          <Button
+            sx={{
+              borderTopLeftRadius: 0,
+              borderTopRightRadius: 0,
+              height: "46.6667px",
+            }}
+            variant="contained"
+            fullWidth
+            onClick={handleToLawsuit}
+          >
+            사건으로
+          </Button>
         </div>
       ) : null}
     </PopUp>
