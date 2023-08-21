@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import userState from "../../states/common/UserState";
+import isLoginState from "../../states/common/IsLoginState";
 import clientRegisterPopUpState from "../../states/layout/ClientRegisterPopUpOpenState";
 import ClientRegisterPopUp from "../client/ClientRegisterPopUp.tsx";
 import Debug from "./Debug";
@@ -14,15 +14,15 @@ import clientRemovePopUpOpenState from "../../states/client/ClientRemovePopUpOpe
 
 function Layout() {
   const clientRegisterPopUp = useRecoilValue(clientRegisterPopUpState);
-  const user = useRecoilValue(userState);
+  const isLogin = useRecoilValue(isLoginState);
   const navigate = useNavigate();
   const clientRemovePopUpOpen = useRecoilValue(clientRemovePopUpOpenState);
 
   useEffect(() => {
-    if (!user) {
+    if (!isLogin) {
       navigate("login");
     }
-  }, [user]);
+  }, [isLogin]);
 
   return (
     <>

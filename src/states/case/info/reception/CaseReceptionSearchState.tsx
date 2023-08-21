@@ -43,34 +43,34 @@ export const caseReceptionSearchUrlState = selector({
 
     let startReceivedAtValue = null;
     if (startReceivedAt) {
-      startReceivedAtValue = `${startReceivedAt.year()}-${
-        startReceivedAt.month() + 1
-      }-${startReceivedAt.date()}`;
+      startReceivedAtValue = `${startReceivedAt.year()}-${String(
+        startReceivedAt.month() + 1,
+      ).padStart(2, "0")}-${String(startReceivedAt.date()).padStart(2, "0")}`;
     }
 
     let endReceivedAtValue = null;
     if (endReceivedAt) {
-      endReceivedAtValue = `${endReceivedAt.year()}-${
-        endReceivedAt.month() + 1
-      }-${endReceivedAt.date()}`;
+      endReceivedAtValue = `${endReceivedAt.year()}-${String(
+        endReceivedAt.month() + 1,
+      ).padStart(2, "0")}-${String(endReceivedAt.date()).padStart(2, "0")}`;
     }
 
     let startDeadlineValue = null;
     if (startDeadline) {
-      startDeadlineValue = `${startDeadline.year()}-${
-        startDeadline.month() + 1
-      }-${startDeadline.date()}`;
+      startDeadlineValue = `${startDeadline.year()}-${String(
+        startDeadline.month() + 1,
+      ).padStart(2, "0")}-${String(startDeadline.date()).padStart(2, "0")}`;
     }
 
     let endDeadlineValue = null;
     if (endDeadLine) {
-      endDeadlineValue = `${endDeadLine.year()}-${
-        endDeadLine.month() + 1
-      }-${endDeadLine.date()}`;
+      endDeadlineValue = `${endDeadLine.year()}-${String(
+        endDeadLine.month() + 1,
+      ).padStart(2, "0")}-${String(endDeadLine.date()).padStart(2, "0")}`;
     }
 
     return decodeURIComponent(
-      `/receptions?lawsuit=${caseId}&page=${page}&status=${status}&category=${category}${
+      `/receptions?lawsuit=${caseId}&page=${page}&count=5&status=${status}&category=${category}${
         contents !== "" ? `&contents=${contents}` : ""
       }${
         startReceivedAt !== null

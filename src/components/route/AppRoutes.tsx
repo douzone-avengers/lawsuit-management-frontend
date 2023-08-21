@@ -25,7 +25,10 @@ import EmployeePrivatePage from "../employee/private/EmployeePrivatePage";
 import employeeButtonIdState from "../../states/employee/EmployeeButtonIdState";
 import EmployeeListPage from "../employee/list/EmployeesListPage";
 import employeeIdState from "../../states/employee/EmployeeIdState";
-import EmployeeCasePage from "../employee/case/EmployeeCasePage";
+import EmployeeCasePage from "../employee/case/list/EmployeeCasePage";
+import caseTabIdState from "../../states/case/CaseTabIdState.tsx";
+import ValidatePage from "../join/ValidatePage";
+import SchedulePage from "../schedule/SchedulePage.tsx";
 
 function AppRoutes() {
   const location = useLocation();
@@ -38,9 +41,9 @@ function AppRoutes() {
   );
   const setSubNavigationBarType = useSetRecoilState(subNavigationBarTypeState);
   const setCaseButtonId = useSetRecoilState(caseButtonIdState);
-
   const setEmployeeButtonId = useSetRecoilState(employeeButtonIdState);
   const setEmployeeId = useSetRecoilState(employeeIdState);
+  const setCaseTabId = useSetRecoilState(caseTabIdState);
 
   useEffect(() => {
     const { pathname, search } = location;
@@ -57,6 +60,9 @@ function AppRoutes() {
       }
     }
     const length = paths.length - 1;
+
+    // *
+    setCaseTabId(0);
 
     // /
     if (length === 1 && paths[1] === "") {
@@ -207,8 +213,27 @@ function AppRoutes() {
       return;
     }
 
+    // /schedule
+    if (length === 1 && paths[1] === "schedule") {
+      setClientId(null);
+      setCaseId(null);
+      setEmployeeId(null);
+      setSubNavigationBarType("none");
+      setMainNavigationBar({
+        ...mainNavigationBar,
+        curId: -1,
+      });
+      return;
+    }
+
     // /login
     if (length === 1 && paths[1] === "login") {
+      cleanUp();
+      return;
+    }
+
+    // /validate
+    if (length === 1 && paths[1] === "validate") {
       cleanUp();
       return;
     }
@@ -278,9 +303,12 @@ function AppRoutes() {
           <Route path=":employeeId" element={<EmployeeDetailPage />} />
           <Route path=":employeeId/cases" element={<EmployeeCasePage />} />
         </Route>
+        <Route path="schedule" element={<SchedulePage />} />
       </Route>
       {/* /login */}
       <Route path="login" element={<LoginPage />} />
+      {/* /validate */}
+      <Route path="validate" element={<ValidatePage />} />
       {/* /join */}
       <Route path="join" element={<JoinPage />} />
       <Route path="*" element={<NotFoundPage />} />

@@ -3,15 +3,17 @@ import caseIdState from "../../../../../states/case/CaseIdState.tsx";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { caseExpenseSearchUrlState } from "../../../../../states/case/info/expense/CaseExpenseSearchState.tsx";
 import caseExpenseAddPopUpOpenState from "../../../../../states/case/info/expense/CaseExpenseAddPopUpOpenState.tsx";
-import caseExpenseState, {
+import caseExpensesState, {
   CaseExpenseRowType,
-} from "../../../../../states/case/info/expense/CaseExpenseState.tsx";
+} from "../../../../../states/case/info/expense/CaseExpensesState.tsx";
 import caseExpenseSizeState from "../../../../../states/case/info/expense/CaseExpenseSizeState.tsx";
+import * as dayjs from "dayjs";
 import { Dayjs } from "dayjs";
-import request, { RequestSuccessHandler } from "../../../../../lib/request.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../../../../lib/requestDeprecated.ts";
 import PopUp from "../../../../common/PopUp.tsx";
 import CloseButton from "../../../../common/CloseButton.tsx";
-import * as dayjs from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers";
 import { Button, TextField, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -28,7 +30,7 @@ function CaseExpenseAddPopUp() {
   const setExpenseAddPopUpOpen = useSetRecoilState(
     caseExpenseAddPopUpOpenState,
   );
-  const setExpense = useSetRecoilState(caseExpenseState);
+  const setExpenses = useSetRecoilState(caseExpensesState);
   const setSize = useSetRecoilState(caseExpenseSizeState);
 
   const handleCloseButtonClick = () => {
@@ -37,7 +39,6 @@ function CaseExpenseAddPopUp() {
 
   const handleSpeningAtChange = (e: Dayjs | null) => {
     setSpeningAt(e?.toDate().toISOString() ?? "");
-    console.log("PopUp_speningAt = " + speningAt);
   };
 
   const handleContentsChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -52,11 +53,11 @@ function CaseExpenseAddPopUp() {
     const handleRequestSuccess: RequestSuccessHandler = () => {
       const handleRequestSuccess2: RequestSuccessHandler = (res) => {
         const {
-          expense,
+          expenses,
           size,
-        }: { expense: CaseExpenseRowType[]; size: number } = res.data["data"];
-        setExpense(
-          expense.map((item) => {
+        }: { expenses: CaseExpenseRowType[]; size: number } = res.data;
+        setExpenses(
+          expenses.map((item) => {
             return { ...item, editable: false };
           }),
         );
@@ -64,13 +65,13 @@ function CaseExpenseAddPopUp() {
         setExpenseAddPopUpOpen(false);
       };
 
-      request("GET", url, {
+      requestDeprecated("GET", url, {
         onSuccess: handleRequestSuccess2,
+        useMock: false,
       });
     };
 
-    console.log("speningAt = " + speningAt);
-    request("POST", `/expense`, {
+    requestDeprecated("POST", `/expense`, {
       body: {
         lawsuitId: caseId,
         speningAt,
@@ -78,6 +79,7 @@ function CaseExpenseAddPopUp() {
         amount,
       },
       onSuccess: handleRequestSuccess,
+      useMock: false,
     });
   };
 

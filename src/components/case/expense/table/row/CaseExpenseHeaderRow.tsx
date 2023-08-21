@@ -1,8 +1,7 @@
 import { useSetRecoilState } from "recoil";
 import caseExpenseAddPopUpOpenState from "../../../../../states/case/info/expense/CaseExpenseAddPopUpOpenState.tsx";
 import Box from "@mui/material/Box";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import IconButton from "@mui/material/IconButton";
+import { Button } from "@mui/material";
 
 function CaseExpenseHeaderRow() {
   const setExpenseAddPopUpOpen = useSetRecoilState(
@@ -14,58 +13,63 @@ function CaseExpenseHeaderRow() {
   };
 
   return (
-    <Box sx={{ display: "flex", background: "#2196f3", color: "white" }}>
+    <Box
+      sx={{
+        display: "flex",
+        background: "#2196f3",
+        color: "white",
+        width: "100%",
+      }}
+    >
       <Box
         sx={{
-          width: "100%",
+          width: "15%",
           height: 40,
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
         }}
       >
-        <Box>
-          <b>날짜</b>
-        </Box>
+        <b>지출일</b>
       </Box>
       <Box
         sx={{
-          width: "100%",
+          width: "55%",
           height: 40,
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
         }}
       >
-        <Box>
-          <b>내용</b>
-        </Box>
+        <b>내용</b>
       </Box>
       <Box
         sx={{
-          width: "100%",
+          width: "15%",
           height: 40,
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
         }}
       >
-        <Box>
-          <b>금액</b>
-        </Box>
+        <b>금액</b>
       </Box>
       <Box
         sx={{
-          width: "100%",
+          width: "20%",
           height: 40,
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
         }}
       >
-        <IconButton onClick={handleExpenseAddButtonClick}>
-          <AddCircleIcon color="primary" />
-        </IconButton>
+        <Button
+          variant="contained"
+          sx={{ width: "73%", color: "secondary" }}
+          onClick={handleExpenseAddButtonClick}
+        >
+          등록
+        </Button>
       </Box>
     </Box>
   );

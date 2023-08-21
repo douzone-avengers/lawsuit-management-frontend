@@ -1,10 +1,20 @@
 import { atom } from "recoil";
-import { LawsuitData } from "../../../mock/lawsuit/lawsuitTable.ts";
 
 type PersonInfo = { id: number; name: string; email: string };
 
+type LawsuitType = {
+  lawsuitId: number;
+  lawsuitNum: string;
+  lawsuitName: string;
+  lawsuitType: string;
+  lawsuitCommissionFee: number;
+  lawsuitContingentFee: number;
+  lawsuitStatus: string;
+  courtName: string;
+};
+
 export type CaseInfoType = {
-  lawsuit: LawsuitData;
+  lawsuit: LawsuitType;
   employees: PersonInfo[];
   clients: PersonInfo[];
 };

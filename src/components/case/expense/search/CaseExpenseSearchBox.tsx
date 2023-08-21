@@ -10,14 +10,16 @@ import caseExpenseSearchState, {
   caseExpenseSearchUrlState,
 } from "../../../../states/case/info/expense/CaseExpenseSearchState.tsx";
 import caseExpenseSizeState from "../../../../states/case/info/expense/CaseExpenseSizeState.tsx";
-import caseExpenseState, {
+import caseExpensesState, {
   CaseExpenseRowType,
-} from "../../../../states/case/info/expense/CaseExpenseState.tsx";
+} from "../../../../states/case/info/expense/CaseExpensesState.tsx";
 import caseIdState from "../../../../states/case/CaseIdState.tsx";
-import request, { RequestSuccessHandler } from "../../../../lib/request.ts";
-import { updateUrl } from "../../info/reception/table/CaseReceptionTable.tsx";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../../../lib/requestDeprecated.ts";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import IconButton from "@mui/material/IconButton";
+import { updateUrl } from "../../reception/table/CaseReceptionTable.tsx";
 
 function CaseExpenseSearchBox() {
   const [expenseSearch, setExpenseSearch] = useRecoilState(
@@ -28,10 +30,8 @@ function CaseExpenseSearchBox() {
   const setSize = useSetRecoilState(caseExpenseSizeState);
 
   const caseId = useRecoilValue(caseIdState);
-  const setCaseExpense = useSetRecoilState(caseExpenseState);
+  const setCaseExpenses = useSetRecoilState(caseExpensesState);
   const [selectedStartDate, setSelectedStartDate] = useState<string>("");
-  // const [startValue, setStartValue] = useState<string>("");
-  // const [endValue, setEndValue] = useState<string>("");
 
   const handleStartSpeningAt = (start: any) => {
     setSelectedStartDate(start);
@@ -102,10 +102,12 @@ function CaseExpenseSearchBox() {
     }
 
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      const { expense, size }: { expense: CaseExpenseRowType[]; size: number } =
-        res.data["data"];
-      setCaseExpense(
-        expense.map((item) => {
+      const {
+        expenses,
+        size,
+      }: { expenses: CaseExpenseRowType[]; size: number } = res.data;
+      setCaseExpenses(
+        expenses.map((item) => {
           return { ...item, editable: false };
         }),
       );
@@ -115,8 +117,9 @@ function CaseExpenseSearchBox() {
 
     // updateUrl은 CaseReceptionTable에 있는 updateUrl
     const newUrl = updateUrl(url, 0);
-    request("GET", newUrl, {
+    requestDeprecated("GET", newUrl, {
       onSuccess: handleRequestSuccess,
+      useMock: false,
     });
   };
 

@@ -4,13 +4,15 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
-import request, { RequestSuccessHandler } from "../../lib/request.ts";
-import { ClientData } from "../../mock/client/clientTable.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../lib/requestDeprecated.ts";
 import clientIdState from "../../states/client/ClientIdState.tsx";
 import Button from "@mui/material/Button";
-import { LocationOn, PhoneIphone, Email } from "@mui/icons-material";
+import { Email, LocationOn, PhoneIphone } from "@mui/icons-material";
 import ClientRemovePopUpButton from "./ClientRemovePopUpButton.tsx";
 import { SvgIcon } from "@mui/material";
+import { ClientData } from "../../type/ResponseType.ts";
 
 type Props = {
   width?: string | number;
@@ -32,16 +34,16 @@ function ClientInfoCard({ width, height }: Props) {
     }
 
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      const body: { data: ClientData } = res.data;
-      const { data } = body;
-      const { name, email, phone, address } = data;
-      setName(name);
-      setPhone(phone);
-      setEmail(email);
-      setAddress(address);
+      const clientData: ClientData = res.data;
+      setName(clientData.name);
+      setPhone(clientData.phone);
+      setEmail(clientData.email);
+      setAddress(clientData.address);
     };
 
-    request("GET", `/clients/${clientId}`, {
+    requestDeprecated("GET", `/clients/${clientId}`, {
+      useMock: false,
+      withToken: true,
       onSuccess: handleRequestSuccess,
     });
   }, [clientId]);

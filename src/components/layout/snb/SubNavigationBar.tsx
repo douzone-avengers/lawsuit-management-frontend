@@ -4,9 +4,6 @@ import { Box } from "@mui/material";
 import List from "@mui/material/List";
 import { useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import request, { RequestSuccessHandler } from "../../../lib/request.ts";
-import { ClientData } from "../../../mock/client/clientTable.ts";
-import { LawsuitData } from "../../../mock/lawsuit/lawsuitTable.ts";
 import caseIdState from "../../../states/case/CaseIdState.tsx";
 import clientIdState from "../../../states/client/ClientIdState.tsx";
 import subNavigationBarState from "../../../states/layout/SubNavigationBarState.tsx";
@@ -15,12 +12,16 @@ import SubNavigationBarItem, {
   SubNavigationBarItemState,
 } from "./SubNavigationBarItem.tsx";
 import ClientRegisterPopUpButton from "../../client/ClientRegisterPopUpButton.tsx";
-import { MemberInfo } from "../../../mock/member/memberHandlers";
 import employeeIdState from "../../../states/employee/EmployeeIdState";
 import employeeButtonIdState from "../../../states/employee/EmployeeButtonIdState";
+import { MemberInfo, Role } from "../../employee/type/MemberInfo";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../../lib/requestDeprecated";
+import { ClientData } from "../../../type/ResponseType";
 
 function SubNavigationBar() {
-  const memberId = useRecoilValue(clientIdState);
+  const clientId = useRecoilValue(clientIdState);
   const caseId = useRecoilValue(caseIdState);
   const employeeId = useRecoilValue(employeeIdState);
   const [subNavigationBar, setSubNavigationBar] = useRecoilState(
@@ -32,8 +33,8 @@ function SubNavigationBar() {
   useEffect(() => {
     if (subNavigationBarType === "client") {
       const handleRequestSuccess: RequestSuccessHandler = (res) => {
-        const body: { data: ClientData[] } = res.data;
-        const newItems: SubNavigationBarItemState[] = body.data.map((item) => {
+        const body: ClientData[] = res.data;
+        const newItems: SubNavigationBarItemState[] = body.map((item) => {
           return {
             id: item.id,
             text: item.name,
@@ -43,13 +44,15 @@ function SubNavigationBar() {
         });
         setSubNavigationBar({ ...subNavigationBar, items: newItems });
       };
-      request("GET", "/clients", {
+      requestDeprecated("GET", "/clients", {
+        useMock: false,
+        withToken: true,
         onSuccess: handleRequestSuccess,
       });
     } else if (subNavigationBarType === "caseClient") {
       const handleRequestSuccess: RequestSuccessHandler = (res) => {
-        const body: { data: ClientData[] } = res.data;
-        const newItems: SubNavigationBarItemState[] = body.data.map((item) => {
+        const body: { id: number; name: string }[] = res.data;
+        const newItems: SubNavigationBarItemState[] = body.map((item) => {
           return {
             id: item.id,
             text: item.name,
@@ -59,44 +62,71 @@ function SubNavigationBar() {
         });
         setSubNavigationBar({ ...subNavigationBar, items: newItems });
       };
-      request("GET", "/clients", {
+      requestDeprecated("GET", "/clients", {
         onSuccess: handleRequestSuccess,
+        useMock: false,
       });
     } else if (subNavigationBarType === "case") {
       const handleRequestSuccess: RequestSuccessHandler = (res) => {
-        const body: { data: LawsuitData[] } = res.data;
-        const newItems: SubNavigationBarItemState[] = body.data.map((item) => {
-          return {
-            id: item.id,
-            text: item.name,
-            subText: item.lawsuitNum,
-            url: `cases/${item.id}?client=${memberId}`,
-            SvgIcon: BalanceIcon,
-          };
-        });
+        const body: {
+          lawsuitList: { id: number; name: string; lawsuitNum: string }[];
+          pageRange: { startPage: number; endPage: number };
+        } = res.data;
+
+        const newItems: SubNavigationBarItemState[] = body.lawsuitList.map(
+          (item) => {
+            return {
+              id: item.id,
+              text: item.name,
+              subText: item.lawsuitNum,
+              url: `cases/${item.id}?client=${clientId}`,
+              SvgIcon: BalanceIcon,
+            };
+          },
+        );
         setSubNavigationBar({ ...subNavigationBar, items: newItems });
       };
-      request("GET", `/lawsuits/members/${memberId}`, {
-        onSuccess: handleRequestSuccess,
-      });
+      requestDeprecated(
+        "GET",
+        `/lawsuits/clients/${clientId}?curPage=1&rowsPerPage=5&searchWord=`,
+        {
+          onSuccess: handleRequestSuccess,
+          useMock: false,
+        },
+      );
     } else if (subNavigationBarType === "employee") {
       const handleRequestSuccess: RequestSuccessHandler = (res) => {
-        const body: { data: MemberInfo[] } = res.data;
-        const newItems: SubNavigationBarItemState[] = body.data.map((item) => {
-          return {
-            id: item.id,
-            text: item.name,
-            subText: item.role,
-            url:
-              employeeButton === 2
-                ? `employees/${item.id}`
-                : `employees/${item.id}/cases`,
-            SvgIcon: BalanceIcon,
-          };
+        const memberInfos: MemberInfo[] = res.data.memberDtoNonPassList;
+
+        const handleRoleRequestSuccess: RequestSuccessHandler = (res) => {
+          const roleList: Role[] = res.data;
+
+          const newItems: SubNavigationBarItemState[] = memberInfos.map(
+            (item) => {
+              return {
+                id: item.id,
+                text: item.name,
+                subText: roleList.filter((it) => it.id == item.roleId)[0]
+                  .nameKr,
+                url:
+                  employeeButton === 2
+                    ? `employees/${item.id}`
+                    : `employees/${item.id}/cases`,
+                SvgIcon: BalanceIcon,
+              };
+            },
+          );
+          setSubNavigationBar({ ...subNavigationBar, items: newItems });
+        };
+        requestDeprecated("GET", `/role`, {
+          useMock: false,
+          withToken: false,
+          onSuccess: handleRoleRequestSuccess,
         });
-        setSubNavigationBar({ ...subNavigationBar, items: newItems });
       };
-      request("GET", `/members?role=ADMIN,EMPLOYEE`, {
+      requestDeprecated("GET", `/members/employees`, {
+        useMock: false,
+        withToken: true,
         onSuccess: handleRequestSuccess,
       });
     }
@@ -118,7 +148,7 @@ function SubNavigationBar() {
             selected={
               (subNavigationBarType === "client" ||
                 subNavigationBarType === "caseClient") &&
-              memberId === item.id
+              clientId === item.id
                 ? true
                 : subNavigationBarType === "case" && caseId === item.id
                 ? true

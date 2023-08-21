@@ -1,7 +1,7 @@
 import { Dayjs } from "dayjs";
 import { atom, selector } from "recoil";
 import caseIdState from "../../CaseIdState.tsx";
-import caseReceptionPageState from "../reception/CaseReceptionPageState.tsx";
+import caseExpensePageState from "./CaseExpensePageState.tsx";
 
 type CaseExpenseSearchStateType = {
   contents: string;
@@ -26,26 +26,27 @@ export const caseExpenseSearchUrlState = selector({
   key: "caseExpenseSearchUrlState",
   get: ({ get }) => {
     const caseId = get(caseIdState);
-    const page = get(caseReceptionPageState);
+    const page = get(caseExpensePageState);
     const { contents, startSpeningAt, endSpeningAt, startAmount, endAmount } =
       get(caseExpenseSearchState);
 
     let startSpeningAtValue = null;
     if (startSpeningAt) {
-      startSpeningAtValue = `${startSpeningAt.year()}-${
-        startSpeningAt.month() + 1
-      }-${startSpeningAt.date()}`;
+      startSpeningAtValue = `${startSpeningAt.year()}-${String(
+        startSpeningAt.month() + 1,
+      ).padStart(2, "0")}-${String(startSpeningAt.date()).padStart(2, "0")}`;
     }
 
     let endSpeningAtValue = null;
     if (endSpeningAt) {
-      endSpeningAtValue = `${endSpeningAt.year()}-${
-        endSpeningAt.month() + 1
-      }-${endSpeningAt.date()}`;
+      endSpeningAtValue = `${endSpeningAt.year()}-${String(
+        endSpeningAt.month() + 1,
+      ).padStart(2, "0")}-${String(endSpeningAt.date()).padStart(2, "0")}`;
     }
 
+    // /expenses?lawsuit=${caseId}&page=${page}&start-amount=0
     return decodeURIComponent(
-      `/expense?lawsuit=${caseId}&page=${page}&${
+      `/expenses?lawsuit=${caseId}&page=${page}${
         contents !== "" ? `&contents=${contents}` : ""
       }${
         startSpeningAt !== null

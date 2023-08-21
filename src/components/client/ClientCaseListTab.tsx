@@ -1,32 +1,79 @@
 import Box from "@mui/material/Box";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import request, { RequestSuccessHandler } from "../../lib/request";
-import { LawsuitData } from "../../mock/lawsuit/lawsuitTable";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../lib/requestDeprecated.ts";
 import clientIdState from "../../states/client/ClientIdState";
 import CaseListTable from "../case/CaseListTable.tsx";
+import { LawsuitInfo } from "../case/type/LawsuitInfo.tsx";
 
 function ClientCaseListTab() {
-  const memberId = useRecoilValue(clientIdState);
+  const clientId = useRecoilValue(clientIdState);
   const navigate = useNavigate();
-  const [cases, setCases] = useState<LawsuitData[]>([]);
+  const [cases, setCases] = useState<LawsuitInfo[]>([]);
+
+  //for paging
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [count, setCount] = useState(0);
+
+  const prevDependencies = useRef({
+    rowsPerPage,
+    page,
+  });
 
   useEffect(() => {
-    if (typeof memberId !== "number") {
+    if (typeof clientId !== "number") {
       // TODO
       return;
     }
-    const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      const body: { data: LawsuitData[] } = res.data;
-      const { data } = body;
-      setCases(data);
+
+    prevDependencies.current = {
+      rowsPerPage,
+      page,
     };
 
-    request("GET", `/lawsuits/members/${memberId}`, {
+    const handleRequestSuccess: RequestSuccessHandler = (res) => {
+      function mapLawsuitStatus(status: string) {
+        switch (status) {
+          case "REGISTRATION":
+            return "등록";
+          case "PROCEEDING":
+            return "진행";
+          case "CLOSING":
+            return "종결";
+          default:
+            return status;
+        }
+      }
+
+      const lawsuitData: {
+        lawsuitList: LawsuitInfo[];
+        count: number;
+      } = res.data;
+
+      const mappedLawsuitList = lawsuitData.lawsuitList.map((item) => ({
+        ...item,
+        lawsuitStatus: mapLawsuitStatus(item.lawsuitStatus),
+      }));
+
+      setCases(mappedLawsuitList);
+      setCount(lawsuitData.count);
+    };
+
+    requestDeprecated("GET", `/lawsuits/clients/${clientId}`, {
+      useMock: false,
+      withToken: true,
+      params: {
+        curPage: (page + 1).toString(),
+        rowsPerPage: rowsPerPage.toString(),
+        searchWord: "",
+      },
       onSuccess: handleRequestSuccess,
     });
-  }, [memberId]);
+  }, [clientId, rowsPerPage, page]);
 
   return (
     <Box>
@@ -34,9 +81,14 @@ function ClientCaseListTab() {
         cases={cases.map((item) => ({
           ...item,
           onClick: () => {
-            navigate(`/cases/${item.id}?client=${memberId}`);
+            navigate(`/cases/${item.id}?client=${clientId}`);
           },
         }))}
+        count={count}
+        page={page}
+        setPage={setPage}
+        rowsPerPage={rowsPerPage}
+        setRowsPerPage={setRowsPerPage}
       />
     </Box>
   );

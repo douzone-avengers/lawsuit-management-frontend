@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import { CaseExpenseRowType } from "../../../../../states/case/info/expense/CaseExpenseState.tsx";
+import { CaseExpenseRowType } from "../../../../../states/case/info/expense/CaseExpensesState.tsx";
 import CaseExpenseContentsCell from "../cell/CaseExpenseContentsCell.tsx";
 import CaseExpenseSpeningAtCell from "../cell/CaseExpenseSpeningAtCell.tsx";
 import CaseExpenseAmountCell from "../cell/CaseExpenseAmountCell.tsx";
@@ -13,19 +13,19 @@ type Props = {
 
 function CaseExpenseDataRow({ item }: Props) {
   return (
-    <Box sx={{ display: "flex", width: "100%" }}>
-      <Box sx={{ width: "25%" }}>
+    <Box sx={{ display: "flex", width: "100%", justifyContent: "center" }}>
+      <Box sx={{ width: "15%" }}>
         <CaseExpenseSpeningAtCell item={item} />
       </Box>
-      <Box sx={{ width: "25%" }}>
+      <Box sx={{ width: "55%" }}>
         <CaseExpenseContentsCell item={item} />
       </Box>
-      <Box sx={{ width: "25%" }}>
+      <Box sx={{ width: "15%" }}>
         <CaseExpenseAmountCell item={item} />
       </Box>
       <Box
         sx={{
-          width: "12.5%",
+          width: "20%",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -36,15 +36,6 @@ function CaseExpenseDataRow({ item }: Props) {
         ) : (
           <CaseExpenseEditButton item={item} />
         )}
-      </Box>
-      <Box
-        sx={{
-          width: "12.5%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
         <CaseExpenseDeleteButton item={item} />
       </Box>
     </Box>

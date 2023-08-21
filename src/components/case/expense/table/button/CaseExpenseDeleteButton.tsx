@@ -1,19 +1,21 @@
-import caseExpenseState, {
+import caseExpensesState, {
   CaseExpenseRowType,
-} from "../../../../../states/case/info/expense/CaseExpenseState.tsx";
+} from "../../../../../states/case/info/expense/CaseExpensesState.tsx";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import caseExpenseSizeState from "../../../../../states/case/info/expense/CaseExpenseSizeState.tsx";
 import { caseExpenseSearchUrlState } from "../../../../../states/case/info/expense/CaseExpenseSearchState.tsx";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Button } from "@mui/material";
-import request, { RequestSuccessHandler } from "../../../../../lib/request.ts";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../../../../lib/requestDeprecated.ts";
 
 type Props = {
   item: CaseExpenseRowType & { editable: boolean };
 };
 
 function CaseExpenseDeleteButton({ item }: Props) {
-  const setExpense = useSetRecoilState(caseExpenseState);
+  const setExpenses = useSetRecoilState(caseExpensesState);
   const setSize = useSetRecoilState(caseExpenseSizeState);
   const url = useRecoilValue(caseExpenseSearchUrlState);
 
@@ -21,22 +23,26 @@ function CaseExpenseDeleteButton({ item }: Props) {
     const handleRequestSuccess: RequestSuccessHandler = () => {
       const handleRequestSuccess2: RequestSuccessHandler = (res) => {
         const {
-          expense,
+          expenses,
           size,
-        }: { expense: CaseExpenseRowType[]; size: number } = res.data["data"];
-        setExpense(
-          expense.map((item) => {
+        }: { expenses: CaseExpenseRowType[]; size: number } = res.data;
+        setExpenses(
+          expenses.map((item) => {
             return { ...item, editable: false };
           }),
         );
         setSize(size);
       };
-      request("GET", url, {
+
+      requestDeprecated("GET", url, {
         onSuccess: handleRequestSuccess2,
+        useMock: false,
       });
     };
-    request("PUT", `/expense/delete/${item.id}`, {
+
+    requestDeprecated("PUT", `/expenses/delete/${item.id}`, {
       onSuccess: handleRequestSuccess,
+      useMock: false,
     });
   };
 
@@ -45,7 +51,6 @@ function CaseExpenseDeleteButton({ item }: Props) {
       sx={{ marginLeft: 1, marginRight: 1 }}
       size="small"
       variant="outlined"
-      fullWidth
       onClick={handleClick}
     >
       <DeleteIcon />

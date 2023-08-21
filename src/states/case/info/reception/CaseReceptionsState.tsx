@@ -2,8 +2,8 @@ import { atom } from "recoil";
 
 export type CaseReceptionRowType = {
   id: number;
-  isDone: boolean;
-  receptionType: string;
+  status: boolean;
+  category: string;
   contents: string;
   receivedAt: string;
   deadline: string;
