@@ -25,7 +25,7 @@ import EmployeePrivatePage from "../employee/private/EmployeePrivatePage";
 import employeeButtonIdState from "../../states/employee/EmployeeButtonIdState";
 import EmployeeListPage from "../employee/list/EmployeesListPage";
 import employeeIdState from "../../states/employee/EmployeeIdState";
-import EmployeeCasePage from "../employee/case/EmployeeCasePage";
+import EmployeeCasePage from "../employee/case/list/EmployeeCasePage";
 import caseTabIdState from "../../states/case/CaseTabIdState.tsx";
 import ValidatePage from "../join/ValidatePage";
 import SchedulePage from "../schedule/SchedulePage.tsx";

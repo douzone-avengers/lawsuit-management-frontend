@@ -52,24 +52,18 @@ function EmployeeListSearchBox({
     }
   }, [triggerSearch]);
   return (
-    <Card sx={{ marginBottom: 3, marginTop: 2 }}>
-      <CardTitle text="검색 조건" />
-      <Box
-        sx={{
-          display: "flex",
-          gap: 2,
-          alignItems: "center",
-          justifyContent: "right",
-          padding: 2,
-          marginTop: 2,
-          marginBottom: 1,
-        }}
-      >
+    <Box sx={{ display: "flex", gap: 3, width: "100%" }}>
+      <Card sx={{ marginBottom: 1, marginTop: 1, flexGrow: 1 }}>
+        <CardTitle text="필터링" />
         <Box
           sx={{
             display: "flex",
-            gap: 1,
+            gap: 2,
             alignItems: "center",
+            justifyContent: "center",
+            padding: 1,
+            marginTop: 1,
+            marginBottom: 1,
           }}
         >
           <FormControl size="small" sx={{ width: 100 }}>
@@ -152,26 +146,41 @@ function EmployeeListSearchBox({
             </Select>
           </FormControl>
         </Box>
-        <Box sx={{ display: "flex", gap: 1, flexGrow: 1 }}>
-          <TextField
-            sx={{ flexGrow: 1 }}
-            placeholder="이름, 전화번호, email 검색"
-            size="small"
-            value={curSearchWord}
-            onChange={(e) => setCurSearchWord(e.target.value)}
-          />
-          <Button
-            variant="contained"
-            onClick={() => {
-              setSearchWord(curSearchWord);
-              setTriggerSearch(true);
-            }}
-          >
-            검색
-          </Button>
+      </Card>
+      <Card sx={{ marginBottom: 1, marginTop: 1, flexGrow: 15 }}>
+        <CardTitle text="검색" />
+        <Box
+          sx={{
+            display: "flex",
+            gap: 2,
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 1,
+            marginTop: 1,
+            marginBottom: 1,
+          }}
+        >
+          <Box sx={{ display: "flex", gap: 1, flexGrow: 1 }}>
+            <TextField
+              sx={{ flexGrow: 1 }}
+              placeholder="이름, 전화번호, email 검색"
+              size="small"
+              value={curSearchWord}
+              onChange={(e) => setCurSearchWord(e.target.value)}
+            />
+            <Button
+              variant="contained"
+              onClick={() => {
+                setSearchWord(curSearchWord);
+                setTriggerSearch(true);
+              }}
+            >
+              검색
+            </Button>
+          </Box>
         </Box>
-      </Box>
-    </Card>
+      </Card>
+    </Box>
   );
 }
 
