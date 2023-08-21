@@ -6,24 +6,25 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import requestDeprecated, {
   RequestSuccessHandler,
 } from "../../../../lib/requestDeprecated.ts";
-import caseExpenseState, {
+import caseExpensesState, {
   CaseExpenseRowType,
-} from "../../../../states/case/info/expense/CaseExpenseState.tsx";
-import caseReceptionPageState from "../../../../states/case/info/reception/CaseReceptionPageState.tsx";
-import caseReceptionSizeState from "../../../../states/case/info/reception/CaseReceptionSizeState.tsx";
+} from "../../../../states/case/info/expense/CaseExpensesState.tsx";
 import { caseExpenseSearchUrlState } from "../../../../states/case/info/expense/CaseExpenseSearchState.tsx";
 import CaseExpenseHeaderRow from "./row/CaseExpenseHeaderRow.tsx";
 import CaseExpenseDataRow from "./row/CaseExpenseDataRow.tsx";
 import { updateUrl } from "../../reception/table/CaseReceptionTable.tsx";
+import caseExpenseSizeState from "../../../../states/case/info/expense/CaseExpenseSizeState.tsx";
+import caseExpensePageState from "../../../../states/case/info/expense/CaseExpensePageState.tsx";
 
 function CaseExpenseTable() {
   const theme = useTheme();
   const caseId = useRecoilValue(caseIdState);
-  const [expense, setExpense] = useRecoilState(caseExpenseState);
-  const [page, setPage] = useRecoilState(caseReceptionPageState);
-  const [size, setSize] = useRecoilState(caseReceptionSizeState);
+  const [expenses, setExpenses] = useRecoilState(caseExpensesState);
+  const [page, setPage] = useRecoilState(caseExpensePageState);
+  const [size, setSize] = useRecoilState(caseExpenseSizeState);
 
   const url = useRecoilValue(caseExpenseSearchUrlState);
+  const isNextDisabled = (page + 1) * 5 >= size;
 
   useEffect(() => {
     if (caseId === null) {
@@ -31,11 +32,13 @@ function CaseExpenseTable() {
     }
 
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      const { expense, size }: { expense: CaseExpenseRowType[]; size: number } =
-        res.data["data"];
+      const {
+        expenses,
+        size,
+      }: { expenses: CaseExpenseRowType[]; size: number } = res.data;
 
-      setExpense(
-        expense.map((item) => {
+      setExpenses(
+        expenses.map((item) => {
           return { ...item, editable: false };
         }),
       );
@@ -44,6 +47,7 @@ function CaseExpenseTable() {
 
     requestDeprecated("GET", url, {
       onSuccess: handleRequestSuccess,
+      useMock: false,
     });
   }, [caseId]);
 
@@ -53,7 +57,7 @@ function CaseExpenseTable() {
       <Divider />
       <CaseExpenseHeaderRow />
       <Divider />
-      {expense.map((item) => (
+      {expenses.map((item) => (
         <CaseExpenseDataRow key={item.id} item={item} />
       ))}
       <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
@@ -72,12 +76,11 @@ function CaseExpenseTable() {
 
               const handleRequestSuccess: RequestSuccessHandler = (res) => {
                 const {
-                  expense,
+                  expenses,
                   size,
-                }: { expense: CaseExpenseRowType[]; size: number } =
-                  res.data["data"];
-                setExpense(
-                  expense.map((item) => {
+                }: { expenses: CaseExpenseRowType[]; size: number } = res.data;
+                setExpenses(
+                  expenses.map((item) => {
                     return { ...item, editable: false };
                   }),
                 );
@@ -86,6 +89,7 @@ function CaseExpenseTable() {
 
               requestDeprecated("GET", updateUrl(url, page), {
                 onSuccess: handleRequestSuccess,
+                useMock: false,
               });
 
               return page;
@@ -98,19 +102,18 @@ function CaseExpenseTable() {
           <Box sx={{ color: theme.palette.primary.main }}>{page + 1}</Box>
         </Button>
         <Button
-          disabled={size / 5 <= page + 1}
+          disabled={isNextDisabled}
           onClick={() => {
             setPage((prevPage) => {
               const page = prevPage + 1;
 
               const handleRequestSuccess: RequestSuccessHandler = (res) => {
                 const {
-                  expense,
+                  expenses,
                   size,
-                }: { expense: CaseExpenseRowType[]; size: number } =
-                  res.data["data"];
-                setExpense(
-                  expense.map((item) => {
+                }: { expenses: CaseExpenseRowType[]; size: number } = res.data;
+                setExpenses(
+                  expenses.map((item) => {
                     return { ...item, editable: false };
                   }),
                 );
@@ -119,6 +122,7 @@ function CaseExpenseTable() {
 
               requestDeprecated("GET", updateUrl(url, page), {
                 onSuccess: handleRequestSuccess,
+                useMock: false,
               });
 
               return page;

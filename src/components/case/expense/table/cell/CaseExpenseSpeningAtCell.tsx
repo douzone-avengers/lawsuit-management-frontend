@@ -1,27 +1,27 @@
-import caseExpenseState, {
+import caseExpensesState, {
   CaseExpenseRowType,
-} from "../../../../../states/case/info/expense/CaseExpenseState.tsx";
+} from "../../../../../states/case/info/expense/CaseExpensesState.tsx";
 import { useRecoilState } from "recoil";
 import * as dayjs from "dayjs";
 import { Dayjs } from "dayjs";
 import { produce } from "immer";
 import { DatePicker } from "@mui/x-date-pickers";
 import Box from "@mui/material/Box";
-import { toDateValue } from "../../../../../lib/convert.ts";
 
 type Props = {
   item: CaseExpenseRowType & { editable: boolean };
 };
 
 function CaseExpenseSpeningAtCell({ item }: Props) {
-  const [expense, setExpense] = useRecoilState(caseExpenseState);
+  const [expenses, setExpenses] = useRecoilState(caseExpensesState);
+
   const handleChange = (e: Dayjs | null) => {
     if (item.editable) {
-      const newExpense = produce(expense, (draft) => {
-        const expense = draft.filter((item2) => item2.id === item.id)[0];
-        expense.speningAt = e?.toDate().toISOString() ?? "";
+      const newExpenses = produce(expenses, (draft) => {
+        const expenses = draft.filter((item2) => item2.id === item.id)[0];
+        expenses.speningAt = e?.toDate().toISOString() ?? "";
       });
-      setExpense(newExpense);
+      setExpenses(newExpenses);
     }
   };
 
@@ -44,7 +44,7 @@ function CaseExpenseSpeningAtCell({ item }: Props) {
         height: 40,
       }}
     >
-      {toDateValue(item.speningAt)}
+      {item.speningAt}
     </Box>
   );
 }

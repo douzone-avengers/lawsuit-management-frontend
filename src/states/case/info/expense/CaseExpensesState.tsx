@@ -7,9 +7,9 @@ export type CaseExpenseRowType = {
   amount: number;
 };
 
-const caseExpenseState = atom<(CaseExpenseRowType & { editable: boolean })[]>({
-  key: "caseExpenseState",
+const caseExpensesState = atom<(CaseExpenseRowType & { editable: boolean })[]>({
+  key: "caseExpensesState",
   default: [],
 });
 
-export default caseExpenseState;
+export default caseExpensesState;

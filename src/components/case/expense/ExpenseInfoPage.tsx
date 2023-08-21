@@ -6,7 +6,7 @@ import caseExpenseAddPopUpOpenState from "../../../states/case/info/expense/Case
 import { useRecoilValue } from "recoil";
 import CaseExpenseAddPopUp from "./table/popup/CaseExpenseAddPopUp.tsx";
 
-function ExpenseInfo() {
+function ExpenseInfoPage() {
   const expenseAddPopUpOpen = useRecoilValue(caseExpenseAddPopUpOpenState);
 
   return (
@@ -22,4 +22,4 @@ function ExpenseInfo() {
   );
 }
 
-export default ExpenseInfo;
+export default ExpenseInfoPage;

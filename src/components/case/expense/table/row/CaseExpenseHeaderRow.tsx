@@ -30,7 +30,7 @@ function CaseExpenseHeaderRow() {
           alignItems: "center",
         }}
       >
-        <b>날짜</b>
+        <b>지출일</b>
       </Box>
       <Box
         sx={{
@@ -65,7 +65,7 @@ function CaseExpenseHeaderRow() {
       >
         <Button
           variant="contained"
-          sx={{ width: "50%", color: "secondary" }}
+          sx={{ width: "73%", color: "secondary" }}
           onClick={handleExpenseAddButtonClick}
         >
           등록
