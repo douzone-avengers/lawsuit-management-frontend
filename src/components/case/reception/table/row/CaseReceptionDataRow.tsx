@@ -36,10 +36,10 @@ function CaseReceptionDataRow({ item }: Props) {
         <CaseReceptionContentsCell item={item} />
       </Box>
       <Box sx={{ width: 150 }}>
-        <CaseReceptionReceivedAtCell item={item} />
+        <CaseReceptionDeadlineCell item={item} />
       </Box>
       <Box sx={{ width: 150 }}>
-        <CaseReceptionDeadlineCell item={item} />
+        <CaseReceptionReceivedAtCell item={item} />
       </Box>
       <Box
         sx={{

@@ -62,7 +62,7 @@ function CaseReceptionHeaderRow() {
           alignItems: "center",
         }}
       >
-        <Box>접수일</Box>
+        <Box>마감일</Box>
       </Box>
       <Box
         sx={{
@@ -73,7 +73,7 @@ function CaseReceptionHeaderRow() {
           alignItems: "center",
         }}
       >
-        <Box>마감일</Box>
+        <Box>완료일</Box>
       </Box>
       <Box
         sx={{
