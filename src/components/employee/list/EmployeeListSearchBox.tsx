@@ -97,7 +97,7 @@ function EmployeeListSearchBox({
           <Box sx={{ display: "flex", gap: 1, flexGrow: 1 }}>
             <TextField
               sx={{ flexGrow: 1 }}
-              placeholder="이름, 전화번호, email 검색"
+              placeholder="이름, 이메일 검색"
               size="small"
               value={curSearchWord}
               onChange={(e) => setCurSearchWord(e.target.value)}
