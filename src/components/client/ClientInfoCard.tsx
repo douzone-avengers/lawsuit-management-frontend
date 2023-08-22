@@ -19,6 +19,7 @@ import ClientRemovePopUpButton from "./ClientRemovePopUpButton.tsx";
 import { Link, SvgIcon, Typography } from "@mui/material";
 import { ClientData } from "../../type/ResponseType.ts";
 import ConfirmDialog from "../common/dialog/ConfirmDialog";
+import NormalDialog from "../common/dialog/NormalDialog";
 
 type Props = {
   width?: string | number;
@@ -34,6 +35,8 @@ function ClientInfoCard({ width, height }: Props) {
   const [memberId, setMemberId] = useState<number>();
   const [editMode, setEditMode] = useState(false);
   const [isPromotionDialogOpen, setIsPromotionDialogOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [promotionKey, setPromotionKey] = useState("");
 
   useEffect(() => {
     if (typeof clientId !== "number") {
@@ -67,7 +70,8 @@ function ClientInfoCard({ width, height }: Props) {
   const requestCreateClientPromotion = () => {
     return new Promise((resolve, reject) => {
       const handleRequestSuccess: RequestSuccessHandler = (res) => {
-        alert(`초대키가 발급되었습니다.\n발급된 초대키 : ${res.data}`);
+        setPromotionKey(res.data);
+        setIsDialogOpen(true);
         resolve(res); // 작업이 성공적으로 완료되면 resolve를 호출합니다.
       };
 
@@ -84,9 +88,14 @@ function ClientInfoCard({ width, height }: Props) {
       });
     });
   };
-
   return (
     <>
+      <NormalDialog
+        openStatus={isDialogOpen}
+        setOpenStatus={setIsDialogOpen}
+        title={"고객 초대키 발급 성공"}
+        text={`초대키가 발급되었습니다.<br/>발급된 초대키 : <b>${promotionKey}</b>`}
+      />
       <ConfirmDialog
         openStatus={isPromotionDialogOpen}
         setOpenStatus={setIsPromotionDialogOpen}

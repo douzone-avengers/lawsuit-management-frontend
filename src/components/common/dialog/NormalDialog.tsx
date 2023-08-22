@@ -13,7 +13,7 @@ type Props = {
   text: string;
 };
 
-export default function ConfirmDialog({
+export default function NormalDialog({
   openStatus,
   setOpenStatus,
   title,
