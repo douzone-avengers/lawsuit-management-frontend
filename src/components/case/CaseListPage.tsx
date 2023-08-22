@@ -18,6 +18,9 @@ import { LawsuitInfo } from "./type/LawsuitInfo.tsx";
 import caseIdState from "../../states/case/CaseIdState.tsx";
 import { LawsuitStatus } from "../../type/ResponseType.ts";
 import { mapLawsuitStatus } from "../../lib/convert.ts";
+import CaseAddPopUpButton from "./CaseAddPopUpButton.tsx";
+import caseAddPopUpOpenState from "../../states/case/CaseAddPopUpOpenState.tsx";
+import CaseAddPopUp from "./CaseAddPopUp.tsx";
 
 function CaseListPage() {
   const clientId = useRecoilValue(clientIdState);
@@ -33,6 +36,7 @@ function CaseListPage() {
   const [searchWord, setSearchWord] = useState<string | null>(null);
   const [curSearchWord, setCurSearchWord] = useState<string | null>(null);
   const setCaseId = useSetRecoilState(caseIdState);
+  const caseAddPopUpOpen = useRecoilValue(caseAddPopUpOpenState);
 
   const totalLength = caseList.length;
   const aLength = caseList.filter(
@@ -164,10 +168,6 @@ function CaseListPage() {
       filteredCases = cases;
   }
 
-  const handleCaseAddButtonClick = () => {
-    navigate("/cases/new");
-  };
-
   const [triggerSearch, setTriggerSearch] = useState(false);
   useEffect(() => {
     if (triggerSearch) {
@@ -261,13 +261,17 @@ function CaseListPage() {
           setRowsPerPage={setRowsPerPage}
         />
       </Box>
-      <Button
-        variant="contained"
-        sx={{ position: "fixed", bottom: 24, right: 24 }}
-        onClick={handleCaseAddButtonClick}
-      >
-        사건 추가
-      </Button>
+      <CaseAddPopUpButton />
+      {caseAddPopUpOpen ? (
+        <CaseAddPopUp
+          clientId={clientId}
+          setCases={setCases}
+          setCount={setCount}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          searchWord={searchWord}
+        />
+      ) : null}
     </Box>
   );
 }
