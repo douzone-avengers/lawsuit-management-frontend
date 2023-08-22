@@ -95,6 +95,9 @@ function SubNavigationBar() {
         },
       );
     } else if (subNavigationBarType === "employee") {
+      if (employeeButton !== 2 && employeeButton !== 3) {
+        return;
+      }
       const handleRequestSuccess: RequestSuccessHandler = (res) => {
         const memberInfos: MemberInfo[] = res.data.memberDtoNonPassList;
 
@@ -130,7 +133,7 @@ function SubNavigationBar() {
         onSuccess: handleRequestSuccess,
       });
     }
-  }, [subNavigationBarType]);
+  }, [subNavigationBarType, employeeButton]);
 
   return (
     <Box
