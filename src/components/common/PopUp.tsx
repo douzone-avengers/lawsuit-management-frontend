@@ -6,11 +6,18 @@ import { SxProps, Theme } from "@mui/material";
 type Props = {
   sx?: SxProps<Theme>;
   width?: number | string;
+  height?: number | string;
   popUpType?: "form" | "alert";
   children?: ReactNode;
 };
 
-function PopUp({ width = 360, popUpType = "form", children, sx }: Props) {
+function PopUp({
+  width = 360,
+  height,
+  popUpType = "form",
+  children,
+  sx,
+}: Props) {
   return (
     <Dialog
       open={true}
@@ -25,6 +32,7 @@ function PopUp({ width = 360, popUpType = "form", children, sx }: Props) {
           position: "relative",
           flexDirection: "column",
           width,
+          height,
           padding: popUpType === "form" ? 3 : 0,
           gap: popUpType === "form" ? 2 : 0,
           overflow: "hidden",
