@@ -11,12 +11,16 @@ import requestDeprecated, {
   RequestSuccessHandler,
 } from "../../../lib/requestDeprecated";
 import NormalDialog from "../../common/dialog/NormalDialog";
+import { useState } from "react";
 export default function EmployeePromotionDialog() {
   const [isLoading, setIsLoading] = React.useState(false);
-  const [emailTo, setEmailTo] = React.useState("");
   const [promotionKey, setPromotionKey] = React.useState("");
   const [isFormOpen, setIsFormOpen] = React.useState(false);
   const [isResultOpen, setIsResultOpen] = React.useState(false);
+
+  const [email, setEmail] = useState("");
+  const [isEmailOk, setIsEmailOk] = useState(true);
+  const [emailMessage, setEmailMessage] = useState("");
 
   //직원초대
   const requestCreateEmployeePromotion = () => {
@@ -36,7 +40,7 @@ export default function EmployeePromotionDialog() {
         useMock: false,
         withToken: true,
         params: {
-          emailTo: emailTo,
+          emailTo: email,
         },
         onSuccess: handleRequestSuccess,
         onFail: handelRequestFail,
@@ -45,8 +49,6 @@ export default function EmployeePromotionDialog() {
   };
 
   const handleClickAgree = async () => {
-    //이메일 값 유효성 체크
-
     setIsLoading(true);
     try {
       await requestCreateEmployeePromotion();
@@ -54,6 +56,9 @@ export default function EmployeePromotionDialog() {
       console.error("Error occurred during agreeAction:", error);
     } finally {
       setIsFormOpen(false);
+      setEmail("");
+      setIsEmailOk(false);
+      setEmailMessage("");
       setTimeout(() => {
         setIsLoading(false);
       }, 1000); // 1초 후에 setIsLoading(false) 실행
@@ -62,6 +67,26 @@ export default function EmployeePromotionDialog() {
 
   const handleClickDisagree = () => {
     setIsFormOpen(false);
+    setEmail("");
+    setIsEmailOk(false);
+    setEmailMessage("");
+  };
+
+  const onEmailChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const emailRegex =
+      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(]?)$/;
+    const emailCurrent = e.target.value;
+    setEmail(emailCurrent);
+
+    if (!emailRegex.test(emailCurrent)) {
+      setEmailMessage("이메일 형식이 틀렸습니다.");
+      setIsEmailOk(false);
+    } else {
+      setEmailMessage("올바른 이메일 형식입니다.");
+      setIsEmailOk(true);
+    }
   };
 
   return (
@@ -80,23 +105,27 @@ export default function EmployeePromotionDialog() {
                 초대메일을 발송할 이메일을 입력하세요.
               </DialogContentText>
               <TextField
+                {...(isEmailOk || !email ? {} : { error: true })}
                 autoFocus
                 margin="dense"
                 label="이메일"
                 type="email"
                 fullWidth
                 variant="standard"
-                value={emailTo}
-                onChange={(e) => {
-                  setEmailTo(e.target.value);
-                }}
+                value={email}
+                onChange={onEmailChange}
+                helperText={emailMessage}
               />
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClickDisagree} color="primary">
                 취소
               </Button>
-              <Button onClick={handleClickAgree} color="primary">
+              <Button
+                onClick={handleClickAgree}
+                color="primary"
+                disabled={!isEmailOk}
+              >
                 확인
               </Button>
             </DialogActions>
