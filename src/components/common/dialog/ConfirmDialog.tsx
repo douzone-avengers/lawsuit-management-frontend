@@ -33,7 +33,9 @@ export default function ConfirmDialog({
       }
     }
     setOpenStatus(false);
-    setIsLoading(false);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000); // 1초 후에 setIsLoading(false) 실행
   };
 
   const handleClickDisagree = () => {
