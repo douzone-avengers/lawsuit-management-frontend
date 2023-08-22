@@ -24,7 +24,7 @@ function CaseDetailPage() {
   const [clientTab] = useState<TabItem[]>([
     {
       id: 0,
-      name: "사건 정보",
+      name: "접수 정보",
       children: <CaseReceptionTab />,
     },
     {
