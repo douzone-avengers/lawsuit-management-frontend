@@ -13,7 +13,6 @@ type Props = {
   title: string;
   text: string;
   agreeAction?: () => Promise<any>; //확인버튼 클릭 시
-  disagreeAction?: () => void; //취소 버튼 클릭 시
 };
 
 export default function ConfirmDialog({
@@ -47,7 +46,7 @@ export default function ConfirmDialog({
       {isLoading ? (
         <DialogContent>
           <CircularProgress size={24} />
-          <DialogContentText>이메일 전송 중입니다...</DialogContentText>
+          <DialogContentText>잠시만 기다려 주세요...</DialogContentText>
         </DialogContent>
       ) : (
         <>

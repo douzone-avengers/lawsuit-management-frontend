@@ -18,7 +18,7 @@ import {
 import ClientRemovePopUpButton from "./ClientRemovePopUpButton.tsx";
 import { Link, SvgIcon, Typography } from "@mui/material";
 import { ClientData } from "../../type/ResponseType.ts";
-import ConfirmDialog from "../common/ConfirmDialog";
+import ConfirmDialog from "../common/dialog/ConfirmDialog";
 
 type Props = {
   width?: string | number;
