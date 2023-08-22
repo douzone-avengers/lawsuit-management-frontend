@@ -44,23 +44,28 @@ export default function ConfirmDialog({
   return (
     <Dialog open={openStatus} onClose={handleClickDisagree}>
       <DialogTitle>{title}</DialogTitle>
-      <DialogContent>
-        {isLoading ? (
+      {isLoading ? (
+        <DialogContent>
           <CircularProgress size={24} />
-        ) : (
-          <DialogContentText
-            dangerouslySetInnerHTML={{ __html: text }}
-          ></DialogContentText>
-        )}
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClickDisagree} color="primary">
-          취소
-        </Button>
-        <Button onClick={handleClickAgree} color="primary">
-          확인
-        </Button>
-      </DialogActions>
+          <DialogContentText>이메일 전송 중입니다...</DialogContentText>
+        </DialogContent>
+      ) : (
+        <>
+          <DialogContent>
+            <DialogContentText
+              dangerouslySetInnerHTML={{ __html: text }}
+            ></DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClickDisagree} color="primary">
+              취소
+            </Button>
+            <Button onClick={handleClickAgree} color="primary">
+              확인
+            </Button>
+          </DialogActions>
+        </>
+      )}
     </Dialog>
   );
 }
