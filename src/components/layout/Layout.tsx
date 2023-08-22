@@ -11,12 +11,15 @@ import Main from "./main/Main.tsx";
 import SideNavigationBar from "./snb/SideNavigationBar.tsx";
 import ClientRemovePopUp from "../client/ClientRemovePopUp.tsx";
 import clientRemovePopUpOpenState from "../../states/client/ClientRemovePopUpOpenState.tsx";
+import loadingState from "../../states/layout/LoadingState.tsx";
+import LoadingSpinner from "./LoadingSpinner.tsx";
 
 function Layout() {
   const clientRegisterPopUp = useRecoilValue(clientRegisterPopUpState);
   const isLogin = useRecoilValue(isLoginState);
   const navigate = useNavigate();
   const clientRemovePopUpOpen = useRecoilValue(clientRemovePopUpOpenState);
+  const loading = useRecoilValue(loadingState);
 
   useEffect(() => {
     if (!isLogin) {
@@ -26,6 +29,8 @@ function Layout() {
 
   return (
     <>
+      {loading.isLoading ? <LoadingSpinner /> : null}
+
       <Box sx={{ display: "flex" }}>
         <Header />
         <SideNavigationBar />

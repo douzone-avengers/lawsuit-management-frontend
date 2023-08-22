@@ -6,41 +6,47 @@ import { useRecoilValue } from "recoil";
 import caseButtonIdState from "../../states/case/CaseButtonIdState";
 import caseIdState from "../../states/case/CaseIdState";
 import clientIdState from "../../states/client/ClientIdState";
+import loadingState from "../../states/layout/LoadingState.tsx";
+import PrintComponent from "./closing/print/PrintComponent.tsx";
 
 function CaseLayout() {
   const caseButtonId = useRecoilValue(caseButtonIdState);
   const clientId = useRecoilValue(clientIdState);
   const caseId = useRecoilValue(caseIdState);
   const navigate = useNavigate();
+  const loading = useRecoilValue(loadingState);
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        gap: 2,
-        flexDirection: "column",
-      }}
-    >
-      <ButtonGroup variant="outlined" size="large" fullWidth>
-        <Button
-          variant={caseButtonId === 0 ? "contained" : "outlined"}
-          onClick={() => {
-            navigate(`/cases/list?client=${clientId}`);
-          }}
-        >
-          사건 리스트
-        </Button>
-        <Button
-          variant={caseButtonId === 1 ? "contained" : "outlined"}
-          onClick={() => {
-            navigate(`/cases/${caseId}?client=${clientId}`);
-          }}
-        >
-          사건 상세
-        </Button>
-      </ButtonGroup>
-      <Outlet />
-    </Box>
+    <>
+      <Box
+        sx={{
+          display: "flex",
+          gap: 2,
+          flexDirection: "column",
+        }}
+      >
+        <ButtonGroup variant="outlined" size="large" fullWidth>
+          <Button
+            variant={caseButtonId === 0 ? "contained" : "outlined"}
+            onClick={() => {
+              navigate(`/cases/list?client=${clientId}`);
+            }}
+          >
+            사건 리스트
+          </Button>
+          <Button
+            variant={caseButtonId === 1 ? "contained" : "outlined"}
+            onClick={() => {
+              navigate(`/cases/${caseId}?client=${clientId}`);
+            }}
+          >
+            사건 상세
+          </Button>
+        </ButtonGroup>
+        <Outlet />
+      </Box>
+      {loading.isLoading ? <PrintComponent /> : null}
+    </>
   );
 }
 
