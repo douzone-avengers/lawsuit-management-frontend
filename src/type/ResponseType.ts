@@ -1,7 +1,5 @@
 export type Category = "fixed" | "scheduled";
 
-
-
 export type Advicedata = {
   id: number;
   title: string;
@@ -15,6 +13,7 @@ export type ClientData = {
   phone: string;
   email: string;
   address: string;
+  memberId: number;
 };
 
 export type ExpenseData = {
