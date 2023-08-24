@@ -18,6 +18,9 @@ import { LawsuitInfo } from "./type/LawsuitInfo.tsx";
 import caseIdState from "../../states/case/CaseIdState.tsx";
 import { LawsuitStatus } from "../../type/ResponseType.ts";
 import { mapLawsuitStatus } from "../../lib/convert.ts";
+import CaseAddPopUpButton from "./CaseAddPopUpButton.tsx";
+import caseAddPopUpOpenState from "../../states/case/CaseAddPopUpOpenState.tsx";
+import CaseAddPopUp from "./CaseAddPopUp.tsx";
 import { LawsuitCountInfo } from "./type/LawsuitCountInfo.tsx";
 
 function CaseListPage() {
@@ -38,6 +41,7 @@ function CaseListPage() {
   const [proceedingLength, setProceedingLength] = useState(0);
   const [closingLength, setClosingLength] = useState(0);
   const [triggerSearch, setTriggerSearch] = useState(false);
+  const caseAddPopUpOpen = useRecoilValue(caseAddPopUpOpenState);
 
   const prevDependencies = useRef({
     searchLawsuitStatus,
@@ -153,10 +157,6 @@ function CaseListPage() {
     }
   }, [cases]);
 
-  const handleCaseAddButtonClick = () => {
-    navigate("/cases/new");
-  };
-
   useEffect(() => {
     if (triggerSearch) {
       searchRequest(true, false);
@@ -249,13 +249,17 @@ function CaseListPage() {
           setRowsPerPage={setRowsPerPage}
         />
       </Box>
-      <Button
-        variant="contained"
-        sx={{ position: "fixed", bottom: 24, right: 24 }}
-        onClick={handleCaseAddButtonClick}
-      >
-        사건 추가
-      </Button>
+      <CaseAddPopUpButton />
+      {caseAddPopUpOpen ? (
+        <CaseAddPopUp
+          clientId={clientId}
+          setCases={setCases}
+          setCount={setCount}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          searchWord={searchWord}
+        />
+      ) : null}
     </Box>
   );
 }
