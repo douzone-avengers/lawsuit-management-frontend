@@ -5,12 +5,14 @@ import clientIdState from "../../states/client/ClientIdState";
 import employeeIdState from "../../states/employee/EmployeeIdState";
 import subNavigationBarTypeState from "../../states/layout/SubNavigationBarTypeState.tsx";
 import { useEffect, useState } from "react";
+import FlagState from "../../states/layout/FlagState";
 
 function Debug() {
   const clientId = useRecoilValue(clientIdState);
   const caseId = useRecoilValue(caseIdState);
   const employeeId = useRecoilValue(employeeIdState);
   const subNavigationBarType = useRecoilValue(subNavigationBarTypeState);
+  const flag = useRecoilValue(FlagState);
 
   const [show, setShow] = useState(true);
 
@@ -36,6 +38,7 @@ function Debug() {
       <div>caseId: {caseId}</div>
       <div>employeeId: {employeeId}</div>
       <div>subNavigationBarType: {subNavigationBarType}</div>
+      <div>flag: {flag.toString()}</div>
     </Box>
   ) : null;
 }

@@ -3,7 +3,7 @@ import KakaoMap from "../../common/KaKaoMap";
 import useWindowSize from "../../../hook/useWindowSize";
 import { useEffect, useRef, useState } from "react";
 import { MemberInfo } from "../type/MemberInfo";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import curMemberAddressState from "../../../states/employee/CurMemberAddressState";
 import EmployeeInfoCard from "./EmployeeInfoCard";
 import employeeIdState from "../../../states/employee/EmployeeIdState";
@@ -11,6 +11,7 @@ import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
 } from "../../../lib/requestDeprecated";
+import FlagState from "../../../states/layout/FlagState";
 
 function EmployeeDetailPage() {
   const [width, height] = useWindowSize();
@@ -21,6 +22,7 @@ function EmployeeDetailPage() {
   const [memberInfo, setMemberInfo] = useState<MemberInfo>();
   const recoilAddress = useRecoilValue(curMemberAddressState);
   const employeeId = useRecoilValue(employeeIdState);
+  const [flag, setFlag] = useRecoilState(FlagState);
 
   useEffect(() => {
     if (parentContainer.current) {
@@ -43,9 +45,11 @@ function EmployeeDetailPage() {
   }, [recoilAddress]);
 
   useEffect(() => {
+    if (!flag) return;
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
       const memberInfo: MemberInfo = res.data;
       setMemberInfo(memberInfo);
+      setFlag(false);
     };
     const handelRequestFail: RequestFailHandler = (e) => {
       alert((e.response.data as { code: string; message: string }).message);
@@ -57,7 +61,7 @@ function EmployeeDetailPage() {
       onSuccess: handleRequestSuccess,
       onFail: handelRequestFail,
     });
-  }, [employeeId]);
+  }, [employeeId, flag]);
 
   return (
     <Box sx={{ display: "flex", gap: 3, flexDirection: "row", height: "100%" }}>

@@ -19,6 +19,7 @@ import requestDeprecated, {
   RequestSuccessHandler,
 } from "../../../lib/requestDeprecated";
 import { ClientData } from "../../../type/ResponseType";
+import flagState from "../../../states/layout/FlagState";
 
 function SubNavigationBar() {
   const clientId = useRecoilValue(clientIdState);
@@ -29,6 +30,7 @@ function SubNavigationBar() {
   );
   const subNavigationBarType = useRecoilValue(subNavigationBarTypeState);
   const employeeButton = useRecoilValue(employeeButtonIdState);
+  const [, setFlag] = useRecoilState(flagState);
 
   useEffect(() => {
     if (subNavigationBarType === "client") {
@@ -43,6 +45,7 @@ function SubNavigationBar() {
           };
         });
         setSubNavigationBar({ ...subNavigationBar, items: newItems });
+        setFlag(true);
       };
       requestDeprecated("GET", "/clients", {
         useMock: false,
@@ -61,6 +64,7 @@ function SubNavigationBar() {
           };
         });
         setSubNavigationBar({ ...subNavigationBar, items: newItems });
+        setFlag(true);
       };
       requestDeprecated("GET", "/clients", {
         onSuccess: handleRequestSuccess,
@@ -85,6 +89,7 @@ function SubNavigationBar() {
           },
         );
         setSubNavigationBar({ ...subNavigationBar, items: newItems });
+        setFlag(true);
       };
       requestDeprecated(
         "GET",
@@ -117,6 +122,7 @@ function SubNavigationBar() {
             },
           );
           setSubNavigationBar({ ...subNavigationBar, items: newItems });
+          setFlag(true);
         };
         requestDeprecated("GET", `/role`, {
           useMock: false,

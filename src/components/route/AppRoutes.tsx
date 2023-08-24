@@ -103,7 +103,7 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 1,
       });
-      setSubNavigationBarType("none");
+      setSubNavigationBarType("caseClient");
       return;
     }
 

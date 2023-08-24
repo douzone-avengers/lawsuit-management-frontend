@@ -17,9 +17,11 @@ import requestDeprecated, {
   RequestSuccessHandler,
 } from "../../lib/requestDeprecated.ts";
 import CaseEmployeeInfoCard from "./common/CaseEmployeeInfoCard.tsx";
+import FlagState from "../../states/layout/FlagState";
 
 function CaseDetailPage() {
   const [caseTabId, setCaseTabId] = useRecoilState(caseTabIdState);
+  const [flag, setFlag] = useRecoilState(FlagState);
 
   const [clientTab] = useState<TabItem[]>([
     {
@@ -60,6 +62,7 @@ function CaseDetailPage() {
   const setCaseInfo = useSetRecoilState(caseInfoState);
 
   useEffect(() => {
+    if (!flag) return;
     if (caseId === null) {
       return;
     }
@@ -68,13 +71,14 @@ function CaseDetailPage() {
       const body: CaseInfoType = res.data;
       console.log(body);
       setCaseInfo(body);
+      setFlag(false);
     };
 
     requestDeprecated("GET", `/lawsuits/${caseId}/basic`, {
       onSuccess: handleSuccessHandler,
       useMock: false,
     });
-  }, [caseId]);
+  }, [caseId, flag]);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
