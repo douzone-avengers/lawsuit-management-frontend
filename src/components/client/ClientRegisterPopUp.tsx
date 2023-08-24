@@ -13,12 +13,19 @@ import { MainNavigationBarItemState } from "../layout/snb/MainNavigationBarItem.
 import PopUp from "../common/PopUp.tsx";
 import CloseButton from "../common/CloseButton.tsx";
 import { ClientData } from "../../type/ResponseType.ts";
+import curMemberAddressState from "../../states/employee/CurMemberAddressState.tsx";
+import DaumPostcode from "react-daum-postcode";
+import ReactModal from "react-modal";
+import Box from "@mui/material/Box";
 
 function ClientRegisterPopUp() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const setRecoilAddress = useSetRecoilState(curMemberAddressState);
 
   const setClientRegisterPopUpOpen = useSetRecoilState(
     clientRegisterPopUpState,
@@ -55,11 +62,43 @@ function ClientRegisterPopUp() {
         email,
         address,
       },
+      useMock: false,
       onSuccess: handleRequestSuccess,
     });
+
+    setClientRegisterPopUpOpen(false);
   };
+
   return (
     <PopUp>
+      <ReactModal
+        style={{
+          overlay: {
+            zIndex: 10000, // 여기서 z-index 값을 높여주세요
+          },
+          content: {
+            width: "30%", // 모달의 너비를 50%로 설정
+            height: "60%", // 모달의 높이를 50%로 설정
+            margin: "auto", // 모달을 화면 가운데에 위치시킴
+          },
+        }}
+        isOpen={isModalOpen}
+      >
+        <DaumPostcode
+          style={{
+            height: "100%",
+          }}
+          onComplete={(data) => {
+            // handle the complete event with selected data
+            setAddress(data.address);
+            setRecoilAddress(data.address);
+            setIsModalOpen(false);
+          }}
+          autoClose={false}
+          defaultQuery={address}
+        />
+      </ReactModal>
+
       <CloseButton onClick={handleCloseButtonClick} />
       <Typography variant="h5" sx={{ textAlign: "center" }}>
         의뢰인 등록
@@ -85,13 +124,18 @@ function ClientRegisterPopUp() {
         value={phone}
         onChange={(e) => setPhone(e.target.value)}
       />
-      <TextField
-        type="text"
-        size="small"
-        label="주소"
-        value={address}
-        onChange={(e) => setAddress(e.target.value)}
-      />
+      <Box>
+        <TextField type="text" size="small" label="주소" value={address} />
+        <Button
+          size="small"
+          sx={{ marginTop: "5px" }}
+          onClick={() => {
+            setIsModalOpen(true);
+          }}
+        >
+          주소검색
+        </Button>
+      </Box>
       <Button
         variant="contained"
         size="large"

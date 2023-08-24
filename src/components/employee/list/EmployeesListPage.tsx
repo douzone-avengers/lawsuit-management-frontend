@@ -8,6 +8,7 @@ import EmployeeListTable from "./EmployeeListTable";
 import { useNavigate } from "react-router-dom";
 import { Hierarchy, MemberInfo, Role } from "../type/MemberInfo";
 import EmployeeListSearchBox from "./EmployeeListSearchBox";
+import EmployeePromotionDialog from "./EmployeePromotionDialog";
 
 function EmployeeListPage() {
   const navigate = useNavigate();
@@ -167,7 +168,7 @@ function EmployeeListPage() {
   };
 
   return (
-    <Box sx={{ margin: 3 }}>
+    <Box sx={{ margin: 3, display: "flex", flexDirection: "column" }}>
       <EmployeeListSearchBox
         hierarchyList={hierarchyList}
         roleList={roleList}
@@ -201,6 +202,7 @@ function EmployeeListPage() {
         sortOrder={sortOrder}
         setSortOrder={setSortOrder}
       />
+      <EmployeePromotionDialog />
     </Box>
   );
 }
