@@ -3,11 +3,13 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import requestDeprecated, {
+  RequestFailHandler,
   RequestSuccessHandler,
 } from "../../lib/requestDeprecated.ts";
 import clientIdState from "../../states/client/ClientIdState";
 import CaseListTable from "../case/CaseListTable.tsx";
 import { LawsuitInfo } from "../case/type/LawsuitInfo.tsx";
+import { LawsuitCountInfo } from "../case/type/LawsuitCountInfo.tsx";
 
 function ClientCaseListTab() {
   const clientId = useRecoilValue(clientIdState);
@@ -36,6 +38,7 @@ function ClientCaseListTab() {
     };
 
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
+      // UI에 보여줄 때, 사건 상태를 한글로 보여주기 위함
       function mapLawsuitStatus(status: string) {
         switch (status) {
           case "REGISTRATION":
@@ -51,7 +54,7 @@ function ClientCaseListTab() {
 
       const lawsuitData: {
         lawsuitList: LawsuitInfo[];
-        count: number;
+        countDto: LawsuitCountInfo;
       } = res.data;
 
       const mappedLawsuitList = lawsuitData.lawsuitList.map((item) => ({
@@ -60,7 +63,11 @@ function ClientCaseListTab() {
       }));
 
       setCases(mappedLawsuitList);
-      setCount(lawsuitData.count);
+      setCount(lawsuitData.countDto.total);
+    };
+
+    const handleRequestFail: RequestFailHandler = (e) => {
+      alert((e.response.data as { code: string; message: string }).message);
     };
 
     requestDeprecated("GET", `/lawsuits/clients/${clientId}`, {
@@ -72,6 +79,7 @@ function ClientCaseListTab() {
         searchWord: "",
       },
       onSuccess: handleRequestSuccess,
+      onFail: handleRequestFail,
     });
   }, [clientId, rowsPerPage, page]);
 
