@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography";
 import { SvgIcon } from "@mui/material";
 import { Email, LocationOn, PhoneIphone } from "@mui/icons-material";
 import { ClientData } from "../../../type/ResponseType.ts";
+import Box from "@mui/material/Box";
 
 function ClientCaseStatisticsInfoCard() {
   const clientId = useRecoilValue(clientIdState);
@@ -48,32 +49,50 @@ function ClientCaseStatisticsInfoCard() {
         <br />
         <hr />
         <br />
-        <Typography
-          sx={{ display: "inline-block", fontSize: 20 }}
-          color="text.secondary"
-          gutterBottom
-        >
-          <SvgIcon component={Email} /> &nbsp;
-          {email}
-        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <SvgIcon
+            component={Email}
+            sx={{ color: "#1976d2", marginBottom: "5px" }}
+          />
+          &nbsp;&nbsp;
+          <Typography
+            sx={{ display: "inline-block", fontSize: 18, fontWeight: "bold" }}
+            color="text.secondary"
+            gutterBottom
+          >
+            {email}
+          </Typography>
+        </Box>
         <br />
-        <Typography
-          sx={{ display: "inline-block", fontSize: 20 }}
-          color="text.secondary"
-          gutterBottom
-        >
-          <SvgIcon component={PhoneIphone} /> &nbsp;
-          {phone}
-        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <SvgIcon
+            component={PhoneIphone}
+            sx={{ color: "#1976d2", marginBottom: "10px" }}
+          />{" "}
+          &nbsp;&nbsp;
+          <Typography
+            sx={{ display: "inline-block", fontSize: 18, fontWeight: "bold" }}
+            color="text.secondary"
+            gutterBottom
+          >
+            {phone}
+          </Typography>
+        </Box>
         <br />
-        <Typography
-          sx={{ display: "inline-block", fontSize: 20 }}
-          color="text.secondary"
-          gutterBottom
-        >
-          <SvgIcon component={LocationOn} /> &nbsp;
-          {address}
-        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <SvgIcon
+            component={LocationOn}
+            sx={{ color: "#1976d2", marginBottom: "8px" }}
+          />{" "}
+          &nbsp;&nbsp;
+          <Typography
+            sx={{ display: "inline-block", fontSize: 18, fontWeight: "bold" }}
+            color="text.secondary"
+            gutterBottom
+          >
+            {address}
+          </Typography>
+        </Box>
       </CardContent>
     </Card>
   );
