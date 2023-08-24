@@ -18,7 +18,7 @@ function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLoginButtonClick = () => {
+  const handleLogin = () => {
     type TokenData = {
       accessToken: string;
       refreshToken: string;
@@ -64,8 +64,13 @@ function LoginPage() {
         label="비밀번호"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleLogin();
+          }
+        }}
       />
-      <Button variant="contained" size="large" onClick={handleLoginButtonClick}>
+      <Button variant="contained" size="large" onClick={handleLogin}>
         로그인
       </Button>
       <Divider />

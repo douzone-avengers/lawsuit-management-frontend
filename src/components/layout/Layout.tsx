@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import isLoginState from "../../states/common/IsLoginState";
 import clientRegisterPopUpState from "../../states/layout/ClientRegisterPopUpOpenState";
 import ClientRegisterPopUp from "../client/ClientRegisterPopUp.tsx";
@@ -16,14 +16,18 @@ import LoadingSpinner from "./LoadingSpinner.tsx";
 
 function Layout() {
   const clientRegisterPopUp = useRecoilValue(clientRegisterPopUpState);
-  const isLogin = useRecoilValue(isLoginState);
+  const [isLogin, setIsLogin] = useRecoilState(isLoginState);
   const navigate = useNavigate();
   const clientRemovePopUpOpen = useRecoilValue(clientRemovePopUpOpenState);
   const loading = useRecoilValue(loadingState);
 
   useEffect(() => {
     if (!isLogin) {
-      navigate("login");
+      const accessToken = localStorage.getItem("accessToken");
+      if (!accessToken) {
+        navigate("login");
+      }
+      setIsLogin(true);
     }
   }, [isLogin]);
 
