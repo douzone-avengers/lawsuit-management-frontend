@@ -21,33 +21,27 @@ import { mapLawsuitStatus } from "../../lib/convert.ts";
 import CaseAddPopUpButton from "./CaseAddPopUpButton.tsx";
 import caseAddPopUpOpenState from "../../states/case/CaseAddPopUpOpenState.tsx";
 import CaseAddPopUp from "./CaseAddPopUp.tsx";
+import { LawsuitCountInfo } from "./type/LawsuitCountInfo.tsx";
 
 function CaseListPage() {
   const clientId = useRecoilValue(clientIdState);
   const navigate = useNavigate();
   const [cases, setCases] = useState<LawsuitInfo[]>([]);
-  const [caseList, setCaseList] = useState<LawsuitInfo[]>([]);
   //for paging
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [count, setCount] = useState(0);
   const [searchLawsuitStatus, setSearchLawsuitStatus] =
     useState<LawsuitStatus | null>(null);
   const [searchWord, setSearchWord] = useState<string | null>(null);
   const [curSearchWord, setCurSearchWord] = useState<string | null>(null);
   const setCaseId = useSetRecoilState(caseIdState);
+  const [count, setCount] = useState(0);
+  const [totalLength, setTotalLength] = useState(0);
+  const [registrationLength, setRegistrationLength] = useState(0);
+  const [proceedingLength, setProceedingLength] = useState(0);
+  const [closingLength, setClosingLength] = useState(0);
+  const [triggerSearch, setTriggerSearch] = useState(false);
   const caseAddPopUpOpen = useRecoilValue(caseAddPopUpOpenState);
-
-  const totalLength = caseList.length;
-  const aLength = caseList.filter(
-    (item) => item.lawsuitStatus === "REGISTRATION",
-  ).length;
-  const bLength = caseList.filter(
-    (item) => item.lawsuitStatus === "PROCEEDING",
-  ).length;
-  const cLength = caseList.filter(
-    (item) => item.lawsuitStatus === "CLOSING",
-  ).length;
 
   const prevDependencies = useRef({
     searchLawsuitStatus,
@@ -88,10 +82,22 @@ function CaseListPage() {
       setCurSearchWord(searchWord);
     }
 
+    const converter = (nameKr: string | null) => {
+      if (nameKr === "등록") {
+        return "REGISTRATION";
+      }
+      if (nameKr === "진행") {
+        return "PROCEEDING";
+      }
+      if (nameKr === "종결") {
+        return "CLOSING";
+      }
+    };
+
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
       const lawsuitData: {
         lawsuitList: LawsuitInfo[];
-        count: number;
+        countDto: LawsuitCountInfo;
       } = res.data;
 
       const mappedLawsuitList = lawsuitData.lawsuitList.map((item) => ({
@@ -99,8 +105,24 @@ function CaseListPage() {
         lawsuitStatus: mapLawsuitStatus(item.lawsuitStatus),
       }));
 
+      if (searchLawsuitStatus === null) {
+        setCount(lawsuitData.countDto.total);
+      }
+      if (searchLawsuitStatus === "등록") {
+        setCount(lawsuitData.countDto.registration);
+      }
+      if (searchLawsuitStatus === "진행") {
+        setCount(lawsuitData.countDto.proceeding);
+      }
+      if (searchLawsuitStatus === "종결") {
+        setCount(lawsuitData.countDto.closing);
+      }
+
       setCases(mappedLawsuitList);
-      setCount(lawsuitData.count);
+      setTotalLength(lawsuitData.countDto.total);
+      setRegistrationLength(lawsuitData.countDto.registration);
+      setProceedingLength(lawsuitData.countDto.proceeding);
+      setClosingLength(lawsuitData.countDto.closing);
     };
 
     const handleRequestFail: RequestFailHandler = (e) => {
@@ -114,6 +136,10 @@ function CaseListPage() {
         curPage: (page + 1).toString(),
         rowsPerPage: rowsPerPage.toString(),
         searchWord: searchWord || "",
+        // lawsuitStatus가 null이 아닌 경우에만 포함시킴
+        ...(searchLawsuitStatus !== null && {
+          lawsuitStatus: converter(searchLawsuitStatus),
+        }),
       },
       onSuccess: handleRequestSuccess,
       onFail: handleRequestFail,
@@ -121,54 +147,16 @@ function CaseListPage() {
   };
 
   useEffect(() => {
+    setSearchLawsuitStatus(null);
+    setSearchWord("");
+  }, [clientId]);
+
+  useEffect(() => {
     if (cases && cases.length > 0) {
       setCaseId(cases[0].id);
     }
   }, [cases]);
 
-  // 의뢰인별 전체 사건 리스트
-  useEffect(() => {
-    if (count === 0) {
-      return;
-    }
-    const handleCaseListRequestSuccess: RequestSuccessHandler = (res) => {
-      const lawsuitData: {
-        lawsuitList: LawsuitInfo[];
-        count: number;
-      } = res.data;
-
-      setCaseList(lawsuitData.lawsuitList);
-    };
-
-    requestDeprecated("GET", `/lawsuits/clients/${clientId}`, {
-      useMock: false,
-      withToken: true,
-      params: {
-        curPage: "1",
-        rowsPerPage: count.toString(),
-        searchWord: "",
-      },
-      onSuccess: handleCaseListRequestSuccess,
-    });
-  }, [clientId, count]);
-
-  let filteredCases: LawsuitInfo[];
-
-  switch (searchLawsuitStatus) {
-    case "등록":
-      filteredCases = cases.filter((item) => item.lawsuitStatus === "등록");
-      break;
-    case "진행":
-      filteredCases = cases.filter((item) => item.lawsuitStatus === "진행");
-      break;
-    case "종결":
-      filteredCases = cases.filter((item) => item.lawsuitStatus === "종결");
-      break;
-    default:
-      filteredCases = cases;
-  }
-
-  const [triggerSearch, setTriggerSearch] = useState(false);
   useEffect(() => {
     if (triggerSearch) {
       searchRequest(true, false);
@@ -214,21 +202,21 @@ function CaseListPage() {
               />
               <Chip
                 variant={searchLawsuitStatus === "등록" ? "filled" : "outlined"}
-                label={`등록 (${aLength})`}
+                label={`등록 (${registrationLength})`}
                 onClick={() => {
                   setSearchLawsuitStatus("등록");
                 }}
               />
               <Chip
                 variant={searchLawsuitStatus === "진행" ? "filled" : "outlined"}
-                label={`진행 (${bLength})`}
+                label={`진행 (${proceedingLength})`}
                 onClick={() => {
                   setSearchLawsuitStatus("진행");
                 }}
               />
               <Chip
                 variant={searchLawsuitStatus === "종결" ? "filled" : "outlined"}
-                label={`종결 (${cLength})`}
+                label={`종결 (${closingLength})`}
                 onClick={() => {
                   setSearchLawsuitStatus("종결");
                 }}
@@ -248,7 +236,7 @@ function CaseListPage() {
       </Card>
       <Box>
         <CaseListTable
-          cases={filteredCases.map((item) => ({
+          cases={cases.map((item) => ({
             ...item,
             onClick: () => {
               navigate(`/cases/${item.id}?client=${clientId}`);
