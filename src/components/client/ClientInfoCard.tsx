@@ -29,9 +29,10 @@ import curMemberAddressState from "../../states/employee/CurMemberAddressState.t
 type Props = {
   width?: string | number;
   height?: string | number;
+  useEdit?: boolean;
 };
 
-function ClientInfoCard({ width, height }: Props) {
+function ClientInfoCard({ width, height, useEdit }: Props) {
   const clientId = useRecoilValue(clientIdState);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -184,7 +185,10 @@ function ClientInfoCard({ width, height }: Props) {
           >
             {!editMode ? (
               <Box>
-                <SvgIcon component={Person} sx={{ marginTop: "5px" }} />
+                <SvgIcon
+                  component={Person}
+                  sx={{ color: "#1976d2", marginTop: "5px" }}
+                />
                 &nbsp;
                 <Typography sx={{ display: "inline-block" }} variant="h4">
                   {name}
@@ -192,7 +196,10 @@ function ClientInfoCard({ width, height }: Props) {
               </Box>
             ) : (
               <Box>
-                <SvgIcon component={Person} sx={{ marginTop: "15px" }} />
+                <SvgIcon
+                  component={Person}
+                  sx={{ color: "#1976d2", marginTop: "15px" }}
+                />
                 &nbsp;
                 <TextField
                   sx={{ display: "inline-block" }}
@@ -203,31 +210,33 @@ function ClientInfoCard({ width, height }: Props) {
                 />
               </Box>
             )}
-            <Box sx={{ display: "flex", justifyContent: "right", gap: 1 }}>
-              {editMode ? (
-                <Button
-                  variant="contained"
-                  size="small"
-                  onClick={() => {
-                    requestUpdateClientInfo();
-                    setEditMode(false);
-                  }}
-                >
-                  확인
-                </Button>
-              ) : (
-                <Button
-                  variant="contained"
-                  size="small"
-                  onClick={() => {
-                    setEditMode(true);
-                  }}
-                >
-                  수정
-                </Button>
-              )}
-              <ClientRemovePopUpButton />
-            </Box>
+            {useEdit ? (
+              <Box sx={{ display: "flex", justifyContent: "right", gap: 1 }}>
+                {editMode ? (
+                  <Button
+                    variant="contained"
+                    size="small"
+                    onClick={() => {
+                      requestUpdateClientInfo();
+                      setEditMode(false);
+                    }}
+                  >
+                    확인
+                  </Button>
+                ) : (
+                  <Button
+                    variant="contained"
+                    size="small"
+                    onClick={() => {
+                      setEditMode(true);
+                    }}
+                  >
+                    수정
+                  </Button>
+                )}
+                <ClientRemovePopUpButton />
+              </Box>
+            ) : null}
           </Box>
           <hr />
           <br />
@@ -242,7 +251,8 @@ function ClientInfoCard({ width, height }: Props) {
               gutterBottom
               contentEditable={editMode}
             >
-              <SvgIcon component={AppRegistration} /> &nbsp;회원가입 완료
+              <SvgIcon component={AppRegistration} sx={{ color: "#1976d2" }} />{" "}
+              &nbsp;회원가입 완료
             </Typography>
           ) : (
             <Typography
@@ -273,42 +283,123 @@ function ClientInfoCard({ width, height }: Props) {
           <br />
           <br />
           <Box>
-            <SvgIcon component={Email} sx={{ marginTop: "5px" }} /> &nbsp;
-            <TextField
-              disabled={!editMode}
-              size="small"
-              sx={{ display: "inline-block", fontSize: 20 }}
-              color="secondary"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-            />
+            {useEdit ? (
+              <Box>
+                <SvgIcon
+                  component={Email}
+                  sx={{ color: "#1976d2", marginTop: "5px" }}
+                />{" "}
+                &nbsp;
+                <TextField
+                  disabled={!editMode}
+                  size="small"
+                  sx={{ display: "inline-block", fontSize: 20 }}
+                  color="secondary"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                />
+              </Box>
+            ) : (
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <SvgIcon
+                  component={Email}
+                  sx={{ color: "#1976d2", marginBottom: "5px" }}
+                />{" "}
+                &nbsp;&nbsp;
+                <Typography
+                  sx={{
+                    display: "inline-block",
+                    fontSize: 18,
+                    fontWeight: "bold",
+                  }}
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  {email}
+                </Typography>
+              </Box>
+            )}
           </Box>
           <br />
           <Box>
-            <SvgIcon component={PhoneIphone} sx={{ marginTop: "5px" }} /> &nbsp;
-            <TextField
-              disabled={!editMode}
-              size="small"
-              sx={{ display: "inline-block", fontSize: 20 }}
-              color="secondary"
-              value={phone}
-              onChange={(e) => {
-                setPhone(e.target.value);
-              }}
-            />
+            {useEdit ? (
+              <Box>
+                <SvgIcon
+                  component={PhoneIphone}
+                  sx={{ color: "#1976d2", marginTop: "5px" }}
+                />{" "}
+                &nbsp;
+                <TextField
+                  disabled={!editMode}
+                  size="small"
+                  sx={{ display: "inline-block", fontSize: 20 }}
+                  color="secondary"
+                  value={phone}
+                  onChange={(e) => {
+                    setPhone(e.target.value);
+                  }}
+                />
+              </Box>
+            ) : (
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <SvgIcon
+                  component={PhoneIphone}
+                  sx={{ color: "#1976d2", marginBottom: "5px" }}
+                />{" "}
+                &nbsp;&nbsp;
+                <Typography
+                  sx={{
+                    display: "inline-block",
+                    fontSize: 18,
+                    fontWeight: "bold",
+                  }}
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  {phone}
+                </Typography>
+              </Box>
+            )}
           </Box>
           <br />
           <Box>
-            <SvgIcon component={LocationOn} sx={{ marginTop: "5px" }} /> &nbsp;
-            <TextField
-              disabled={!editMode}
-              size="small"
-              sx={{ display: "inline-block", fontSize: 20 }}
-              color="secondary"
-              value={address}
-            />
+            {useEdit ? (
+              <Box>
+                <SvgIcon
+                  component={LocationOn}
+                  sx={{ color: "#1976d2", marginTop: "5px" }}
+                />{" "}
+                &nbsp;
+                <TextField
+                  disabled={!editMode}
+                  size="small"
+                  sx={{ display: "inline-block", fontSize: 20 }}
+                  color="secondary"
+                  value={address}
+                />
+              </Box>
+            ) : (
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <SvgIcon
+                  component={LocationOn}
+                  sx={{ color: "#1976d2", marginBottom: "8px" }}
+                />{" "}
+                &nbsp;&nbsp;
+                <Typography
+                  sx={{
+                    display: "inline-block",
+                    fontSize: 18,
+                    fontWeight: "bold",
+                  }}
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  {address}
+                </Typography>
+              </Box>
+            )}
             {editMode ? (
               <Button
                 size="small"
