@@ -9,7 +9,7 @@ type SubNavigationBarType =
 
 const subNavigationBarTypeState = atom<SubNavigationBarType>({
   key: "subNavigationBarTypeState",
-  default: "client",
+  default: "none",
 });
 
 export default subNavigationBarTypeState;

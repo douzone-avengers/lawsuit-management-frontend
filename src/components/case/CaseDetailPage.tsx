@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import Info from "./advice/Adviceinfo";
 import TabBar, { TabItem } from "../common/TabBar";
-import ExpenseInfo from "./expense/ExpenseInfo.tsx";
+import ExpenseInfoPage from "./expense/ExpenseInfoPage.tsx";
 import Closing from "./closing/ClosingInfo.tsx";
 import CaseReceptionTab from "./reception/CaseReceptionTab.tsx";
 import CaseBasicInfoCard from "./common/CaseBasicInfoCard.tsx";
@@ -24,7 +24,7 @@ function CaseDetailPage() {
   const [clientTab] = useState<TabItem[]>([
     {
       id: 0,
-      name: "사건 정보",
+      name: "접수 정보",
       children: <CaseReceptionTab />,
     },
     {
@@ -41,7 +41,7 @@ function CaseDetailPage() {
       name: "지출 정보",
       children: (
         <div>
-          <ExpenseInfo />
+          <ExpenseInfoPage />
         </div>
       ),
     },
@@ -66,6 +66,7 @@ function CaseDetailPage() {
 
     const handleSuccessHandler: RequestSuccessHandler = (res) => {
       const body: CaseInfoType = res.data;
+      console.log(body);
       setCaseInfo(body);
     };
 

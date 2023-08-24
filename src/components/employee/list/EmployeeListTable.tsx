@@ -5,10 +5,16 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Card, TableFooter, TablePagination } from "@mui/material";
+import {
+  Card,
+  TableFooter,
+  TablePagination,
+  TableSortLabel,
+} from "@mui/material";
 import { Hierarchy, MemberInfo, Role } from "../type/MemberInfo";
 import CardTitle from "../../common/CardTitle";
 import React from "react";
+import { HeadCell } from "../type/HeadCell";
 
 type Props = {
   memberInfos: (MemberInfo & { onClick: () => void })[];
@@ -19,6 +25,10 @@ type Props = {
   setPage: React.Dispatch<React.SetStateAction<number>>;
   rowsPerPage: number;
   setRowsPerPage: React.Dispatch<React.SetStateAction<number>>;
+  sortKey: string;
+  setSortKey: React.Dispatch<React.SetStateAction<string>>;
+  sortOrder: "desc" | "asc";
+  setSortOrder: React.Dispatch<React.SetStateAction<"desc" | "asc">>;
 };
 
 function EmployeeListTable({
@@ -30,6 +40,10 @@ function EmployeeListTable({
   setPage,
   rowsPerPage,
   setRowsPerPage,
+  sortKey,
+  setSortKey,
+  sortOrder,
+  setSortOrder,
 }: Props) {
   const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
@@ -42,20 +56,77 @@ function EmployeeListTable({
     setPage(0);
   };
 
+  const sortHandler = (targetSortKey: string) => {
+    if (sortKey === targetSortKey) {
+      setSortOrder(sortOrder === "desc" ? "asc" : "desc");
+      return;
+    }
+    setSortKey(targetSortKey);
+    setSortOrder("asc");
+  };
+
+  const headCells: HeadCell[] = [
+    {
+      id: "number",
+      label: "번호",
+      canSort: false,
+    },
+    {
+      id: "name",
+      label: "이름",
+      canSort: true,
+    },
+    {
+      id: "hierarchy",
+      label: "직급",
+      canSort: true,
+    },
+    {
+      id: "role",
+      label: "권한",
+      canSort: true,
+    },
+    {
+      id: "phone",
+      label: "전화번호",
+      canSort: true,
+    },
+    {
+      id: "email",
+      label: "이메일",
+      canSort: true,
+    },
+    {
+      id: "createdAt",
+      label: "가입일",
+      canSort: true,
+    },
+  ];
+
   return (
-    <Card sx={{ marginBottom: 3, marginTop: 5 }}>
+    <Card sx={{ marginBottom: 2, marginTop: 3 }}>
       <CardTitle text="사원 리스트" />
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell align="left">번호</TableCell>
-              <TableCell align="left">이름</TableCell>
-              <TableCell align="left">직급</TableCell>
-              <TableCell align="left">권한</TableCell>
-              <TableCell align="left">전화번호</TableCell>
-              <TableCell align="left">이메일</TableCell>
-              <TableCell align="left">가입일</TableCell>
+              {headCells.map((headCell) =>
+                !headCell.canSort ? (
+                  <TableCell align="left">{headCell.label}</TableCell>
+                ) : (
+                  <TableCell align="left">
+                    <TableSortLabel
+                      active={sortKey === headCell.id}
+                      direction={sortKey === headCell.id ? sortOrder : "asc"}
+                      onClick={() => {
+                        sortHandler(headCell.id);
+                      }}
+                    >
+                      {headCell.label}
+                    </TableSortLabel>
+                  </TableCell>
+                ),
+              )}
             </TableRow>
           </TableHead>
           <TableBody>

@@ -17,7 +17,7 @@ export function delimiter(num: number): string {
 }
 
 export function toDateValue(dateStr: string) {
-  if (dateStr === null) {
+  if (!dateStr) {
     return "";
   }
   return dateStr.split("T")[0];

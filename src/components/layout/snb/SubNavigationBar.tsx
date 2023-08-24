@@ -4,9 +4,6 @@ import { Box } from "@mui/material";
 import List from "@mui/material/List";
 import { useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import requestDeprecated, {
-  RequestSuccessHandler,
-} from "../../../lib/requestDeprecated.ts";
 import caseIdState from "../../../states/case/CaseIdState.tsx";
 import clientIdState from "../../../states/client/ClientIdState.tsx";
 import subNavigationBarState from "../../../states/layout/SubNavigationBarState.tsx";
@@ -17,8 +14,11 @@ import SubNavigationBarItem, {
 import ClientRegisterPopUpButton from "../../client/ClientRegisterPopUpButton.tsx";
 import employeeIdState from "../../../states/employee/EmployeeIdState";
 import employeeButtonIdState from "../../../states/employee/EmployeeButtonIdState";
-import { ClientData } from "../../../type/ResponseType.ts";
-import { MemberInfo } from "../../employee/type/MemberInfo.tsx";
+import { MemberInfo, Role } from "../../employee/type/MemberInfo";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../../lib/requestDeprecated";
+import { ClientData } from "../../../type/ResponseType";
 
 function SubNavigationBar() {
   const clientId = useRecoilValue(clientIdState);
@@ -96,22 +96,37 @@ function SubNavigationBar() {
       );
     } else if (subNavigationBarType === "employee") {
       const handleRequestSuccess: RequestSuccessHandler = (res) => {
-        const body: { data: MemberInfo[] } = res.data;
-        const newItems: SubNavigationBarItemState[] = body.data.map((item) => {
-          return {
-            id: item.id,
-            text: item.name,
-            subText: String(item.roleId),
-            url:
-              employeeButton === 2
-                ? `employees/${item.id}`
-                : `employees/${item.id}/cases`,
-            SvgIcon: BalanceIcon,
-          };
+        const memberInfos: MemberInfo[] = res.data.memberDtoNonPassList;
+
+        const handleRoleRequestSuccess: RequestSuccessHandler = (res) => {
+          const roleList: Role[] = res.data;
+
+          const newItems: SubNavigationBarItemState[] = memberInfos.map(
+            (item) => {
+              return {
+                id: item.id,
+                text: item.name,
+                subText: roleList.filter((it) => it.id == item.roleId)[0]
+                  .nameKr,
+                url:
+                  employeeButton === 2
+                    ? `employees/${item.id}`
+                    : `employees/${item.id}/cases`,
+                SvgIcon: BalanceIcon,
+              };
+            },
+          );
+          setSubNavigationBar({ ...subNavigationBar, items: newItems });
+        };
+        requestDeprecated("GET", `/role`, {
+          useMock: false,
+          withToken: false,
+          onSuccess: handleRoleRequestSuccess,
         });
-        setSubNavigationBar({ ...subNavigationBar, items: newItems });
       };
-      requestDeprecated("GET", `/members?role=ADMIN,EMPLOYEE`, {
+      requestDeprecated("GET", `/members/employees`, {
+        useMock: false,
+        withToken: true,
         onSuccess: handleRequestSuccess,
       });
     }

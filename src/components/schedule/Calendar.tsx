@@ -181,37 +181,38 @@ function Calendar() {
         width: "100%",
       }}
     >
-      <AppBar
-        position="static"
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          height: 60,
-        }}
-      >
-        <ButtonContainer onClick={handlePrevMonthButton}>
-          <IconButton sx={{ color: "white" }}>
-            <KeyboardArrowLeftIcon />
-          </IconButton>
-        </ButtonContainer>
+      <AppBar position="static">
         <div
           style={{
             display: "flex",
-            textAlign: "center",
-            fontSize: 20,
-            gap: 10,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            height: 60,
           }}
         >
-          <div>{calendarDate.year}년</div>
-          <div>{String(calendarDate.month).padStart(2, "0")}월</div>
+          <ButtonContainer onClick={handlePrevMonthButton}>
+            <IconButton sx={{ color: "white" }}>
+              <KeyboardArrowLeftIcon />
+            </IconButton>
+          </ButtonContainer>
+          <div
+            style={{
+              display: "flex",
+              textAlign: "center",
+              fontSize: 20,
+              gap: 10,
+            }}
+          >
+            <div>{calendarDate.year}년</div>
+            <div>{String(calendarDate.month).padStart(2, "0")}월</div>
+          </div>
+          <ButtonContainer onClick={handleNextMonthButton}>
+            <IconButton sx={{ color: "white" }}>
+              <KeyboardArrowRightIcon />
+            </IconButton>
+          </ButtonContainer>
         </div>
-        <ButtonContainer onClick={handleNextMonthButton}>
-          <IconButton sx={{ color: "white" }}>
-            <KeyboardArrowRightIcon />
-          </IconButton>
-        </ButtonContainer>
       </AppBar>
       <div style={{ padding: 20 }}>
         <div

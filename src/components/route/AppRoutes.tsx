@@ -25,10 +25,11 @@ import EmployeePrivatePage from "../employee/private/EmployeePrivatePage";
 import employeeButtonIdState from "../../states/employee/EmployeeButtonIdState";
 import EmployeeListPage from "../employee/list/EmployeesListPage";
 import employeeIdState from "../../states/employee/EmployeeIdState";
-import EmployeeCasePage from "../employee/case/EmployeeCasePage";
+import EmployeeCasePage from "../employee/case/list/EmployeeCasePage";
 import caseTabIdState from "../../states/case/CaseTabIdState.tsx";
 import ValidatePage from "../join/ValidatePage";
 import SchedulePage from "../schedule/SchedulePage.tsx";
+import scheduleButtonIsClickState from "../schedule/ScheduleButtonIsClick.tsx";
 
 function AppRoutes() {
   const location = useLocation();
@@ -44,6 +45,9 @@ function AppRoutes() {
   const setEmployeeButtonId = useSetRecoilState(employeeButtonIdState);
   const setEmployeeId = useSetRecoilState(employeeIdState);
   const setCaseTabId = useSetRecoilState(caseTabIdState);
+  const setScheduleButtonIsClick = useSetRecoilState(
+    scheduleButtonIsClickState,
+  );
 
   useEffect(() => {
     const { pathname, search } = location;
@@ -63,6 +67,7 @@ function AppRoutes() {
 
     // *
     setCaseTabId(0);
+    setScheduleButtonIsClick(false);
 
     // /
     if (length === 1 && paths[1] === "") {
@@ -223,6 +228,7 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: -1,
       });
+      setScheduleButtonIsClick(true);
       return;
     }
 

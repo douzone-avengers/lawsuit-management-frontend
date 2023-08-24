@@ -3,7 +3,7 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Button, TextField } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import * as dayjs from "dayjs";
@@ -20,15 +20,19 @@ import requestDeprecated, {
 } from "../../../../../lib/requestDeprecated.ts";
 import PopUp from "../../../../common/PopUp.tsx";
 import CloseButton from "../../../../common/CloseButton.tsx";
+import caseInfoState, {
+  CaseInfoType,
+} from "../../../../../states/case/info/caseInfoState.tsx";
 
 function CaseReceptionAddPopUp() {
   const [status, setStatus] = useState("incomplete");
   const [category, setCategory] = useState("scheduled");
   const [contents, setContents] = useState("");
-  const [receivedAt, setReceivedAt] = useState(new Date().toISOString());
   const [deadline, setDeadline] = useState(new Date().toISOString());
+  const [receivedAt, setReceivedAt] = useState(new Date().toISOString());
 
   const caseId = useRecoilValue(caseIdState);
+  const setCaseInfo = useSetRecoilState(caseInfoState);
 
   const url = useRecoilValue(caseReceptionSearchUrlState);
 
@@ -54,13 +58,20 @@ function CaseReceptionAddPopUp() {
     setContents(e.target.value);
   };
 
+  const handleDeadlineChange = (e: Dayjs | null) => {
+    setDeadline(e?.toDate().toISOString() ?? "");
+  };
   const handleReceivedAtChange = (e: Dayjs | null) => {
     setReceivedAt(e?.toDate().toISOString() ?? "");
   };
 
-  const handleDeadlineChange = (e: Dayjs | null) => {
-    setDeadline(e?.toDate().toISOString() ?? "");
-  };
+  useEffect(() => {
+    if (status === "complete") {
+      setReceivedAt(new Date().toISOString());
+    } else {
+      setReceivedAt("");
+    }
+  }, [status]);
 
   const handleSubmitClick = () => {
     const handleRequestSuccess: RequestSuccessHandler = () => {
@@ -76,6 +87,15 @@ function CaseReceptionAddPopUp() {
         );
         setSize(size);
         setReceptionAddPopUpOpen(false);
+        const handleRequestSuccess3: RequestSuccessHandler = (res) => {
+          const body: CaseInfoType = res.data;
+          setCaseInfo(body);
+        };
+
+        requestDeprecated("GET", `/lawsuits/${caseId}/basic`, {
+          onSuccess: handleRequestSuccess3,
+          useMock: false,
+        });
       };
 
       requestDeprecated("GET", url, {
@@ -90,7 +110,7 @@ function CaseReceptionAddPopUp() {
         status: status,
         category,
         contents,
-        receivedAt,
+        receivedAt: receivedAt !== "" ? receivedAt : null,
         deadline,
       },
       onSuccess: handleRequestSuccess,
@@ -128,17 +148,19 @@ function CaseReceptionAddPopUp() {
       <DatePicker
         format="YYYY-MM-DD"
         slotProps={{ textField: { size: "small" } }}
-        defaultValue={dayjs(receivedAt)}
-        label="접수일"
-        onChange={handleReceivedAtChange}
-      />
-      <DatePicker
-        format="YYYY-MM-DD"
-        slotProps={{ textField: { size: "small" } }}
-        defaultValue={dayjs(deadline)}
+        value={dayjs(deadline)}
         label="마감일"
         onChange={handleDeadlineChange}
       />
+      {status === "complete" && (
+        <DatePicker
+          format="YYYY-MM-DD"
+          slotProps={{ textField: { size: "small" } }}
+          value={dayjs(receivedAt)}
+          label="완료일"
+          onChange={handleReceivedAtChange}
+        />
+      )}
       <Button size="large" variant="contained" onClick={handleSubmitClick}>
         등록
       </Button>

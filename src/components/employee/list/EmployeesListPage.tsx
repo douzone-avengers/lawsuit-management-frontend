@@ -8,6 +8,7 @@ import EmployeeListTable from "./EmployeeListTable";
 import { useNavigate } from "react-router-dom";
 import { Hierarchy, MemberInfo, Role } from "../type/MemberInfo";
 import EmployeeListSearchBox from "./EmployeeListSearchBox";
+import EmployeePromotionDialog from "./EmployeePromotionDialog";
 
 function EmployeeListPage() {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ function EmployeeListPage() {
   });
   const [searchWord, setSearchWord] = useState("");
   const [sortKey, setSortKey] = useState("createdAt");
-  const [sortOrder, setSortOrder] = useState("desc");
+  const [sortOrder, setSortOrder] = useState<"desc" | "asc">("desc");
 
   //for paging
   const [page, setPage] = useState(0);
@@ -46,8 +47,6 @@ function EmployeeListPage() {
   }, []);
 
   const prevDependencies = useRef({
-    searchHierarchy,
-    searchRole,
     sortKey,
     sortOrder,
     rowsPerPage,
@@ -57,8 +56,6 @@ function EmployeeListPage() {
   useEffect(() => {
     // page만 변화했는지 체크
     if (
-      prevDependencies.current.searchHierarchy === searchHierarchy &&
-      prevDependencies.current.searchRole === searchRole &&
       prevDependencies.current.sortKey === sortKey &&
       prevDependencies.current.sortOrder === sortOrder &&
       prevDependencies.current.rowsPerPage === rowsPerPage &&
@@ -71,14 +68,12 @@ function EmployeeListPage() {
 
     // 의존성 변수들의 마지막 값을 저장
     prevDependencies.current = {
-      searchHierarchy,
-      searchRole,
       sortKey,
       sortOrder,
       rowsPerPage,
       page,
     };
-  }, [searchHierarchy, searchRole, sortKey, sortOrder, rowsPerPage, page]);
+  }, [sortKey, sortOrder, rowsPerPage, page]);
 
   //검색
   const searchRequest = (isInitPage?: boolean, isGetBackWord?: boolean) => {
@@ -173,7 +168,7 @@ function EmployeeListPage() {
   };
 
   return (
-    <Box sx={{ margin: 3 }}>
+    <Box sx={{ margin: 3, display: "flex", flexDirection: "column" }}>
       <EmployeeListSearchBox
         hierarchyList={hierarchyList}
         roleList={roleList}
@@ -185,10 +180,6 @@ function EmployeeListPage() {
         setSearchWord={setSearchWord}
         curSearchWord={curSearchWord}
         setCurSearchWord={setCurSearchWord}
-        sortKey={sortKey}
-        setSortKey={setSortKey}
-        sortOrder={sortOrder}
-        setSortOrder={setSortOrder}
         searchRequest={searchRequest}
       />
 
@@ -206,7 +197,12 @@ function EmployeeListPage() {
         setPage={setPage}
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}
+        sortKey={sortKey}
+        setSortKey={setSortKey}
+        sortOrder={sortOrder}
+        setSortOrder={setSortOrder}
       />
+      <EmployeePromotionDialog />
     </Box>
   );
 }

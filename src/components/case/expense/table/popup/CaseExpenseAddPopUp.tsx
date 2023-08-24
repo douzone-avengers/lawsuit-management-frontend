@@ -3,9 +3,9 @@ import caseIdState from "../../../../../states/case/CaseIdState.tsx";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { caseExpenseSearchUrlState } from "../../../../../states/case/info/expense/CaseExpenseSearchState.tsx";
 import caseExpenseAddPopUpOpenState from "../../../../../states/case/info/expense/CaseExpenseAddPopUpOpenState.tsx";
-import caseExpenseState, {
+import caseExpensesState, {
   CaseExpenseRowType,
-} from "../../../../../states/case/info/expense/CaseExpenseState.tsx";
+} from "../../../../../states/case/info/expense/CaseExpensesState.tsx";
 import caseExpenseSizeState from "../../../../../states/case/info/expense/CaseExpenseSizeState.tsx";
 import * as dayjs from "dayjs";
 import { Dayjs } from "dayjs";
@@ -30,7 +30,7 @@ function CaseExpenseAddPopUp() {
   const setExpenseAddPopUpOpen = useSetRecoilState(
     caseExpenseAddPopUpOpenState,
   );
-  const setExpense = useSetRecoilState(caseExpenseState);
+  const setExpenses = useSetRecoilState(caseExpensesState);
   const setSize = useSetRecoilState(caseExpenseSizeState);
 
   const handleCloseButtonClick = () => {
@@ -53,11 +53,11 @@ function CaseExpenseAddPopUp() {
     const handleRequestSuccess: RequestSuccessHandler = () => {
       const handleRequestSuccess2: RequestSuccessHandler = (res) => {
         const {
-          expense,
+          expenses,
           size,
-        }: { expense: CaseExpenseRowType[]; size: number } = res.data["data"];
-        setExpense(
-          expense.map((item) => {
+        }: { expenses: CaseExpenseRowType[]; size: number } = res.data;
+        setExpenses(
+          expenses.map((item) => {
             return { ...item, editable: false };
           }),
         );
@@ -67,6 +67,7 @@ function CaseExpenseAddPopUp() {
 
       requestDeprecated("GET", url, {
         onSuccess: handleRequestSuccess2,
+        useMock: false,
       });
     };
 
@@ -78,6 +79,7 @@ function CaseExpenseAddPopUp() {
         amount,
       },
       onSuccess: handleRequestSuccess,
+      useMock: false,
     });
   };
 

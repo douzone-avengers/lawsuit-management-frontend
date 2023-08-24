@@ -10,9 +10,9 @@ import caseExpenseSearchState, {
   caseExpenseSearchUrlState,
 } from "../../../../states/case/info/expense/CaseExpenseSearchState.tsx";
 import caseExpenseSizeState from "../../../../states/case/info/expense/CaseExpenseSizeState.tsx";
-import caseExpenseState, {
+import caseExpensesState, {
   CaseExpenseRowType,
-} from "../../../../states/case/info/expense/CaseExpenseState.tsx";
+} from "../../../../states/case/info/expense/CaseExpensesState.tsx";
 import caseIdState from "../../../../states/case/CaseIdState.tsx";
 import requestDeprecated, {
   RequestSuccessHandler,
@@ -30,10 +30,8 @@ function CaseExpenseSearchBox() {
   const setSize = useSetRecoilState(caseExpenseSizeState);
 
   const caseId = useRecoilValue(caseIdState);
-  const setCaseExpense = useSetRecoilState(caseExpenseState);
+  const setCaseExpenses = useSetRecoilState(caseExpensesState);
   const [selectedStartDate, setSelectedStartDate] = useState<string>("");
-  // const [startValue, setStartValue] = useState<string>("");
-  // const [endValue, setEndValue] = useState<string>("");
 
   const handleStartSpeningAt = (start: any) => {
     setSelectedStartDate(start);
@@ -104,10 +102,12 @@ function CaseExpenseSearchBox() {
     }
 
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      const { expense, size }: { expense: CaseExpenseRowType[]; size: number } =
-        res.data["data"];
-      setCaseExpense(
-        expense.map((item) => {
+      const {
+        expenses,
+        size,
+      }: { expenses: CaseExpenseRowType[]; size: number } = res.data;
+      setCaseExpenses(
+        expenses.map((item) => {
           return { ...item, editable: false };
         }),
       );
@@ -119,6 +119,7 @@ function CaseExpenseSearchBox() {
     const newUrl = updateUrl(url, 0);
     requestDeprecated("GET", newUrl, {
       onSuccess: handleRequestSuccess,
+      useMock: false,
     });
   };
 

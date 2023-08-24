@@ -1,6 +1,6 @@
-import caseExpenseState, {
+import caseExpensesState, {
   CaseExpenseRowType,
-} from "../../../../../states/case/info/expense/CaseExpenseState.tsx";
+} from "../../../../../states/case/info/expense/CaseExpensesState.tsx";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import caseExpenseSizeState from "../../../../../states/case/info/expense/CaseExpenseSizeState.tsx";
 import { caseExpenseSearchUrlState } from "../../../../../states/case/info/expense/CaseExpenseSearchState.tsx";
@@ -15,7 +15,7 @@ type Props = {
 };
 
 function CaseExpenseDeleteButton({ item }: Props) {
-  const setExpense = useSetRecoilState(caseExpenseState);
+  const setExpenses = useSetRecoilState(caseExpensesState);
   const setSize = useSetRecoilState(caseExpenseSizeState);
   const url = useRecoilValue(caseExpenseSearchUrlState);
 
@@ -23,22 +23,26 @@ function CaseExpenseDeleteButton({ item }: Props) {
     const handleRequestSuccess: RequestSuccessHandler = () => {
       const handleRequestSuccess2: RequestSuccessHandler = (res) => {
         const {
-          expense,
+          expenses,
           size,
-        }: { expense: CaseExpenseRowType[]; size: number } = res.data["data"];
-        setExpense(
-          expense.map((item) => {
+        }: { expenses: CaseExpenseRowType[]; size: number } = res.data;
+        setExpenses(
+          expenses.map((item) => {
             return { ...item, editable: false };
           }),
         );
         setSize(size);
       };
+
       requestDeprecated("GET", url, {
         onSuccess: handleRequestSuccess2,
+        useMock: false,
       });
     };
-    requestDeprecated("PUT", `/expense/delete/${item.id}`, {
+
+    requestDeprecated("PUT", `/expenses/delete/${item.id}`, {
       onSuccess: handleRequestSuccess,
+      useMock: false,
     });
   };
 
