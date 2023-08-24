@@ -28,7 +28,6 @@ function ClientRemovePopUp() {
         <Button variant="contained" onClick={handleCloseButtonClick}>
           예
         </Button>
-        x
         <Button variant="contained" onClick={handleCloseButtonClick}>
           아니오
         </Button>
