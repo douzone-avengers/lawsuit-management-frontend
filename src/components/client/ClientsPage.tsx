@@ -9,8 +9,9 @@ function ClientsPage() {
 
   useEffect(() => {
     if (subNavigationBar.items && subNavigationBar.items.length > 0) {
-      const { id } = subNavigationBar.items[0];
-      navigate(`/clients/${id}`);
+      // const { id } = subNavigationBar.items[0];
+      // navigate(`/clients/${id}`);
+      navigate(`/clients/2`);
     }
   }, [subNavigationBar]);
 
