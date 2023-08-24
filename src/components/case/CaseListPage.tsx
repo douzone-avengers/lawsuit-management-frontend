@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
@@ -22,6 +22,7 @@ import CaseAddPopUpButton from "./CaseAddPopUpButton.tsx";
 import caseAddPopUpOpenState from "../../states/case/CaseAddPopUpOpenState.tsx";
 import CaseAddPopUp from "./CaseAddPopUp.tsx";
 import { LawsuitCountInfo } from "./type/LawsuitCountInfo.tsx";
+import FlagState from "../../states/layout/FlagState";
 
 function CaseListPage() {
   const clientId = useRecoilValue(clientIdState);
@@ -42,6 +43,7 @@ function CaseListPage() {
   const [closingLength, setClosingLength] = useState(0);
   const [triggerSearch, setTriggerSearch] = useState(false);
   const caseAddPopUpOpen = useRecoilValue(caseAddPopUpOpenState);
+  const [flag, setFlag] = useRecoilState(FlagState);
 
   const prevDependencies = useRef({
     searchLawsuitStatus,
@@ -123,6 +125,8 @@ function CaseListPage() {
       setRegistrationLength(lawsuitData.countDto.registration);
       setProceedingLength(lawsuitData.countDto.proceeding);
       setClosingLength(lawsuitData.countDto.closing);
+
+      setFlag(false);
     };
 
     const handleRequestFail: RequestFailHandler = (e) => {
@@ -147,9 +151,10 @@ function CaseListPage() {
   };
 
   useEffect(() => {
+    if (!flag) return;
     setSearchLawsuitStatus(null);
     setSearchWord("");
-  }, [clientId]);
+  }, [clientId, flag]);
 
   useEffect(() => {
     if (cases && cases.length > 0) {
