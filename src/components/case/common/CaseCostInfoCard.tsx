@@ -18,12 +18,16 @@ function CaseCostInfoCard() {
           <ListProfileItem
             SvgIcon={AttachMoneyIcon}
             primary={"의뢰비"}
-            secondary={`${delimiter(caseInfo?.lawsuit.commissionFee ?? 0)}원`}
+            secondary={`${delimiter(
+              caseInfo?.lawsuit.lawsuitCommissionFee ?? 0,
+            )}원`}
           />
           <ListProfileItem
             SvgIcon={AttachMoneyIcon}
             primary={"성공 보수 비용"}
-            secondary={`${delimiter(caseInfo?.lawsuit.contingentFee ?? 0)}원`}
+            secondary={`${delimiter(
+              caseInfo?.lawsuit.lawsuitContingentFee ?? 0,
+            )}원`}
           />
         </List>
       </Card>
