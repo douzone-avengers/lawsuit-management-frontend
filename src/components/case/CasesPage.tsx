@@ -15,7 +15,7 @@ function CasesPage() {
       setClientId(id);
       navigate(`/cases/list?client=${id}`);
     }
-  }, [subNavigationBar]);
+  }, [subNavigationBar.items]);
 
   return <>TODO: Loading</>;
 }

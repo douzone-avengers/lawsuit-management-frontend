@@ -11,6 +11,7 @@ import ClientInfoCard from "../../client/ClientInfoCard.tsx";
 import ClosingTable from "./ClosingTable.tsx";
 import adviceIdState from "../../../states/advice/AdviceState.tsx";
 import { LawsuitInfo } from "../type/LawsuitInfo.tsx";
+import PrintButton from "./print/PrintButton.tsx";
 
 function ClosingInfo() {
   const clientId = useRecoilValue(clientIdState);
@@ -62,6 +63,7 @@ function ClosingInfo() {
           }))}
         />
       </Box>
+      <PrintButton />
     </Box>
   );
 }
