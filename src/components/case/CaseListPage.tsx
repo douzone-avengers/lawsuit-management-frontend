@@ -173,7 +173,7 @@ function CaseListPage() {
         position: "relative",
       }}
     >
-      <ClientInfoCard />
+      <ClientInfoCard useEdit={false} />
       <Card>
         <CardContent>
           <TextField
