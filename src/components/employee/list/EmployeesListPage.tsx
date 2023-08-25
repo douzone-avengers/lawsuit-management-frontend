@@ -112,12 +112,14 @@ function EmployeeListPage() {
       onFail: handelRequestFail,
     });
   };
-
   return (
     <Box sx={{ margin: 3, display: "flex", flexDirection: "column" }}>
       <EmployeeListSearchBox
-        hierarchyList={hierarchyList}
-        roleList={roleList}
+        hierarchyList={[
+          { id: 0, nameKr: "전체", nameEng: "ALL" },
+          ...hierarchyList,
+        ].filter((it) => it.nameKr !== "없음")}
+        roleList={[{ id: 0, nameKr: "전체", nameEng: "ALL" }, ...roleList]}
         searchHierarchy={searchHierarchy}
         setSearchHierarchy={setSearchHierarchy}
         searchRole={searchRole}

@@ -18,16 +18,8 @@ function HomePage() {
   //직급 리스트
   const hierarchyRequest = () => {
     const handelRequestSuccess: RequestSuccessHandler = (res) => {
-      const allHierarchy: Hierarchy = {
-        id: 0,
-        nameKr: "전체",
-        nameEng: "ALL",
-      };
       const data: Hierarchy[] = res.data;
-      // const filteredData = res.data.filter(
-      //   (item: Hierarchy) => item.nameEng !== "NONE",
-      // );
-      setHierarchyList([allHierarchy, ...data]);
+      setHierarchyList(data);
     };
     const handelRequestFail: RequestFailHandler = (e) => {
       alert((e.response.data as { code: string; message: string }).message);
@@ -44,17 +36,8 @@ function HomePage() {
   //권한 리스트
   const roleRequest = () => {
     const handelRequestSuccess: RequestSuccessHandler = (res) => {
-      const allRole: Role = {
-        id: 0,
-        nameKr: "전체",
-        nameEng: "ALL",
-      };
-
-      const filteredData = res.data.filter(
-        (item: Role) => item.nameEng !== "CLIENT",
-      );
-      // res.data에 allRole 추가
-      setRoleList([allRole, ...filteredData]);
+      const data: Role[] = res.data;
+      setRoleList(data);
     };
     const handelRequestFail: RequestFailHandler = (e) => {
       alert((e.response.data as { code: string; message: string }).message);

@@ -11,7 +11,7 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import { Hierarchy, MemberInfo, Role } from "../type/MemberInfo";
+import { MemberInfo } from "../type/MemberInfo";
 import ReactModal from "react-modal";
 import DaumPostcode from "react-daum-postcode";
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -21,6 +21,8 @@ import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
 } from "../../../lib/requestDeprecated";
+import hierarchyListState from "../../../states/data/hierarchyListState";
+import roleListState from "../../../states/data/roleListState";
 
 type Props = {
   width?: string | number;
@@ -31,8 +33,8 @@ type Props = {
 function EmployeeInfoCard({ width = "50%", memberInfo }: Props) {
   const [isEditMode, setIsEditMode] = useState(false);
 
-  const [hierarchyList, setHierarchyList] = useState<Hierarchy[]>([]);
-  const [roleList, setRoleList] = useState<Role[]>([]);
+  const hierarchyList = useRecoilValue(hierarchyListState);
+  const roleList = useRecoilValue(roleListState);
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -63,43 +65,6 @@ function EmployeeInfoCard({ width = "50%", memberInfo }: Props) {
       setRoleId(memberInfo.roleId);
     }
   }, [memberInfo]);
-
-  useEffect(() => {
-    hierarchyRequest();
-    roleRequest();
-  }, []);
-
-  const hierarchyRequest = () => {
-    const handelRequestSuccess: RequestSuccessHandler = (res) => {
-      setHierarchyList(res.data);
-    };
-    const handelRequestFail: RequestFailHandler = (e) => {
-      alert((e.response.data as { code: string; message: string }).message);
-    };
-
-    requestDeprecated("GET", `/hierarchy`, {
-      withToken: false,
-      useMock: false,
-      onSuccess: handelRequestSuccess,
-      onFail: handelRequestFail,
-    });
-  };
-
-  const roleRequest = () => {
-    const handelRequestSuccess: RequestSuccessHandler = (res) => {
-      setRoleList(res.data);
-    };
-    const handelRequestFail: RequestFailHandler = (e) => {
-      alert((e.response.data as { code: string; message: string }).message);
-    };
-
-    requestDeprecated("GET", `/role`, {
-      withToken: false,
-      useMock: false,
-      onSuccess: handelRequestSuccess,
-      onFail: handelRequestFail,
-    });
-  };
 
   const updateRequest = () => {
     const handelRequestSuccess: RequestSuccessHandler = () => {

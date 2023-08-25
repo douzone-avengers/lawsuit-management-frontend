@@ -14,13 +14,16 @@ import SubNavigationBarItem, {
 import ClientRegisterPopUpButton from "../../client/ClientRegisterPopUpButton.tsx";
 import employeeIdState from "../../../states/employee/EmployeeIdState";
 import employeeButtonIdState from "../../../states/employee/EmployeeButtonIdState";
-import { MemberInfo, Role } from "../../employee/type/MemberInfo";
+import { MemberInfo } from "../../employee/type/MemberInfo";
 import requestDeprecated, {
   RequestSuccessHandler,
 } from "../../../lib/requestDeprecated";
 import { ClientData } from "../../../type/ResponseType";
+import roleListState from "../../../states/data/roleListState";
 
 function SubNavigationBar() {
+  const roleList = useRecoilValue(roleListState);
+
   const clientId = useRecoilValue(clientIdState);
   const caseId = useRecoilValue(caseIdState);
   const employeeId = useRecoilValue(employeeIdState);
@@ -97,32 +100,21 @@ function SubNavigationBar() {
     } else if (subNavigationBarType === "employee") {
       const handleRequestSuccess: RequestSuccessHandler = (res) => {
         const memberInfos: MemberInfo[] = res.data.memberDtoNonPassList;
-
-        const handleRoleRequestSuccess: RequestSuccessHandler = (res) => {
-          const roleList: Role[] = res.data;
-
-          const newItems: SubNavigationBarItemState[] = memberInfos.map(
-            (item) => {
-              return {
-                id: item.id,
-                text: item.name,
-                subText: roleList.filter((it) => it.id == item.roleId)[0]
-                  .nameKr,
-                url:
-                  employeeButton === 2
-                    ? `employees/${item.id}`
-                    : `employees/${item.id}/cases`,
-                SvgIcon: BalanceIcon,
-              };
-            },
-          );
-          setSubNavigationBar({ ...subNavigationBar, items: newItems });
-        };
-        requestDeprecated("GET", `/role`, {
-          useMock: false,
-          withToken: false,
-          onSuccess: handleRoleRequestSuccess,
-        });
+        const newItems: SubNavigationBarItemState[] = memberInfos.map(
+          (item) => {
+            return {
+              id: item.id,
+              text: item.name,
+              subText: roleList.filter((it) => it.id == item.roleId)[0].nameKr,
+              url:
+                employeeButton === 2
+                  ? `employees/${item.id}`
+                  : `employees/${item.id}/cases`,
+              SvgIcon: BalanceIcon,
+            };
+          },
+        );
+        setSubNavigationBar({ ...subNavigationBar, items: newItems });
       };
       requestDeprecated("GET", `/members/employees`, {
         useMock: false,
