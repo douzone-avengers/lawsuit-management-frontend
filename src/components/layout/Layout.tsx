@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import isLoginState from "../../states/common/IsLoginState";
@@ -30,6 +30,8 @@ function Layout() {
   const loading = useRecoilValue(loadingState);
   const [, setHierarchyList] = useRecoilState(hierarchyListState);
   const [, setRoleList] = useRecoilState(roleListState);
+  const [roleLoaded, setRoleLoaded] = useState(false);
+  const [hierarchyLoaded, setHierarchyLoaded] = useState(false);
 
   //set enum table
   //직급 리스트
@@ -37,6 +39,7 @@ function Layout() {
     const handelRequestSuccess: RequestSuccessHandler = (res) => {
       const data: Hierarchy[] = res.data;
       setHierarchyList(data);
+      setHierarchyLoaded(true);
     };
     const handelRequestFail: RequestFailHandler = (e) => {
       alert((e.response.data as { code: string; message: string }).message);
@@ -55,6 +58,7 @@ function Layout() {
     const handelRequestSuccess: RequestSuccessHandler = (res) => {
       const data: Role[] = res.data;
       setRoleList(data);
+      setRoleLoaded(true);
     };
     const handelRequestFail: RequestFailHandler = (e) => {
       alert((e.response.data as { code: string; message: string }).message);
@@ -87,12 +91,17 @@ function Layout() {
     <>
       {loading.isLoading ? <LoadingSpinner /> : null}
 
-      <Box sx={{ display: "flex" }}>
-        <Header />
-        <SideNavigationBar />
-        <Main />
-        {import.meta.env.DEV ? <Debug /> : null}
-      </Box>
+      {hierarchyLoaded && roleLoaded ? (
+        <Box sx={{ display: "flex" }}>
+          <Header />
+          <SideNavigationBar />
+          <Main />
+          {import.meta.env.DEV ? <Debug /> : null}
+        </Box>
+      ) : (
+        <LoadingSpinner />
+      )}
+
       {clientRegisterPopUp ? <ClientRegisterPopUp /> : null}
       {clientRemovePopUpOpen ? <ClientRemovePopUp /> : null}
     </>

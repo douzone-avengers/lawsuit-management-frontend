@@ -2,7 +2,7 @@ import { atom } from "recoil";
 
 const sideNavigationBarOpenState = atom<boolean>({
   key: "sideNavigationBarOpenState",
-  default: false,
+  default: true,
 });
 
 export default sideNavigationBarOpenState;
