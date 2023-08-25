@@ -127,7 +127,7 @@ function SubNavigationBar() {
         onSuccess: handleRequestSuccess,
       });
     }
-  }, [subNavigationBarType]);
+  }, [subNavigationBarType, employeeButton]);
 
   return (
     <Box
