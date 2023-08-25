@@ -28,7 +28,7 @@ function Debug() {
     <Box
       sx={{
         position: "absolute",
-        right: 0,
+        right: 200,
         bottom: 0,
       }}
     >
