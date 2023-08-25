@@ -41,9 +41,13 @@ function CaseListPage() {
   const [proceedingLength, setProceedingLength] = useState(0);
   const [closingLength, setClosingLength] = useState(0);
   const [triggerSearch, setTriggerSearch] = useState(false);
+  const [sortKey, setSortKey] = useState("createdAt");
+  const [sortOrder, setSortOrder] = useState<"desc" | "asc">("desc");
   const caseAddPopUpOpen = useRecoilValue(caseAddPopUpOpenState);
 
   const prevDependencies = useRef({
+    sortKey,
+    sortOrder,
     searchLawsuitStatus,
     rowsPerPage,
     page,
@@ -57,6 +61,8 @@ function CaseListPage() {
 
     // page만 변화했는지 체크
     if (
+      prevDependencies.current.sortKey === sortKey &&
+      prevDependencies.current.sortOrder === sortOrder &&
       prevDependencies.current.searchLawsuitStatus === searchLawsuitStatus &&
       prevDependencies.current.rowsPerPage === rowsPerPage &&
       prevDependencies.current.page !== page
@@ -67,11 +73,21 @@ function CaseListPage() {
     }
 
     prevDependencies.current = {
+      sortKey,
+      sortOrder,
       searchLawsuitStatus,
       rowsPerPage,
       page,
     };
-  }, [clientId, rowsPerPage, page, searchLawsuitStatus, searchWord]);
+  }, [
+    clientId,
+    rowsPerPage,
+    page,
+    searchLawsuitStatus,
+    searchWord,
+    sortKey,
+    sortOrder,
+  ]);
 
   // 검색
   const searchRequest = (isInitPage?: boolean, isGetBackWord?: boolean) => {
@@ -140,6 +156,8 @@ function CaseListPage() {
         ...(searchLawsuitStatus !== null && {
           lawsuitStatus: converter(searchLawsuitStatus),
         }),
+        ...(sortKey !== null ? { sortKey: sortKey } : {}),
+        ...(sortOrder !== null ? { sortOrder: sortOrder } : {}),
       },
       onSuccess: handleRequestSuccess,
       onFail: handleRequestFail,
@@ -247,6 +265,10 @@ function CaseListPage() {
           setPage={setPage}
           rowsPerPage={rowsPerPage}
           setRowsPerPage={setRowsPerPage}
+          sortKey={sortKey}
+          setSortKey={setSortKey}
+          sortOrder={sortOrder}
+          setSortOrder={setSortOrder}
         />
       </Box>
       <CaseAddPopUpButton />
