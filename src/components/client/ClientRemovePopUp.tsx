@@ -18,7 +18,7 @@ function ClientRemovePopUp() {
   );
   const clientId = useRecoilValue(clientIdState);
 
-  const handleCloseButtonClick = () => {
+  const handleRemoveButtonClick = () => {
     const handleRequestSuccess: RequestSuccessHandler = () => {
       alert("의뢰인이 삭제되었습니다.");
     };
@@ -35,6 +35,10 @@ function ClientRemovePopUp() {
     setClientRemovePopUpOpen(false);
   };
 
+  const handleCloseButtonClick = () => {
+    setClientRemovePopUpOpen(false);
+  };
+
   return (
     <PopUp width={480} popUpType="alert">
       <DialogTitle>해당 의뢰인을 삭제하시겠습니까?</DialogTitle>
@@ -44,10 +48,19 @@ function ClientRemovePopUp() {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button variant="contained" onClick={handleCloseButtonClick}>
+        <Button variant="contained" onClick={handleRemoveButtonClick}>
           예
         </Button>
-        <Button variant="contained" onClick={handleCloseButtonClick}>
+        <Button
+          variant="contained"
+          onClick={handleCloseButtonClick}
+          sx={{
+            background: "#ef5350",
+            "&:hover": {
+              backgroundColor: "red",
+            },
+          }}
+        >
           아니오
         </Button>
       </DialogActions>

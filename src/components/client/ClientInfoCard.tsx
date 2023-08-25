@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import requestDeprecated, {
   RequestFailHandler,
@@ -36,8 +36,16 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
   const clientId = useRecoilValue(clientIdState);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [isPhoneOk, setIsPhoneOk] = useState(true);
+  const [phoneMessage, setPhoneMessage] = useState("");
   const [email, setEmail] = useState("");
+  const [isEmailOk, setIsEmailOk] = useState(true);
+  const [emailMessage, setEmailMessage] = useState("");
   const [address, setAddress] = useState("");
+  const [previousName, setPreviousName] = useState("");
+  const [previousPhone, setPreviousPhone] = useState("");
+  const [previousEmail, setPreviousEmail] = useState("");
+  const [previousAddress, setPreviousAddress] = useState("");
   const [memberId, setMemberId] = useState<number>();
   const [editMode, setEditMode] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,6 +53,46 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
   const [isPromotionDialogOpen, setIsPromotionDialogOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [promotionKey, setPromotionKey] = useState("");
+
+  const onEmailChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const emailRegex =
+      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    const emailCurrent = e.target.value;
+    setEmail(emailCurrent);
+
+    if (!emailRegex.test(emailCurrent)) {
+      setEmailMessage("이메일 형식이 틀렸습니다.");
+      setIsEmailOk(false);
+    } else {
+      setEmailMessage("올바른 이메일 형식입니다.");
+      setIsEmailOk(true);
+    }
+  };
+
+  const onPhoneChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    let input = e.target.value.replace(/\D/g, ""); // 모든 숫자 아닌 문자를 제거합니다.
+    if (input.length > 2) {
+      input = input.substring(0, 3) + "-" + input.substring(3);
+    }
+    if (input.length > 7) {
+      input = input.substring(0, 8) + "-" + input.substring(8);
+    }
+    setPhone(input);
+
+    const phonePattern = /^010-\d{4}-?\d{4}$/;
+
+    if (phonePattern.test(input)) {
+      setPhoneMessage("올바른 전화번호 형식입니다.");
+      setIsPhoneOk(true);
+    } else {
+      setPhoneMessage("올바르지 않은 전화번호 형식입니다.");
+      setIsPhoneOk(false);
+    }
+  };
 
   useEffect(() => {
     if (typeof clientId !== "number") {
@@ -76,6 +124,14 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
   };
 
   const requestUpdateClientInfo = () => {
+    if (!isEmailOk) {
+      document.getElementById("email-input")?.focus();
+      return;
+    }
+    if (!isPhoneOk) {
+      document.getElementById("phone-input")?.focus();
+      return;
+    }
     const handleRequestSuccess: RequestSuccessHandler = () => {
       const handleRequestSuccess2: RequestSuccessHandler = (res) => {
         const updatedData: ClientData = res.data;
@@ -84,6 +140,8 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
         setEmail(updatedData.email);
         setAddress(updatedData.address);
         setMemberId(updatedData.memberId);
+        setEmailMessage("");
+        setPhoneMessage("");
       };
 
       const handleRequestFail2: RequestFailHandler = (e) => {
@@ -113,6 +171,24 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
       onSuccess: handleRequestSuccess,
       onFail: handleRequestFail,
     });
+
+    setEditMode(false);
+  };
+
+  const handleUpdateButton = () => {
+    setPreviousName(name);
+    setPreviousEmail(email);
+    setPreviousPhone(phone);
+    setPreviousAddress(address);
+  };
+
+  const handleCancelUpdateButton = () => {
+    setName(previousName);
+    setEmail(previousEmail);
+    setPhone(previousPhone);
+    setAddress(previousAddress);
+    setEmailMessage("");
+    setPhoneMessage("");
   };
 
   const requestCreateClientPromotion = () => {
@@ -136,6 +212,7 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
       });
     });
   };
+
   return (
     <>
       <ReactModal
@@ -213,28 +290,49 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
             {useEdit ? (
               <Box sx={{ display: "flex", justifyContent: "right", gap: 1 }}>
                 {editMode ? (
-                  <Button
-                    variant="contained"
-                    size="small"
-                    onClick={() => {
-                      requestUpdateClientInfo();
-                      setEditMode(false);
-                    }}
-                  >
-                    확인
-                  </Button>
+                  <>
+                    <Button
+                      variant="contained"
+                      sx={{ width: "64px", height: "41.98px" }}
+                      onClick={() => {
+                        requestUpdateClientInfo();
+                      }}
+                    >
+                      확인
+                    </Button>
+                    <Button
+                      variant="contained"
+                      sx={{
+                        width: "64px",
+                        height: "41.98px",
+                        background: "#ef5350",
+                        "&:hover": {
+                          backgroundColor: "red",
+                        },
+                      }}
+                      onClick={() => {
+                        handleCancelUpdateButton();
+                        setEditMode(false);
+                      }}
+                    >
+                      취소
+                    </Button>
+                  </>
                 ) : (
-                  <Button
-                    variant="contained"
-                    size="small"
-                    onClick={() => {
-                      setEditMode(true);
-                    }}
-                  >
-                    수정
-                  </Button>
+                  <>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      onClick={() => {
+                        handleUpdateButton();
+                        setEditMode(true);
+                      }}
+                    >
+                      수정
+                    </Button>
+                    <ClientRemovePopUpButton />
+                  </>
                 )}
-                <ClientRemovePopUpButton />
               </Box>
             ) : null}
           </Box>
@@ -249,7 +347,7 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
               }}
               color="text.secondary"
               gutterBottom
-              contentEditable={editMode}
+              contentEditable={false}
             >
               <SvgIcon component={AppRegistration} sx={{ color: "#1976d2" }} />{" "}
               &nbsp;회원가입 완료
@@ -263,7 +361,7 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
               }}
               color="text.secondary"
               gutterBottom
-              contentEditable={editMode}
+              contentEditable={false}
             >
               <SvgIcon component={AppRegistration} />
               &nbsp;
@@ -291,14 +389,15 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
                 />{" "}
                 &nbsp;
                 <TextField
+                  {...(isEmailOk ? {} : { error: true })}
+                  id="email-input"
                   disabled={!editMode}
+                  type="email"
                   size="small"
                   sx={{ display: "inline-block", fontSize: 20 }}
-                  color="secondary"
                   value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                  }}
+                  onChange={onEmailChange}
+                  helperText={emailMessage}
                 />
               </Box>
             ) : (
@@ -332,14 +431,15 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
                 />{" "}
                 &nbsp;
                 <TextField
+                  {...(isPhoneOk ? {} : { error: true })}
+                  id="phone-input"
                   disabled={!editMode}
+                  type="tel"
                   size="small"
                   sx={{ display: "inline-block", fontSize: 20 }}
-                  color="secondary"
                   value={phone}
-                  onChange={(e) => {
-                    setPhone(e.target.value);
-                  }}
+                  onChange={onPhoneChange}
+                  helperText={phoneMessage}
                 />
               </Box>
             ) : (
@@ -376,7 +476,6 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
                   disabled={!editMode}
                   size="small"
                   sx={{ display: "inline-block", fontSize: 20 }}
-                  color="secondary"
                   value={address}
                 />
               </Box>
