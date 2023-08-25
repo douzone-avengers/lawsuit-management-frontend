@@ -1,4 +1,10 @@
-import { Button, Divider, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  Divider,
+  TextField,
+  Typography,
+} from "@mui/material";
 import Box from "@mui/material/Box";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +23,7 @@ function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = () => {
     type TokenData = {
@@ -28,14 +35,16 @@ function LoginPage() {
       localStorage.setItem("accessToken", tokenData.accessToken);
       localStorage.setItem("refreshToken", tokenData.refreshToken);
       setIsLoginState(true);
-      alert("로그인 성공");
       navigate("/");
+      setIsLoading(false);
     };
 
     const handelLoginRequestFail: RequestFailHandler = (e) => {
       alert((e.response.data as { code: string; message: string }).message);
+      setIsLoading(false);
     };
 
+    setIsLoading(true);
     requestDeprecated("POST", "/tokens/login", {
       withToken: false,
       useMock: false,
@@ -50,29 +59,38 @@ function LoginPage() {
 
   return (
     <PopUp>
-      <Logo sx={{ width: "50%", marginBottom: 2 }} />
-      <TextField
-        type="email"
-        size="small"
-        label="이메일"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <TextField
-        type="password"
-        size="small"
-        label="비밀번호"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            handleLogin();
-          }
-        }}
-      />
-      <Button variant="contained" size="large" onClick={handleLogin}>
-        로그인
-      </Button>
+      {isLoading ? (
+        <>
+          <CircularProgress size={50} />
+        </>
+      ) : (
+        <>
+          <Logo sx={{ width: "50%", marginBottom: 2 }} />
+          <TextField
+            type="email"
+            size="small"
+            label="이메일"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <TextField
+            type="password"
+            size="small"
+            label="비밀번호"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleLogin();
+              }
+            }}
+          />
+          <Button variant="contained" size="large" onClick={handleLogin}>
+            로그인
+          </Button>
+        </>
+      )}
+
       <Divider />
       <Box
         sx={{
