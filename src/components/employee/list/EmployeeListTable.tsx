@@ -11,10 +11,12 @@ import {
   TablePagination,
   TableSortLabel,
 } from "@mui/material";
-import { Hierarchy, MemberInfo, Role } from "../type/MemberInfo";
 import CardTitle from "../../common/CardTitle";
 import React from "react";
 import { HeadCell } from "../type/HeadCell";
+import { MemberInfo } from "../type/MemberInfo";
+import { Hierarchy } from "../../../states/data/hierarchyListState";
+import { Role } from "../../../states/data/roleListState";
 
 type Props = {
   memberInfos: (MemberInfo & { onClick: () => void })[];

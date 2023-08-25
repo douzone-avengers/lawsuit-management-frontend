@@ -9,16 +9,17 @@ import { useNavigate } from "react-router-dom";
 import EmployeeListSearchBox from "./EmployeeListSearchBox";
 import EmployeePromotionDialog from "./EmployeePromotionDialog";
 import { MemberInfo } from "../type/MemberInfo";
-import hierarchyListState, {
-  Hierarchy,
-} from "../../../states/data/hierarchyListState";
-import roleListState, { Role } from "../../../states/data/roleListState";
-import { useRecoilValue } from "recoil";
+import { Hierarchy } from "../../../states/data/hierarchyListState";
+import { Role } from "../../../states/data/roleListState";
 
 function EmployeeListPage() {
   const navigate = useNavigate();
 
   const [memberInfos, setMemberInfos] = useState<MemberInfo[]>([]);
+
+  //for search
+  const [hierarchyList, setHierarchyList] = useState<Hierarchy[]>([]);
+  const [roleList, setRoleList] = useState<Role[]>([]);
 
   const [searchHierarchy, setSearchHierarchy] = useState<Hierarchy>({
     id: 0,
@@ -41,8 +42,11 @@ function EmployeeListPage() {
   const [count, setCount] = useState(0);
 
   const [curSearchWord, setCurSearchWord] = useState("");
-  const hierarchyList = useRecoilValue(hierarchyListState);
-  const roleList = useRecoilValue(roleListState);
+
+  useEffect(() => {
+    hierarchyRequest();
+    roleRequest();
+  }, []);
 
   const prevDependencies = useRef({
     sortKey,
@@ -112,14 +116,64 @@ function EmployeeListPage() {
       onFail: handelRequestFail,
     });
   };
+
+  //직급 리스트
+  const hierarchyRequest = () => {
+    const handelRequestSuccess: RequestSuccessHandler = (res) => {
+      const allHierarchy: Hierarchy = {
+        id: 0,
+        nameKr: "전체",
+        nameEng: "ALL",
+      };
+      const filteredData = res.data.filter(
+        (item: Hierarchy) => item.nameEng !== "NONE",
+      );
+      setHierarchyList([allHierarchy, ...filteredData]);
+    };
+    const handelRequestFail: RequestFailHandler = (e) => {
+      alert((e.response.data as { code: string; message: string }).message);
+    };
+
+    requestDeprecated("GET", `/hierarchy`, {
+      withToken: false,
+      useMock: false,
+      onSuccess: handelRequestSuccess,
+      onFail: handelRequestFail,
+    });
+  };
+
+  //권한 리스트
+  const roleRequest = () => {
+    const handelRequestSuccess: RequestSuccessHandler = (res) => {
+      const allRole: Role = {
+        id: 0,
+        nameKr: "전체",
+        nameEng: "ALL",
+      };
+
+      const filteredData = res.data.filter(
+        (item: Role) => item.nameEng !== "CLIENT",
+      );
+      // res.data에 allRole 추가
+      setRoleList([allRole, ...filteredData]);
+    };
+    const handelRequestFail: RequestFailHandler = (e) => {
+      alert((e.response.data as { code: string; message: string }).message);
+    };
+
+    requestDeprecated("GET", `/role`, {
+      withToken: false,
+      useMock: false,
+      onSuccess: handelRequestSuccess,
+      onFail: handelRequestFail,
+    });
+  };
+
   return (
     <Box sx={{ margin: 3, display: "flex", flexDirection: "column" }}>
       <EmployeeListSearchBox
-        hierarchyList={[
-          { id: 0, nameKr: "전체", nameEng: "ALL" },
-          ...hierarchyList,
-        ].filter((it) => it.nameKr !== "없음")}
-        roleList={[{ id: 0, nameKr: "전체", nameEng: "ALL" }, ...roleList]}
+        hierarchyList={hierarchyList}
+        roleList={roleList}
         searchHierarchy={searchHierarchy}
         setSearchHierarchy={setSearchHierarchy}
         searchRole={searchRole}

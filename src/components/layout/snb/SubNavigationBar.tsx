@@ -20,7 +20,6 @@ import requestDeprecated, {
 } from "../../../lib/requestDeprecated";
 import { ClientData } from "../../../type/ResponseType";
 import roleListState from "../../../states/data/roleListState";
-import DialogContentText from "@mui/material/DialogContentText";
 
 function SubNavigationBar() {
   const roleList = useRecoilValue(roleListState);
@@ -158,9 +157,15 @@ function SubNavigationBar() {
           ))}
         </List>
       ) : (
-        <Box>
-          <CircularProgress size={24} />
-          <DialogContentText>잠시만 기다려 주세요...</DialogContentText>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%", // 이것은 Box가 부모 컴포넌트의 전체 높이를 차지하도록 합니다. 필요에 따라 조정하십시오.
+          }}
+        >
+          <CircularProgress size={100} />
         </Box>
       )}
 
