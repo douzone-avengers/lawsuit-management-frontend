@@ -15,6 +15,8 @@ function ClientCaseListTab() {
   const clientId = useRecoilValue(clientIdState);
   const navigate = useNavigate();
   const [cases, setCases] = useState<LawsuitInfo[]>([]);
+  const [sortKey, setSortKey] = useState("createdAt");
+  const [sortOrder, setSortOrder] = useState<"desc" | "asc">("desc");
 
   //for paging
   const [page, setPage] = useState(0);
@@ -22,6 +24,8 @@ function ClientCaseListTab() {
   const [count, setCount] = useState(0);
 
   const prevDependencies = useRef({
+    sortKey,
+    sortOrder,
     rowsPerPage,
     page,
   });
@@ -33,6 +37,8 @@ function ClientCaseListTab() {
     }
 
     prevDependencies.current = {
+      sortKey,
+      sortOrder,
       rowsPerPage,
       page,
     };
@@ -77,11 +83,13 @@ function ClientCaseListTab() {
         curPage: (page + 1).toString(),
         rowsPerPage: rowsPerPage.toString(),
         searchWord: "",
+        ...(sortKey !== null ? { sortKey: sortKey } : {}),
+        ...(sortOrder !== null ? { sortOrder: sortOrder } : {}),
       },
       onSuccess: handleRequestSuccess,
       onFail: handleRequestFail,
     });
-  }, [clientId, rowsPerPage, page]);
+  }, [clientId, rowsPerPage, page, sortKey, sortOrder]);
 
   return (
     <Box>
@@ -97,6 +105,10 @@ function ClientCaseListTab() {
         setPage={setPage}
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}
+        sortKey={sortKey}
+        setSortKey={setSortKey}
+        sortOrder={sortOrder}
+        setSortOrder={setSortOrder}
       />
     </Box>
   );
