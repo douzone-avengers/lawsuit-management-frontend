@@ -1,8 +1,8 @@
 import BalanceIcon from "@mui/icons-material/Balance";
 import PersonIcon from "@mui/icons-material/Person";
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import List from "@mui/material/List";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import caseIdState from "../../../states/case/CaseIdState.tsx";
 import clientIdState from "../../../states/client/ClientIdState.tsx";
@@ -20,6 +20,7 @@ import requestDeprecated, {
 } from "../../../lib/requestDeprecated";
 import { ClientData } from "../../../type/ResponseType";
 import roleListState from "../../../states/data/roleListState";
+import DialogContentText from "@mui/material/DialogContentText";
 
 function SubNavigationBar() {
   const roleList = useRecoilValue(roleListState);
@@ -32,6 +33,7 @@ function SubNavigationBar() {
   );
   const subNavigationBarType = useRecoilValue(subNavigationBarTypeState);
   const employeeButton = useRecoilValue(employeeButtonIdState);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     if (subNavigationBarType === "client") {
@@ -46,6 +48,7 @@ function SubNavigationBar() {
           };
         });
         setSubNavigationBar({ ...subNavigationBar, items: newItems });
+        setIsLoaded(true);
       };
       requestDeprecated("GET", "/clients", {
         useMock: false,
@@ -64,6 +67,7 @@ function SubNavigationBar() {
           };
         });
         setSubNavigationBar({ ...subNavigationBar, items: newItems });
+        setIsLoaded(true);
       };
       requestDeprecated("GET", "/clients", {
         onSuccess: handleRequestSuccess,
@@ -88,6 +92,7 @@ function SubNavigationBar() {
           },
         );
         setSubNavigationBar({ ...subNavigationBar, items: newItems });
+        setIsLoaded(true);
       };
       requestDeprecated(
         "GET",
@@ -115,6 +120,7 @@ function SubNavigationBar() {
           },
         );
         setSubNavigationBar({ ...subNavigationBar, items: newItems });
+        setIsLoaded(true);
       };
       requestDeprecated("GET", `/members/employees`, {
         useMock: false,
@@ -132,23 +138,32 @@ function SubNavigationBar() {
         justifyContent: "space-between",
       }}
     >
-      <List sx={{ width: 240, padding: 0 }}>
-        {subNavigationBar.items.map((item) => (
-          <SubNavigationBarItem
-            key={item.id}
-            item={item}
-            selected={
-              (subNavigationBarType === "client" ||
-                subNavigationBarType === "caseClient") &&
-              clientId === item.id
-                ? true
-                : subNavigationBarType === "case" && caseId === item.id
-                ? true
-                : subNavigationBarType === "employee" && employeeId === item.id
-            }
-          />
-        ))}
-      </List>
+      {isLoaded ? (
+        <List sx={{ width: 240, padding: 0 }}>
+          {subNavigationBar.items.map((item) => (
+            <SubNavigationBarItem
+              key={item.id}
+              item={item}
+              selected={
+                (subNavigationBarType === "client" ||
+                  subNavigationBarType === "caseClient") &&
+                clientId === item.id
+                  ? true
+                  : subNavigationBarType === "case" && caseId === item.id
+                  ? true
+                  : subNavigationBarType === "employee" &&
+                    employeeId === item.id
+              }
+            />
+          ))}
+        </List>
+      ) : (
+        <Box>
+          <CircularProgress size={24} />
+          <DialogContentText>잠시만 기다려 주세요...</DialogContentText>
+        </Box>
+      )}
+
       {subNavigationBarType === "client" ||
       subNavigationBarType === "caseClient" ? (
         <ClientRegisterPopUpButton />
