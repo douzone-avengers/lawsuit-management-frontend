@@ -6,18 +6,19 @@ import requestDeprecated, {
 import { Box } from "@mui/material";
 import EmployeeListTable from "./EmployeeListTable";
 import { useNavigate } from "react-router-dom";
-import { Hierarchy, MemberInfo, Role } from "../type/MemberInfo";
 import EmployeeListSearchBox from "./EmployeeListSearchBox";
 import EmployeePromotionDialog from "./EmployeePromotionDialog";
+import { MemberInfo } from "../type/MemberInfo";
+import hierarchyListState, {
+  Hierarchy,
+} from "../../../states/data/hierarchyListState";
+import roleListState, { Role } from "../../../states/data/roleListState";
+import { useRecoilValue } from "recoil";
 
 function EmployeeListPage() {
   const navigate = useNavigate();
 
   const [memberInfos, setMemberInfos] = useState<MemberInfo[]>([]);
-
-  //for search
-  const [hierarchyList, setHierarchyList] = useState<Hierarchy[]>([]);
-  const [roleList, setRoleList] = useState<Role[]>([]);
 
   const [searchHierarchy, setSearchHierarchy] = useState<Hierarchy>({
     id: 0,
@@ -40,11 +41,8 @@ function EmployeeListPage() {
   const [count, setCount] = useState(0);
 
   const [curSearchWord, setCurSearchWord] = useState("");
-
-  useEffect(() => {
-    hierarchyRequest();
-    roleRequest();
-  }, []);
+  const hierarchyList = useRecoilValue(hierarchyListState);
+  const roleList = useRecoilValue(roleListState);
 
   const prevDependencies = useRef({
     sortKey,
@@ -109,58 +107,6 @@ function EmployeeListPage() {
 
     requestDeprecated("GET", `/members/employees?${getQueryString()}`, {
       withToken: true,
-      useMock: false,
-      onSuccess: handelRequestSuccess,
-      onFail: handelRequestFail,
-    });
-  };
-
-  //직급 리스트
-  const hierarchyRequest = () => {
-    const handelRequestSuccess: RequestSuccessHandler = (res) => {
-      const allHierarchy: Hierarchy = {
-        id: 0,
-        nameKr: "전체",
-        nameEng: "ALL",
-      };
-      const filteredData = res.data.filter(
-        (item: Hierarchy) => item.nameEng !== "NONE",
-      );
-      setHierarchyList([allHierarchy, ...filteredData]);
-    };
-    const handelRequestFail: RequestFailHandler = (e) => {
-      alert((e.response.data as { code: string; message: string }).message);
-    };
-
-    requestDeprecated("GET", `/hierarchy`, {
-      withToken: false,
-      useMock: false,
-      onSuccess: handelRequestSuccess,
-      onFail: handelRequestFail,
-    });
-  };
-
-  //권한 리스트
-  const roleRequest = () => {
-    const handelRequestSuccess: RequestSuccessHandler = (res) => {
-      const allRole: Role = {
-        id: 0,
-        nameKr: "전체",
-        nameEng: "ALL",
-      };
-
-      const filteredData = res.data.filter(
-        (item: Role) => item.nameEng !== "CLIENT",
-      );
-      // res.data에 allRole 추가
-      setRoleList([allRole, ...filteredData]);
-    };
-    const handelRequestFail: RequestFailHandler = (e) => {
-      alert((e.response.data as { code: string; message: string }).message);
-    };
-
-    requestDeprecated("GET", `/role`, {
-      withToken: false,
       useMock: false,
       onSuccess: handelRequestSuccess,
       onFail: handelRequestFail,
