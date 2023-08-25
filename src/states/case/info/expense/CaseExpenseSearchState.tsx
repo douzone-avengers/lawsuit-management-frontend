@@ -2,6 +2,8 @@ import { Dayjs } from "dayjs";
 import { atom, selector } from "recoil";
 import caseIdState from "../../CaseIdState.tsx";
 import caseExpensePageState from "./CaseExpensePageState.tsx";
+import caseExpenseSortKeyState from "./CaseExpenseSortKeyState.tsx";
+import caseExpenseSortOrderState from "./CaseExpenseSortOrderState.tsx";
 
 type CaseExpenseSearchStateType = {
   contents: string;
@@ -9,6 +11,8 @@ type CaseExpenseSearchStateType = {
   endSpeningAt: Dayjs | null;
   startAmount: number;
   endAmount: number;
+  sortKey: string;
+  sortOrder: string;
 };
 
 const caseExpenseSearchState = atom<CaseExpenseSearchStateType>({
@@ -19,6 +23,8 @@ const caseExpenseSearchState = atom<CaseExpenseSearchStateType>({
     endSpeningAt: null,
     startAmount: 0,
     endAmount: 0,
+    sortKey: "createdAt",
+    sortOrder: "desc",
   },
 });
 
@@ -29,6 +35,8 @@ export const caseExpenseSearchUrlState = selector({
     const page = get(caseExpensePageState);
     const { contents, startSpeningAt, endSpeningAt, startAmount, endAmount } =
       get(caseExpenseSearchState);
+    const sortKey = get(caseExpenseSortKeyState);
+    const sortOrder = get(caseExpenseSortOrderState);
 
     let startSpeningAtValue = null;
     if (startSpeningAt) {
@@ -54,7 +62,9 @@ export const caseExpenseSearchUrlState = selector({
           : ""
       }${endSpeningAt !== null ? `&end-spening-at=${endSpeningAtValue}` : ""}${
         startAmount !== null ? `&start-amount=${startAmount}` : 0
-      }${endAmount !== null ? `&end-amount=${endAmount}` : 0}`,
+      }${endAmount !== null ? `&end-amount=${endAmount}` : 0}${
+        sortKey !== null ? `&sortKey=${sortKey}` : ""
+      }${sortOrder !== null ? `&sortOrder=${sortOrder}` : ""}`,
     );
   },
 });
