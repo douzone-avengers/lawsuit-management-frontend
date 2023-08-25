@@ -97,7 +97,7 @@ function EmployeeCaseListTab() {
         cases={cases.map((item) => ({
           ...item,
           onClick: () => {
-            navigate(`/cases/${item.id}`);
+            navigate(`/cases/${item.id}?client=2`);
           },
         }))}
         count={count}
