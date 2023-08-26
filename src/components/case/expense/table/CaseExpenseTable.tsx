@@ -57,9 +57,21 @@ function CaseExpenseTable() {
       <Divider />
       <CaseExpenseHeaderRow />
       <Divider />
-      {expenses.map((item) => (
-        <CaseExpenseDataRow key={item.id} item={item} />
-      ))}
+      {expenses.length > 0 ? (
+        expenses.map((item) => <CaseExpenseDataRow key={item.id} item={item} />)
+      ) : (
+        <Box
+          sx={{
+            width: "100%",
+            height: 120,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          지출정보가 존재하지 않습니다.
+        </Box>
+      )}
       <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
       <Box
         sx={{

@@ -129,7 +129,7 @@ function CaseExpenseSearchBox() {
         display: "flex",
         gap: 3,
         flexDirection: "row",
-        margin: "0 10px 0 10px",
+        margin: "20px 10px 10px 10px",
       }}
     >
       <Box

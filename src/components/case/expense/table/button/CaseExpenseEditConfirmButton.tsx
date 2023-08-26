@@ -54,6 +54,7 @@ function CaseExpenseEditConfirmButton({ item }: Props) {
       sx={{ marginLeft: 1, marginRight: 1 }}
       size="small"
       variant="contained"
+      fullWidth
       onClick={handleClick}
     >
       <CheckIcon />
