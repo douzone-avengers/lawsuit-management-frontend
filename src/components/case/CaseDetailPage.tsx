@@ -66,7 +66,6 @@ function CaseDetailPage() {
 
     const handleSuccessHandler: RequestSuccessHandler = (res) => {
       const body: CaseInfoType = res.data;
-      console.log(body);
       setCaseInfo(body);
     };
 
