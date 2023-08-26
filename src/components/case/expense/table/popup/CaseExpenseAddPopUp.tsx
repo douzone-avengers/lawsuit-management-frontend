@@ -71,7 +71,7 @@ function CaseExpenseAddPopUp() {
       });
     };
 
-    requestDeprecated("POST", `/expense`, {
+    requestDeprecated("POST", `/expenses`, {
       body: {
         lawsuitId: caseId,
         speningAt,
