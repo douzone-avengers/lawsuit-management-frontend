@@ -6,9 +6,14 @@ import caseExpenseAddPopUpOpenState from "../../../states/case/info/expense/Case
 import { useRecoilValue } from "recoil";
 import CaseExpenseAddPopUp from "./table/popup/CaseExpenseAddPopUp.tsx";
 import CardTitle from "../../common/CardTitle.tsx";
+import caseExpenseRemovePopUpOpenState from "../../../states/case/info/expense/CaseExpenseRemovePopUpOpenState.tsx";
+import CaseExpenseRemovePopUp from "./table/popup/CaseExpenseRemovePopUp.tsx";
 
 function ExpenseInfoPage() {
   const expenseAddPopUpOpen = useRecoilValue(caseExpenseAddPopUpOpenState);
+  const expenseRemovePopUpOpen = useRecoilValue(
+    caseExpenseRemovePopUpOpenState,
+  );
 
   return (
     <>
@@ -20,6 +25,7 @@ function ExpenseInfoPage() {
         </Box>
       </Card>
       {expenseAddPopUpOpen ? <CaseExpenseAddPopUp /> : null}
+      {expenseRemovePopUpOpen ? <CaseExpenseRemovePopUp /> : null}
     </>
   );
 }
