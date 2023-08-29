@@ -29,11 +29,13 @@ import ValidatePage from "../join/ValidatePage";
 import SchedulePage from "../schedule/SchedulePage.tsx";
 import scheduleButtonIsClickState from "../schedule/ScheduleButtonIsClick.tsx";
 import TestPage from "../test/TestPage.tsx";
+import subNavigationBarState from "../../states/layout/SubNavigationBarState.tsx";
 
 function AppRoutes() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const setSubNavigationBar = useSetRecoilState(subNavigationBarState);
   const setClientId = useSetRecoilState(clientIdState);
   const setCaseId = useSetRecoilState(caseIdState);
   const [mainNavigationBar, setMainNavigationBar] = useRecoilState(
@@ -69,6 +71,7 @@ function AppRoutes() {
 
     // /
     if (length === 1 && paths[1] === "") {
+      setSubNavigationBar("none");
       return;
     }
 
@@ -78,6 +81,7 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 0,
       });
+      setSubNavigationBar("client");
       return;
     }
 
@@ -89,6 +93,7 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 0,
       });
+      setSubNavigationBar("client");
       return;
     }
 
@@ -98,6 +103,18 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 1,
       });
+      setSubNavigationBar("none");
+      return;
+    }
+
+    // /cases/new
+    if (length === 2 && paths[1] === "cases" && paths[2] === "new") {
+      setMainNavigationBar({
+        ...mainNavigationBar,
+        curId: 1,
+      });
+      setClientId(null);
+      setSubNavigationBar("none");
       return;
     }
 
@@ -114,6 +131,7 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 1,
       });
+      setSubNavigationBar("caseClient");
       setCaseButtonId(0);
       return;
     }
@@ -128,6 +146,7 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 1,
       });
+      setSubNavigationBar("case");
       setCaseButtonId(1);
       return;
     }
@@ -138,6 +157,7 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 2, //사원
       });
+      setSubNavigationBar("none");
       return;
     }
 
@@ -148,6 +168,7 @@ function AppRoutes() {
         curId: 2,
       });
       setEmployeeButtonId(0);
+      setSubNavigationBar("none");
       return;
     }
 
@@ -158,6 +179,7 @@ function AppRoutes() {
         curId: 2,
       });
       setEmployeeButtonId(1);
+      setSubNavigationBar("none");
       return;
     }
 
@@ -174,6 +196,7 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 2,
       });
+      setSubNavigationBar("employee");
       return;
     }
 
@@ -190,6 +213,7 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 2,
       });
+      setSubNavigationBar("employee");
       setEmployeeButtonId(3);
       return;
     }
@@ -199,6 +223,7 @@ function AppRoutes() {
       setClientId(null);
       setCaseId(null);
       setEmployeeId(null);
+      setSubNavigationBar("none");
       setMainNavigationBar({
         ...mainNavigationBar,
         curId: -1,
@@ -209,31 +234,44 @@ function AppRoutes() {
 
     // /login
     if (length === 1 && paths[1] === "login") {
+      cleanUp();
       return;
     }
 
     // /validate
     if (length === 1 && paths[1] === "validate") {
+      cleanUp();
       return;
     }
 
     // /join
     if (length === 1 && paths[1] === "join") {
+      cleanUp();
       return;
     }
 
     // /error
     if (length === 1 && paths[1] === "error") {
-      return;
-    }
-
-    // /test
-    if (length === 1 && paths[1] === "test") {
+      cleanUp();
       return;
     }
 
     // clean up
+    cleanUp();
     navigate("error");
+
+    function cleanUp() {
+      setClientId(null);
+      setCaseId(null);
+      setMainNavigationBar({
+        ...mainNavigationBar,
+        curId: -1,
+      });
+      setSubNavigationBar("none");
+      setCaseButtonId(0);
+      setEmployeeId(null);
+      setEmployeeButtonId(0);
+    }
   }, [location]);
 
   return (
