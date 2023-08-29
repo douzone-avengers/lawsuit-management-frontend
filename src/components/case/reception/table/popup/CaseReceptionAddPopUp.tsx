@@ -94,13 +94,11 @@ function CaseReceptionAddPopUp() {
 
         requestDeprecated("GET", `/lawsuits/${caseId}/basic`, {
           onSuccess: handleRequestSuccess3,
-          useMock: false,
         });
       };
 
       requestDeprecated("GET", url, {
         onSuccess: handleRequestSuccess2,
-        useMock: false,
       });
     };
 
@@ -114,7 +112,6 @@ function CaseReceptionAddPopUp() {
         deadline,
       },
       onSuccess: handleRequestSuccess,
-      useMock: false,
     });
   };
 

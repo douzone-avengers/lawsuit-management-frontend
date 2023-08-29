@@ -97,7 +97,7 @@ function ClientJoinPage() {
     }
     requestDeprecated("POST", `/members/clients`, {
       withToken: false,
-      useMock: false,
+
       onSuccess: handelRequestSuccess,
       onFail: handelRequestFail,
       body: {

@@ -33,7 +33,6 @@ function ClientCaseStatisticsChart() {
     };
 
     requestDeprecated("GET", `/lawsuits/clients/${clientId}`, {
-      useMock: false,
       withToken: true,
       params: {
         curPage: "0",

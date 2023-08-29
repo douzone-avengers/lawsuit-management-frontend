@@ -50,7 +50,6 @@ function PrintComponent() {
       setData(body);
     };
     requestDeprecated("GET", `/lawsuits/${caseId}/print`, {
-      useMock: false,
       onSuccess: handleSuccessRequest,
     });
   }, [ref]);
