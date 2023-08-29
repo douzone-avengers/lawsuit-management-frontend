@@ -9,6 +9,13 @@ import { TableFooter, TablePagination } from "@mui/material";
 import React from "react";
 import { delimiter } from "../../../../lib/convert";
 import { LawsuitInfo } from "../../../case/type/LawsuitInfo";
+import Button from "@mui/material/Button";
+import requestDeprecated, {
+  RequestFailHandler,
+  RequestSuccessHandler,
+} from "../../../../lib/requestDeprecated";
+import { useRecoilValue } from "recoil";
+import employeeIdState from "../../../../states/employee/EmployeeIdState";
 
 type Props = {
   cases: (LawsuitInfo & { onClick: () => void })[];
@@ -17,6 +24,7 @@ type Props = {
   setPage: React.Dispatch<React.SetStateAction<number>>;
   rowsPerPage: number;
   setRowsPerPage: React.Dispatch<React.SetStateAction<number>>;
+  setRefreshTrigger: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function EmployeeCaseListTable({
@@ -26,7 +34,10 @@ function EmployeeCaseListTable({
   setPage,
   rowsPerPage,
   setRowsPerPage,
+  setRefreshTrigger,
 }: Props) {
+  const employeeId = useRecoilValue(employeeIdState);
+
   const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
   };
@@ -36,6 +47,28 @@ function EmployeeCaseListTable({
   ) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+  };
+
+  const deleteEmployeeFromLawsuitRequest = (lawsuitId: number) => {
+    const handleRequestSuccess: RequestSuccessHandler = () => {
+      alert("삭제되었습니다.");
+      setRefreshTrigger(true);
+    };
+
+    const handleRequestFail: RequestFailHandler = (e) => {
+      alert((e.response.data as { code: string; message: string }).message);
+    };
+
+    requestDeprecated(
+      "PATCH",
+      `/members/employees/${employeeId}/lawsuits/${lawsuitId}`,
+      {
+        withToken: true,
+
+        onSuccess: handleRequestSuccess,
+        onFail: handleRequestFail,
+      },
+    );
   };
 
   return (
@@ -61,6 +94,9 @@ function EmployeeCaseListTable({
             <TableCell sx={{ color: "white" }} align="center">
               <b>성공보수</b>
             </TableCell>
+            <TableCell sx={{ color: "white" }} align="center">
+              <b>담당자 제거</b>
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -77,7 +113,9 @@ function EmployeeCaseListTable({
               <TableCell align="center" component="th" scope="row">
                 {page * rowsPerPage + index + 1}
               </TableCell>
-              <TableCell align="center">{item.name}</TableCell>
+              <TableCell align="center" onClick={item.onClick}>
+                {item.name}
+              </TableCell>
               <TableCell align="center">{item.lawsuitNum}</TableCell>
               <TableCell align="center">{item.lawsuitStatus}</TableCell>
               <TableCell align="center">
@@ -85,6 +123,18 @@ function EmployeeCaseListTable({
               </TableCell>
               <TableCell align="center">
                 {delimiter(item.contingentFee)}
+              </TableCell>
+              <TableCell align="center">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    deleteEmployeeFromLawsuitRequest(item.id);
+                  }}
+                >
+                  담당자 제거
+                </Button>
               </TableCell>
             </TableRow>
           ))}
