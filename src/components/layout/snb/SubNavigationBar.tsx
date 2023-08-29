@@ -7,7 +7,6 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import caseIdState from "../../../states/case/CaseIdState.tsx";
 import clientIdState from "../../../states/client/ClientIdState.tsx";
 import subNavigationBarState from "../../../states/layout/SubNavigationBarState.tsx";
-import subNavigationBarTypeState from "../../../states/layout/SubNavigationBarTypeState.tsx";
 import SubNavigationBarItem, {
   SubNavigationBarItemState,
 } from "./SubNavigationBarItem.tsx";
@@ -27,15 +26,13 @@ function SubNavigationBar() {
   const clientId = useRecoilValue(clientIdState);
   const caseId = useRecoilValue(caseIdState);
   const employeeId = useRecoilValue(employeeIdState);
-  const [subNavigationBar, setSubNavigationBar] = useRecoilState(
-    subNavigationBarState,
-  );
-  const subNavigationBarType = useRecoilValue(subNavigationBarTypeState);
+  const [, setSubNavigationBar] = useRecoilState(subNavigationBarState);
+  const subNavigationBar = useRecoilValue(subNavigationBarState);
   const employeeButton = useRecoilValue(employeeButtonIdState);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    if (subNavigationBarType === "client") {
+    if (subNavigationBar.type === "client") {
       const handleRequestSuccess: RequestSuccessHandler = (res) => {
         const body: ClientData[] = res.data;
         const newItems: SubNavigationBarItemState[] = body.map((item) => {
@@ -50,11 +47,10 @@ function SubNavigationBar() {
         setIsLoaded(true);
       };
       requestDeprecated("GET", "/clients", {
-        useMock: false,
         withToken: true,
         onSuccess: handleRequestSuccess,
       });
-    } else if (subNavigationBarType === "caseClient") {
+    } else if (subNavigationBar.type === "caseClient") {
       const handleRequestSuccess: RequestSuccessHandler = (res) => {
         const body: { id: number; name: string }[] = res.data;
         const newItems: SubNavigationBarItemState[] = body.map((item) => {
@@ -70,9 +66,8 @@ function SubNavigationBar() {
       };
       requestDeprecated("GET", "/clients", {
         onSuccess: handleRequestSuccess,
-        useMock: false,
       });
-    } else if (subNavigationBarType === "case") {
+    } else if (subNavigationBar.type === "case") {
       const handleRequestSuccess: RequestSuccessHandler = (res) => {
         const body: {
           lawsuitList: { id: number; name: string; lawsuitNum: string }[];
@@ -98,10 +93,9 @@ function SubNavigationBar() {
         `/lawsuits/clients/${clientId}?curPage=1&rowsPerPage=5&searchWord=`,
         {
           onSuccess: handleRequestSuccess,
-          useMock: false,
         },
       );
-    } else if (subNavigationBarType === "employee") {
+    } else if (subNavigationBar.type === "employee") {
       const handleRequestSuccess: RequestSuccessHandler = (res) => {
         const memberInfos: MemberInfo[] = res.data.memberDtoNonPassList;
         const newItems: SubNavigationBarItemState[] = memberInfos.map(
@@ -122,12 +116,11 @@ function SubNavigationBar() {
         setIsLoaded(true);
       };
       requestDeprecated("GET", `/members/employees`, {
-        useMock: false,
         withToken: true,
         onSuccess: handleRequestSuccess,
       });
     }
-  }, [subNavigationBarType, employeeButton]);
+  }, [subNavigationBar, employeeButton]);
 
   return (
     <Box
@@ -144,13 +137,13 @@ function SubNavigationBar() {
               key={item.id}
               item={item}
               selected={
-                (subNavigationBarType === "client" ||
-                  subNavigationBarType === "caseClient") &&
+                (subNavigationBar.type === "client" ||
+                  subNavigationBar.type === "caseClient") &&
                 clientId === item.id
                   ? true
-                  : subNavigationBarType === "case" && caseId === item.id
+                  : subNavigationBar.type === "case" && caseId === item.id
                   ? true
-                  : subNavigationBarType === "employee" &&
+                  : subNavigationBar.type === "employee" &&
                     employeeId === item.id
               }
             />
@@ -169,8 +162,8 @@ function SubNavigationBar() {
         </Box>
       )}
 
-      {subNavigationBarType === "client" ||
-      subNavigationBarType === "caseClient" ? (
+      {subNavigationBar.type === "client" ||
+      subNavigationBar.type === "caseClient" ? (
         <ClientRegisterPopUpButton />
       ) : null}
     </Box>

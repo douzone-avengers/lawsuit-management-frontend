@@ -51,7 +51,7 @@ function EmployeePrivatePage() {
 
     requestDeprecated("GET", `/members/me`, {
       withToken: true,
-      useMock: false,
+
       onSuccess: handleRequestSuccess,
       onFail: handelRequestFail,
     });

@@ -1,9 +1,17 @@
 import { atom } from "recoil";
 import { MainNavigationBarItemState } from "../../components/layout/snb/MainNavigationBarItem.tsx";
 
+type SubNavigationBarType =
+  | "none"
+  | "client"
+  | "caseClient"
+  | "case"
+  | "employee";
+
 export type SubNavigationBarState = {
   curId: number;
   items: MainNavigationBarItemState[];
+  type: SubNavigationBarType;
 };
 
 const subNavigationBarState = atom<SubNavigationBarState>({
@@ -11,6 +19,7 @@ const subNavigationBarState = atom<SubNavigationBarState>({
   default: {
     curId: -1,
     items: [],
+    type: "none",
   },
 });
 

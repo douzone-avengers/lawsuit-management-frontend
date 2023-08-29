@@ -5,7 +5,6 @@ import caseButtonIdState from "../../states/case/CaseButtonIdState";
 import caseIdState from "../../states/case/CaseIdState";
 import clientIdState from "../../states/client/ClientIdState";
 import mainNavigationBarState from "../../states/layout/MainNavigationBarState";
-import subNavigationBarTypeState from "../../states/layout/SubNavigationBarTypeState";
 import CaseDetailPage from "../case/CaseDetailPage";
 import CaseLayout from "../case/CaseLayout";
 import CaseListPage from "../case/CaseListPage";
@@ -30,6 +29,7 @@ import caseTabIdState from "../../states/case/CaseTabIdState.tsx";
 import ValidatePage from "../join/ValidatePage";
 import SchedulePage from "../schedule/SchedulePage.tsx";
 import scheduleButtonIsClickState from "../schedule/ScheduleButtonIsClick.tsx";
+import TestPage from "../test/TestPage.tsx";
 
 function AppRoutes() {
   const location = useLocation();
@@ -40,7 +40,6 @@ function AppRoutes() {
   const [mainNavigationBar, setMainNavigationBar] = useRecoilState(
     mainNavigationBarState,
   );
-  const setSubNavigationBarType = useSetRecoilState(subNavigationBarTypeState);
   const setCaseButtonId = useSetRecoilState(caseButtonIdState);
   const setEmployeeButtonId = useSetRecoilState(employeeButtonIdState);
   const setEmployeeId = useSetRecoilState(employeeIdState);
@@ -63,6 +62,7 @@ function AppRoutes() {
         param[key] = value;
       }
     }
+    ``;
     const length = paths.length - 1;
 
     // *
@@ -71,7 +71,6 @@ function AppRoutes() {
 
     // /
     if (length === 1 && paths[1] === "") {
-      setSubNavigationBarType("none");
       return;
     }
 
@@ -81,7 +80,6 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 0,
       });
-      setSubNavigationBarType("client");
       return;
     }
 
@@ -93,7 +91,6 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 0,
       });
-      setSubNavigationBarType("client");
       return;
     }
 
@@ -103,7 +100,6 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 1,
       });
-      setSubNavigationBarType("none");
       return;
     }
 
@@ -114,7 +110,6 @@ function AppRoutes() {
         curId: 1,
       });
       setClientId(null);
-      setSubNavigationBarType("none");
       return;
     }
 
@@ -131,7 +126,6 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 1,
       });
-      setSubNavigationBarType("caseClient");
       setCaseButtonId(0);
       return;
     }
@@ -146,7 +140,6 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 1,
       });
-      setSubNavigationBarType("case");
       setCaseButtonId(1);
       return;
     }
@@ -157,7 +150,6 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 2, //사원
       });
-      setSubNavigationBarType("none");
       return;
     }
 
@@ -168,7 +160,6 @@ function AppRoutes() {
         curId: 2,
       });
       setEmployeeButtonId(0);
-      setSubNavigationBarType("none");
       return;
     }
 
@@ -179,7 +170,6 @@ function AppRoutes() {
         curId: 2,
       });
       setEmployeeButtonId(1);
-      setSubNavigationBarType("none");
       return;
     }
 
@@ -196,7 +186,6 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 2,
       });
-      setSubNavigationBarType("employee");
       return;
     }
 
@@ -213,7 +202,6 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 2,
       });
-      setSubNavigationBarType("employee");
       setEmployeeButtonId(3);
       return;
     }
@@ -223,7 +211,6 @@ function AppRoutes() {
       setClientId(null);
       setCaseId(null);
       setEmployeeId(null);
-      setSubNavigationBarType("none");
       setMainNavigationBar({
         ...mainNavigationBar,
         curId: -1,
@@ -234,44 +221,31 @@ function AppRoutes() {
 
     // /login
     if (length === 1 && paths[1] === "login") {
-      cleanUp();
       return;
     }
 
     // /validate
     if (length === 1 && paths[1] === "validate") {
-      cleanUp();
       return;
     }
 
     // /join
     if (length === 1 && paths[1] === "join") {
-      cleanUp();
       return;
     }
 
     // /error
     if (length === 1 && paths[1] === "error") {
-      cleanUp();
+      return;
+    }
+
+    // /test
+    if (length === 1 && paths[1] === "test") {
       return;
     }
 
     // clean up
-    cleanUp();
     navigate("error");
-
-    function cleanUp() {
-      setClientId(null);
-      setCaseId(null);
-      setMainNavigationBar({
-        ...mainNavigationBar,
-        curId: -1,
-      });
-      setSubNavigationBarType("none");
-      setCaseButtonId(0);
-      setEmployeeId(null);
-      setEmployeeButtonId(0);
-    }
   }, [location]);
 
   return (
@@ -317,6 +291,7 @@ function AppRoutes() {
       <Route path="validate" element={<ValidatePage />} />
       {/* /join */}
       <Route path="join" element={<JoinPage />} />
+      <Route path="test" element={<TestPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );

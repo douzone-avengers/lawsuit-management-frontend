@@ -4,10 +4,11 @@ import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import { Button, TextField } from "@mui/material";
-import { Hierarchy, Role } from "../type/MemberInfo";
 import React, { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import CardTitle from "../../common/CardTitle";
+import { Hierarchy } from "../../../states/data/hierarchyListState.ts";
+import { Role } from "../../../states/data/roleListState.ts";
 
 type Props = {
   hierarchyList: Hierarchy[];

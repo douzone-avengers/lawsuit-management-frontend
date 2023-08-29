@@ -5,20 +5,20 @@ import { useRecoilValue } from "recoil";
 import sideNavigationBarOpenState from "../../../states/layout/SideNavigationBarOpenState.tsx";
 import MainNavigationBar from "./MainNavigationBar.tsx";
 import SubNavigationBar from "./SubNavigationBar.tsx";
-import subNavigationBarTypeState from "../../../states/layout/SubNavigationBarTypeState.tsx";
 import SideNavigationBarHeader from "./SideNavigationBarHeader.tsx";
+import subNavigationBarState from "../../../states/layout/SubNavigationBarState.tsx";
 
 function SideNavigationBar() {
   const sideNavigationBarOpen = useRecoilValue(sideNavigationBarOpenState);
-  const subNavigationBarType = useRecoilValue(subNavigationBarTypeState);
+  const subNavigationBar = useRecoilValue(subNavigationBarState);
 
   return (
     <Drawer
       sx={{
-        width: subNavigationBarType !== "none" ? 480 : 240,
+        width: subNavigationBar.type !== "none" ? 480 : 240,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
-          width: subNavigationBarType !== "none" ? 480 : 240,
+          width: subNavigationBar.type !== "none" ? 480 : 240,
           boxSizing: "border-box",
         },
       }}
@@ -30,7 +30,7 @@ function SideNavigationBar() {
       <Divider />
       <Box sx={{ display: "flex", height: "100%" }}>
         <MainNavigationBar />
-        {subNavigationBarType !== "none" ? (
+        {subNavigationBar.type !== "none" ? (
           <>
             <Divider orientation="vertical" flexItem />
             <SubNavigationBar />

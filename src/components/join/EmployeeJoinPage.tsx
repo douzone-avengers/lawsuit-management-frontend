@@ -74,7 +74,7 @@ function EmployeeJoinPage() {
 
     requestDeprecated("GET", `/hierarchy`, {
       withToken: false,
-      useMock: false,
+
       onSuccess: handelRequestSuccess,
       onFail: handelRequestFail,
     });
@@ -117,7 +117,7 @@ function EmployeeJoinPage() {
     }
     requestDeprecated("POST", `/members/employees`, {
       withToken: false,
-      useMock: false,
+
       onSuccess: handelRequestSuccess,
       onFail: handelRequestFail,
       body: {
