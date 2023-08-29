@@ -32,6 +32,7 @@ function EmployeeCaseListTab() {
   });
 
   useEffect(() => {
+    if (employeeId === null) return;
     // page만 변화했는지 체크
     if (
       prevDependencies.current.searchLawsuitStatus === searchLawsuitStatus &&

@@ -43,6 +43,8 @@ function EmployeeDetailPage() {
   }, [recoilAddress]);
 
   useEffect(() => {
+    if (employeeId === null) return;
+
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
       const memberInfo: MemberInfo = res.data;
       setMemberInfo(memberInfo);
