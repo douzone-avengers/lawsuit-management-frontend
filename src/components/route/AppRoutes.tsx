@@ -18,7 +18,6 @@ import HomePage from "../home/HomePage";
 import JoinPage from "../join/JoinPage";
 import Layout from "../layout/Layout";
 import LoginPage from "../login/LoginPage";
-import CaseNewPage from "../case/CaseNewPage.tsx";
 import EmployeeLayout from "../employee/EmployeeLayout";
 import EmployeePrivatePage from "../employee/private/EmployeePrivatePage";
 import employeeButtonIdState from "../../states/employee/EmployeeButtonIdState";
@@ -62,7 +61,6 @@ function AppRoutes() {
         param[key] = value;
       }
     }
-    ``;
     const length = paths.length - 1;
 
     // *
@@ -100,16 +98,6 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 1,
       });
-      return;
-    }
-
-    // /cases/new
-    if (length === 2 && paths[1] === "cases" && paths[2] === "new") {
-      setMainNavigationBar({
-        ...mainNavigationBar,
-        curId: 1,
-      });
-      setClientId(null);
       return;
     }
 
@@ -261,8 +249,6 @@ function AppRoutes() {
             <Route index element={<ClientDetailPage />} />
           </Route>
         </Route>
-        {/* /cases/new */}
-        <Route path="cases/new" element={<CaseNewPage />} />
         <Route path="cases" element={<CaseLayout />}>
           {/* /cases */}
           <Route index element={<CasesPage />} />

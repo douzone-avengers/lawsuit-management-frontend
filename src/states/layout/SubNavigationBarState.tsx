@@ -9,17 +9,17 @@ type SubNavigationBarType =
   | "employee";
 
 export type SubNavigationBarState = {
+  type: SubNavigationBarType;
   curId: number;
   items: MainNavigationBarItemState[];
-  type: SubNavigationBarType;
 };
 
 const subNavigationBarState = atom<SubNavigationBarState>({
   key: "subNavigationBarState",
   default: {
+    type: "none",
     curId: -1,
     items: [],
-    type: "none",
   },
 });
 
