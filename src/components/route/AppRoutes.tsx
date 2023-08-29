@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import caseIdState from "../../states/case/CaseIdState";
 import clientIdState from "../../states/client/ClientIdState";
 import mainNavigationBarState from "../../states/layout/MainNavigationBarState";
@@ -35,6 +35,7 @@ import { SubNavigationBarItemState } from "../layout/snb/SubNavigationBarItem.ts
 import PersonIcon from "@mui/icons-material/Person";
 import BalanceIcon from "@mui/icons-material/Balance";
 import { MemberInfo } from "../employee/type/MemberInfo.tsx";
+import roleListState from "../../states/data/roleListState.ts";
 
 function AppRoutes() {
   const location = useLocation();
@@ -52,6 +53,8 @@ function AppRoutes() {
   const setScheduleButtonIsClick = useSetRecoilState(
     scheduleButtonIsClickState,
   );
+  const roleList = useRecoilValue(roleListState);
+  const employeeButton = useRecoilValue(employeeButtonIdState);
 
   useEffect(() => {
     const { pathname, search } = location;
@@ -363,12 +366,6 @@ function AppRoutes() {
           });
         },
       });
-
-      setSubNavigationBar({
-        type: "none",
-        curId: -1,
-        items: [],
-      });
       setClientId(null);
       setCaseId(null);
       setEmployeeId(Number.parseInt(paths[2]));
@@ -389,10 +386,30 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 2,
       });
-      setSubNavigationBar({
-        type: "none",
-        curId: -1,
-        items: [],
+      requestDeprecated("GET", `/members/employees`, {
+        onSuccess: (res) => {
+          const memberInfos: MemberInfo[] = res.data.memberDtoNonPassList;
+          const newItems: SubNavigationBarItemState[] = memberInfos.map(
+            (item) => {
+              return {
+                id: item.id,
+                text: item.name,
+                subText: roleList.filter((it) => it.id == item.roleId)[0]
+                  .nameKr,
+                url:
+                  employeeButton === 2
+                    ? `employees/${item.id}`
+                    : `employees/${item.id}/cases`,
+                SvgIcon: BalanceIcon,
+              };
+            },
+          );
+          setSubNavigationBar({
+            type: "employee",
+            curId: newItems[0].id,
+            items: newItems,
+          });
+        },
       });
       setClientId(null);
       setCaseId(null);
