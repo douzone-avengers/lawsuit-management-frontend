@@ -11,9 +11,11 @@ function CasesPage() {
 
   useEffect(() => {
     if (subNavigationBar.items && subNavigationBar.items.length > 0) {
-      const { id } = subNavigationBar.items[0];
-      setClientId(id);
-      navigate(`/cases/list?client=${id}`);
+      // const { id } = subNavigationBar.items[0];
+      // setClientId(id);
+      //임시 하드코딩
+      setClientId(2);
+      navigate(`/cases/list?client=2`);
     }
   }, [subNavigationBar.items]);
 

@@ -190,13 +190,13 @@ function AppRoutes() {
       paths[2] &&
       !isNaN(Number(paths[2]))
     ) {
+      setEmployeeButtonId(2);
       setEmployeeId(Number.parseInt(paths[2]));
       setMainNavigationBar({
         ...mainNavigationBar,
         curId: 2,
       });
       setSubNavigationBarType("employee");
-      setEmployeeButtonId(2);
       return;
     }
 

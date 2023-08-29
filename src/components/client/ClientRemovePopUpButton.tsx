@@ -8,7 +8,17 @@ function ClientRemovePopUpButton() {
     setClientRemovePopUp(true);
   };
   return (
-    <Button variant="contained" size="small" onClick={handleClick}>
+    <Button
+      variant="contained"
+      size="small"
+      onClick={handleClick}
+      sx={{
+        background: "#ef5350",
+        "&:hover": {
+          backgroundColor: "red",
+        },
+      }}
+    >
       삭제
     </Button>
   );

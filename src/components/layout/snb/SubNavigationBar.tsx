@@ -1,8 +1,8 @@
 import BalanceIcon from "@mui/icons-material/Balance";
 import PersonIcon from "@mui/icons-material/Person";
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import List from "@mui/material/List";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import caseIdState from "../../../states/case/CaseIdState.tsx";
 import clientIdState from "../../../states/client/ClientIdState.tsx";
@@ -14,13 +14,16 @@ import SubNavigationBarItem, {
 import ClientRegisterPopUpButton from "../../client/ClientRegisterPopUpButton.tsx";
 import employeeIdState from "../../../states/employee/EmployeeIdState";
 import employeeButtonIdState from "../../../states/employee/EmployeeButtonIdState";
-import { MemberInfo, Role } from "../../employee/type/MemberInfo";
+import { MemberInfo } from "../../employee/type/MemberInfo";
 import requestDeprecated, {
   RequestSuccessHandler,
 } from "../../../lib/requestDeprecated";
 import { ClientData } from "../../../type/ResponseType";
+import roleListState from "../../../states/data/roleListState";
 
 function SubNavigationBar() {
+  const roleList = useRecoilValue(roleListState);
+
   const clientId = useRecoilValue(clientIdState);
   const caseId = useRecoilValue(caseIdState);
   const employeeId = useRecoilValue(employeeIdState);
@@ -29,6 +32,7 @@ function SubNavigationBar() {
   );
   const subNavigationBarType = useRecoilValue(subNavigationBarTypeState);
   const employeeButton = useRecoilValue(employeeButtonIdState);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     if (subNavigationBarType === "client") {
@@ -43,6 +47,7 @@ function SubNavigationBar() {
           };
         });
         setSubNavigationBar({ ...subNavigationBar, items: newItems });
+        setIsLoaded(true);
       };
       requestDeprecated("GET", "/clients", {
         useMock: false,
@@ -61,6 +66,7 @@ function SubNavigationBar() {
           };
         });
         setSubNavigationBar({ ...subNavigationBar, items: newItems });
+        setIsLoaded(true);
       };
       requestDeprecated("GET", "/clients", {
         onSuccess: handleRequestSuccess,
@@ -85,6 +91,7 @@ function SubNavigationBar() {
           },
         );
         setSubNavigationBar({ ...subNavigationBar, items: newItems });
+        setIsLoaded(true);
       };
       requestDeprecated(
         "GET",
@@ -97,32 +104,22 @@ function SubNavigationBar() {
     } else if (subNavigationBarType === "employee") {
       const handleRequestSuccess: RequestSuccessHandler = (res) => {
         const memberInfos: MemberInfo[] = res.data.memberDtoNonPassList;
-
-        const handleRoleRequestSuccess: RequestSuccessHandler = (res) => {
-          const roleList: Role[] = res.data;
-
-          const newItems: SubNavigationBarItemState[] = memberInfos.map(
-            (item) => {
-              return {
-                id: item.id,
-                text: item.name,
-                subText: roleList.filter((it) => it.id == item.roleId)[0]
-                  .nameKr,
-                url:
-                  employeeButton === 2
-                    ? `employees/${item.id}`
-                    : `employees/${item.id}/cases`,
-                SvgIcon: BalanceIcon,
-              };
-            },
-          );
-          setSubNavigationBar({ ...subNavigationBar, items: newItems });
-        };
-        requestDeprecated("GET", `/role`, {
-          useMock: false,
-          withToken: false,
-          onSuccess: handleRoleRequestSuccess,
-        });
+        const newItems: SubNavigationBarItemState[] = memberInfos.map(
+          (item) => {
+            return {
+              id: item.id,
+              text: item.name,
+              subText: roleList.filter((it) => it.id == item.roleId)[0].nameKr,
+              url:
+                employeeButton === 2
+                  ? `employees/${item.id}`
+                  : `employees/${item.id}/cases`,
+              SvgIcon: BalanceIcon,
+            };
+          },
+        );
+        setSubNavigationBar({ ...subNavigationBar, items: newItems });
+        setIsLoaded(true);
       };
       requestDeprecated("GET", `/members/employees`, {
         useMock: false,
@@ -130,7 +127,7 @@ function SubNavigationBar() {
         onSuccess: handleRequestSuccess,
       });
     }
-  }, [subNavigationBarType]);
+  }, [subNavigationBarType, employeeButton]);
 
   return (
     <Box
@@ -140,23 +137,38 @@ function SubNavigationBar() {
         justifyContent: "space-between",
       }}
     >
-      <List sx={{ width: 240, padding: 0 }}>
-        {subNavigationBar.items.map((item) => (
-          <SubNavigationBarItem
-            key={item.id}
-            item={item}
-            selected={
-              (subNavigationBarType === "client" ||
-                subNavigationBarType === "caseClient") &&
-              clientId === item.id
-                ? true
-                : subNavigationBarType === "case" && caseId === item.id
-                ? true
-                : subNavigationBarType === "employee" && employeeId === item.id
-            }
-          />
-        ))}
-      </List>
+      {isLoaded ? (
+        <List sx={{ width: 240, padding: 0 }}>
+          {subNavigationBar.items.map((item) => (
+            <SubNavigationBarItem
+              key={item.id}
+              item={item}
+              selected={
+                (subNavigationBarType === "client" ||
+                  subNavigationBarType === "caseClient") &&
+                clientId === item.id
+                  ? true
+                  : subNavigationBarType === "case" && caseId === item.id
+                  ? true
+                  : subNavigationBarType === "employee" &&
+                    employeeId === item.id
+              }
+            />
+          ))}
+        </List>
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%", // 이것은 Box가 부모 컴포넌트의 전체 높이를 차지하도록 합니다. 필요에 따라 조정하십시오.
+          }}
+        >
+          <CircularProgress size={100} />
+        </Box>
+      )}
+
       {subNavigationBarType === "client" ||
       subNavigationBarType === "caseClient" ? (
         <ClientRegisterPopUpButton />

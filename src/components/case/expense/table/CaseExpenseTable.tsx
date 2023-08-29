@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import caseIdState from "../../../../states/case/CaseIdState.tsx";
 import { useRecoilState, useRecoilValue } from "recoil";
 import requestDeprecated, {
+  RequestFailHandler,
   RequestSuccessHandler,
 } from "../../../../lib/requestDeprecated.ts";
 import caseExpensesState, {
@@ -15,6 +16,8 @@ import CaseExpenseDataRow from "./row/CaseExpenseDataRow.tsx";
 import { updateUrl } from "../../reception/table/CaseReceptionTable.tsx";
 import caseExpenseSizeState from "../../../../states/case/info/expense/CaseExpenseSizeState.tsx";
 import caseExpensePageState from "../../../../states/case/info/expense/CaseExpensePageState.tsx";
+import caseExpenseSortKeyState from "../../../../states/case/info/expense/CaseExpenseSortKeyState.tsx";
+import caseExpenseSortOrderState from "../../../../states/case/info/expense/CaseExpenseSortOrderState.tsx";
 
 function CaseExpenseTable() {
   const theme = useTheme();
@@ -22,6 +25,8 @@ function CaseExpenseTable() {
   const [expenses, setExpenses] = useRecoilState(caseExpensesState);
   const [page, setPage] = useRecoilState(caseExpensePageState);
   const [size, setSize] = useRecoilState(caseExpenseSizeState);
+  const [sortKey, setSortKey] = useRecoilState(caseExpenseSortKeyState);
+  const [sortOrder, setSortOrder] = useRecoilState(caseExpenseSortOrderState);
 
   const url = useRecoilValue(caseExpenseSearchUrlState);
   const isNextDisabled = (page + 1) * 5 >= size;
@@ -45,17 +50,27 @@ function CaseExpenseTable() {
       setSize(size);
     };
 
+    const handleRequestFail: RequestFailHandler = (e) => {
+      alert((e.response.data as { code: string; message: string }).message);
+    };
+
     requestDeprecated("GET", url, {
-      onSuccess: handleRequestSuccess,
       useMock: false,
+      onSuccess: handleRequestSuccess,
+      onFail: handleRequestFail,
     });
-  }, [caseId]);
+  }, [caseId, sortKey, sortOrder]);
 
   return (
     <Box sx={{ display: "flex", width: "100%", flexDirection: "column" }}>
       <Box sx={{ marginBottom: 2 }}></Box>
       <Divider />
-      <CaseExpenseHeaderRow />
+      <CaseExpenseHeaderRow
+        sortKey={sortKey}
+        setSortKey={setSortKey}
+        sortOrder={sortOrder}
+        setSortOrder={setSortOrder}
+      />
       <Divider />
       {expenses.map((item) => (
         <CaseExpenseDataRow key={item.id} item={item} />

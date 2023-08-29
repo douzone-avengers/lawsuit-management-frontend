@@ -99,10 +99,22 @@ function ClientRegisterPopUp() {
         />
       </ReactModal>
 
-      <CloseButton onClick={handleCloseButtonClick} />
-      <Typography variant="h5" sx={{ textAlign: "center" }}>
-        의뢰인 등록
-      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "1rem",
+        }}
+      >
+        <Typography
+          variant="h5"
+          sx={{ textAlign: "center", flex: 1, marginLeft: "20px" }}
+        >
+          의뢰인 등록
+        </Typography>
+        <CloseButton onClick={handleCloseButtonClick} />
+      </Box>
       <TextField
         type="text"
         size="small"

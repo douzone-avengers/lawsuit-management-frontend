@@ -1,15 +1,3 @@
-export type Hierarchy = {
-  id: number;
-  nameKr: string;
-  nameEng: string;
-};
-
-export type Role = {
-  id: number;
-  nameKr: string;
-  nameEng: string;
-};
-
 export type MemberInfo = {
   id: number;
   email: string;

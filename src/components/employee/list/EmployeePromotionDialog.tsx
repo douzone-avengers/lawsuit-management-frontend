@@ -144,7 +144,7 @@ export default function EmployeePromotionDialog() {
         onClick={() => {
           setIsFormOpen(true);
         }}
-        sx={{ alignSelf: "flex-end" }}
+        sx={{ position: "fixed", bottom: 24, right: 24 }}
       >
         직원초대
       </Button>
