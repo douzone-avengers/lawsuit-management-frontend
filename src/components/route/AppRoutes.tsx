@@ -34,6 +34,7 @@ import { ClientData } from "../../type/ResponseType.ts";
 import { SubNavigationBarItemState } from "../layout/snb/SubNavigationBarItem.tsx";
 import PersonIcon from "@mui/icons-material/Person";
 import BalanceIcon from "@mui/icons-material/Balance";
+import { MemberInfo } from "../employee/type/MemberInfo.tsx";
 
 function AppRoutes() {
   const location = useLocation();
@@ -337,6 +338,32 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 2,
       });
+      requestDeprecated("GET", `/members/employees`, {
+        onSuccess: (res) => {
+          const memberInfos: MemberInfo[] = res.data.memberDtoNonPassList;
+          const newItems: SubNavigationBarItemState[] = memberInfos.map(
+            (item) => {
+              return {
+                id: item.id,
+                text: item.name,
+                subText: roleList.filter((it) => it.id == item.roleId)[0]
+                  .nameKr,
+                url:
+                  employeeButton === 2
+                    ? `employees/${item.id}`
+                    : `employees/${item.id}/cases`,
+                SvgIcon: BalanceIcon,
+              };
+            },
+          );
+          setSubNavigationBar({
+            type: "employee",
+            curId: newItems[0].id,
+            items: newItems,
+          });
+        },
+      });
+
       setSubNavigationBar({
         type: "none",
         curId: -1,
