@@ -28,7 +28,6 @@ function ClientRemovePopUp() {
     };
 
     requestDeprecated("PATCH", `/clients/${clientId}`, {
-      useMock: false,
       onSuccess: handleRequestSuccess,
       onFail: handleRequestFail,
     });

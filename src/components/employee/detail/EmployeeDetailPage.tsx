@@ -53,7 +53,7 @@ function EmployeeDetailPage() {
 
     requestDeprecated("GET", `/members/employees/${employeeId}`, {
       withToken: true,
-      useMock: false,
+
       onSuccess: handleRequestSuccess,
       onFail: handelRequestFail,
     });

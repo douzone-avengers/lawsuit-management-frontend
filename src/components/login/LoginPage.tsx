@@ -54,7 +54,7 @@ function LoginPage() {
     setIsLoading(true);
     requestDeprecated("POST", "/tokens/login", {
       withToken: false,
-      useMock: false,
+
       body: {
         email,
         password,

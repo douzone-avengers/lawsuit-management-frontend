@@ -50,7 +50,7 @@ function JoinPage() {
     if (userType === "employee") {
       requestDeprecated("GET", `/promotions/employees?key=${key}`, {
         withToken: false,
-        useMock: false,
+
         onSuccess: handelRequestSuccess,
         onFail: handelRequestFail,
       });
@@ -59,7 +59,7 @@ function JoinPage() {
     if (userType === "client") {
       requestDeprecated("GET", `/promotions/clients?key=${key}`, {
         withToken: false,
-        useMock: false,
+
         onSuccess: handelRequestSuccess,
         onFail: handelRequestFail,
       });

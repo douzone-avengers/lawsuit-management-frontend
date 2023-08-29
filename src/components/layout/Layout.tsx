@@ -47,7 +47,7 @@ function Layout() {
 
     requestDeprecated("GET", `/hierarchy`, {
       withToken: false,
-      useMock: false,
+
       onSuccess: handelRequestSuccess,
       onFail: handelRequestFail,
     });
@@ -66,7 +66,7 @@ function Layout() {
 
     requestDeprecated("GET", `/role`, {
       withToken: false,
-      useMock: false,
+
       onSuccess: handelRequestSuccess,
       onFail: handelRequestFail,
     });

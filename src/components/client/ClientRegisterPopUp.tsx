@@ -62,7 +62,7 @@ function ClientRegisterPopUp() {
         email,
         address,
       },
-      useMock: false,
+
       onSuccess: handleRequestSuccess,
     });
 

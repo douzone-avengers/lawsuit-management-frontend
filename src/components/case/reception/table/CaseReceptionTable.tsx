@@ -49,7 +49,6 @@ function CaseReceptionTable() {
     };
     requestDeprecated("GET", url, {
       onSuccess: handleRequestSuccess,
-      useMock: false,
     });
   }, [caseId]);
 
@@ -112,7 +111,6 @@ function CaseReceptionTable() {
 
               requestDeprecated("GET", updateUrl(url, page), {
                 onSuccess: handleRequestSuccess,
-                useMock: false,
               });
 
               return page;
@@ -146,7 +144,6 @@ function CaseReceptionTable() {
 
               requestDeprecated("GET", updateUrl(url, page), {
                 onSuccess: handleRequestSuccess,
-                useMock: false,
               });
 
               return page;
