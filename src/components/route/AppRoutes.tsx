@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import caseButtonIdState from "../../states/case/CaseButtonIdState";
 import caseIdState from "../../states/case/CaseIdState";
 import clientIdState from "../../states/client/ClientIdState";
 import mainNavigationBarState from "../../states/layout/MainNavigationBarState";
@@ -30,18 +29,22 @@ import SchedulePage from "../schedule/SchedulePage.tsx";
 import scheduleButtonIsClickState from "../schedule/ScheduleButtonIsClick.tsx";
 import TestPage from "../test/TestPage.tsx";
 import subNavigationBarState from "../../states/layout/SubNavigationBarState.tsx";
+import requestDeprecated from "../../lib/requestDeprecated.ts";
+import { ClientData } from "../../type/ResponseType.ts";
+import { SubNavigationBarItemState } from "../layout/snb/SubNavigationBarItem.tsx";
+import PersonIcon from "@mui/icons-material/Person";
+import BalanceIcon from "@mui/icons-material/Balance";
 
 function AppRoutes() {
   const location = useLocation();
   const navigate = useNavigate();
 
   const setSubNavigationBar = useSetRecoilState(subNavigationBarState);
-  const setClientId = useSetRecoilState(clientIdState);
+  const [clientId, setClientId] = useRecoilState(clientIdState);
   const setCaseId = useSetRecoilState(caseIdState);
   const [mainNavigationBar, setMainNavigationBar] = useRecoilState(
     mainNavigationBarState,
   );
-  const setCaseButtonId = useSetRecoilState(caseButtonIdState);
   const setEmployeeButtonId = useSetRecoilState(employeeButtonIdState);
   const setEmployeeId = useSetRecoilState(employeeIdState);
   const setCaseTabId = useSetRecoilState(caseTabIdState);
@@ -71,7 +74,18 @@ function AppRoutes() {
 
     // /
     if (length === 1 && paths[1] === "") {
-      setSubNavigationBar("none");
+      setMainNavigationBar({
+        ...mainNavigationBar,
+        curId: -1,
+      });
+      setSubNavigationBar({
+        type: "none",
+        curId: -1,
+        items: [],
+      });
+      setClientId(null);
+      setCaseId(null);
+      setEmployeeId(null);
       return;
     }
 
@@ -81,19 +95,58 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 0,
       });
-      setSubNavigationBar("client");
+      requestDeprecated("GET", "/clients", {
+        onSuccess: (res) => {
+          const body: ClientData[] = res.data;
+          const newItems: SubNavigationBarItemState[] = body.map((item) => {
+            return {
+              id: item.id,
+              text: item.name,
+              url: `clients/${item.id}`,
+              SvgIcon: PersonIcon,
+            };
+          });
+          setSubNavigationBar({
+            type: "client",
+            curId: newItems[0].id,
+            items: newItems,
+          });
+        },
+      });
+      setClientId(null);
+      setCaseId(null);
+      setEmployeeId(null);
       return;
     }
 
     // /clients/:clientId
     if (length === 2 && paths[1] === "clients" && paths[2]) {
-      const newClientId = Number.parseInt(paths[2]);
-      setClientId(newClientId);
       setMainNavigationBar({
         ...mainNavigationBar,
         curId: 0,
       });
-      setSubNavigationBar("client");
+      requestDeprecated("GET", "/clients", {
+        onSuccess: (res) => {
+          const body: ClientData[] = res.data;
+          const newItems: SubNavigationBarItemState[] = body.map((item) => {
+            return {
+              id: item.id,
+              text: item.name,
+              url: `clients/${item.id}`,
+              SvgIcon: PersonIcon,
+            };
+          });
+          setSubNavigationBar({
+            type: "client",
+            curId: newItems[0].id,
+            items: newItems,
+          });
+        },
+      });
+      const newClientId = Number.parseInt(paths[2]);
+      setClientId(newClientId);
+      setCaseId(null);
+      setEmployeeId(null);
       return;
     }
 
@@ -103,18 +156,28 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 1,
       });
-      setSubNavigationBar("none");
-      return;
-    }
-
-    // /cases/new
-    if (length === 2 && paths[1] === "cases" && paths[2] === "new") {
-      setMainNavigationBar({
-        ...mainNavigationBar,
-        curId: 1,
+      requestDeprecated("GET", "/clients", {
+        onSuccess: (res) => {
+          const body: { id: number; name: string }[] = res.data;
+          const newItems: SubNavigationBarItemState[] = body.map((item) => {
+            return {
+              id: item.id,
+              text: item.name,
+              url: `cases/list?client=${item.id}`,
+              SvgIcon: PersonIcon,
+            };
+          });
+          setSubNavigationBar({
+            type: "caseClient",
+            curId: newItems[0].id,
+            items: newItems,
+          });
+        },
       });
       setClientId(null);
-      setSubNavigationBar("none");
+      setCaseId(null);
+      setEmployeeId(null);
+
       return;
     }
 
@@ -126,28 +189,85 @@ function AppRoutes() {
       param["client"]
     ) {
       const newClientId = Number.parseInt(param["client"]);
-      setClientId(newClientId);
       setMainNavigationBar({
         ...mainNavigationBar,
         curId: 1,
       });
-      setSubNavigationBar("caseClient");
-      setCaseButtonId(0);
+      requestDeprecated("GET", "/clients", {
+        onSuccess: (res) => {
+          const body: { id: number; name: string }[] = res.data;
+          const newItems: SubNavigationBarItemState[] = body.map((item) => {
+            return {
+              id: item.id,
+              text: item.name,
+              url: `cases/list?client=${item.id}`,
+              SvgIcon: PersonIcon,
+            };
+          });
+          setSubNavigationBar({
+            type: "caseClient",
+            curId: newItems[0].id,
+            items: newItems,
+          });
+        },
+      });
+
+      setClientId(newClientId);
+      setCaseId(null);
+      setEmployeeId(null);
       return;
     }
 
     // /cases/:caseId?client=:clientId
     if (length === 2 && paths[1] === "cases" && paths[2] && param["client"]) {
-      const newClientId = Number.parseInt(param["client"]);
-      setClientId(newClientId);
-      const newCaseId = Number.parseInt(paths[2]);
-      setCaseId(newCaseId);
       setMainNavigationBar({
         ...mainNavigationBar,
         curId: 1,
       });
-      setSubNavigationBar("case");
-      setCaseButtonId(1);
+
+      if (clientId === null) {
+        setSubNavigationBar({
+          type: "none",
+          curId: -1,
+          items: [],
+        });
+      }
+
+      requestDeprecated(
+        "GET",
+        `/lawsuits/clients/${clientId}?curPage=1&rowsPerPage=5&searchWord=`,
+        {
+          onSuccess: (res) => {
+            const body: {
+              lawsuitList: { id: number; name: string; lawsuitNum: string }[];
+              pageRange: { startPage: number; endPage: number };
+            } = res.data;
+
+            const newItems: SubNavigationBarItemState[] = body.lawsuitList.map(
+              (item) => {
+                return {
+                  id: item.id,
+                  text: item.name,
+                  subText: item.lawsuitNum,
+                  url: `cases/${item.id}?client=${clientId}`,
+                  SvgIcon: BalanceIcon,
+                };
+              },
+            );
+            setSubNavigationBar({
+              type: "case",
+              curId: newItems[0].id,
+              items: newItems,
+            });
+          },
+        },
+      );
+
+      const newClientId = Number.parseInt(param["client"]);
+      setClientId(newClientId);
+      const newCaseId = Number.parseInt(paths[2]);
+      setCaseId(newCaseId);
+      setEmployeeId(null);
       return;
     }
 
@@ -157,7 +277,14 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 2, //사원
       });
-      setSubNavigationBar("none");
+      setSubNavigationBar({
+        type: "none",
+        curId: -1,
+        items: [],
+      });
+      setClientId(null);
+      setCaseId(null);
+      setEmployeeId(null);
       return;
     }
 
@@ -167,8 +294,16 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 2,
       });
+      setSubNavigationBar({
+        type: "none",
+        curId: -1,
+        items: [],
+      });
+      setClientId(null);
+      setCaseId(null);
+      setEmployeeId(null);
+
       setEmployeeButtonId(0);
-      setSubNavigationBar("none");
       return;
     }
 
@@ -178,8 +313,16 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 2,
       });
+      setSubNavigationBar({
+        type: "none",
+        curId: -1,
+        items: [],
+      });
+      setClientId(null);
+      setCaseId(null);
+      setEmployeeId(null);
+
       setEmployeeButtonId(1);
-      setSubNavigationBar("none");
       return;
     }
 
@@ -190,13 +333,20 @@ function AppRoutes() {
       paths[2] &&
       !isNaN(Number(paths[2]))
     ) {
-      setEmployeeButtonId(2);
-      setEmployeeId(Number.parseInt(paths[2]));
       setMainNavigationBar({
         ...mainNavigationBar,
         curId: 2,
       });
-      setSubNavigationBar("employee");
+      setSubNavigationBar({
+        type: "none",
+        curId: -1,
+        items: [],
+      });
+      setClientId(null);
+      setCaseId(null);
+      setEmployeeId(Number.parseInt(paths[2]));
+
+      setEmployeeButtonId(2);
       return;
     }
 
@@ -208,71 +358,116 @@ function AppRoutes() {
       !isNaN(Number(paths[2])) &&
       paths[3] === "cases"
     ) {
-      setEmployeeId(Number.parseInt(paths[2]));
       setMainNavigationBar({
         ...mainNavigationBar,
         curId: 2,
       });
-      setSubNavigationBar("employee");
+      setSubNavigationBar({
+        type: "none",
+        curId: -1,
+        items: [],
+      });
+      setClientId(null);
+      setCaseId(null);
+      setEmployeeId(Number.parseInt(paths[2]));
+
       setEmployeeButtonId(3);
       return;
     }
 
     // /schedule
     if (length === 1 && paths[1] === "schedule") {
-      setClientId(null);
-      setCaseId(null);
-      setEmployeeId(null);
-      setSubNavigationBar("none");
       setMainNavigationBar({
         ...mainNavigationBar,
         curId: -1,
       });
+      setSubNavigationBar({
+        type: "none",
+        curId: -1,
+        items: [],
+      });
+      setClientId(null);
+      setCaseId(null);
+      setEmployeeId(null);
+
       setScheduleButtonIsClick(true);
       return;
     }
 
     // /login
     if (length === 1 && paths[1] === "login") {
-      cleanUp();
+      setMainNavigationBar({
+        ...mainNavigationBar,
+        curId: -1,
+      });
+      setSubNavigationBar({
+        type: "none",
+        curId: -1,
+        items: [],
+      });
+      setClientId(null);
+      setCaseId(null);
+      setEmployeeId(null);
+
       return;
     }
 
     // /validate
     if (length === 1 && paths[1] === "validate") {
-      cleanUp();
+      setMainNavigationBar({
+        ...mainNavigationBar,
+        curId: -1,
+      });
+      setSubNavigationBar({
+        type: "none",
+        curId: -1,
+        items: [],
+      });
+      setClientId(null);
+      setCaseId(null);
+      setEmployeeId(null);
+
       return;
     }
 
     // /join
     if (length === 1 && paths[1] === "join") {
-      cleanUp();
+      setMainNavigationBar({
+        ...mainNavigationBar,
+        curId: -1,
+      });
+      setSubNavigationBar({
+        type: "none",
+        curId: -1,
+        items: [],
+      });
+      setClientId(null);
+      setCaseId(null);
+      setEmployeeId(null);
+
       return;
     }
 
     // /error
     if (length === 1 && paths[1] === "error") {
-      cleanUp();
-      return;
-    }
-
-    // clean up
-    cleanUp();
-    navigate("error");
-
-    function cleanUp() {
-      setClientId(null);
-      setCaseId(null);
       setMainNavigationBar({
         ...mainNavigationBar,
         curId: -1,
       });
-      setSubNavigationBar("none");
-      setCaseButtonId(0);
+      setSubNavigationBar({
+        type: "none",
+        curId: -1,
+        items: [],
+      });
+      setClientId(null);
+      setCaseId(null);
       setEmployeeId(null);
-      setEmployeeButtonId(0);
+
+      return;
     }
-  }, [location]);
+
+    navigate("error");
+  }, [location, clientId]);
 
   return (
     <Routes>
