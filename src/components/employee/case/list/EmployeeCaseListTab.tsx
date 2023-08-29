@@ -9,7 +9,7 @@ import Box from "@mui/material/Box";
 import { LawsuitInfo } from "../../../case/type/LawsuitInfo.tsx";
 import { useNavigate } from "react-router-dom";
 import { LawsuitStatus } from "../../../../type/ResponseType";
-import CaseListTable from "../../../case/CaseListTable";
+import EmployeeCaseListTable from "./EmployeeCaseListTable";
 
 function EmployeeCaseListTab() {
   const [employeeId] = useRecoilState(employeeIdState);
@@ -23,6 +23,7 @@ function EmployeeCaseListTab() {
   const [searchLawsuitStatus] = useState<LawsuitStatus | null>(null);
   const [searchWord] = useState<string | null>(null);
   const [_, setCurSearchWord] = useState<string | null>(null);
+  const [refreshTrigger, setRefreshTrigger] = useState(false);
 
   const prevDependencies = useRef({
     searchLawsuitStatus,
@@ -31,6 +32,7 @@ function EmployeeCaseListTab() {
   });
 
   useEffect(() => {
+    if (employeeId === null) return;
     // page만 변화했는지 체크
     if (
       prevDependencies.current.searchLawsuitStatus === searchLawsuitStatus &&
@@ -48,6 +50,14 @@ function EmployeeCaseListTab() {
       page,
     };
   }, [employeeId, rowsPerPage, page, searchLawsuitStatus, searchWord]);
+
+  useEffect(() => {
+    if (!refreshTrigger) {
+      return;
+    }
+    setRefreshTrigger(false);
+    searchRequest(true, true);
+  });
 
   // 검색
   const searchRequest = (isInitPage?: boolean, isGetBackWord?: boolean) => {
@@ -89,7 +99,7 @@ function EmployeeCaseListTab() {
 
   return (
     <Box>
-      <CaseListTable
+      <EmployeeCaseListTable
         cases={cases.map((item) => ({
           ...item,
           onClick: () => {
@@ -101,6 +111,7 @@ function EmployeeCaseListTab() {
         setPage={setPage}
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}
+        setRefreshTrigger={setRefreshTrigger}
       />
     </Box>
   );
