@@ -105,6 +105,16 @@ function EmployeeListTable({
     },
   ];
 
+  const hierarchyMap: { [key: number]: Hierarchy } = {};
+  hierarchyList.forEach((item) => {
+    hierarchyMap[item.id] = item;
+  });
+
+  const roleMap: { [key: number]: Role } = {};
+  roleList.forEach((item) => {
+    roleMap[item.id] = item;
+  });
+
   return (
     <Card sx={{ marginBottom: 2, marginTop: 3 }}>
       <CardTitle text="사원 리스트" />
@@ -147,14 +157,12 @@ function EmployeeListTable({
                 </TableCell>
                 <TableCell align="left">{item.name}</TableCell>
                 <TableCell align="left">
-                  {
-                    hierarchyList.filter((it) => it.id === item.hierarchyId)[0]
-                      .nameKr
-                  }
+                  {hierarchyMap[item.hierarchyId].nameKr}
                 </TableCell>
                 <TableCell align="left">
-                  {roleList.filter((it) => it.id === item.roleId)[0].nameKr}
+                  {roleMap[item.roleId].nameKr}
                 </TableCell>
+
                 <TableCell align="left">{item.phone}</TableCell>
                 <TableCell align="left">{item.email}</TableCell>
                 <TableCell align="left">{item.createdAt}</TableCell>
