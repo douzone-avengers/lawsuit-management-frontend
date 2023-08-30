@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import { Outlet } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import printLoadingState from "../../states/layout/PrintLoadingState.tsx";
-import PrintComponent from "./closing/print/PrintComponent.tsx";
+import PdfComponent from "./closing/print/PdfComponent.tsx";
 
 function CaseLayout() {
   const printLoading = useRecoilValue(printLoadingState);
@@ -18,7 +18,7 @@ function CaseLayout() {
       >
         <Outlet />
       </Box>
-      {printLoading.isLoading ? <PrintComponent /> : null}
+      {printLoading === "loading" ? <PdfComponent /> : null}
     </>
   );
 }

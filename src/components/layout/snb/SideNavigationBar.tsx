@@ -61,10 +61,10 @@ function SideNavigationBar() {
   return (
     <Drawer
       sx={{
-        width: 480,
+        width: subNavigationBar.type !== "none" ? 480 : 240,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
-          width: 480,
+          width: subNavigationBar.type !== "none" ? 480 : 240,
           boxSizing: "border-box",
         },
       }}
@@ -74,7 +74,13 @@ function SideNavigationBar() {
     >
       <SideNavigationBarHeader />
       <Divider />
-      <Box sx={{ display: "flex", height: "100%" }}>
+      <Box
+        sx={{
+          display: "flex",
+          height: "100%",
+          overflowY: "hidden",
+        }}
+      >
         <MainNavigationBar />
         {subNavigationBar.type !== "none" ? (
           <>

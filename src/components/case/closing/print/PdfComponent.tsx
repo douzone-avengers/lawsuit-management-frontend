@@ -8,6 +8,7 @@ import caseIdState from "../../../../states/case/CaseIdState.tsx";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { delimiter } from "../../../../lib/convert.ts";
+import PageLoadingSpinner from "../../../layout/PageLoadingSpinner.tsx";
 
 type AllLawsuitType = {
   lawsuit: {
@@ -38,10 +39,10 @@ type AllLawsuitType = {
   }[];
 };
 
-function PrintComponent() {
+function PdfComponent() {
   const [data, setData] = useState<AllLawsuitType | null>(null);
   const caseId = useRecoilValue(caseIdState);
-  const setLoading = useSetRecoilState(printLoadingState);
+  const setPrintLoading = useSetRecoilState(printLoadingState);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -111,118 +112,99 @@ function PrintComponent() {
           reader.readAsDataURL(pdf);
 
           // doc.output("dataurlnewwindow", { filename: "사건 관리 서비스" });
-          setLoading({
-            text: "출력 준비 중",
-            isLoading: false,
-          });
+          setPrintLoading("complete");
         }
       }
     })();
   }, [data]);
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        left: -99999,
-        width: "210mm",
-      }}
-      ref={ref}
-    >
-      <Page>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            height: "297mm",
-            width: "100%",
-          }}
-        >
-          <h1>1. 사건 정보</h1>
-        </div>
-      </Page>
-      <Page>
-        <div
-          style={{
-            marginTop: 50,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            width: "210mm",
-          }}
-        >
+    <>
+      <PageLoadingSpinner>업로드 중</PageLoadingSpinner>
+      <div
+        style={{
+          position: "fixed",
+          left: -99999,
+          width: "210mm",
+        }}
+        ref={ref}
+      >
+        <Page>
           <div
             style={{
-              width: 700,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "297mm",
+              width: "100%",
             }}
           >
-            <Row header="사건명" data={data?.lawsuit.name} />
-            <Row header="사건번호" data={data?.lawsuit.num} />
-            <Row header="당사자" data={data?.lawsuit.clients.join(", ")} />
-            <Row header="담당자" data={data?.lawsuit.members.join(", ")} />
-            <Row header="담당법원" data={data?.lawsuit.court} />
-            <Row header="판결" data={data?.lawsuit.judgementResult} />
-            <Row header="판결일" data={data?.lawsuit.judgementDate} />
-            <Row
-              header="의뢰비"
-              data={`${delimiter(data?.lawsuit.commissionFee ?? 0)}원`}
-            />
-            <Row
-              header="성공보수"
-              data={`${delimiter(data?.lawsuit.contingentFee ?? 0)}원`}
-            />
+            <h1>1. 사건 정보</h1>
           </div>
-        </div>
-      </Page>
-      <Page>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            height: "297mm",
-            width: "100%",
-          }}
-        >
-          <h1>2. 상담 정보</h1>
-        </div>
-      </Page>
-      {data?.advices.map((item) => (
-        <Page key={item.id}>
+        </Page>
+        <Page>
           <div
             style={{
+              marginTop: 50,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               width: "210mm",
             }}
           >
-            <div>
-              <div
-                style={{
-                  width: 700,
-                  borderCollapse: "collapse",
-                }}
-              >
+            <div
+              style={{
+                width: 700,
+              }}
+            >
+              <Row header="사건명" data={data?.lawsuit.name} />
+              <Row header="사건번호" data={data?.lawsuit.num} />
+              <Row header="당사자" data={data?.lawsuit.clients.join(", ")} />
+              <Row header="담당자" data={data?.lawsuit.members.join(", ")} />
+              <Row header="담당법원" data={data?.lawsuit.court} />
+              <Row header="판결" data={data?.lawsuit.judgementResult} />
+              <Row header="판결일" data={data?.lawsuit.judgementDate} />
+              <Row
+                header="의뢰비"
+                data={`${delimiter(data?.lawsuit.commissionFee ?? 0)}원`}
+              />
+              <Row
+                header="성공보수"
+                data={`${delimiter(data?.lawsuit.contingentFee ?? 0)}원`}
+              />
+            </div>
+          </div>
+        </Page>
+        <Page>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "297mm",
+              width: "100%",
+            }}
+          >
+            <h1>2. 상담 정보</h1>
+          </div>
+        </Page>
+        {data?.advices.map((item) => (
+          <Page key={item.id}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                width: "210mm",
+              }}
+            >
+              <div>
                 <div
                   style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    background: "lightgrey",
                     width: 700,
-                    height: 50,
-                    border: "1px solid black",
-                    fontWeight: 700,
+                    borderCollapse: "collapse",
                   }}
                 >
-                  {item.title}
-                </div>
-                <Row header="상담일" data={item.date} />
-                <Row header="상담관" data={item.memberNames.join(", ")} />
-                <Row header="상담자" data={item.clientNames.join(", ")} />
-                <div>
                   <div
                     style={{
                       display: "flex",
@@ -235,75 +217,94 @@ function PrintComponent() {
                       fontWeight: 700,
                     }}
                   >
-                    내용
+                    {item.title}
                   </div>
-                  <div
-                    style={{
-                      border: "1px solid black",
-                      height: 770,
-                      padding: 20,
-                    }}
-                  >
-                    {item.contents}
+                  <Row header="상담일" data={item.date} />
+                  <Row header="상담관" data={item.memberNames.join(", ")} />
+                  <Row header="상담자" data={item.clientNames.join(", ")} />
+                  <div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        background: "lightgrey",
+                        width: 700,
+                        height: 50,
+                        border: "1px solid black",
+                        fontWeight: 700,
+                      }}
+                    >
+                      내용
+                    </div>
+                    <div
+                      style={{
+                        border: "1px solid black",
+                        height: 770,
+                        padding: 20,
+                      }}
+                    >
+                      {item.contents}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </Page>
-      ))}
-      <Page>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            height: "297mm",
-            width: "100%",
-          }}
-        >
-          <h1>3. 지출 정보</h1>
-        </div>
-      </Page>
-      <Page>
-        <div
-          style={{
-            marginTop: 50,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            width: "210mm",
-          }}
-        >
+          </Page>
+        ))}
+        <Page>
           <div
             style={{
-              width: 700,
               display: "flex",
-              border: "1px solid black",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "297mm",
+              width: "100%",
             }}
           >
-            <TableHeader width={90}>날짜</TableHeader>
-            <TableHeader width={500}>내역</TableHeader>
-            <TableHeader width={110}>금액</TableHeader>
+            <h1>3. 지출 정보</h1>
           </div>
-          <div>
-            {data?.expenses.map((item) => (
-              <div key={item.id} style={{ display: "flex" }}>
-                <div style={{ border: "1px solid black", width: 90 }}>
-                  {item.date}
+        </Page>
+        <Page>
+          <div
+            style={{
+              marginTop: 50,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              width: "210mm",
+            }}
+          >
+            <div
+              style={{
+                width: 700,
+                display: "flex",
+                border: "1px solid black",
+              }}
+            >
+              <TableHeader width={90}>날짜</TableHeader>
+              <TableHeader width={500}>내역</TableHeader>
+              <TableHeader width={110}>금액</TableHeader>
+            </div>
+            <div>
+              {data?.expenses.map((item) => (
+                <div key={item.id} style={{ display: "flex" }}>
+                  <div style={{ border: "1px solid black", width: 90 }}>
+                    {item.date}
+                  </div>
+                  <div style={{ border: "1px solid black", width: 500 }}>
+                    {item.contents}
+                  </div>
+                  <div style={{ border: "1px solid black", width: 110 }}>
+                    {delimiter(item.amount)}원
+                  </div>
                 </div>
-                <div style={{ border: "1px solid black", width: 500 }}>
-                  {item.contents}
-                </div>
-                <div style={{ border: "1px solid black", width: 110 }}>
-                  {delimiter(item.amount)}원
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </Page>
-    </div>
+        </Page>
+      </div>
+    </>
   );
 }
 
@@ -376,4 +377,4 @@ function TableHeader({
   );
 }
 
-export default PrintComponent;
+export default PdfComponent;

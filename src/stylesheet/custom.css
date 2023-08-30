@@ -1,0 +1,12 @@
+.custom-scroll-bar {
+
+}
+
+.custom-scroll-bar::-webkit-scrollbar {
+    display: none;
+}
+
+.custom-scroll-bar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}

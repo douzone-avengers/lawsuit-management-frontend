@@ -1,17 +1,14 @@
 import { useSetRecoilState } from "recoil";
 import printLoadingState from "../../../../states/layout/PrintLoadingState.tsx";
-import PrintIcon from "@mui/icons-material/Print";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
 
-function PrintButton() {
-  const setLoading = useSetRecoilState(printLoadingState);
+function UploadButton() {
+  const setPrintLoading = useSetRecoilState(printLoadingState);
 
   const handleClick = async () => {
-    setLoading({
-      text: "업로드",
-      isLoading: true,
-    });
+    setPrintLoading("loading");
   };
 
   return (
@@ -21,9 +18,9 @@ function PrintButton() {
       onClick={handleClick}
     >
       <Box sx={{ fontSize: 18 }}>업로드</Box>
-      <PrintIcon />
+      <UploadFileIcon />
     </Button>
   );
 }
 
-export default PrintButton;
+export default UploadButton;
