@@ -1,15 +1,15 @@
 import { useSetRecoilState } from "recoil";
-import loadingState from "../../../../states/layout/LoadingState.tsx";
+import printLoadingState from "../../../../states/layout/PrintLoadingState.tsx";
 import PrintIcon from "@mui/icons-material/Print";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 
 function PrintButton() {
-  const setLoading = useSetRecoilState(loadingState);
+  const setLoading = useSetRecoilState(printLoadingState);
 
   const handleClick = async () => {
     setLoading({
-      text: "출력 준비 중",
+      text: "업로드",
       isLoading: true,
     });
   };
@@ -20,7 +20,7 @@ function PrintButton() {
       variant="contained"
       onClick={handleClick}
     >
-      <Box sx={{ fontSize: 18 }}>출력</Box>
+      <Box sx={{ fontSize: 18 }}>업로드</Box>
       <PrintIcon />
     </Button>
   );

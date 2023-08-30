@@ -14,7 +14,7 @@ function ClientsPage() {
     navigate(`/clients/${subNavigationBar.curId}`);
   }, [subNavigationBar]);
 
-  return <>TODO: Loading</>;
+  return <></>;
 }
 
 export default ClientsPage;
