@@ -18,7 +18,7 @@ function CaseLayout() {
       >
         <Outlet />
       </Box>
-      {printLoading.isLoading ? <PrintComponent /> : null}
+      {printLoading === "loading" ? <PrintComponent /> : null}
     </>
   );
 }

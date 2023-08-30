@@ -8,6 +8,7 @@ import SubNavigationBarItem from "./SubNavigationBarItem.tsx";
 import ClientRegisterPopUpButton from "../../client/ClientRegisterPopUpButton.tsx";
 import employeeIdState from "../../../states/employee/EmployeeIdState";
 import snbLoadedState from "../../../states/common/SnbLoadedState.ts";
+import "../../../stylesheet/custom.css";
 
 function SubNavigationBar() {
   const clientId = useRecoilValue(clientIdState);
@@ -18,10 +19,13 @@ function SubNavigationBar() {
 
   return (
     <Box
+      className="custom-scroll-bar"
       sx={{
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
+        overflow: "hidden",
+        overflowY: "scroll",
       }}
     >
       <List sx={{ width: 240, height: "100%", padding: 0 }}>

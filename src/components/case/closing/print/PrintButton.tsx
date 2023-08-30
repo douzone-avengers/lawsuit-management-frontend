@@ -5,13 +5,10 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 
 function PrintButton() {
-  const setLoading = useSetRecoilState(printLoadingState);
+  const setPrintLoading = useSetRecoilState(printLoadingState);
 
   const handleClick = async () => {
-    setLoading({
-      text: "업로드",
-      isLoading: true,
-    });
+    setPrintLoading("loading");
   };
 
   return (

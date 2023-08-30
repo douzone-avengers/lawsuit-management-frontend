@@ -1,16 +1,8 @@
 import { atom } from "recoil";
 
-type PrintLoadingType = {
-  text: string;
-  isLoading: boolean;
-};
-
-const printLoadingState = atom<PrintLoadingType>({
+const printLoadingState = atom<"none" | "loading" | "complete">({
   key: "printLoadingState",
-  default: {
-    text: "",
-    isLoading: false,
-  },
+  default: "none",
 });
 
 export default printLoadingState;
