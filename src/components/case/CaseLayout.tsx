@@ -1,51 +1,48 @@
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import caseButtonIdState from "../../states/case/CaseButtonIdState";
-import caseIdState from "../../states/case/CaseIdState";
-import clientIdState from "../../states/client/ClientIdState";
 import loadingState from "../../states/layout/LoadingState.tsx";
 import PrintComponent from "./closing/print/PrintComponent.tsx";
+import caseEditPopUpOpenState from "../../states/case/CaseEditPopUpOpenState.tsx";
+import caseRemovePopUpOpenState from "../../states/case/CaseRemovePopUpOpenState.tsx";
+import CaseEditPopUp from "./CaseEditPopUp.tsx";
+import { useEffect, useState } from "react";
+import requestDeprecated, {
+  RequestFailHandler,
+  RequestSuccessHandler,
+} from "../../lib/requestDeprecated.ts";
+import { Court } from "./type/CourtInfo.ts";
+import CaseRemovePopUp from "./CaseRemovePopUp.tsx";
 
 function CaseLayout() {
-  const caseButtonId = useRecoilValue(caseButtonIdState);
-  const clientId = useRecoilValue(clientIdState);
-  const caseId = useRecoilValue(caseIdState);
-  const navigate = useNavigate();
   const loading = useRecoilValue(loadingState);
+  const caseEditPopUpOpen = useRecoilValue(caseEditPopUpOpenState);
+  const caseRemovePopUpOpen = useRecoilValue(caseRemovePopUpOpenState);
+  const [courtList, setCourtList] = useState<Court[]>([]);
+
+  // 법원 리스트
+  useEffect(() => {
+    const handleRequestSuccess: RequestSuccessHandler = (res) => {
+      const courtData = res.data;
+      setCourtList(courtData);
+    };
+
+    const handleRequestFail: RequestFailHandler = (e) => {
+      alert((e.response.data as { code: string; message: string }).message);
+    };
+
+    requestDeprecated("GET", `/court`, {
+      useMock: false,
+      onSuccess: handleRequestSuccess,
+      onFail: handleRequestFail,
+    });
+  }, []);
 
   return (
     <>
-      <Box
-        sx={{
-          display: "flex",
-          gap: 2,
-          flexDirection: "column",
-        }}
-      >
-        <ButtonGroup variant="outlined" size="large" fullWidth>
-          <Button
-            variant={caseButtonId === 0 ? "contained" : "outlined"}
-            onClick={() => {
-              navigate(`/cases/list?client=${clientId}`);
-            }}
-          >
-            사건 리스트
-          </Button>
-          <Button
-            variant={caseButtonId === 1 ? "contained" : "outlined"}
-            onClick={() => {
-              navigate(`/cases/${caseId}?client=${clientId}`);
-            }}
-          >
-            사건 상세
-          </Button>
-        </ButtonGroup>
-        <Outlet />
-      </Box>
+      <Outlet />
       {loading.isLoading ? <PrintComponent /> : null}
+      {caseEditPopUpOpen ? <CaseEditPopUp courtList={courtList} /> : null}
+      {caseRemovePopUpOpen ? <CaseRemovePopUp /> : null}
     </>
   );
 }
