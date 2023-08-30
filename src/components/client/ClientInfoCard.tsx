@@ -477,7 +477,7 @@ function ClientInfoCard({ width, height }: Props) {
                     sx={{
                       display: "inline-block",
                       fontSize: 20,
-                      width: 500,
+                      width: 300,
                     }}
                     value={address}
                   />
