@@ -34,7 +34,6 @@ function ClientCaseStatisticsInfoCard() {
     };
 
     requestDeprecated("GET", `/clients/${clientId}`, {
-      useMock: false,
       withToken: true,
       onSuccess: handleRequestSuccess,
     });

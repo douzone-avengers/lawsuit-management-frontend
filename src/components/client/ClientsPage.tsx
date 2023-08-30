@@ -8,14 +8,13 @@ function ClientsPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (subNavigationBar.items && subNavigationBar.items.length > 0) {
-      // const { id } = subNavigationBar.items[0];
-      // navigate(`/clients/${id}`);
-      navigate(`/clients/2`);
+    if (subNavigationBar.type !== "client") {
+      return;
     }
+    navigate(`/clients/${subNavigationBar.curId}`);
   }, [subNavigationBar]);
 
-  return <>TODO: Loading</>;
+  return <></>;
 }
 
 export default ClientsPage;

@@ -25,7 +25,6 @@ function CalendarInformation({ item }: Props) {
   const handleClick = () => {
     requestDeprecated("GET", `/schedules/${item.receptionId}/info`, {
       onSuccess: handleSuccess,
-      useMock: false,
     });
   };
 

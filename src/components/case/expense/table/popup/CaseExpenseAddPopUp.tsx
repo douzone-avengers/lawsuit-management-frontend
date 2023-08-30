@@ -67,7 +67,6 @@ function CaseExpenseAddPopUp() {
 
       requestDeprecated("GET", url, {
         onSuccess: handleRequestSuccess2,
-        useMock: false,
       });
     };
 
@@ -79,7 +78,6 @@ function CaseExpenseAddPopUp() {
         amount,
       },
       onSuccess: handleRequestSuccess,
-      useMock: false,
     });
   };
 

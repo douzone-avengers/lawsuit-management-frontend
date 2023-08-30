@@ -147,7 +147,7 @@ function CaseListPage() {
 
     requestDeprecated("GET", `/lawsuits/clients/${clientId}`, {
       withToken: true,
-      useMock: false,
+
       params: {
         curPage: (page + 1).toString(),
         rowsPerPage: rowsPerPage.toString(),

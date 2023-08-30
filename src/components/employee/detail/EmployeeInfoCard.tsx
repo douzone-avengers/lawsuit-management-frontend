@@ -76,7 +76,7 @@ function EmployeeInfoCard({ width = "50%", memberInfo }: Props) {
 
     requestDeprecated("PUT", `/members/employees/${employeeId}`, {
       withToken: true,
-      useMock: false,
+
       onSuccess: handelRequestSuccess,
       onFail: handelRequestFail,
       body: {

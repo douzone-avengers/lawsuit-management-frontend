@@ -1,22 +1,24 @@
 import Box from "@mui/material/Box";
 import { CircularProgress } from "@mui/material";
-import { useRecoilValue } from "recoil";
-import loadingState from "../../states/layout/LoadingState.tsx";
 
-function LoadingSpinner() {
-  const loading = useRecoilValue(loadingState);
+type Props = {
+  children?: React.ReactNode;
+};
 
+function PageLoadingSpinner({ children }: Props) {
   return (
     <Box
       sx={{
         zIndex: 9999,
-        position: "fixed",
-        background: "#000000cc",
         display: "flex",
-        alignItems: "center",
         justifyContent: "center",
-        height: "100vh",
+        alignItems: "center",
+        position: "absolute",
+        top: 0,
+        left: 0,
+        background: "#00000080",
         width: "100vw",
+        height: "100vh",
       }}
     >
       <div
@@ -27,11 +29,11 @@ function LoadingSpinner() {
           background: "transparent",
         }}
       >
-        {loading.text}
+        {children}
       </div>
       <CircularProgress size={100} />
     </Box>
   );
 }
 
-export default LoadingSpinner;
+export default PageLoadingSpinner;

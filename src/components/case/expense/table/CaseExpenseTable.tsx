@@ -55,7 +55,6 @@ function CaseExpenseTable() {
     };
 
     requestDeprecated("GET", url, {
-      useMock: false,
       onSuccess: handleRequestSuccess,
       onFail: handleRequestFail,
     });
@@ -116,7 +115,6 @@ function CaseExpenseTable() {
 
               requestDeprecated("GET", updateUrl(url, page), {
                 onSuccess: handleRequestSuccess,
-                useMock: false,
               });
 
               return page;
@@ -149,7 +147,6 @@ function CaseExpenseTable() {
 
               requestDeprecated("GET", updateUrl(url, page), {
                 onSuccess: handleRequestSuccess,
-                useMock: false,
               });
 
               return page;

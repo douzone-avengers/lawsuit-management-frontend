@@ -88,7 +88,6 @@ function CaseDetailPage() {
     requestDeprecated("GET", `/lawsuits/${caseId}/basic`, {
       onSuccess: handleRequestSuccess,
       onFail: handleRequestFail,
-      useMock: false,
     });
   }, [caseId]);
 

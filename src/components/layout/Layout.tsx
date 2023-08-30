@@ -1,18 +1,13 @@
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import isLoginState from "../../states/common/IsLoginState";
-import clientRegisterPopUpState from "../../states/layout/ClientRegisterPopUpOpenState";
-import ClientRegisterPopUp from "../client/ClientRegisterPopUp.tsx";
 import Debug from "./Debug";
 import Header from "./header/Header.tsx";
 import Main from "./main/Main.tsx";
 import SideNavigationBar from "./snb/SideNavigationBar.tsx";
-import ClientRemovePopUp from "../client/ClientRemovePopUp.tsx";
-import clientRemovePopUpOpenState from "../../states/client/ClientRemovePopUpOpenState.tsx";
-import loadingState from "../../states/layout/LoadingState.tsx";
-import LoadingSpinner from "./LoadingSpinner.tsx";
+import PageLoadingSpinner from "./PageLoadingSpinner.tsx";
 import hierarchyListState, {
   Hierarchy,
 } from "../../states/data/hierarchyListState";
@@ -21,17 +16,20 @@ import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
 } from "../../lib/requestDeprecated";
+import ClientRegisterPopUp from "../client/ClientRegisterPopUp.tsx";
+import ClientRemovePopUp from "../client/ClientRemovePopUp.tsx";
+import clientRegisterPopUpOpenState from "../../states/layout/ClientRegisterPopUpOpenState.tsx";
+import clientRemovePopUpOpenState from "../../states/client/ClientRemovePopUpOpenState.tsx";
 
 function Layout() {
-  const clientRegisterPopUp = useRecoilValue(clientRegisterPopUpState);
   const [isLogin, setIsLogin] = useRecoilState(isLoginState);
   const navigate = useNavigate();
-  const clientRemovePopUpOpen = useRecoilValue(clientRemovePopUpOpenState);
-  const loading = useRecoilValue(loadingState);
   const [, setHierarchyList] = useRecoilState(hierarchyListState);
   const [, setRoleList] = useRecoilState(roleListState);
   const [roleLoaded, setRoleLoaded] = useState(false);
   const [hierarchyLoaded, setHierarchyLoaded] = useState(false);
+  const [clientRegisterPopUp] = useRecoilState(clientRegisterPopUpOpenState);
+  const [clientRemovePopUpOpen] = useRecoilState(clientRemovePopUpOpenState);
 
   //set enum table
   //직급 리스트
@@ -47,7 +45,7 @@ function Layout() {
 
     requestDeprecated("GET", `/hierarchy`, {
       withToken: false,
-      useMock: false,
+
       onSuccess: handelRequestSuccess,
       onFail: handelRequestFail,
     });
@@ -66,7 +64,7 @@ function Layout() {
 
     requestDeprecated("GET", `/role`, {
       withToken: false,
-      useMock: false,
+
       onSuccess: handelRequestSuccess,
       onFail: handelRequestFail,
     });
@@ -81,6 +79,7 @@ function Layout() {
     if (!isLogin) {
       const accessToken = localStorage.getItem("accessToken");
       if (!accessToken) {
+        setIsLogin(false);
         navigate("login");
       }
       setIsLogin(true);
@@ -89,19 +88,17 @@ function Layout() {
 
   return (
     <>
-      {loading.isLoading ? <LoadingSpinner /> : null}
-
-      {hierarchyLoaded && roleLoaded ? (
-        <Box sx={{ display: "flex" }}>
-          <Header />
-          <SideNavigationBar />
-          <Main />
-          {import.meta.env.DEV ? <Debug /> : null}
-        </Box>
-      ) : (
-        <LoadingSpinner />
-      )}
-
+      <Box sx={{ display: "flex" }}>
+        <Header />
+        <SideNavigationBar />
+        <Main />
+        {import.meta.env.DEV ? <Debug /> : null}
+      </Box>
+      {!hierarchyLoaded ? (
+        <PageLoadingSpinner>Hierarchy</PageLoadingSpinner>
+      ) : !roleLoaded ? (
+        <PageLoadingSpinner>Role</PageLoadingSpinner>
+      ) : null}
       {clientRegisterPopUp ? <ClientRegisterPopUp /> : null}
       {clientRemovePopUpOpen ? <ClientRemovePopUp /> : null}
     </>

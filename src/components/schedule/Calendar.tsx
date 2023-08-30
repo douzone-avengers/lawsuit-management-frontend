@@ -151,7 +151,6 @@ function Calendar() {
         `/schedules?start-deadline=${startDeadline}&end-deadline=${endDeadline}`,
         {
           onSuccess: handleRequestSucccess,
-          useMock: false,
         },
       );
     }

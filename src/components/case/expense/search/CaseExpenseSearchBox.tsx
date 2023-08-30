@@ -119,7 +119,6 @@ function CaseExpenseSearchBox() {
     const newUrl = updateUrl(url, 0);
     requestDeprecated("GET", newUrl, {
       onSuccess: handleRequestSuccess,
-      useMock: false,
     });
   };
 
