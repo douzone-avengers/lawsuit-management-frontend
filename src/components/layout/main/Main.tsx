@@ -10,9 +10,8 @@ const MainContainer = styled("main", {
 })<{
   open?: boolean;
 }>(({ theme }) => {
-  const sideNavigationBarOpen = useRecoilValue(sideNavigationBarOpenState);
   const subNavigationBar = useRecoilValue(subNavigationBarState);
-
+  const sideNavigationBarOpen = useRecoilValue(sideNavigationBarOpenState);
   return {
     flexGrow: 1,
     padding: theme.spacing(3),

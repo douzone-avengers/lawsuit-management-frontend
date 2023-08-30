@@ -74,7 +74,13 @@ function SideNavigationBar() {
     >
       <SideNavigationBarHeader />
       <Divider />
-      <Box sx={{ display: "flex", height: "100%" }}>
+      <Box
+        sx={{
+          display: "flex",
+          height: "100%",
+          overflowY: "hidden",
+        }}
+      >
         <MainNavigationBar />
         {subNavigationBar.type !== "none" ? (
           <>

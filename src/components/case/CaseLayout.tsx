@@ -1,20 +1,11 @@
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import caseButtonIdState from "../../states/case/CaseButtonIdState";
-import caseIdState from "../../states/case/CaseIdState";
-import clientIdState from "../../states/client/ClientIdState";
-import loadingState from "../../states/layout/LoadingState.tsx";
-import PrintComponent from "./closing/print/PrintComponent.tsx";
+import printLoadingState from "../../states/layout/PrintLoadingState.tsx";
+import PdfComponent from "./closing/print/PdfComponent.tsx";
 
 function CaseLayout() {
-  const caseButtonId = useRecoilValue(caseButtonIdState);
-  const clientId = useRecoilValue(clientIdState);
-  const caseId = useRecoilValue(caseIdState);
-  const navigate = useNavigate();
-  const loading = useRecoilValue(loadingState);
+  const printLoading = useRecoilValue(printLoadingState);
 
   return (
     <>
@@ -25,27 +16,9 @@ function CaseLayout() {
           flexDirection: "column",
         }}
       >
-        <ButtonGroup variant="outlined" size="large" fullWidth>
-          <Button
-            variant={caseButtonId === 0 ? "contained" : "outlined"}
-            onClick={() => {
-              navigate(`/cases/list?client=${clientId}`);
-            }}
-          >
-            사건 리스트
-          </Button>
-          <Button
-            variant={caseButtonId === 1 ? "contained" : "outlined"}
-            onClick={() => {
-              navigate(`/cases/${caseId}?client=${clientId}`);
-            }}
-          >
-            사건 상세
-          </Button>
-        </ButtonGroup>
         <Outlet />
       </Box>
-      {loading.isLoading ? <PrintComponent /> : null}
+      {printLoading === "loading" ? <PdfComponent /> : null}
     </>
   );
 }
