@@ -77,7 +77,6 @@ function ClientCaseListTab() {
     };
 
     requestDeprecated("GET", `/lawsuits/clients/${clientId}`, {
-      useMock: false,
       withToken: true,
       params: {
         curPage: (page + 1).toString(),

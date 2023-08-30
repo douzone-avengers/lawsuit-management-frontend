@@ -35,12 +35,10 @@ function CaseReceptionDeleteButton({ item }: Props) {
       };
       requestDeprecated("GET", url, {
         onSuccess: handleRequestSuccess2,
-        useMock: false,
       });
     };
     requestDeprecated("PATCH", `/receptions/delete/${item.id}`, {
       onSuccess: handleRequestSuccess,
-      useMock: false,
     });
   };
   return (

@@ -13,8 +13,8 @@ import {
   AppRegistration,
   Email,
   LocationOn,
-  PhoneIphone,
   Person,
+  PhoneIphone,
 } from "@mui/icons-material";
 import ClientRemovePopUpButton from "./ClientRemovePopUpButton.tsx";
 import { Link, SvgIcon, Typography } from "@mui/material";
@@ -116,7 +116,6 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
     };
 
     requestDeprecated("GET", `/clients/${clientId}`, {
-      useMock: false,
       withToken: true,
       onSuccess: handleRequestSuccess,
       onFail: handleRequestFail,
@@ -149,7 +148,6 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
       };
 
       requestDeprecated("GET", `/clients/${clientId}`, {
-        useMock: false,
         onSuccess: handleRequestSuccess2,
         onFail: handleRequestFail2,
       });
@@ -160,7 +158,6 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
     };
 
     requestDeprecated("PUT", `/clients/${clientId}`, {
-      useMock: false,
       withToken: true,
       body: {
         email,
@@ -205,7 +202,6 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
       };
 
       requestDeprecated("POST", `/promotions/clients/${clientId}`, {
-        useMock: false,
         withToken: true,
         onSuccess: handleRequestSuccess,
         onFail: handelRequestFail,

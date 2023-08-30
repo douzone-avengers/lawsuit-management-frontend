@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -11,7 +12,7 @@ import requestDeprecated, {
   RequestSuccessHandler,
 } from "../../../lib/requestDeprecated";
 import NormalDialog from "../../common/dialog/NormalDialog";
-import { useState } from "react";
+
 export default function EmployeePromotionDialog() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [promotionKey, setPromotionKey] = React.useState("");
@@ -37,7 +38,6 @@ export default function EmployeePromotionDialog() {
       };
 
       requestDeprecated("POST", `/promotions/employees`, {
-        useMock: false,
         withToken: true,
         params: {
           emailTo: email,

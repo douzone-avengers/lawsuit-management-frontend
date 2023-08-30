@@ -66,7 +66,6 @@ function CaseAddPopUp({
     };
 
     requestDeprecated("GET", `/court`, {
-      useMock: false,
       onSuccess: handleRequestSuccess,
       onFail: handleRequestFail,
     });
@@ -85,7 +84,7 @@ function CaseAddPopUp({
 
     requestDeprecated("GET", `/members/me`, {
       withToken: true,
-      useMock: false,
+
       onSuccess: handleRequestSuccess,
       onFail: handleRequestFail,
     });
@@ -104,7 +103,7 @@ function CaseAddPopUp({
 
     requestDeprecated("GET", `/clients/${clientId}`, {
       withToken: true,
-      useMock: false,
+
       onSuccess: handleRequestSuccess,
       onFail: handleRequestFail,
     });
@@ -122,7 +121,7 @@ function CaseAddPopUp({
 
     requestDeprecated("GET", `/members/employees`, {
       withToken: true,
-      useMock: false,
+
       onSuccess: handleRequestSuccess,
       onFail: handleRequestFail,
     });
@@ -139,7 +138,6 @@ function CaseAddPopUp({
     };
 
     requestDeprecated("GET", `/clients`, {
-      useMock: false,
       onSuccess: handleRequestSuccess,
       onFail: handleRequestFail,
     });
@@ -177,7 +175,7 @@ function CaseAddPopUp({
 
       requestDeprecated("GET", `/lawsuits/clients/${clientId}`, {
         onSuccess: handleRequestSuccess2,
-        useMock: false,
+
         params: {
           curPage: (page + 1).toString(),
           rowsPerPage: rowsPerPage.toString(),
@@ -203,7 +201,7 @@ function CaseAddPopUp({
         memberId: selectMemberIdList,
         clientId: selectClientIdList,
       },
-      useMock: false,
+
       onSuccess: handleRequestSuccess,
       onFail: handleRequestFail,
     });

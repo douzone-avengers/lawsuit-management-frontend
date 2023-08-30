@@ -3,16 +3,15 @@ import { Outlet } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import sideNavigationBarOpenState from "../../../states/layout/SideNavigationBarOpenState.tsx";
 import DrawerHeader from "../DrawerHeader.tsx";
-import subNavigationBarTypeState from "../../../states/layout/SubNavigationBarTypeState.tsx";
+import subNavigationBarState from "../../../states/layout/SubNavigationBarState.tsx";
 
 const MainContainer = styled("main", {
   shouldForwardProp: (prop) => prop !== "open",
 })<{
   open?: boolean;
 }>(({ theme }) => {
+  const subNavigationBar = useRecoilValue(subNavigationBarState);
   const sideNavigationBarOpen = useRecoilValue(sideNavigationBarOpenState);
-  const subNavigationBarType = useRecoilValue(subNavigationBarTypeState);
-
   return {
     flexGrow: 1,
     padding: theme.spacing(3),
@@ -20,7 +19,7 @@ const MainContainer = styled("main", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    marginLeft: subNavigationBarType !== "none" ? `-480px` : `-240px`,
+    marginLeft: subNavigationBar.type !== "none" ? `-480px` : `-240px`,
     ...(sideNavigationBarOpen && {
       transition: theme.transitions.create("margin", {
         easing: theme.transitions.easing.easeOut,

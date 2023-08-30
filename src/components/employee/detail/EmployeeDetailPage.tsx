@@ -43,6 +43,8 @@ function EmployeeDetailPage() {
   }, [recoilAddress]);
 
   useEffect(() => {
+    if (employeeId === null) return;
+
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
       const memberInfo: MemberInfo = res.data;
       setMemberInfo(memberInfo);
@@ -53,7 +55,7 @@ function EmployeeDetailPage() {
 
     requestDeprecated("GET", `/members/employees/${employeeId}`, {
       withToken: true,
-      useMock: false,
+
       onSuccess: handleRequestSuccess,
       onFail: handelRequestFail,
     });

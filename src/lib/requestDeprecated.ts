@@ -20,7 +20,6 @@ function requestDeprecated(
   path: string,
   config?: {
     withToken?: boolean;
-    useMock?: boolean;
     body?: Record<string, unknown>;
     params?: Record<string, string>;
     headers?: Record<string, string>;
@@ -29,10 +28,7 @@ function requestDeprecated(
     onFail?: RequestFailHandler;
   },
 ) {
-  const useMock = config?.useMock ?? true;
-
-  //const ROOT = import.meta.env.DEV ? "http://localhost:3000/api" : ""; // TODO: 배포되고 난 다음
-  const ROOT = useMock ? "http://localhost:3000/api" : "http://localhost:8080";
+  const ROOT = import.meta.env.DEV ? "http://localhost:8080" : "";
 
   const url = path.startsWith("/") ? `${ROOT}${path}` : `${ROOT}/${path}`;
 

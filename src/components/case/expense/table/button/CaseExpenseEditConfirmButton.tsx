@@ -45,7 +45,6 @@ function CaseExpenseEditConfirmButton({ item }: Props) {
         amount: item.amount,
       },
       onSuccess: handleSuccess,
-      useMock: false,
     });
   };
 

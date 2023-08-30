@@ -74,7 +74,7 @@ function EmployeePrivateCard({ width = "50%", memberInfo }: Props) {
 
     requestDeprecated("PUT", `/members/me`, {
       withToken: true,
-      useMock: false,
+
       onSuccess: handelRequestSuccess,
       onFail: handelRequestFail,
       body: {
