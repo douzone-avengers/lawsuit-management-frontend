@@ -8,7 +8,6 @@ import SideNavigationBarDisplayButton from "./SideNavigationBarDisplayButton.tsx
 import Title from "./Title.tsx";
 import Box from "@mui/material/Box";
 import ScheduleButton from "./ScheduleButton.tsx";
-import subNavigationBarState from "../../../states/layout/SubNavigationBarState.tsx";
 
 interface HeaderProps extends MuiAppBarProps {
   open?: boolean;
@@ -18,7 +17,6 @@ const HeaderContainer = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
 })<HeaderProps>(({ theme }) => {
   const sideNavigationBarOpen = useRecoilValue(sideNavigationBarOpenState);
-  const subNavigationBar = useRecoilValue(subNavigationBarState);
 
   return {
     transition: theme.transitions.create(["margin", "width"], {
@@ -26,11 +24,8 @@ const HeaderContainer = styled(MuiAppBar, {
       duration: theme.transitions.duration.leavingScreen,
     }),
     ...(sideNavigationBarOpen && {
-      width:
-        subNavigationBar.type !== "none"
-          ? `calc(100% - 480px)`
-          : `calc(100% - 240px)`,
-      marginLeft: subNavigationBar.type !== "none" ? 480 : 240,
+      width: `calc(100% - 480px)`,
+      marginLeft: 480,
       transition: theme.transitions.create(["margin", "width"], {
         easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.enteringScreen,

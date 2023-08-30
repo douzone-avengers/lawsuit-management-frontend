@@ -8,7 +8,7 @@ function EmployeePage() {
     navigate(`/employees/list`);
   }, []);
 
-  return <div>TODO: Loading</div>;
+  return <div></div>;
 }
 
 export default EmployeePage;

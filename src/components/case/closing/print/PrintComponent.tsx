@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import loadingState from "../../../../states/layout/LoadingState.tsx";
+import printLoadingState from "../../../../states/layout/PrintLoadingState.tsx";
 import requestDeprecated, {
   RequestSuccessHandler,
 } from "../../../../lib/requestDeprecated.ts";
@@ -41,7 +41,7 @@ type AllLawsuitType = {
 function PrintComponent() {
   const [data, setData] = useState<AllLawsuitType | null>(null);
   const caseId = useRecoilValue(caseIdState);
-  const setLoading = useSetRecoilState(loadingState);
+  const setLoading = useSetRecoilState(printLoadingState);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -93,7 +93,24 @@ function PrintComponent() {
           }
           // doc.save("사건 관리 서비스.pdf");
           // doc.autoPrint();
-          doc.output("dataurlnewwindow", { filename: "사건 관리 서비스" });
+          const pdf = doc.output("blob");
+          const reader = new FileReader();
+          reader.onload = function (event) {
+            let data = event.target?.result as string;
+            data = data.substring("data:application/pdf;base64,".length);
+            requestDeprecated("POST", "/pdfs", {
+              body: {
+                name: "test.pdf",
+                data: data,
+              },
+              onSuccess: () => {
+                console.log("success");
+              },
+            });
+          };
+          reader.readAsDataURL(pdf);
+
+          // doc.output("dataurlnewwindow", { filename: "사건 관리 서비스" });
           setLoading({
             text: "출력 준비 중",
             isLoading: false,

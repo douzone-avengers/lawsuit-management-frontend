@@ -10,7 +10,6 @@ import CaseListPage from "../case/CaseListPage";
 import CasesPage from "../case/CasesPage";
 import ClientDetailPage from "../client/ClientDetailPage";
 import ClientsPage from "../client/ClientsPage";
-import EmployeeDetailPage from "../employee/detail/EmployeeDetailPage";
 import EmployeePage from "../employee/EmployeePage";
 import NotFoundPage from "../error/NotFoundPage";
 import HomePage from "../home/HomePage";
@@ -36,19 +35,23 @@ import PersonIcon from "@mui/icons-material/Person";
 import BalanceIcon from "@mui/icons-material/Balance";
 import { MemberInfo } from "../employee/type/MemberInfo.tsx";
 import roleListState from "../../states/data/roleListState.ts";
+import snbLoadedState from "../../states/common/SnbLoadedState.ts";
+import EmployeeDetailPage from "../employee/detail/EmployeeDetailPage.tsx";
 
 function AppRoutes() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const setSubNavigationBar = useSetRecoilState(subNavigationBarState);
-  const [clientId, setClientId] = useRecoilState(clientIdState);
-  const setCaseId = useSetRecoilState(caseIdState);
   const [mainNavigationBar, setMainNavigationBar] = useRecoilState(
     mainNavigationBarState,
   );
-  const setEmployeeButtonId = useSetRecoilState(employeeButtonIdState);
+  const setSubNavigationBar = useSetRecoilState(subNavigationBarState);
+  const [clientId, setClientId] = useRecoilState(clientIdState);
+  const setCaseId = useSetRecoilState(caseIdState);
   const setEmployeeId = useSetRecoilState(employeeIdState);
+  const setSnbLoaded = useSetRecoilState(snbLoadedState);
+
+  const setEmployeeButtonId = useSetRecoilState(employeeButtonIdState);
   const setCaseTabId = useSetRecoilState(caseTabIdState);
   const setScheduleButtonIsClick = useSetRecoilState(
     scheduleButtonIsClickState,
@@ -87,6 +90,7 @@ function AppRoutes() {
         curId: -1,
         items: [],
       });
+      setSnbLoaded(true);
       setClientId(null);
       setCaseId(null);
       setEmployeeId(null);
@@ -99,6 +103,7 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 0,
       });
+      setSnbLoaded(false);
       requestDeprecated("GET", "/clients", {
         onSuccess: (res) => {
           const body: ClientData[] = res.data;
@@ -115,6 +120,7 @@ function AppRoutes() {
             curId: newItems[0].id,
             items: newItems,
           });
+          setSnbLoaded(true);
         },
       });
       setClientId(null);
@@ -129,6 +135,7 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 0,
       });
+      setSnbLoaded(false);
       requestDeprecated("GET", "/clients", {
         onSuccess: (res) => {
           const body: ClientData[] = res.data;
@@ -145,6 +152,7 @@ function AppRoutes() {
             curId: newItems[0].id,
             items: newItems,
           });
+          setSnbLoaded(true);
         },
       });
       const newClientId = Number.parseInt(paths[2]);
@@ -160,6 +168,7 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 1,
       });
+      setSnbLoaded(false);
       requestDeprecated("GET", "/clients", {
         onSuccess: (res) => {
           const body: { id: number; name: string }[] = res.data;
@@ -176,6 +185,7 @@ function AppRoutes() {
             curId: newItems[0].id,
             items: newItems,
           });
+          setSnbLoaded(true);
         },
       });
       setClientId(null);
@@ -197,6 +207,7 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 1,
       });
+      setSnbLoaded(false);
       requestDeprecated("GET", "/clients", {
         onSuccess: (res) => {
           const body: { id: number; name: string }[] = res.data;
@@ -213,6 +224,7 @@ function AppRoutes() {
             curId: newItems[0].id,
             items: newItems,
           });
+          setSnbLoaded(true);
         },
       });
 
@@ -228,15 +240,16 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 1,
       });
-
       if (clientId === null) {
         setSubNavigationBar({
           type: "none",
           curId: -1,
           items: [],
         });
+        setSnbLoaded(true);
       }
 
+      setSnbLoaded(false);
       requestDeprecated(
         "GET",
         `/lawsuits/clients/${clientId}?curPage=1&rowsPerPage=5&searchWord=`,
@@ -263,6 +276,7 @@ function AppRoutes() {
               curId: newItems[0].id,
               items: newItems,
             });
+            setSnbLoaded(true);
           },
         },
       );
@@ -286,6 +300,7 @@ function AppRoutes() {
         curId: -1,
         items: [],
       });
+      setSnbLoaded(true);
       setClientId(null);
       setCaseId(null);
       setEmployeeId(null);
@@ -303,6 +318,7 @@ function AppRoutes() {
         curId: -1,
         items: [],
       });
+      setSnbLoaded(true);
       setClientId(null);
       setCaseId(null);
       setEmployeeId(null);
@@ -322,6 +338,7 @@ function AppRoutes() {
         curId: -1,
         items: [],
       });
+      setSnbLoaded(true);
       setClientId(null);
       setCaseId(null);
       setEmployeeId(null);
@@ -341,6 +358,7 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 2,
       });
+      setSnbLoaded(false);
       requestDeprecated("GET", `/members/employees`, {
         onSuccess: (res) => {
           const memberInfos: MemberInfo[] = res.data.memberDtoNonPassList;
@@ -364,6 +382,7 @@ function AppRoutes() {
             curId: newItems[0].id,
             items: newItems,
           });
+          setSnbLoaded(true);
         },
       });
       setClientId(null);
@@ -386,6 +405,7 @@ function AppRoutes() {
         ...mainNavigationBar,
         curId: 2,
       });
+      setSnbLoaded(false);
       requestDeprecated("GET", `/members/employees`, {
         onSuccess: (res) => {
           const memberInfos: MemberInfo[] = res.data.memberDtoNonPassList;
@@ -409,6 +429,7 @@ function AppRoutes() {
             curId: newItems[0].id,
             items: newItems,
           });
+          setSnbLoaded(true);
         },
       });
       setClientId(null);
@@ -430,6 +451,7 @@ function AppRoutes() {
         curId: -1,
         items: [],
       });
+      setSnbLoaded(true);
       setClientId(null);
       setCaseId(null);
       setEmployeeId(null);
@@ -449,6 +471,7 @@ function AppRoutes() {
         curId: -1,
         items: [],
       });
+      setSnbLoaded(true);
       setClientId(null);
       setCaseId(null);
       setEmployeeId(null);
@@ -467,6 +490,7 @@ function AppRoutes() {
         curId: -1,
         items: [],
       });
+      setSnbLoaded(true);
       setClientId(null);
       setCaseId(null);
       setEmployeeId(null);
@@ -485,6 +509,7 @@ function AppRoutes() {
         curId: -1,
         items: [],
       });
+      setSnbLoaded(true);
       setClientId(null);
       setCaseId(null);
       setEmployeeId(null);
@@ -503,6 +528,7 @@ function AppRoutes() {
         curId: -1,
         items: [],
       });
+      setSnbLoaded(true);
       setClientId(null);
       setCaseId(null);
       setEmployeeId(null);

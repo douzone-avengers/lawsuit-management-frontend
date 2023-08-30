@@ -14,7 +14,7 @@ function CasesPage() {
     navigate(`/cases/list?client=${subNavigationBar.curId}`);
   }, [subNavigationBar]);
 
-  return <>TODO: Loading</>;
+  return <></>;
 }
 
 export default CasesPage;
