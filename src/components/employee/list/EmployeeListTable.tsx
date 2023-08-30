@@ -157,10 +157,10 @@ function EmployeeListTable({
                 </TableCell>
                 <TableCell align="left">{item.name}</TableCell>
                 <TableCell align="left">
-                  {hierarchyMap[item.hierarchyId].nameKr}
+                  {hierarchyMap[item.hierarchyId]?.nameKr ?? "N/A"}
                 </TableCell>
                 <TableCell align="left">
-                  {roleMap[item.roleId].nameKr}
+                  {roleMap[item.roleId]?.nameKr ?? "N/A"}
                 </TableCell>
 
                 <TableCell align="left">{item.phone}</TableCell>
