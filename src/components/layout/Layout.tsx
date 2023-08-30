@@ -79,6 +79,7 @@ function Layout() {
     if (!isLogin) {
       const accessToken = localStorage.getItem("accessToken");
       if (!accessToken) {
+        setIsLogin(false);
         navigate("login");
       }
       setIsLogin(true);
