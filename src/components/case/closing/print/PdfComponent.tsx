@@ -39,7 +39,7 @@ type AllLawsuitType = {
   }[];
 };
 
-function PrintComponent() {
+function PdfComponent() {
   const [data, setData] = useState<AllLawsuitType | null>(null);
   const caseId = useRecoilValue(caseIdState);
   const setPrintLoading = useSetRecoilState(printLoadingState);
@@ -377,4 +377,4 @@ function TableHeader({
   );
 }
 
-export default PrintComponent;
+export default PdfComponent;
