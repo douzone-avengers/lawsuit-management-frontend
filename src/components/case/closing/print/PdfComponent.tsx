@@ -50,7 +50,7 @@ function PdfComponent() {
       const body: AllLawsuitType = res.data;
       setData(body);
     };
-    requestDeprecated("GET", `/lawsuits/${caseId}/print`, {
+    requestDeprecated("GET", `/pdfs/lawsuits/${caseId}/print`, {
       onSuccess: handleSuccessRequest,
     });
   }, [ref]);
