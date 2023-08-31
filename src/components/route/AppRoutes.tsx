@@ -517,6 +517,25 @@ function AppRoutes() {
       return;
     }
 
+    // test
+    if (length === 1 && paths[1] === "test") {
+      setMainNavigationBar({
+        ...mainNavigationBar,
+        curId: -1,
+      });
+      setSubNavigationBar({
+        type: "none",
+        curId: -1,
+        items: [],
+      });
+      setSnbLoaded(true);
+      setClientId(null);
+      setCaseId(null);
+      setEmployeeId(null);
+
+      return;
+    }
+
     // /error
     if (length === 1 && paths[1] === "error") {
       setMainNavigationBar({
@@ -580,6 +599,7 @@ function AppRoutes() {
       <Route path="validate" element={<ValidatePage />} />
       {/* /join */}
       <Route path="join" element={<JoinPage />} />
+      {/* /test */}
       <Route path="test" element={<TestPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
