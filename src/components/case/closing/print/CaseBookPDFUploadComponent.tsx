@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import printLoadingState from "../../../../states/layout/PrintLoadingState.tsx";
+import caseBookPDFUploadLoadingState from "../../../../states/case/info/closing/CaseBookPDFUploadLoadingState.tsx";
 import requestDeprecated, {
   RequestSuccessHandler,
 } from "../../../../lib/requestDeprecated.ts";
@@ -39,10 +39,10 @@ type AllLawsuitType = {
   }[];
 };
 
-function PdfComponent() {
+function CaseBookPDFUploadComponent() {
   const [data, setData] = useState<AllLawsuitType | null>(null);
   const caseId = useRecoilValue(caseIdState);
-  const setPrintLoading = useSetRecoilState(printLoadingState);
+  const setPdfUploadLoading = useSetRecoilState(caseBookPDFUploadLoadingState);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -112,7 +112,7 @@ function PdfComponent() {
           reader.readAsDataURL(pdf);
 
           // doc.output("dataurlnewwindow", { filename: "사건 관리 서비스" });
-          setPrintLoading("complete");
+          setPdfUploadLoading("complete");
         }
       }
     })();
@@ -120,7 +120,7 @@ function PdfComponent() {
 
   return (
     <>
-      <PageLoadingSpinner>업로드 중</PageLoadingSpinner>
+      <PageLoadingSpinner>업로드</PageLoadingSpinner>
       <div
         style={{
           position: "fixed",
@@ -377,4 +377,4 @@ function TableHeader({
   );
 }
 
-export default PdfComponent;
+export default CaseBookPDFUploadComponent;
