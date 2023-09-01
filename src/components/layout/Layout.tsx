@@ -70,6 +70,23 @@ function Layout() {
     });
   };
 
+  //자기정보
+  const myInfoRequest = () => {
+    const handelRequestSuccess: RequestSuccessHandler = () => {
+      setIsLogin(true);
+    };
+    const handelRequestFail: RequestFailHandler = () => {
+      navigate("login");
+    };
+
+    requestDeprecated("GET", `/members/me`, {
+      withToken: true,
+
+      onSuccess: handelRequestSuccess,
+      onFail: handelRequestFail,
+    });
+  };
+
   useEffect(() => {
     hierarchyRequest();
     roleRequest();
@@ -82,7 +99,7 @@ function Layout() {
         setIsLogin(false);
         navigate("login");
       }
-      setIsLogin(true);
+      myInfoRequest();
     }
   }, [isLogin]);
 
