@@ -29,10 +29,9 @@ import curMemberAddressState from "../../states/employee/CurMemberAddressState.t
 type Props = {
   width?: string | number;
   height?: string | number;
-  useEdit?: boolean;
 };
 
-function ClientInfoCard({ width, height, useEdit }: Props) {
+function ClientInfoCard({ width, height }: Props) {
   const clientId = useRecoilValue(clientIdState);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -283,54 +282,52 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
                 />
               </Box>
             )}
-            {useEdit ? (
-              <Box sx={{ display: "flex", justifyContent: "right", gap: 1 }}>
-                {editMode ? (
-                  <>
-                    <Button
-                      variant="contained"
-                      sx={{ width: "64px", height: "41.98px" }}
-                      onClick={() => {
-                        requestUpdateClientInfo();
-                      }}
-                    >
-                      확인
-                    </Button>
-                    <Button
-                      variant="contained"
-                      sx={{
-                        width: "64px",
-                        height: "41.98px",
-                        background: "#ef5350",
-                        "&:hover": {
-                          backgroundColor: "red",
-                        },
-                      }}
-                      onClick={() => {
-                        handleCancelUpdateButton();
-                        setEditMode(false);
-                      }}
-                    >
-                      취소
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    <Button
-                      variant="contained"
-                      size="small"
-                      onClick={() => {
-                        handleUpdateButton();
-                        setEditMode(true);
-                      }}
-                    >
-                      수정
-                    </Button>
-                    <ClientRemovePopUpButton />
-                  </>
-                )}
-              </Box>
-            ) : null}
+            <Box sx={{ display: "flex", justifyContent: "right", gap: 1 }}>
+              {editMode ? (
+                <>
+                  <Button
+                    variant="contained"
+                    sx={{ width: "64px", height: "41.98px" }}
+                    onClick={() => {
+                      requestUpdateClientInfo();
+                    }}
+                  >
+                    확인
+                  </Button>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      width: "64px",
+                      height: "41.98px",
+                      background: "#ef5350",
+                      "&:hover": {
+                        backgroundColor: "red",
+                      },
+                    }}
+                    onClick={() => {
+                      handleCancelUpdateButton();
+                      setEditMode(false);
+                    }}
+                  >
+                    취소
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    onClick={() => {
+                      handleUpdateButton();
+                      setEditMode(true);
+                    }}
+                  >
+                    수정
+                  </Button>
+                  <ClientRemovePopUpButton />
+                </>
+              )}
+            </Box>
           </Box>
           <hr />
           <br />
@@ -377,7 +374,7 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
           <br />
           <br />
           <Box>
-            {useEdit ? (
+            {editMode ? (
               <Box>
                 <SvgIcon
                   component={Email}
@@ -419,7 +416,7 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
           </Box>
           <br />
           <Box>
-            {useEdit ? (
+            {editMode ? (
               <Box>
                 <SvgIcon
                   component={PhoneIphone}
@@ -460,21 +457,38 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
             )}
           </Box>
           <br />
-          <Box>
-            {useEdit ? (
-              <Box>
-                <SvgIcon
-                  component={LocationOn}
-                  sx={{ color: "#1976d2", marginTop: "5px" }}
-                />{" "}
-                &nbsp;
-                <TextField
-                  disabled={!editMode}
-                  size="small"
-                  sx={{ display: "inline-block", fontSize: 20 }}
-                  value={address}
-                />
-              </Box>
+          <Box sx={{ display: "flex" }}>
+            {editMode ? (
+              <>
+                <Box sx={{ display: "flex" }}>
+                  <SvgIcon
+                    component={LocationOn}
+                    sx={{ color: "#1976d2", marginTop: "5px" }}
+                  />{" "}
+                  &nbsp;
+                  <TextField
+                    disabled={!editMode}
+                    size="small"
+                    fullWidth
+                    sx={{
+                      display: "inline-block",
+                      fontSize: 20,
+                      width: 300,
+                    }}
+                    value={address}
+                  />
+                </Box>
+                <Box sx={{ marginTop: "5px" }}>
+                  <Button
+                    size="small"
+                    onClick={() => {
+                      setIsModalOpen(true);
+                    }}
+                  >
+                    주소검색
+                  </Button>
+                </Box>
+              </>
             ) : (
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <SvgIcon
@@ -495,18 +509,18 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
                 </Typography>
               </Box>
             )}
-            {editMode ? (
-              <Button
-                size="small"
-                onClick={() => {
-                  setIsModalOpen(true);
-                }}
-              >
-                주소검색
-              </Button>
-            ) : (
-              ""
-            )}
+            {/*{editMode ? (*/}
+            {/*  <Button*/}
+            {/*    size="small"*/}
+            {/*    onClick={() => {*/}
+            {/*      setIsModalOpen(true);*/}
+            {/*    }}*/}
+            {/*  >*/}
+            {/*    주소검색*/}
+            {/*  </Button>*/}
+            {/*) : (*/}
+            {/*  ""*/}
+            {/*)}*/}
           </Box>
         </CardContent>
       </Card>
