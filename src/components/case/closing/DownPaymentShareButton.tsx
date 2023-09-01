@@ -2,11 +2,11 @@ import { useSetRecoilState } from "recoil";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import EmailIcon from "@mui/icons-material/Email";
-import downPaymentShareSelectPopUpOpenState from "../../../states/case/info/closing/DownPaymentShareSelectPopUpOpenState.ts";
+import downPaymentSharePopUpOpenState from "../../../states/case/info/closing/DownPaymentSharePopUpOpenState.ts";
 
 function DownPaymentShareButton() {
   const setDownPaymentShareSelectPopUpOpen = useSetRecoilState(
-    downPaymentShareSelectPopUpOpenState,
+    downPaymentSharePopUpOpenState,
   );
 
   const handleClick = async () => {

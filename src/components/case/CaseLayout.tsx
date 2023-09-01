@@ -18,10 +18,10 @@ import downPaymentPDFPrintLoadingState from "../../states/case/info/closing/Down
 import downPaymentPDFUploadLoadingState from "../../states/case/info/closing/DownPaymentPDFUploadLoadingState.tsx";
 import DownPaymentPDFPrintComponent from "./closing/DownPaymentPDFPrintComponent.tsx";
 import DownPaymentPDFShareComponent from "./closing/DownPaymentPDFShareComponent.tsx";
-import caseBookShareSelectPopUpOpenState from "../../states/case/info/closing/CaseBookShareSelectPopUpOpenState.ts";
-import CaseBookShareSelectPopUp from "./closing/CaseBookShareSelectPopUp.tsx";
-import downPaymentShareSelectPopUpOpenState from "../../states/case/info/closing/DownPaymentShareSelectPopUpOpenState.ts";
-import DownPaymentShareSelectPopUp from "./closing/DownPaymentShareSelectPopUp.tsx";
+import caseBookSharePopUpOpenState from "../../states/case/info/closing/CaseBookSharePopUpOpenState.ts";
+import CaseBookSharePopUp from "./closing/CaseBookSharePopUp.tsx";
+import downPaymentSharePopUpOpenState from "../../states/case/info/closing/DownPaymentSharePopUpOpenState.ts";
+import DownPaymentSharePopUp from "./closing/DownPaymentSharePopUp.tsx";
 import Box from "@mui/material/Box";
 
 function CaseLayout() {
@@ -29,7 +29,7 @@ function CaseLayout() {
   const caseRemovePopUpOpen = useRecoilValue(caseRemovePopUpOpenState);
   const [courtList, setCourtList] = useState<Court[]>([]);
   const caseBookShareSelectPopUpOpen = useRecoilValue(
-    caseBookShareSelectPopUpOpenState,
+    caseBookSharePopUpOpenState,
   );
   const caseBookPDFPrintLoading = useRecoilValue(caseBookPDFPrintLoadingState);
   const caseBookPDFUploadLoading = useRecoilValue(
@@ -37,7 +37,7 @@ function CaseLayout() {
   );
 
   const downPaymentShareSelectPopUpOpen = useRecoilValue(
-    downPaymentShareSelectPopUpOpenState,
+    downPaymentSharePopUpOpenState,
   );
   const downPaymentPDFPrintLoading = useRecoilValue(
     downPaymentPDFPrintLoadingState,
@@ -82,7 +82,7 @@ function CaseLayout() {
       {caseBookPDFUploadLoading === "loading" ? (
         <CaseBookPDFShareComponent />
       ) : null}
-      {caseBookShareSelectPopUpOpen ? <CaseBookShareSelectPopUp /> : null}
+      {caseBookShareSelectPopUpOpen ? <CaseBookSharePopUp /> : null}
 
       {downPaymentPDFPrintLoading === "loading" ? (
         <DownPaymentPDFPrintComponent />
@@ -90,7 +90,7 @@ function CaseLayout() {
       {downPaymentPDFUploadLoading === "loading" ? (
         <DownPaymentPDFShareComponent />
       ) : null}
-      {downPaymentShareSelectPopUpOpen ? <DownPaymentShareSelectPopUp /> : null}
+      {downPaymentShareSelectPopUpOpen ? <DownPaymentSharePopUp /> : null}
     </>
   );
 }

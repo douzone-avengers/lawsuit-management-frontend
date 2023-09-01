@@ -2,11 +2,11 @@ import { useSetRecoilState } from "recoil";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import EmailIcon from "@mui/icons-material/Email";
-import caseBookShareSelectPopUpOpenState from "../../../states/case/info/closing/CaseBookShareSelectPopUpOpenState.ts";
+import caseBookSharePopUpOpenState from "../../../states/case/info/closing/CaseBookSharePopUpOpenState.ts";
 
 function CaseBookShareButton() {
   const setCaseBookShareSelectPopUpOpen = useSetRecoilState(
-    caseBookShareSelectPopUpOpenState,
+    caseBookSharePopUpOpenState,
   );
 
   const handleClick = async () => {

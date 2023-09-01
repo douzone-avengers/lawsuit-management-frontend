@@ -9,7 +9,7 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { delimiter } from "../../../lib/convert.ts";
 import PageLoadingSpinner from "../../layout/PageLoadingSpinner.tsx";
-import caseBookShareSelectPopUpOpenState from "../../../states/case/info/closing/CaseBookShareSelectPopUpOpenState.ts";
+import caseBookSharePopUpOpenState from "../../../states/case/info/closing/CaseBookSharePopUpOpenState.ts";
 import caseBookShareEmailsState from "../../../states/case/info/closing/CaseBookShareEmailsState.ts";
 
 type AllLawsuitType = {
@@ -58,7 +58,7 @@ function CaseBookPDFShareComponent() {
   const caseId = useRecoilValue(caseIdState);
   const [emails, setEmails] = useRecoilState(caseBookShareEmailsState);
   const setCaseBookShareSelectPopUpOpen = useSetRecoilState(
-    caseBookShareSelectPopUpOpenState,
+    caseBookSharePopUpOpenState,
   );
   const setPdfUploadLoading = useSetRecoilState(caseBookPDFUploadLoadingState);
   const ref = useRef<HTMLDivElement>(null);
@@ -122,6 +122,10 @@ function CaseBookPDFShareComponent() {
               },
               onSuccess: () => {
                 console.log("success");
+              },
+              onFail: (e) => {
+                console.log("fail");
+                console.dir(e);
               },
             });
           };

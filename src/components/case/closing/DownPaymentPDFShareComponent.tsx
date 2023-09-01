@@ -11,7 +11,7 @@ import downPaymentPDFUploadLoadingState from "../../../states/case/info/closing/
 import userState from "../../../states/user/UserState.ts";
 import { delimiter } from "../../../lib/convert.ts";
 import downPaymentShareEmailsState from "../../../states/case/info/closing/DownPaymentShareEmailsState.ts";
-import downPaymentShareSelectPopUpOpenState from "../../../states/case/info/closing/DownPaymentShareSelectPopUpOpenState.ts";
+import downPaymentSharePopUpOpenState from "../../../states/case/info/closing/DownPaymentSharePopUpOpenState.ts";
 
 type AllLawsuitType = {
   lawsuit: {
@@ -60,7 +60,7 @@ function DownPaymentPDFShareComponent() {
   const user = useRecoilValue(userState);
   const [emails, setEmails] = useRecoilState(downPaymentShareEmailsState);
   const setDownPaymentShareSelectPopUpOpen = useSetRecoilState(
-    downPaymentShareSelectPopUpOpenState,
+    downPaymentSharePopUpOpenState,
   );
   const setPdfUploadLoading = useSetRecoilState(
     downPaymentPDFUploadLoadingState,
@@ -128,6 +128,10 @@ function DownPaymentPDFShareComponent() {
               },
               onSuccess: () => {
                 console.log("success");
+              },
+              onFail: (e) => {
+                console.log("fail");
+                console.dir(e);
               },
             });
           };
