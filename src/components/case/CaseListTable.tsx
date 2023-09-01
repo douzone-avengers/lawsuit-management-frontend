@@ -128,35 +128,47 @@ function CaseListTable({
               )}
             </TableRow>
           </TableHead>
-          <TableBody>
-            {cases.map((item, index) => (
-              <TableRow
-                key={item.id}
-                hover={true}
-                sx={{
-                  "&:last-child td, &:last-child th": { border: 0 },
-                  cursor: "pointer",
-                }}
-                onClick={item.onClick}
-              >
-                <TableCell align="center" component="th" scope="row">
-                  {page * rowsPerPage + index + 1}
-                </TableCell>
-                <TableCell align="center">{item.name}</TableCell>
-                <TableCell align="center">{item.lawsuitNum}</TableCell>
-                <TableCell align="center">{item.lawsuitStatus}</TableCell>
-                <TableCell align="center">
-                  {delimiter(item.commissionFee)}
-                </TableCell>
-                <TableCell align="center">
-                  {delimiter(item.contingentFee)}
-                </TableCell>
-                <TableCell align="center">
-                  {item.createdAt.toString().substring(0, 10)}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
+          {cases.length > 0 ? (
+            <TableBody>
+              {cases.map((item, index) => (
+                <TableRow
+                  key={item.id}
+                  hover={true}
+                  sx={{
+                    "&:last-child td, &:last-child th": { border: 0 },
+                    cursor: "pointer",
+                  }}
+                  onClick={item.onClick}
+                >
+                  <TableCell align="center" component="th" scope="row">
+                    {page * rowsPerPage + index + 1}
+                  </TableCell>
+                  <TableCell align="center">{item.name}</TableCell>
+                  <TableCell align="center">{item.lawsuitNum}</TableCell>
+                  <TableCell align="center">{item.lawsuitStatus}</TableCell>
+                  <TableCell align="center">
+                    {delimiter(item.commissionFee)}
+                  </TableCell>
+                  <TableCell align="center">
+                    {delimiter(item.contingentFee)}
+                  </TableCell>
+                  <TableCell align="center">
+                    {item.createdAt.toString().substring(0, 10)}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          ) : (
+            <TableBody>
+              <TableCell align="center" component="th" scope="row" colSpan={7}>
+                <br />
+                사건이 없습니다. 사건을 등록해주세요.
+                <br />
+                <br />
+              </TableCell>
+            </TableBody>
+          )}
+
           <TableFooter>
             <TableRow>
               <TableCell colSpan={7} style={{ textAlign: "center" }}>
