@@ -144,7 +144,9 @@ function CaseListTable({
                     {page * rowsPerPage + index + 1}
                   </TableCell>
                   <TableCell align="center">{item.name}</TableCell>
-                  <TableCell align="center">{item.lawsuitNum}</TableCell>
+                  <TableCell align="center">
+                    {item.lawsuitNum ? item.lawsuitNum : "-"}
+                  </TableCell>
                   <TableCell align="center">{item.lawsuitStatus}</TableCell>
                   <TableCell align="center">
                     {delimiter(item.commissionFee)}
