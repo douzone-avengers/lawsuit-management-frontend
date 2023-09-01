@@ -5,12 +5,14 @@ import clientIdState from "../../states/client/ClientIdState";
 import employeeIdState from "../../states/employee/EmployeeIdState";
 import { useEffect, useState } from "react";
 import subNavigationBarState from "../../states/layout/SubNavigationBarState.tsx";
+import userState from "../../states/user/UserState.ts";
 
 function Debug() {
   const clientId = useRecoilValue(clientIdState);
   const caseId = useRecoilValue(caseIdState);
   const employeeId = useRecoilValue(employeeIdState);
   const subNavigationBar = useRecoilValue(subNavigationBarState);
+  const user = useRecoilValue(userState);
 
   const [show, setShow] = useState(true);
 
@@ -27,15 +29,17 @@ function Debug() {
   return show ? (
     <Box
       sx={{
+        zIndex: 9999,
         position: "absolute",
         right: 0,
         bottom: 0,
       }}
     >
-      <div>clientId: {clientId}</div>
-      <div>caseId: {caseId}</div>
-      <div>employeeId: {employeeId}</div>
-      <div>subNavigationBarType: {subNavigationBar.type}</div>
+      <div>userId: {user?.id ?? "null"}</div>
+      <div>clientId: {clientId ?? "null"}</div>
+      <div>caseId: {caseId ?? "null"}</div>
+      <div>employeeId: {employeeId ?? "null"}</div>
+      <div>subNavigationBarType: {subNavigationBar.type ?? "null"}</div>
     </Box>
   ) : null;
 }
