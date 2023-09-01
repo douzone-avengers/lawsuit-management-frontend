@@ -26,7 +26,6 @@ import caseTabIdState from "../../states/case/CaseTabIdState.tsx";
 import ValidatePage from "../join/ValidatePage";
 import SchedulePage from "../schedule/SchedulePage.tsx";
 import scheduleButtonIsClickState from "../schedule/ScheduleButtonIsClick.tsx";
-import TestPage from "../test/TestPage.tsx";
 import subNavigationBarState from "../../states/layout/SubNavigationBarState.tsx";
 import requestDeprecated from "../../lib/requestDeprecated.ts";
 import { ClientData } from "../../type/ResponseType.ts";
@@ -598,7 +597,6 @@ function AppRoutes() {
       <Route path="validate" element={<ValidatePage />} />
       {/* /join */}
       <Route path="join" element={<JoinPage />} />
-      <Route path="test" element={<TestPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
