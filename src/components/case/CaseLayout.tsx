@@ -10,8 +10,6 @@ import requestDeprecated, {
 } from "../../lib/requestDeprecated.ts";
 import { Court } from "./type/CourtInfo.ts";
 import CaseRemovePopUp from "./CaseRemovePopUp.tsx";
-import printLoadingState from "../../states/layout/PrintLoadingState.tsx";
-import PdfComponent from "./closing/print/PdfComponent.tsx";
 import caseBookPDFUploadLoadingState from "../../states/case/info/closing/CaseBookPDFUploadLoadingState.tsx";
 import CaseBookPDFShareComponent from "./closing/CaseBookPDFShareComponent.tsx";
 import caseBookPDFPrintLoadingState from "../../states/case/info/closing/CaseBookPDFPrintLoadingState.tsx";
@@ -24,12 +22,12 @@ import caseBookShareSelectPopUpOpenState from "../../states/case/info/closing/Ca
 import CaseBookShareSelectPopUp from "./closing/CaseBookShareSelectPopUp.tsx";
 import downPaymentShareSelectPopUpOpenState from "../../states/case/info/closing/DownPaymentShareSelectPopUpOpenState.ts";
 import DownPaymentShareSelectPopUp from "./closing/DownPaymentShareSelectPopUp.tsx";
+import Box from "@mui/material/Box";
 
 function CaseLayout() {
   const caseEditPopUpOpen = useRecoilValue(caseEditPopUpOpenState);
   const caseRemovePopUpOpen = useRecoilValue(caseRemovePopUpOpenState);
   const [courtList, setCourtList] = useState<Court[]>([]);
-  const printLoading = useRecoilValue(printLoadingState);
   const caseBookShareSelectPopUpOpen = useRecoilValue(
     caseBookShareSelectPopUpOpenState,
   );
@@ -67,10 +65,6 @@ function CaseLayout() {
 
   return (
     <>
-      <Outlet />
-      {caseEditPopUpOpen ? <CaseEditPopUp courtList={courtList} /> : null}
-      {caseRemovePopUpOpen ? <CaseRemovePopUp /> : null}
-      {printLoading === "loading" ? <PdfComponent /> : null}
       <Box
         sx={{
           display: "flex",
@@ -80,6 +74,8 @@ function CaseLayout() {
       >
         <Outlet />
       </Box>
+      {caseEditPopUpOpen ? <CaseEditPopUp courtList={courtList} /> : null}
+      {caseRemovePopUpOpen ? <CaseRemovePopUp /> : null}
       {caseBookPDFPrintLoading === "loading" ? (
         <CaseBookPDFPrintComponent />
       ) : null}
