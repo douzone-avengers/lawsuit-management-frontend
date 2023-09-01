@@ -2,40 +2,52 @@ import { ReactNode, useEffect, useRef, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import requestDeprecated, {
   RequestSuccessHandler,
-} from "../../../../lib/requestDeprecated.ts";
-import caseIdState from "../../../../states/case/CaseIdState.tsx";
+} from "../../../lib/requestDeprecated.ts";
+import caseIdState from "../../../states/case/CaseIdState.tsx";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import { delimiter } from "../../../../lib/convert.ts";
-import PageLoadingSpinner from "../../../layout/PageLoadingSpinner.tsx";
-import caseBookPDFPrintLoadingState from "../../../../states/case/info/closing/CaseBookPDFPrintLoadingState.tsx";
+import { delimiter } from "../../../lib/convert.ts";
+import PageLoadingSpinner from "../../layout/PageLoadingSpinner.tsx";
+import caseBookPDFPrintLoadingState from "../../../states/case/info/closing/CaseBookPDFPrintLoadingState.tsx";
 
 type AllLawsuitType = {
   lawsuit: {
     id: number;
-    name: string; // ㅇ
-    num: string; // ㅇ
-    court: string; // ㅇ
-    commissionFee: number; // ㅇ
-    contingentFee: number; // ㅇ
-    judgementResult: string; // ㅇ
-    judgementDate: string; // ㅇ
-    clients: string[];
-    members: string[];
+    name: string;
+    num: string;
+    court: string;
+    commissionFee: number;
+    contingentFee: number;
+    judgementResult: string;
+    judgementDate: string;
+    clients: {
+      id: number;
+      email: string;
+      name: string;
+      phone: string;
+      address: string;
+    }[];
+    members: {
+      id: number;
+      email: string;
+      name: string;
+      phone: string;
+      address: string;
+    }[];
   };
   advices: {
-    id: number; // ㅇ
-    title: string; // ㅇ
-    contents: string; // ㅇ
-    date: string; // ㅇ
-    memberNames: string[]; // ㅇ
-    clientNames: string[]; // ㅇ
+    id: number;
+    title: string;
+    contents: string;
+    date: string;
+    memberNames: string[];
+    clientNames: string[];
   }[];
   expenses: {
     id: number;
-    contents: string; // ㅇ
-    amount: number; // ㅇ
-    date: string; // ㅇ
+    contents: string;
+    amount: number;
+    date: string;
   }[];
 };
 
@@ -141,8 +153,14 @@ function CaseBookPDFPrintComponent() {
             >
               <Row header="사건명" data={data?.lawsuit.name} />
               <Row header="사건번호" data={data?.lawsuit.num} />
-              <Row header="당사자" data={data?.lawsuit.clients.join(", ")} />
-              <Row header="담당자" data={data?.lawsuit.members.join(", ")} />
+              <Row
+                header="당사자"
+                data={data?.lawsuit.clients.map((item) => item.name).join(", ")}
+              />
+              <Row
+                header="담당자"
+                data={data?.lawsuit.members.map((item) => item.name).join(", ")}
+              />
               <Row header="담당법원" data={data?.lawsuit.court} />
               <Row header="판결" data={data?.lawsuit.judgementResult} />
               <Row header="판결일" data={data?.lawsuit.judgementDate} />

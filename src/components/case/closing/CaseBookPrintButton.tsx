@@ -2,10 +2,10 @@ import { useSetRecoilState } from "recoil";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import PrintIcon from "@mui/icons-material/Print";
-import downPaymentPDFPrintLoadingState from "../../../../states/case/info/closing/DownPaymentPDFPrintLoadingState.tsx";
+import caseBookPDFPrintLoadingState from "../../../states/case/info/closing/CaseBookPDFPrintLoadingState.tsx";
 
-function DownPaymentPrintButton() {
-  const setPrintLoading = useSetRecoilState(downPaymentPDFPrintLoadingState);
+function CaseBookPrintButton() {
+  const setPrintLoading = useSetRecoilState(caseBookPDFPrintLoadingState);
 
   const handleClick = async () => {
     setPrintLoading("loading");
@@ -23,4 +23,4 @@ function DownPaymentPrintButton() {
   );
 }
 
-export default DownPaymentPrintButton;
+export default CaseBookPrintButton;

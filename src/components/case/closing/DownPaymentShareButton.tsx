@@ -1,14 +1,16 @@
 import { useSetRecoilState } from "recoil";
-import caseBookPDFUploadLoadingState from "../../../../states/case/info/closing/CaseBookPDFUploadLoadingState.tsx";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import EmailIcon from "@mui/icons-material/Email";
+import downPaymentShareSelectPopUpOpenState from "../../../states/case/info/closing/DownPaymentShareSelectPopUpOpenState.ts";
 
-function CaseBookUploadButton() {
-  const setUploadLoading = useSetRecoilState(caseBookPDFUploadLoadingState);
+function DownPaymentShareButton() {
+  const setDownPaymentShareSelectPopUpOpen = useSetRecoilState(
+    downPaymentShareSelectPopUpOpenState,
+  );
 
   const handleClick = async () => {
-    setUploadLoading("loading");
+    setDownPaymentShareSelectPopUpOpen(true);
   };
 
   return (
@@ -23,4 +25,4 @@ function CaseBookUploadButton() {
   );
 }
 
-export default CaseBookUploadButton;
+export default DownPaymentShareButton;

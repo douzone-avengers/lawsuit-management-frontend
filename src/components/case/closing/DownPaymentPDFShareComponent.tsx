@@ -1,46 +1,67 @@
 import { useEffect, useRef, useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import requestDeprecated, {
   RequestSuccessHandler,
-} from "../../../../lib/requestDeprecated.ts";
-import caseIdState from "../../../../states/case/CaseIdState.tsx";
+} from "../../../lib/requestDeprecated.ts";
+import caseIdState from "../../../states/case/CaseIdState.tsx";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import PageLoadingSpinner from "../../../layout/PageLoadingSpinner.tsx";
-import downPaymentPDFUploadLoadingState from "../../../../states/case/info/closing/DownPaymentPDFUploadLoadingState.tsx";
+import PageLoadingSpinner from "../../layout/PageLoadingSpinner.tsx";
+import downPaymentPDFUploadLoadingState from "../../../states/case/info/closing/DownPaymentPDFUploadLoadingState.tsx";
+import userState from "../../../states/user/UserState.ts";
+import { delimiter } from "../../../lib/convert.ts";
+import downPaymentShareEmailsState from "../../../states/case/info/closing/DownPaymentShareEmailsState.ts";
+import downPaymentShareSelectPopUpOpenState from "../../../states/case/info/closing/DownPaymentShareSelectPopUpOpenState.ts";
 
 type AllLawsuitType = {
   lawsuit: {
     id: number;
-    name: string; // ㅇ
-    num: string; // ㅇ
-    court: string; // ㅇ
-    commissionFee: number; // ㅇ
-    contingentFee: number; // ㅇ
-    judgementResult: string; // ㅇ
-    judgementDate: string; // ㅇ
-    clients: string[];
-    members: string[];
+    name: string;
+    num: string;
+    court: string;
+    commissionFee: number;
+    contingentFee: number;
+    judgementResult: string;
+    judgementDate: string;
+    clients: {
+      id: number;
+      email: string;
+      name: string;
+      phone: string;
+      address: string;
+    }[];
+    members: {
+      id: number;
+      email: string;
+      name: string;
+      phone: string;
+      address: string;
+    }[];
   };
   advices: {
-    id: number; // ㅇ
-    title: string; // ㅇ
-    contents: string; // ㅇ
-    date: string; // ㅇ
-    memberNames: string[]; // ㅇ
-    clientNames: string[]; // ㅇ
+    id: number;
+    title: string;
+    contents: string;
+    date: string;
+    memberNames: string[];
+    clientNames: string[];
   }[];
   expenses: {
     id: number;
-    contents: string; // ㅇ
-    amount: number; // ㅇ
-    date: string; // ㅇ
+    contents: string;
+    amount: number;
+    date: string;
   }[];
 };
-
-function DownPaymentPDFUploadComponent() {
+function DownPaymentPDFShareComponent() {
+  const now = new Date();
   const [data, setData] = useState<AllLawsuitType | null>(null);
   const caseId = useRecoilValue(caseIdState);
+  const user = useRecoilValue(userState);
+  const [emails, setEmails] = useRecoilState(downPaymentShareEmailsState);
+  const setDownPaymentShareSelectPopUpOpen = useSetRecoilState(
+    downPaymentShareSelectPopUpOpenState,
+  );
   const setPdfUploadLoading = useSetRecoilState(
     downPaymentPDFUploadLoadingState,
   );
@@ -100,10 +121,10 @@ function DownPaymentPDFUploadComponent() {
           reader.onload = function (event) {
             let data = event.target?.result as string;
             data = data.substring("data:application/pdf;base64,".length);
-            requestDeprecated("POST", "/pdfs", {
+            requestDeprecated("POST", `/emails/lawsuits/${caseId}/bill`, {
               body: {
-                name: "test.pdf",
-                data: data,
+                pdfData: data,
+                toList: emails,
               },
               onSuccess: () => {
                 console.log("success");
@@ -112,7 +133,8 @@ function DownPaymentPDFUploadComponent() {
           };
           reader.readAsDataURL(pdf);
 
-          // doc.output("dataurlnewwindow", { filename: "사건 관리 서비스" });
+          setDownPaymentShareSelectPopUpOpen(false);
+          setEmails([]);
           setPdfUploadLoading("complete");
         }
       }
@@ -178,7 +200,15 @@ function DownPaymentPDFUploadComponent() {
                 >
                   상호
                 </div>
-                <div></div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    paddingLeft: 10,
+                  }}
+                >
+                  더존비즈온
+                </div>
               </div>
               <div
                 style={{
@@ -198,7 +228,15 @@ function DownPaymentPDFUploadComponent() {
                 >
                   발행담당자
                 </div>
-                <div></div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    paddingLeft: 10,
+                  }}
+                >
+                  {user?.name}
+                </div>
               </div>
               <div
                 style={{
@@ -218,7 +256,15 @@ function DownPaymentPDFUploadComponent() {
                 >
                   전화번호
                 </div>
-                <div></div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    paddingLeft: 10,
+                  }}
+                >
+                  {user?.phone}
+                </div>
               </div>
             </div>
             <div style={{ marginBottom: 60 }}>
@@ -244,7 +290,18 @@ function DownPaymentPDFUploadComponent() {
                 >
                   상호
                 </div>
-                <div></div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    paddingLeft: 10,
+                  }}
+                >
+                  {data?.lawsuit.clients[0].name}
+                  {data?.lawsuit.clients.length ?? 0 > 1
+                    ? ` 외 ${data?.lawsuit.clients.length ?? 0}명`
+                    : ""}
+                </div>
               </div>
               <div
                 style={{
@@ -264,7 +321,15 @@ function DownPaymentPDFUploadComponent() {
                 >
                   전화번호
                 </div>
-                <div></div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    paddingLeft: 10,
+                  }}
+                >
+                  {data?.lawsuit.clients[0].phone ?? ""}
+                </div>
               </div>
             </div>
             <div>
@@ -282,21 +347,30 @@ function DownPaymentPDFUploadComponent() {
                   안녕하세요, 법무법인 더존비즈온 입니다.
                 </div>
                 <div>
-                  고객님께서 의뢰하신 <b>ABCD사건</b>에 대한 계약금을
-                  청구합니다.
+                  고객님께서 의뢰하신 <b>{data?.lawsuit.name}</b>에 대한
+                  계약금을 청구합니다.
                 </div>
               </div>
               <div style={{ marginBottom: 40 }}>
                 <div style={{ fontSize: 20, marginBottom: 5 }}>청구내용</div>
                 <div>
                   <div style={{ paddingLeft: 5, marginBottom: 5 }}>
-                    계약금: <b>100,000,000,000 원</b>
+                    계약금:{" "}
+                    <b>{delimiter(data?.lawsuit.commissionFee ?? 0)} 원</b>
                   </div>
                   <div style={{ paddingLeft: 5, marginBottom: 5 }}>
-                    성공보수: <b>200,000,000,000 원</b>
+                    성공보수:{" "}
+                    <b>{delimiter(data?.lawsuit.contingentFee ?? 0)} 원</b>
                   </div>
                   <div style={{ paddingLeft: 5, marginBottom: 5 }}>
-                    총 합산: <b>300,000,000,000 원</b>
+                    총 합산:{" "}
+                    <b>
+                      {delimiter(
+                        (data?.lawsuit.contingentFee ?? 0) +
+                          (data?.lawsuit.commissionFee ?? 0),
+                      )}{" "}
+                      원
+                    </b>
                   </div>
                 </div>
               </div>
@@ -316,7 +390,7 @@ function DownPaymentPDFUploadComponent() {
                 결제 정보는 아래를 참고부탁드립니다.
               </div>
               <div>
-                계좌 입금 : 더존은행 <b>111-222-3333333 홍길동</b>
+                계좌 입금 : OO은행 <b>OOO-OOO-OOOOOOO</b>
               </div>
             </div>
             <div
@@ -328,9 +402,13 @@ function DownPaymentPDFUploadComponent() {
               }}
             >
               <div style={{ marginBottom: 10 }}>
-                <b>2023</b>년 <b>08</b>월 <b>30</b>일
+                <b>{now.getFullYear()}</b>년{" "}
+                <b>{String(now.getMonth() + 1).padStart(2, "0")}</b>월{" "}
+                <b>{String(now.getDate()).padStart(2, "0")}</b>일
               </div>
-              <div style={{ fontSize: 22 }}>법무법인 더존비즈온 김태훈</div>
+              <div style={{ fontSize: 22 }}>
+                법무법인 더존비즈온 {user?.name ?? ""}
+              </div>
             </div>
           </div>
         </div>
@@ -339,4 +417,4 @@ function DownPaymentPDFUploadComponent() {
   );
 }
 
-export default DownPaymentPDFUploadComponent;
+export default DownPaymentPDFShareComponent;

@@ -1,9 +1,9 @@
 import Box from "@mui/material/Box";
-import CaseBookUploadButton from "./print/CaseBookUploadButton.tsx";
-import CaseBookPrintButton from "./print/CaseBookPrintButton.tsx";
+import CaseBookShareButton from "./CaseBookShareButton.tsx";
+import CaseBookPrintButton from "./CaseBookPrintButton.tsx";
 import Card from "@mui/material/Card";
-import DownPaymentUploadButton from "./print/DownPaymentUploadButton.tsx";
-import DownPaymentPrintButton from "./print/DownPaymentPrintButton.tsx";
+import DownPaymentShareButton from "./DownPaymentShareButton.tsx";
+import DownPaymentPrintButton from "./DownPaymentPrintButton.tsx";
 
 function ClosingInfo() {
   return (
@@ -33,7 +33,7 @@ function ClosingInfo() {
             }}
           >
             <CaseBookPrintButton />
-            <CaseBookUploadButton />
+            <CaseBookShareButton />
           </Box>
         </Box>
       </Card>
@@ -56,7 +56,7 @@ function ClosingInfo() {
             }}
           >
             <DownPaymentPrintButton />
-            <DownPaymentUploadButton />
+            <DownPaymentShareButton />
           </Box>
         </Box>
       </Card>

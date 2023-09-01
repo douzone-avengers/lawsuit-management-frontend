@@ -30,16 +30,16 @@ function Debug() {
     <Box
       sx={{
         zIndex: 9999,
-        position: "absolute",
+        position: "fixed",
         right: 0,
         bottom: 0,
       }}
     >
-      <div>userId: {user?.id ?? "null"}</div>
-      <div>clientId: {clientId ?? "null"}</div>
-      <div>caseId: {caseId ?? "null"}</div>
-      <div>employeeId: {employeeId ?? "null"}</div>
-      <div>subNavigationBarType: {subNavigationBar.type ?? "null"}</div>
+      <div>user: {user?.id ?? "null"}</div>
+      <div>client: {clientId ?? "null"}</div>
+      <div>case: {caseId ?? "null"}</div>
+      <div>employee: {employeeId ?? "null"}</div>
+      <div>snb: {subNavigationBar.type ?? "null"}</div>
     </Box>
   ) : null;
 }
