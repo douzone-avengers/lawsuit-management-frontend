@@ -49,7 +49,6 @@ function CaseExpenseRemovePopUp() {
 
       requestDeprecated("GET", url, {
         onSuccess: handleRequestSuccess2,
-        useMock: false,
       });
 
       setExpenseRemovePopUpOpen(false);
@@ -57,7 +56,6 @@ function CaseExpenseRemovePopUp() {
 
     requestDeprecated("PATCH", `/expenses/delete/${caseExpenseId}`, {
       onSuccess: handleRequestSuccess,
-      useMock: false,
     });
   };
 

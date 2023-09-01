@@ -8,17 +8,20 @@ import requestDeprecated, {
   RequestSuccessHandler,
 } from "../../lib/requestDeprecated.ts";
 import caseIdState from "../../states/case/CaseIdState.tsx";
+import clientIdState from "../../states/client/ClientIdState.tsx";
+import { useNavigate } from "react-router-dom";
 
 function CaseRemovePopUp() {
   const setCaseRemovePopUpOpen = useSetRecoilState(caseRemovePopUpOpenState);
+  const clientId = useRecoilValue(clientIdState);
   const caseId = useRecoilValue(caseIdState);
+  const navigate = useNavigate();
   const handleRemoveButtonClick = () => {
     const handleRequestSuccess: RequestSuccessHandler = () => {
-      alert("삭제 완료");
+      navigate(`/cases/list?client=${clientId}`);
     };
 
     requestDeprecated("PATCH", `/lawsuits/${caseId}`, {
-      useMock: false,
       onSuccess: handleRequestSuccess,
     });
 

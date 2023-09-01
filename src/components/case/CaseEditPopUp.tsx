@@ -96,7 +96,6 @@ function CaseEditPopUp({ courtList }: Props) {
 
     requestDeprecated("GET", `/members/employees`, {
       withToken: true,
-      useMock: false,
       onSuccess: handleRequestSuccess,
       onFail: handleRequestFail,
     });
@@ -113,7 +112,6 @@ function CaseEditPopUp({ courtList }: Props) {
     };
 
     requestDeprecated("GET", `/clients`, {
-      useMock: false,
       onSuccess: handleRequestSuccess,
       onFail: handleRequestFail,
     });
@@ -149,7 +147,6 @@ function CaseEditPopUp({ courtList }: Props) {
         "GET",
         `/lawsuits/${caseInfo!.lawsuit?.lawsuitId}/basic`,
         {
-          useMock: false,
           onSuccess: handleRequestSuccess2,
           onFail: handleRequestFail2,
         },
@@ -161,7 +158,6 @@ function CaseEditPopUp({ courtList }: Props) {
     };
 
     requestDeprecated("PUT", `/lawsuits/${caseInfo!.lawsuit?.lawsuitId}`, {
-      useMock: false,
       body: {
         lawsuitType: lawsuitType,
         name: lawsuitName,
