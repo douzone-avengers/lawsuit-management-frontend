@@ -17,6 +17,9 @@ import CloseButton from "../../../../common/CloseButton.tsx";
 import { DatePicker } from "@mui/x-date-pickers";
 import { Button, TextField, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
+import caseInfoState, {
+  CaseInfoType,
+} from "../../../../../states/case/info/caseInfoState.tsx";
 
 function CaseExpenseAddPopUp() {
   const [speningAt, setSpeningAt] = useState(new Date().toISOString());
@@ -24,6 +27,7 @@ function CaseExpenseAddPopUp() {
   const [amount, setAmount] = useState(0);
 
   const caseId = useRecoilValue(caseIdState);
+  const setCaseInfo = useSetRecoilState(caseInfoState);
 
   const url = useRecoilValue(caseExpenseSearchUrlState);
 
@@ -63,6 +67,15 @@ function CaseExpenseAddPopUp() {
         );
         setSize(size);
         setExpenseAddPopUpOpen(false);
+
+        const handleRequestSuccess3: RequestSuccessHandler = (res) => {
+          const body: CaseInfoType = res.data;
+          setCaseInfo(body);
+        };
+
+        requestDeprecated("GET", `/lawsuits/${caseId}/basic`, {
+          onSuccess: handleRequestSuccess3,
+        });
       };
 
       requestDeprecated("GET", url, {

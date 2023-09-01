@@ -9,9 +9,10 @@ import CaseExpenseDeleteButton from "../button/CaseExpenseDeleteButton.tsx";
 
 type Props = {
   item: CaseExpenseRowType & { editable: boolean };
+  caseId: number | null;
 };
 
-function CaseExpenseDataRow({ item }: Props) {
+function CaseExpenseDataRow({ item, caseId }: Props) {
   return (
     <Box sx={{ display: "flex", width: "100%", justifyContent: "center" }}>
       <Box sx={{ width: 200 }}>
@@ -32,7 +33,7 @@ function CaseExpenseDataRow({ item }: Props) {
         }}
       >
         {item.editable ? (
-          <CaseExpenseEditConfirmButton item={item} />
+          <CaseExpenseEditConfirmButton item={item} caseId={caseId} />
         ) : (
           <CaseExpenseEditButton item={item} />
         )}

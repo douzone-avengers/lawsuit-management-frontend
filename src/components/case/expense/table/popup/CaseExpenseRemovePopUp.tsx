@@ -14,6 +14,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogActions from "@mui/material/DialogActions";
 import caseExpenseIdState from "../../../../../states/case/info/expense/CaseExpenseIdState.tsx";
 import caseExpenseRemoveDialogState from "../../../../../states/case/info/expense/CaseExpenseRemoveDialogState.tsx";
+import caseIdState from "../../../../../states/case/CaseIdState.tsx";
 
 function CaseExpenseRemovePopUp() {
   const setExpenseRemovePopUpOpen = useSetRecoilState(
@@ -23,6 +24,7 @@ function CaseExpenseRemovePopUp() {
   const setSize = useSetRecoilState(caseExpenseSizeState);
   const caseExpenseId = useRecoilValue(caseExpenseIdState);
   const url = useRecoilValue(caseExpenseSearchUrlState);
+  const caseId = useRecoilValue(caseIdState);
 
   const setOpenDialog = useSetRecoilState(caseExpenseRemoveDialogState);
 
@@ -56,6 +58,11 @@ function CaseExpenseRemovePopUp() {
 
     requestDeprecated("PATCH", `/expenses/delete/${caseExpenseId}`, {
       onSuccess: handleRequestSuccess,
+      params: {
+        ...(caseId !== null && {
+          lawsuitId: caseId.toString(),
+        }),
+      },
     });
   };
 

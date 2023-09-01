@@ -72,7 +72,9 @@ function CaseExpenseTable() {
       />
       <Divider />
       {expenses.length > 0 ? (
-        expenses.map((item) => <CaseExpenseDataRow key={item.id} item={item} />)
+        expenses.map((item) => (
+          <CaseExpenseDataRow key={item.id} item={item} caseId={caseId} />
+        ))
       ) : (
         <Box
           sx={{

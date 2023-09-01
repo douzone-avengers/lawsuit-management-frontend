@@ -12,9 +12,10 @@ import * as dayjs from "dayjs";
 
 type Props = {
   item: CaseExpenseRowType & { editable: boolean };
+  caseId: number | null;
 };
 
-function CaseExpenseEditConfirmButton({ item }: Props) {
+function CaseExpenseEditConfirmButton({ item, caseId }: Props) {
   const [expenses, setExpenses] = useRecoilState(CaseExpenseState);
 
   const handleClick = () => {
@@ -26,7 +27,6 @@ function CaseExpenseEditConfirmButton({ item }: Props) {
         amount: number;
       } = res.data;
 
-      console.dir(body);
       const { speningAt, contents, amount } = body;
       const newExpenses = produce(expenses, (draft) => {
         const expenses = draft.filter((item2) => item2.id === item.id)[0];
@@ -40,6 +40,7 @@ function CaseExpenseEditConfirmButton({ item }: Props) {
 
     requestDeprecated("PUT", `/expenses/update/${item.id}`, {
       body: {
+        lawsuitId: caseId,
         speningAt: dayjs(item.speningAt).add(1, "day").toISOString(),
         contents: item.contents,
         amount: item.amount,
