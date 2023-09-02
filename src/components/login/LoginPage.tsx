@@ -8,18 +8,16 @@ import {
 import Box from "@mui/material/Box";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
 import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
 } from "../../lib/requestDeprecated.ts";
-import isLoginState from "../../states/common/IsLoginState";
 import PopUp from "../common/PopUp";
 import Logo from "../common/Logo.tsx";
 import NormalDialog from "../common/dialog/NormalDialog";
+import Debug from "../layout/Debug.tsx";
 
 function LoginPage() {
-  const setIsLoginState = useSetRecoilState(isLoginState);
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -37,7 +35,7 @@ function LoginPage() {
       const tokenData: TokenData = res.data;
       localStorage.setItem("accessToken", tokenData.accessToken);
       localStorage.setItem("refreshToken", tokenData.refreshToken);
-      setIsLoginState(true);
+
       navigate("/");
       setIsLoading(false);
     };
@@ -129,6 +127,7 @@ function LoginPage() {
           </Typography>
         </Box>
       </PopUp>
+      {import.meta.env.DEV ? <Debug /> : null}
     </>
   );
 }

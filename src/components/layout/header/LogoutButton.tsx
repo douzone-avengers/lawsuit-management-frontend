@@ -1,14 +1,14 @@
 import Button from "@mui/material/Button";
 import { useSetRecoilState } from "recoil";
-import isLoginState from "../../../states/common/IsLoginState.tsx";
+import userState from "../../../states/user/UserState.ts";
 
 function LogoutButton() {
-  const setIsLoginState = useSetRecoilState(isLoginState);
+  const setUser = useSetRecoilState(userState);
 
   const handleClick = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
-    setIsLoginState(false);
+    setUser(null);
   };
 
   return (
