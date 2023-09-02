@@ -1,6 +1,3 @@
-import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
-import Drawer from "@mui/material/Drawer";
 import { useRecoilState, useRecoilValue } from "recoil";
 import sideNavigationBarOpenState from "../../../states/layout/SideNavigationBarOpenState.tsx";
 import MainNavigationBar from "./MainNavigationBar.tsx";
@@ -59,37 +56,37 @@ function SideNavigationBar() {
   }, [location]);
 
   return (
-    <Drawer
-      sx={{
-        width: subNavigationBar.type !== "none" ? 480 : 240,
-        flexShrink: 0,
-        "& .MuiDrawer-paper": {
-          width: subNavigationBar.type !== "none" ? 480 : 240,
-          boxSizing: "border-box",
-        },
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        width: sideNavigationBarOpen
+          ? subNavigationBar.type !== "none"
+            ? 480
+            : 240
+          : 0,
+        transitionProperty: "width",
+        transition: "all 0.5s",
+        overflow: "visible",
+        whiteSpace: "nowrap",
       }}
-      variant="persistent"
-      anchor="left"
-      open={sideNavigationBarOpen}
     >
-      <SideNavigationBarHeader />
-      <Divider />
-      <Box
-        sx={{
+      {sideNavigationBarOpen ? (
+        <SideNavigationBarHeader />
+      ) : (
+        <div style={{ height: 64, borderBottom: "1px solid lightgray" }}></div>
+      )}
+      <div
+        style={{
           display: "flex",
-          height: "100%",
           overflowY: "hidden",
+          flexGrow: 1,
         }}
       >
         <MainNavigationBar />
-        {subNavigationBar.type !== "none" ? (
-          <>
-            <Divider orientation="vertical" flexItem />
-            <SubNavigationBar />
-          </>
-        ) : null}
-      </Box>
-    </Drawer>
+        {subNavigationBar.type !== "none" ? <SubNavigationBar /> : null}
+      </div>
+    </div>
   );
 }
 

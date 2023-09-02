@@ -1,5 +1,4 @@
-import { Box, CircularProgress } from "@mui/material";
-import List from "@mui/material/List";
+import { CircularProgress } from "@mui/material";
 import { useRecoilState, useRecoilValue } from "recoil";
 import caseIdState from "../../../states/case/CaseIdState.tsx";
 import clientIdState from "../../../states/client/ClientIdState.tsx";
@@ -8,7 +7,6 @@ import SubNavigationBarItem from "./SubNavigationBarItem.tsx";
 import ClientRegisterPopUpButton from "../../client/ClientRegisterPopUpButton.tsx";
 import employeeIdState from "../../../states/employee/EmployeeIdState";
 import snbLoadedState from "../../../states/common/SnbLoadedState.ts";
-import "../../../stylesheet/custom.css";
 
 function SubNavigationBar() {
   const clientId = useRecoilValue(clientIdState);
@@ -18,53 +16,67 @@ function SubNavigationBar() {
   const [snbLoaded] = useRecoilState(snbLoadedState);
 
   return (
-    <Box
-      className="custom-scroll-bar"
-      sx={{
+    <div
+      style={{
+        width: 240,
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        overflow: "hidden",
-        overflowY: "scroll",
+        borderRight: "1px solid lightgray",
       }}
     >
-      <List sx={{ width: 240, height: "100%", padding: 0 }}>
-        {snbLoaded ? (
-          subNavigationBar.items.map((item) => (
-            <SubNavigationBarItem
-              key={item.id}
-              item={item}
-              selected={
-                (subNavigationBar.type === "client" ||
-                  subNavigationBar.type === "caseClient") &&
-                clientId === item.id
-                  ? true
-                  : subNavigationBar.type === "case" && caseId === item.id
-                  ? true
-                  : subNavigationBar.type === "employee" &&
-                    employeeId === item.id
-              }
-            />
-          ))
-        ) : (
-          <div
-            style={{
-              display: "flex",
-              height: "100%",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <CircularProgress />
-          </div>
-        )}
-      </List>
-
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          width: 240,
+          overflowY: "scroll",
+        }}
+      >
+        <div
+          style={{
+            height: "100%",
+            width: "100%",
+            padding: 0,
+          }}
+        >
+          {snbLoaded ? (
+            subNavigationBar.items.map((item) => (
+              <SubNavigationBarItem
+                key={item.id}
+                item={item}
+                selected={
+                  (subNavigationBar.type === "client" ||
+                    subNavigationBar.type === "caseClient") &&
+                  clientId === item.id
+                    ? true
+                    : subNavigationBar.type === "case" && caseId === item.id
+                    ? true
+                    : subNavigationBar.type === "employee" &&
+                      employeeId === item.id
+                }
+              />
+            ))
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                height: "100%",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <CircularProgress />
+            </div>
+          )}
+        </div>
+      </div>
       {subNavigationBar.type === "client" ||
       subNavigationBar.type === "caseClient" ? (
         <ClientRegisterPopUpButton />
       ) : null}
-    </Box>
+    </div>
   );
 }
 

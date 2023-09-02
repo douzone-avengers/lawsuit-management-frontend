@@ -116,7 +116,6 @@ function CaseDetailPage() {
           display: "flex",
           flexDirection: "column",
           gap: 1,
-          marginTop: "30px",
         }}
       >
         <Box sx={{ display: "flex", gap: 1 }}>

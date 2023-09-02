@@ -7,10 +7,17 @@ function SchedulePage() {
   const calendarPopUpOpen = useRecoilValue(calendarPopUpOpenState);
 
   return (
-    <>
+    <div
+      style={{
+        display: "flex",
+        height: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <Calendar />
       {calendarPopUpOpen ? <CalendarPopUp /> : null}
-    </>
+    </div>
   );
 }
 

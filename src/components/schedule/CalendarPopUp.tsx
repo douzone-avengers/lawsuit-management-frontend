@@ -54,10 +54,7 @@ function CalendarPopUp() {
       </AppBar>
 
       {info !== null ? (
-        <div
-          className="custom-scroll"
-          style={{ height: 400, overflowY: "scroll" }}
-        >
+        <div style={{ height: 400, overflowY: "scroll" }}>
           <Divider sx={{ color: "gray" }}>사건</Divider>
           <List sx={{ display: "flex", flexDirection: "column", padding: 0 }}>
             <ListProfileItem
