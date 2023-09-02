@@ -98,6 +98,7 @@ function ClientInfoCard({ width, height }: Props) {
       return;
     }
     requestClientInfo();
+    setEditMode(false);
   }, [clientId]);
 
   const requestClientInfo = () => {
@@ -286,7 +287,7 @@ function ClientInfoCard({ width, height }: Props) {
               {editMode ? (
                 <>
                   <Button
-                    variant="contained"
+                    variant="outlined"
                     sx={{ width: "64px", height: "41.98px" }}
                     onClick={() => {
                       requestUpdateClientInfo();
@@ -295,14 +296,11 @@ function ClientInfoCard({ width, height }: Props) {
                     확인
                   </Button>
                   <Button
-                    variant="contained"
+                    variant="outlined"
+                    color="error"
                     sx={{
                       width: "64px",
                       height: "41.98px",
-                      background: "#ef5350",
-                      "&:hover": {
-                        backgroundColor: "red",
-                      },
                     }}
                     onClick={() => {
                       handleCancelUpdateButton();
@@ -315,7 +313,7 @@ function ClientInfoCard({ width, height }: Props) {
               ) : (
                 <>
                   <Button
-                    variant="contained"
+                    variant="outlined"
                     size="small"
                     onClick={() => {
                       handleUpdateButton();
