@@ -14,18 +14,18 @@ type Props = {
 function CaseExpenseDataRow({ item }: Props) {
   return (
     <Box sx={{ display: "flex", width: "100%", justifyContent: "center" }}>
-      <Box sx={{ width: "15%" }}>
+      <Box sx={{ width: 200 }}>
         <CaseExpenseSpeningAtCell item={item} />
       </Box>
-      <Box sx={{ width: "55%" }}>
+      <Box sx={{ width: 900 }}>
         <CaseExpenseContentsCell item={item} />
       </Box>
-      <Box sx={{ width: "15%" }}>
+      <Box sx={{ width: 200 }}>
         <CaseExpenseAmountCell item={item} />
       </Box>
       <Box
         sx={{
-          width: "20%",
+          width: 100,
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -36,6 +36,15 @@ function CaseExpenseDataRow({ item }: Props) {
         ) : (
           <CaseExpenseEditButton item={item} />
         )}
+      </Box>
+      <Box
+        sx={{
+          width: 100,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <CaseExpenseDeleteButton item={item} />
       </Box>
     </Box>

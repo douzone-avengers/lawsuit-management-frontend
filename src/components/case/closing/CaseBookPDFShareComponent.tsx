@@ -1,48 +1,66 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import printLoadingState from "../../../../states/layout/PrintLoadingState.tsx";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import caseBookPDFUploadLoadingState from "../../../states/case/info/closing/CaseBookPDFUploadLoadingState.tsx";
 import requestDeprecated, {
   RequestSuccessHandler,
-} from "../../../../lib/requestDeprecated.ts";
-import caseIdState from "../../../../states/case/CaseIdState.tsx";
+} from "../../../lib/requestDeprecated.ts";
+import caseIdState from "../../../states/case/CaseIdState.tsx";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import { delimiter } from "../../../../lib/convert.ts";
-import PageLoadingSpinner from "../../../layout/PageLoadingSpinner.tsx";
+import { delimiter } from "../../../lib/convert.ts";
+import PageLoadingSpinner from "../../layout/PageLoadingSpinner.tsx";
+import caseBookSharePopUpOpenState from "../../../states/case/info/closing/CaseBookSharePopUpOpenState.ts";
+import caseBookShareEmailsState from "../../../states/case/info/closing/CaseBookShareEmailsState.ts";
 
 type AllLawsuitType = {
   lawsuit: {
     id: number;
-    name: string; // ㅇ
-    num: string; // ㅇ
-    court: string; // ㅇ
-    commissionFee: number; // ㅇ
-    contingentFee: number; // ㅇ
-    judgementResult: string; // ㅇ
-    judgementDate: string; // ㅇ
-    clients: string[];
-    members: string[];
+    name: string;
+    num: string;
+    court: string;
+    commissionFee: number;
+    contingentFee: number;
+    judgementResult: string;
+    judgementDate: string;
+    clients: {
+      id: number;
+      email: string;
+      name: string;
+      phone: string;
+      address: string;
+    }[];
+    members: {
+      id: number;
+      email: string;
+      name: string;
+      phone: string;
+      address: string;
+    }[];
   };
   advices: {
-    id: number; // ㅇ
-    title: string; // ㅇ
-    contents: string; // ㅇ
-    date: string; // ㅇ
-    memberNames: string[]; // ㅇ
-    clientNames: string[]; // ㅇ
+    id: number;
+    title: string;
+    contents: string;
+    date: string;
+    memberNames: string[];
+    clientNames: string[];
   }[];
   expenses: {
     id: number;
-    contents: string; // ㅇ
-    amount: number; // ㅇ
-    date: string; // ㅇ
+    contents: string;
+    amount: number;
+    date: string;
   }[];
 };
 
-function PdfComponent() {
+function CaseBookPDFShareComponent() {
   const [data, setData] = useState<AllLawsuitType | null>(null);
   const caseId = useRecoilValue(caseIdState);
-  const setPrintLoading = useSetRecoilState(printLoadingState);
+  const [emails, setEmails] = useRecoilState(caseBookShareEmailsState);
+  const setCaseBookShareSelectPopUpOpen = useSetRecoilState(
+    caseBookSharePopUpOpenState,
+  );
+  const setPdfUploadLoading = useSetRecoilState(caseBookPDFUploadLoadingState);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -92,27 +110,30 @@ function PdfComponent() {
             );
             heightLeft -= pageHeight;
           }
-          // doc.save("사건 관리 서비스.pdf");
-          // doc.autoPrint();
           const pdf = doc.output("blob");
           const reader = new FileReader();
           reader.onload = function (event) {
             let data = event.target?.result as string;
             data = data.substring("data:application/pdf;base64,".length);
-            requestDeprecated("POST", "/pdfs", {
+            requestDeprecated("POST", `/emails/lawsuits/${caseId}/book`, {
               body: {
-                name: "test.pdf",
-                data: data,
+                pdfData: data,
+                toList: emails,
               },
               onSuccess: () => {
                 console.log("success");
+              },
+              onFail: (e) => {
+                console.log("fail");
+                console.dir(e);
               },
             });
           };
           reader.readAsDataURL(pdf);
 
-          // doc.output("dataurlnewwindow", { filename: "사건 관리 서비스" });
-          setPrintLoading("complete");
+          setCaseBookShareSelectPopUpOpen(false);
+          setEmails([]);
+          setPdfUploadLoading("complete");
         }
       }
     })();
@@ -120,7 +141,7 @@ function PdfComponent() {
 
   return (
     <>
-      <PageLoadingSpinner>업로드 중</PageLoadingSpinner>
+      <PageLoadingSpinner>업로드</PageLoadingSpinner>
       <div
         style={{
           position: "fixed",
@@ -159,8 +180,14 @@ function PdfComponent() {
             >
               <Row header="사건명" data={data?.lawsuit.name} />
               <Row header="사건번호" data={data?.lawsuit.num} />
-              <Row header="당사자" data={data?.lawsuit.clients.join(", ")} />
-              <Row header="담당자" data={data?.lawsuit.members.join(", ")} />
+              <Row
+                header="당사자"
+                data={data?.lawsuit.clients.map((item) => item.name).join(", ")}
+              />
+              <Row
+                header="담당자"
+                data={data?.lawsuit.members.map((item) => item.name).join(", ")}
+              />
               <Row header="담당법원" data={data?.lawsuit.court} />
               <Row header="판결" data={data?.lawsuit.judgementResult} />
               <Row header="판결일" data={data?.lawsuit.judgementDate} />
@@ -377,4 +404,4 @@ function TableHeader({
   );
 }
 
-export default PdfComponent;
+export default CaseBookPDFShareComponent;
