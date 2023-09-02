@@ -39,18 +39,7 @@ function SubNavigationBarItem({
   };
 
   return (
-    <ListItem
-      disablePadding
-      onClick={handleClick}
-      sx={{
-        "&::before": {
-          display: "inline-block",
-          width: 100,
-          height: 100,
-          background: "red",
-        },
-      }}
-    >
+    <ListItem disablePadding onClick={handleClick}>
       <ListItemButton selected={selected}>
         {SvgIcon ? (
           <ListItemIcon>
