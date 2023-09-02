@@ -37,6 +37,14 @@ import roleListState from "../../states/data/roleListState.ts";
 import snbLoadedState from "../../states/common/SnbLoadedState.ts";
 import EmployeeDetailPage from "../employee/detail/EmployeeDetailPage.tsx";
 
+async function wait(ms: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, ms);
+  });
+}
+
 function AppRoutes() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -104,7 +112,7 @@ function AppRoutes() {
       });
       setSnbLoaded(false);
       requestDeprecated("GET", "/clients", {
-        onSuccess: (res) => {
+        onSuccess: async (res) => {
           const body: ClientData[] = res.data;
           const newItems: SubNavigationBarItemState[] = body.map((item) => {
             return {
@@ -136,7 +144,7 @@ function AppRoutes() {
       });
       setSnbLoaded(false);
       requestDeprecated("GET", "/clients", {
-        onSuccess: (res) => {
+        onSuccess: async (res) => {
           const body: ClientData[] = res.data;
           const newItems: SubNavigationBarItemState[] = body.map((item) => {
             return {
@@ -169,7 +177,7 @@ function AppRoutes() {
       });
       setSnbLoaded(false);
       requestDeprecated("GET", "/clients", {
-        onSuccess: (res) => {
+        onSuccess: async (res) => {
           const body: { id: number; name: string }[] = res.data;
           const newItems: SubNavigationBarItemState[] = body.map((item) => {
             return {
@@ -208,7 +216,7 @@ function AppRoutes() {
       });
       setSnbLoaded(false);
       requestDeprecated("GET", "/clients", {
-        onSuccess: (res) => {
+        onSuccess: async (res) => {
           const body: { id: number; name: string }[] = res.data;
           const newItems: SubNavigationBarItemState[] = body.map((item) => {
             return {
@@ -359,7 +367,7 @@ function AppRoutes() {
       });
       setSnbLoaded(false);
       requestDeprecated("GET", `/members/employees`, {
-        onSuccess: (res) => {
+        onSuccess: async (res) => {
           const memberInfos: MemberInfo[] = res.data.memberDtoNonPassList;
           const newItems: SubNavigationBarItemState[] = memberInfos.map(
             (item) => {
@@ -406,7 +414,7 @@ function AppRoutes() {
       });
       setSnbLoaded(false);
       requestDeprecated("GET", `/members/employees`, {
-        onSuccess: (res) => {
+        onSuccess: async (res) => {
           const memberInfos: MemberInfo[] = res.data.memberDtoNonPassList;
           const newItems: SubNavigationBarItemState[] = memberInfos.map(
             (item) => {

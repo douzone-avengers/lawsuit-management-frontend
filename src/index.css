@@ -3,12 +3,3 @@ body,
 #root {
   height: 100%;
 }
-
-.custom-scroll {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.custom-scroll::-webkit-scrollbar {
-  display: none;
-}

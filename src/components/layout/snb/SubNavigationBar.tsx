@@ -1,4 +1,4 @@
-import { Box, CircularProgress } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import List from "@mui/material/List";
 import { useRecoilState, useRecoilValue } from "recoil";
 import caseIdState from "../../../states/case/CaseIdState.tsx";
@@ -18,17 +18,20 @@ function SubNavigationBar() {
   const [snbLoaded] = useRecoilState(snbLoadedState);
 
   return (
-    <Box
+    <div
       className="custom-scroll-bar"
-      sx={{
+      style={{
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
+        borderRight: "1px solid lightgray",
+        width: 240,
+        minWidth: 240,
         overflow: "hidden",
         overflowY: "scroll",
       }}
     >
-      <List sx={{ width: 240, height: "100%", padding: 0 }}>
+      <List sx={{ height: "100%", padding: 0 }}>
         {snbLoaded ? (
           subNavigationBar.items.map((item) => (
             <SubNavigationBarItem
@@ -64,7 +67,7 @@ function SubNavigationBar() {
       subNavigationBar.type === "caseClient" ? (
         <ClientRegisterPopUpButton />
       ) : null}
-    </Box>
+    </div>
   );
 }
 

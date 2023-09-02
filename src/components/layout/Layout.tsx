@@ -1,4 +1,3 @@
-import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
@@ -100,12 +99,22 @@ function Layout() {
 
   return (
     <>
-      <Box sx={{ display: "flex" }}>
-        <Header />
+      <div style={{ display: "flex", height: "100%" }}>
         <SideNavigationBar />
-        <Main />
-        {import.meta.env.DEV ? <Debug /> : null}
-      </Box>
+        <div
+          style={{
+            flexGrow: 1,
+            display: "flex",
+            flexDirection: "column",
+            height: "100%",
+          }}
+        >
+          <Header />
+          <Main />
+        </div>
+      </div>
+
+      {import.meta.env.DEV ? <Debug /> : null}
       {!hierarchyLoaded ? (
         <PageLoadingSpinner>Hierarchy</PageLoadingSpinner>
       ) : !roleLoaded ? (
