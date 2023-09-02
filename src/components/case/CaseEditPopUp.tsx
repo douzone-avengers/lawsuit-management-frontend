@@ -121,10 +121,10 @@ function CaseEditPopUp({ courtList }: Props) {
   const handleCaseEditButtonClick = () => {
     if (
       !lawsuitType ||
-      !lawsuitName ||
+      !(lawsuitName.length >= 3 && lawsuitName.length <= 50) ||
       !courtList.length ||
       !selectCourtId ||
-      !commissionFee
+      !(commissionFee.length >= 1 && commissionFee.length <= 20)
     ) {
       setShowWarnings(true);
       return;
@@ -224,12 +224,16 @@ function CaseEditPopUp({ courtList }: Props) {
         </FormControl>
       )}
 
-      {showWarnings && !lawsuitName ? (
+      {(lawsuitName.length > 50 || lawsuitName.length < 3) && showWarnings ? (
         <TextField
           error
           id="outlined-error-helper-text"
           label="사건명 *"
           value={lawsuitName}
+          inputProps={{
+            minLength: 3,
+            maxLength: 50,
+          }}
           onChange={(e) => setLawsuitName(e.target.value)}
         />
       ) : (
@@ -237,6 +241,10 @@ function CaseEditPopUp({ courtList }: Props) {
           type="text"
           label="사건명 *"
           value={lawsuitName}
+          inputProps={{
+            minLength: 3,
+            maxLength: 50,
+          }}
           onChange={(e) => setLawsuitName(e.target.value)}
         />
       )}
@@ -283,12 +291,17 @@ function CaseEditPopUp({ courtList }: Props) {
         </FormControl>
       )}
 
-      {showWarnings && !commissionFee ? (
+      {(commissionFee.length < 1 || commissionFee.length > 26) &&
+      showWarnings ? (
         <TextField
           error
           id="outlined-error-helper-text"
           label="의뢰비 *"
           value={commissionFee}
+          inputProps={{
+            minLength: 1,
+            maxLength: 26,
+          }}
           onChange={handleCommissionFeeChange}
         />
       ) : (
@@ -296,6 +309,10 @@ function CaseEditPopUp({ courtList }: Props) {
           type="text"
           label="의뢰비 *"
           value={commissionFee}
+          inputProps={{
+            minLength: 1,
+            maxLength: 26,
+          }}
           onChange={handleCommissionFeeChange}
         />
       )}
@@ -304,6 +321,10 @@ function CaseEditPopUp({ courtList }: Props) {
         type="text"
         label="성공보수비용"
         value={contingentFee}
+        inputProps={{
+          minLength: 1,
+          maxLength: 26,
+        }}
         onChange={handleContingentFeeChange}
       />
 
@@ -311,6 +332,10 @@ function CaseEditPopUp({ courtList }: Props) {
         type="text"
         label="사건번호"
         value={lawsuitNum}
+        inputProps={{
+          minLength: 2,
+          maxLength: 20,
+        }}
         onChange={(e) => setLawsuitNum(e.target.value)}
       />
 
