@@ -9,12 +9,12 @@ function Header() {
   const theme = useTheme();
   const color = "white";
   const background = theme.palette.primary.main;
-
   return (
     <div
       style={{
         display: "flex",
-        height: 64,
+        width: "100%",
+        minHeight: 64,
       }}
     >
       <div
