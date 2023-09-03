@@ -130,6 +130,13 @@ function AppRoutes() {
 
     // /clients/:clientId
     if (length === 2 && paths[1] === "clients" && paths[2]) {
+      const newClientId = Number.parseInt(paths[2]);
+      if (subNavigationBar.type === "client") {
+        setClientId(newClientId);
+        setCaseId(null);
+        setEmployeeId(null);
+        return;
+      }
       setMainNavigationBar({
         ...mainNavigationBar,
         curId: 0,
@@ -154,7 +161,6 @@ function AppRoutes() {
           setSnbLoaded(true);
         },
       });
-      const newClientId = Number.parseInt(paths[2]);
       setClientId(newClientId);
       setCaseId(null);
       setEmployeeId(null);
@@ -163,6 +169,12 @@ function AppRoutes() {
 
     // /cases
     if (length === 1 && paths[1] === "cases") {
+      if (subNavigationBar.type === "caseClient") {
+        setClientId(null);
+        setCaseId(null);
+        setEmployeeId(null);
+        return;
+      }
       setMainNavigationBar({
         ...mainNavigationBar,
         curId: 1,
@@ -175,7 +187,7 @@ function AppRoutes() {
             return {
               id: item.id,
               text: item.name,
-              url: `cases/list?client=${item.id}`,
+              url: `cases/clients/${item.id}`,
               SvgIcon: PersonIcon,
             };
           });
@@ -194,14 +206,22 @@ function AppRoutes() {
       return;
     }
 
-    // /cases/list?client=:clientId
+    // /cases/client/:clientId
     if (
-      length === 2 &&
+      length === 3 &&
       paths[1] === "cases" &&
-      paths[2] === "list" &&
-      param["client"]
+      paths[2] === "clients" &&
+      paths[3]
     ) {
-      const newClientId = Number.parseInt(param["client"]);
+      const newClientId = Number.parseInt(paths[3]);
+
+      if (subNavigationBar.type === "caseClient") {
+        setClientId(newClientId);
+        setCaseId(null);
+        setEmployeeId(null);
+        return;
+      }
+
       setMainNavigationBar({
         ...mainNavigationBar,
         curId: 1,
@@ -214,7 +234,7 @@ function AppRoutes() {
             return {
               id: item.id,
               text: item.name,
-              url: `cases/list?client=${item.id}`,
+              url: `cases/clients/${item.id}`,
               SvgIcon: PersonIcon,
             };
           });
@@ -233,12 +253,29 @@ function AppRoutes() {
       return;
     }
 
-    // /cases/:caseId?client=:clientId
-    if (length === 2 && paths[1] === "cases" && paths[2] && param["client"]) {
+    // /cases/:caseId/client/:clientId
+    if (
+      length === 4 &&
+      paths[1] === "cases" &&
+      paths[2] &&
+      paths[3] === "clients" &&
+      paths[4]
+    ) {
       setMainNavigationBar({
         ...mainNavigationBar,
         curId: 1,
       });
+
+      const newClientId = Number.parseInt(paths[4]);
+      const newCaseId = Number.parseInt(paths[2]);
+
+      if (subNavigationBar.type === "case") {
+        setClientId(newClientId);
+        setCaseId(newCaseId);
+        setEmployeeId(null);
+        return;
+      }
+
       if (clientId === null) {
         setSubNavigationBar({
           type: "none",
@@ -265,7 +302,7 @@ function AppRoutes() {
                   id: item.id,
                   text: item.name,
                   subText: item.lawsuitNum,
-                  url: `cases/${item.id}?client=${clientId}`,
+                  url: `cases/${item.id}/clients/${clientId}`,
                   SvgIcon: BalanceIcon,
                 };
               },
@@ -280,9 +317,7 @@ function AppRoutes() {
         },
       );
 
-      const newClientId = Number.parseInt(param["client"]);
       setClientId(newClientId);
-      const newCaseId = Number.parseInt(paths[2]);
       setCaseId(newCaseId);
       setEmployeeId(null);
       return;
@@ -508,11 +543,13 @@ function AppRoutes() {
         <Route path="cases" element={<CaseLayout />}>
           {/* /cases */}
           <Route index element={<CasesPage />} />
-
-          {/* /cases/list?client=:clientId */}
-          <Route path="list" element={<CaseListPage />} />
-          {/* /cases/:caseId?client=:clientId */}
-          <Route path=":caseId" element={<CaseDetailPage />} />
+          {/*/cases/clients/clientId */}
+          <Route path="clients/:clientId" element={<CaseListPage />} />
+          {/*/cases/:caseId?client=:clientId */}
+          <Route
+            path=":caseId/clients/:clientId"
+            element={<CaseDetailPage />}
+          />
         </Route>
         <Route path="employees" element={<EmployeeLayout />}>
           {/* /employees/}*/}
