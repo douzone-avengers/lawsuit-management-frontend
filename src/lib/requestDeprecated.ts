@@ -12,7 +12,7 @@ type HttpMethod =
 export type RequestSuccessHandler = (res: AxiosResponse<any, any>) => void;
 
 export type RequestFailHandler = (e: {
-  response: { data: any; status: number };
+  response: { data: { code: string; message: string }; status: number };
 }) => void;
 
 function requestDeprecated(

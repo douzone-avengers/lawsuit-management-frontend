@@ -1,14 +1,14 @@
 import ChatAppBodyContainer from "../layout/ChatAppBodyContainer.tsx";
 import ChatAppNavigationFooter from "../layout/ChatAppNavigationFooter.tsx";
 import ChatAppPlainHeader from "../layout/ChatAppPlainHeader.tsx";
-import ChatAppHeaderTitle from "../text/ChatAppHeaderTitle.tsx";
+import ChatAppHeaderTitle from "../box/ChatAppHeaderTitle.tsx";
 
-function ChatAppChatScene() {
+function ChatAppRoomScene() {
   return (
     <>
       <ChatAppPlainHeader
         containerStyle={{ paddingLeft: 20 }}
-        left={<ChatAppHeaderTitle>Chat</ChatAppHeaderTitle>}
+        left={<ChatAppHeaderTitle>채팅</ChatAppHeaderTitle>}
       />
       <ChatAppBodyContainer></ChatAppBodyContainer>
       <ChatAppNavigationFooter />
@@ -16,4 +16,4 @@ function ChatAppChatScene() {
   );
 }
 
-export default ChatAppChatScene;
+export default ChatAppRoomScene;

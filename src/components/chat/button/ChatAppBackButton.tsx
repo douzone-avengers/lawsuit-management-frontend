@@ -1,15 +1,15 @@
 import ChatAppHoverButton from "./ChatAppHoverButton.tsx";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useSetRecoilState } from "recoil";
-import chatAppSceneState from "../../../states/chat/ChatAppSceneState.ts";
+import chatAppSceneState from "../state/ChatAppSceneState.ts";
 
 function ChatAppBackButton() {
-  const setChatAppScene = useSetRecoilState(chatAppSceneState);
+  const setScene = useSetRecoilState(chatAppSceneState);
 
   return (
     <ChatAppHoverButton
       Icon={ArrowBackIcon}
-      onClick={() => setChatAppScene("Person")}
+      onClick={() => setScene("Person")}
     />
   );
 }

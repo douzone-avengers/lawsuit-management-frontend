@@ -19,7 +19,7 @@ import ClientRemovePopUp from "../client/ClientRemovePopUp.tsx";
 import clientRegisterPopUpOpenState from "../../states/layout/ClientRegisterPopUpOpenState.tsx";
 import clientRemovePopUpOpenState from "../../states/client/ClientRemovePopUpOpenState.tsx";
 import userState, { UserStateType } from "../../states/user/UserState.ts";
-import chatAppOpenState from "../../states/chat/ChatAppOpenState.ts";
+import chatAppOpenState from "../chat/state/ChatAppOpenState.ts";
 import ChatApp from "../chat/ChatApp.tsx";
 import sideNavigationBarOpenState from "../../states/layout/SideNavigationBarOpenState.tsx";
 import subNavigationBarState from "../../states/layout/SubNavigationBarState.tsx";

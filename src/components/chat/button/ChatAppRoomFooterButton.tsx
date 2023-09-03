@@ -1,18 +1,18 @@
-import PersonIcon from "@mui/icons-material/Person";
+import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 import ChatAppSelectButton from "./ChatAppSelectButton.tsx";
 import { useRecoilState } from "recoil";
 import chatAppSceneState from "../state/ChatAppSceneState.ts";
 
-function ChatAppPersonFooterButton() {
+function ChatAppRoomFooterButton() {
   const [scene, setScene] = useRecoilState(chatAppSceneState);
 
   return (
     <ChatAppSelectButton
-      Icon={PersonIcon}
-      selected={scene === "Person"}
-      onClick={() => setScene("Person")}
+      Icon={ChatBubbleIcon}
+      selected={scene === "Room"}
+      onClick={() => setScene("Room")}
     />
   );
 }
 
-export default ChatAppPersonFooterButton;
+export default ChatAppRoomFooterButton;

@@ -1,6 +1,6 @@
 import ChatAppFooterContainer from "./ChatAppFooterContainer.tsx";
 import ChatAppPersonFooterButton from "../button/ChatAppPersonFooterButton.tsx";
-import ChatAppChatFooterButton from "../button/ChatAppChatFooterButton.tsx";
+import ChatAppRoomFooterButton from "../button/ChatAppRoomFooterButton.tsx";
 
 function ChatAppNavigationFooter() {
   return (
@@ -12,7 +12,7 @@ function ChatAppNavigationFooter() {
         }}
       >
         <ChatAppPersonFooterButton />
-        <ChatAppChatFooterButton />
+        <ChatAppRoomFooterButton />
       </div>
     </ChatAppFooterContainer>
   );
