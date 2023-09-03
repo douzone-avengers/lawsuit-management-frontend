@@ -9,6 +9,7 @@ import Title from "./Title.tsx";
 import Box from "@mui/material/Box";
 import ScheduleButton from "./ScheduleButton.tsx";
 import subNavigationBarState from "../../../states/layout/SubNavigationBarState.tsx";
+import PrivateButton from "./PrivateButton";
 
 interface HeaderProps extends MuiAppBarProps {
   open?: boolean;
@@ -57,6 +58,7 @@ function Header() {
         sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
       >
         <ScheduleButton />
+        <PrivateButton />
         <LogoutButton />
       </Box>
     </HeaderContainer>

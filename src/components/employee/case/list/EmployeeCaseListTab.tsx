@@ -3,7 +3,7 @@ import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
 } from "../../../../lib/requestDeprecated.ts";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import employeeIdState from "../../../../states/employee/EmployeeIdState";
 import Box from "@mui/material/Box";
 import { LawsuitInfo } from "../../../case/type/LawsuitInfo.tsx";
@@ -12,7 +12,7 @@ import { LawsuitStatus } from "../../../../type/ResponseType";
 import EmployeeCaseListTable from "./EmployeeCaseListTable";
 
 function EmployeeCaseListTab() {
-  const [employeeId] = useRecoilState(employeeIdState);
+  const employeeId = useRecoilValue(employeeIdState);
   const navigate = useNavigate();
   const [cases, setCases] = useState<LawsuitInfo[]>([]);
 
@@ -97,13 +97,30 @@ function EmployeeCaseListTab() {
     });
   };
 
+  //t
+  const caseRequestAndNavigate = (lawsuitId: number) => {
+    const handleRequestSuccess: RequestSuccessHandler = (res) => {
+      navigate(`/cases/${lawsuitId}/clients/${res.data.clients[0].id}`);
+    };
+
+    const handleRequestFail: RequestFailHandler = (e) => {
+      alert((e.response.data as { code: string; message: string }).message);
+    };
+
+    requestDeprecated("GET", `/lawsuits/${lawsuitId}/basic`, {
+      withToken: true,
+      onSuccess: handleRequestSuccess,
+      onFail: handleRequestFail,
+    });
+  };
+
   return (
     <Box>
       <EmployeeCaseListTable
         cases={cases.map((item) => ({
           ...item,
           onClick: () => {
-            navigate(`/cases/${item.id}?client=2`);
+            caseRequestAndNavigate(item.id);
           },
         }))}
         count={count}
