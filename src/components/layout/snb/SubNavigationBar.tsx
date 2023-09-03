@@ -19,6 +19,7 @@ function SubNavigationBar() {
     <div
       style={{
         width: 240,
+        height: "100%",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
@@ -31,6 +32,7 @@ function SubNavigationBar() {
           flexDirection: "column",
           justifyContent: "space-between",
           width: 240,
+          height: "100%",
           overflowY: "scroll",
         }}
       >
@@ -62,6 +64,7 @@ function SubNavigationBar() {
             <div
               style={{
                 display: "flex",
+                background: "red",
                 height: "100%",
                 alignItems: "center",
                 justifyContent: "center",

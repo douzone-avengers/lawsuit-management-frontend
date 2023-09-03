@@ -3,7 +3,7 @@ import SideNavigationBarDisplayButton from "./SideNavigationBarDisplayButton.tsx
 import Title from "./Title.tsx";
 import ScheduleButton from "./ScheduleButton.tsx";
 import { useTheme } from "@mui/material";
-import Divider from "@mui/material/Divider";
+import ChatAppOpenButton from "../../chat/ChatAppOpenButton.tsx";
 
 function Header() {
   const theme = useTheme();
@@ -15,6 +15,7 @@ function Header() {
         display: "flex",
         width: "100%",
         minHeight: 64,
+        borderBottom: "1px solid lightgray",
       }}
     >
       <div
@@ -31,11 +32,11 @@ function Header() {
           <Title />
         </div>
         <div style={{ display: "flex" }}>
+          <ChatAppOpenButton />
           <ScheduleButton />
           <LogoutButton />
         </div>
       </div>
-      <Divider />
     </div>
   );
 }

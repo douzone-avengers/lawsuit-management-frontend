@@ -38,14 +38,6 @@ import roleListState from "../../states/data/roleListState.ts";
 import snbLoadedState from "../../states/common/SnbLoadedState.ts";
 import EmployeeDetailPage from "../employee/detail/EmployeeDetailPage.tsx";
 
-async function wait(ms: number): Promise<void> {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, ms);
-  });
-}
-
 function AppRoutes() {
   const location = useLocation();
   const navigate = useNavigate();

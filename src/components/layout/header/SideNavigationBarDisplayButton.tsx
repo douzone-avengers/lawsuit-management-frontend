@@ -1,10 +1,10 @@
 import MenuIcon from "@mui/icons-material/Menu";
 import { useRecoilState } from "recoil";
-import sideNavigationBarState from "../../../states/layout/SideNavigationBarOpenState.tsx";
+import sideNavigationBarOpenState from "../../../states/layout/SideNavigationBarOpenState.tsx";
 
 function SideNavigationBarDisplayButton() {
   const [sideBarNavigationOpen, setSideBarNavigationOpen] = useRecoilState(
-    sideNavigationBarState,
+    sideNavigationBarOpenState,
   );
 
   return !sideBarNavigationOpen ? (

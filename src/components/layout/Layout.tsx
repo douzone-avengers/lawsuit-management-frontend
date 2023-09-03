@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import Debug from "./Debug";
 import Header from "./header/Header.tsx";
 import Main from "./main/Main.tsx";
@@ -19,6 +19,10 @@ import ClientRemovePopUp from "../client/ClientRemovePopUp.tsx";
 import clientRegisterPopUpOpenState from "../../states/layout/ClientRegisterPopUpOpenState.tsx";
 import clientRemovePopUpOpenState from "../../states/client/ClientRemovePopUpOpenState.tsx";
 import userState, { UserStateType } from "../../states/user/UserState.ts";
+import chatAppOpenState from "../../states/chat/ChatAppOpenState.ts";
+import ChatApp from "../chat/ChatApp.tsx";
+import sideNavigationBarOpenState from "../../states/layout/SideNavigationBarOpenState.tsx";
+import subNavigationBarState from "../../states/layout/SubNavigationBarState.tsx";
 
 function Layout() {
   const navigate = useNavigate();
@@ -29,6 +33,10 @@ function Layout() {
   const [clientRegisterPopUp] = useRecoilState(clientRegisterPopUpOpenState);
   const [clientRemovePopUpOpen] = useRecoilState(clientRemovePopUpOpenState);
   const [user, setUser] = useRecoilState(userState);
+
+  const chatAppOpen = useRecoilValue(chatAppOpenState);
+  const sideNavigationBarOpen = useRecoilValue(sideNavigationBarOpenState);
+  const subNavigationBar = useRecoilValue(subNavigationBarState);
 
   //set enum table
   //직급 리스트
@@ -99,11 +107,53 @@ function Layout() {
 
   return (
     <>
-      <div style={{ display: "flex", height: "100%", overflow: "hidden" }}>
+      <div
+        style={{
+          display: "flex",
+          width: "100%",
+          height: "100%",
+          overflow: "hidden",
+        }}
+      >
         <SideNavigationBar />
         <div
           style={{
-            flexGrow: 1,
+            transitionProperty: "width",
+            transition: "all 0.5s",
+            width:
+              !sideNavigationBarOpen &&
+              subNavigationBar.type === "none" &&
+              !chatAppOpen
+                ? "calc(100%)" // 0 0 0
+                : !sideNavigationBarOpen &&
+                  subNavigationBar.type === "none" &&
+                  chatAppOpen
+                ? "calc(100% - 480px)" // 0 0 1
+                : !sideNavigationBarOpen &&
+                  subNavigationBar.type !== "none" &&
+                  !chatAppOpen
+                ? "calc(100%)" // 0 1 0
+                : !sideNavigationBarOpen &&
+                  subNavigationBar.type !== "none" &&
+                  chatAppOpen
+                ? "calc(100% - 480px)" // 0 1 1
+                : sideNavigationBarOpen &&
+                  subNavigationBar.type === "none" &&
+                  !chatAppOpen
+                ? "calc(100% - 240px)" // 1 0 0
+                : sideNavigationBarOpen &&
+                  subNavigationBar.type === "none" &&
+                  chatAppOpen
+                ? "calc(100% - 720px)" // 1 0 1
+                : sideNavigationBarOpen &&
+                  subNavigationBar.type !== "none" &&
+                  !chatAppOpen
+                ? "calc(100% - 480px)" // 1 1 0
+                : sideNavigationBarOpen &&
+                  subNavigationBar.type !== "none" &&
+                  chatAppOpen
+                ? "calc(100% - 960px)" // 1 1 1
+                : "calc(100%)",
             display: "flex",
             flexDirection: "column",
             height: "100%",
@@ -112,6 +162,7 @@ function Layout() {
           <Header />
           <Main />
         </div>
+        <ChatApp />
       </div>
 
       {import.meta.env.DEV ? <Debug /> : null}

@@ -183,106 +183,114 @@ function CaseListPage() {
   }, [triggerSearch]);
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        gap: 2,
-        flexDirection: "column",
-        position: "relative",
-      }}
-    >
-      <Card>
-        <CardTitle text="검색" />
-        <CardContent>
-          <TextField
-            size="small"
-            placeholder="사건명, 사건번호 검색"
-            fullWidth
-            value={curSearchWord}
-            onChange={(e) => setCurSearchWord(e.target.value)}
-          />
-          <Box
-            sx={{
-              display: "flex",
-              marginTop: 3,
-              height: 8,
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <Box sx={{ display: "flex", gap: 1 }}>
-              <Chip
-                variant={searchLawsuitStatus === null ? "filled" : "outlined"}
-                label={`전체 (${totalLength})`}
-                onClick={() => {
-                  setSearchLawsuitStatus(null);
-                }}
-              />
-              <Chip
-                variant={searchLawsuitStatus === "등록" ? "filled" : "outlined"}
-                label={`등록 (${registrationLength})`}
-                onClick={() => {
-                  setSearchLawsuitStatus("등록");
-                }}
-              />
-              <Chip
-                variant={searchLawsuitStatus === "진행" ? "filled" : "outlined"}
-                label={`진행 (${proceedingLength})`}
-                onClick={() => {
-                  setSearchLawsuitStatus("진행");
-                }}
-              />
-              <Chip
-                variant={searchLawsuitStatus === "종결" ? "filled" : "outlined"}
-                label={`종결 (${closingLength})`}
-                onClick={() => {
-                  setSearchLawsuitStatus("종결");
-                }}
-              />
-            </Box>
-            <Button
-              variant="contained"
-              onClick={() => {
-                setSearchWord(curSearchWord);
-                setTriggerSearch(true);
+    <>
+      <Box
+        sx={{
+          display: "flex",
+          gap: 2,
+          flexDirection: "column",
+          position: "relative",
+        }}
+      >
+        <Card>
+          <CardTitle text="검색" />
+          <CardContent>
+            <TextField
+              size="small"
+              placeholder="사건명, 사건번호 검색"
+              fullWidth
+              value={curSearchWord}
+              onChange={(e) => setCurSearchWord(e.target.value)}
+            />
+            <Box
+              sx={{
+                display: "flex",
+                marginTop: 3,
+                height: 8,
+                alignItems: "center",
+                justifyContent: "space-between",
               }}
             >
-              검색
-            </Button>
-          </Box>
-        </CardContent>
-      </Card>
-      <Box>
-        <CaseListTable
-          cases={cases.map((item) => ({
-            ...item,
-            onClick: () => {
-              navigate(`/cases/${item.id}?client=${clientId}`);
-            },
-          }))}
-          count={count}
-          page={page}
-          setPage={setPage}
-          rowsPerPage={rowsPerPage}
-          setRowsPerPage={setRowsPerPage}
-          sortKey={sortKey}
-          setSortKey={setSortKey}
-          sortOrder={sortOrder}
-          setSortOrder={setSortOrder}
-        />
+              <Box sx={{ display: "flex", gap: 1 }}>
+                <Chip
+                  variant={searchLawsuitStatus === null ? "filled" : "outlined"}
+                  label={`전체 (${totalLength})`}
+                  onClick={() => {
+                    setSearchLawsuitStatus(null);
+                  }}
+                />
+                <Chip
+                  variant={
+                    searchLawsuitStatus === "등록" ? "filled" : "outlined"
+                  }
+                  label={`등록 (${registrationLength})`}
+                  onClick={() => {
+                    setSearchLawsuitStatus("등록");
+                  }}
+                />
+                <Chip
+                  variant={
+                    searchLawsuitStatus === "진행" ? "filled" : "outlined"
+                  }
+                  label={`진행 (${proceedingLength})`}
+                  onClick={() => {
+                    setSearchLawsuitStatus("진행");
+                  }}
+                />
+                <Chip
+                  variant={
+                    searchLawsuitStatus === "종결" ? "filled" : "outlined"
+                  }
+                  label={`종결 (${closingLength})`}
+                  onClick={() => {
+                    setSearchLawsuitStatus("종결");
+                  }}
+                />
+              </Box>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  setSearchWord(curSearchWord);
+                  setTriggerSearch(true);
+                }}
+              >
+                검색
+              </Button>
+            </Box>
+          </CardContent>
+        </Card>
+        <Box>
+          <CaseListTable
+            cases={cases.map((item) => ({
+              ...item,
+              onClick: () => {
+                navigate(`/cases/${item.id}?client=${clientId}`);
+              },
+            }))}
+            count={count}
+            page={page}
+            setPage={setPage}
+            rowsPerPage={rowsPerPage}
+            setRowsPerPage={setRowsPerPage}
+            sortKey={sortKey}
+            setSortKey={setSortKey}
+            sortOrder={sortOrder}
+            setSortOrder={setSortOrder}
+          />
+        </Box>
+        {caseAddPopUpOpen ? (
+          <CaseAddPopUp
+            clientId={clientId}
+            setCases={setCases}
+            setCount={setCount}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            searchWord={searchWord}
+          />
+        ) : null}
       </Box>
       <CaseAddPopUpButton />
-      {caseAddPopUpOpen ? (
-        <CaseAddPopUp
-          clientId={clientId}
-          setCases={setCases}
-          setCount={setCount}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          searchWord={searchWord}
-        />
-      ) : null}
-    </Box>
+    </>
   );
 }
 
