@@ -12,7 +12,7 @@ function CaseClientInfoCard() {
   return (
     <Card sx={{ width: "50%" }}>
       <CardTitle text="당사자" />
-      <List sx={{ display: "flex", padding: 0, overflowX: "scroll" }}>
+      <List sx={{ display: "flex", padding: 0, overflowX: "auto" }}>
         {caseInfo?.clients.map((item) => (
           <ListProfileItem
             key={item.id}

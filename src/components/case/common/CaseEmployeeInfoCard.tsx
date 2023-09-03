@@ -16,7 +16,7 @@ function CaseEmployeeInfoCard() {
       }}
     >
       <CardTitle text="담당자" />
-      <List sx={{ display: "flex", padding: 0, overflowX: "scroll" }}>
+      <List sx={{ display: "flex", padding: 0, overflowX: "auto" }}>
         {caseInfo?.employees.map((item) => (
           <ListProfileItem
             key={item.id}

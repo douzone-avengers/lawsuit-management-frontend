@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 import { useRecoilState } from "recoil";
-import chatAppOpenState from "../../states/chat/ChatAppOpenState.ts";
+import chatAppOpenState from "../../../states/chat/ChatAppOpenState.ts";
 
 function ChatAppOpenButton() {
   const [chatAppOpen, setChatAppOpen] = useRecoilState(chatAppOpenState);

@@ -2,10 +2,10 @@ import { TextField } from "@mui/material";
 import { useRecoilState } from "recoil";
 import { ChangeEvent } from "react";
 import { produce } from "immer";
-import Box from "@mui/material/Box";
 import caseReceptionsState, {
   CaseReceptionRowType,
 } from "../../../../../states/case/info/reception/CaseReceptionsState.tsx";
+import Box from "@mui/material/Box";
 
 type Props = {
   item: CaseReceptionRowType & { editable: boolean };
@@ -35,13 +35,14 @@ function CaseReceptionContentsCell({ item }: Props) {
   ) : (
     <Box
       sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: 40,
+        marginTop: 1,
+        width: "100%",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "noWrap",
       }}
     >
-      {item.contents}
+      <span style={{ paddingTop: 2 }}>{item.contents}</span>
     </Box>
   );
 }

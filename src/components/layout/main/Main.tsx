@@ -7,7 +7,7 @@ function Main() {
         position: "relative",
         padding: 20,
         flexGrow: 1,
-        overflow: "scroll",
+        overflow: "auto",
       }}
     >
       <Outlet />

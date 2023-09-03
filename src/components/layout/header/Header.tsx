@@ -3,7 +3,7 @@ import SideNavigationBarDisplayButton from "./SideNavigationBarDisplayButton.tsx
 import Title from "./Title.tsx";
 import ScheduleButton from "./ScheduleButton.tsx";
 import { useTheme } from "@mui/material";
-import ChatAppOpenButton from "../../chat/ChatAppOpenButton.tsx";
+import ChatAppOpenButton from "./ChatAppOpenButton.tsx";
 
 function Header() {
   const theme = useTheme();

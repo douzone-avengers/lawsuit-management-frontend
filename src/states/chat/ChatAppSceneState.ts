@@ -1,10 +1,10 @@
 import { atom } from "recoil";
 
-type ChatAppSceneType = "";
+type ChatAppSceneType = "Person" | "PersonAdd" | "Chat";
 
 const chatAppSceneState = atom<ChatAppSceneType>({
   key: "chatAppSceneState",
-  default: "",
+  default: "Person",
 });
 
 export default chatAppSceneState;

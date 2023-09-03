@@ -1,11 +1,13 @@
 import { useRecoilValue } from "recoil";
 import chatAppOpenState from "../../states/chat/ChatAppOpenState.ts";
-import ChatAppHeader from "./header/ChatAppHeader.tsx";
-import ChatAppMain from "./main/ChatAppMain.tsx";
-import ChatAppFooter from "./footer/ChatAppFooter.tsx";
+import chatAppSceneState from "../../states/chat/ChatAppSceneState.ts";
+import ChatAppPersonScene from "./scene/ChatAppPersonScene.tsx";
+import ChatAppChatScene from "./scene/ChatAppChatScene.tsx";
+import ChatAppPersonAddScene from "./scene/ChatAppPersonAddScene.tsx";
 
 function ChatApp() {
   const chatAppOpen = useRecoilValue(chatAppOpenState);
+  const chatAppScene = useRecoilValue(chatAppSceneState);
 
   return (
     <div
@@ -21,9 +23,13 @@ function ChatApp() {
         background: "white",
       }}
     >
-      <ChatAppHeader />
-      <ChatAppMain />
-      <ChatAppFooter />
+      {chatAppScene === "Person" ? (
+        <ChatAppPersonScene />
+      ) : chatAppScene === "PersonAdd" ? (
+        <ChatAppPersonAddScene />
+      ) : chatAppScene === "Chat" ? (
+        <ChatAppChatScene />
+      ) : null}
     </div>
   );
 }

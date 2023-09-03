@@ -30,7 +30,7 @@ function CaseReceptionDataRow({ item }: Props) {
       </Box>
       <Box
         sx={{
-          flexGrow: 1,
+          width: "calc(100% - 720px)",
         }}
       >
         <CaseReceptionContentsCell item={item} />

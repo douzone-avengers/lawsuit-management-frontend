@@ -36,7 +36,7 @@ function CalendarCell({
         style={{
           display: "flex",
           flexDirection: "column",
-          overflowY: "scroll",
+          overflowY: "auto",
           height: 80,
           gap: 3,
         }}
