@@ -276,15 +276,6 @@ function AppRoutes() {
         return;
       }
 
-      if (clientId === null) {
-        setSubNavigationBar({
-          type: "none",
-          curId: -1,
-          items: [],
-        });
-        setSnbLoaded(true);
-      }
-
       setSnbLoaded(false);
       requestDeprecated(
         "GET",
