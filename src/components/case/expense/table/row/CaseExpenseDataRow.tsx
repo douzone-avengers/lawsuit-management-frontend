@@ -9,33 +9,43 @@ import CaseExpenseDeleteButton from "../button/CaseExpenseDeleteButton.tsx";
 
 type Props = {
   item: CaseExpenseRowType & { editable: boolean };
+  caseId: number | null;
 };
 
-function CaseExpenseDataRow({ item }: Props) {
+function CaseExpenseDataRow({ item, caseId }: Props) {
   return (
     <Box sx={{ display: "flex", width: "100%", justifyContent: "center" }}>
-      <Box sx={{ width: "15%" }}>
+      <Box sx={{ width: 200 }}>
         <CaseExpenseSpeningAtCell item={item} />
       </Box>
-      <Box sx={{ width: "55%" }}>
+      <Box sx={{ width: 900 }}>
         <CaseExpenseContentsCell item={item} />
       </Box>
-      <Box sx={{ width: "15%" }}>
+      <Box sx={{ width: 200 }}>
         <CaseExpenseAmountCell item={item} />
       </Box>
       <Box
         sx={{
-          width: "20%",
+          width: 100,
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
         }}
       >
         {item.editable ? (
-          <CaseExpenseEditConfirmButton item={item} />
+          <CaseExpenseEditConfirmButton item={item} caseId={caseId} />
         ) : (
           <CaseExpenseEditButton item={item} />
         )}
+      </Box>
+      <Box
+        sx={{
+          width: 100,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <CaseExpenseDeleteButton item={item} />
       </Box>
     </Box>

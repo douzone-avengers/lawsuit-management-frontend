@@ -11,18 +11,18 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import { MemberInfo } from "../type/MemberInfo";
+import { MemberInfo } from "../../type/MemberInfo";
 import ReactModal from "react-modal";
 import DaumPostcode from "react-daum-postcode";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import curMemberAddressState from "../../../states/employee/CurMemberAddressState";
-import employeeIdState from "../../../states/employee/EmployeeIdState";
+import curMemberAddressState from "../../../../states/employee/CurMemberAddressState";
+import employeeIdState from "../../../../states/employee/EmployeeIdState";
 import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
-} from "../../../lib/requestDeprecated";
-import hierarchyListState from "../../../states/data/hierarchyListState";
-import roleListState from "../../../states/data/roleListState";
+} from "../../../../lib/requestDeprecated";
+import hierarchyListState from "../../../../states/data/hierarchyListState";
+import roleListState from "../../../../states/data/roleListState";
 
 type Props = {
   width?: string | number;

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
-} from "../../../lib/requestDeprecated.ts";
+} from "../../lib/requestDeprecated.ts";
 import Button from "@mui/material/Button";
 import {
   FormControl,
@@ -15,13 +15,13 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import { MemberInfo } from "../type/MemberInfo";
+import { MemberInfo } from "../employee/type/MemberInfo";
 import ReactModal from "react-modal";
 import DaumPostcode from "react-daum-postcode";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import curMemberAddressState from "../../../states/employee/CurMemberAddressState";
-import hierarchyListState from "../../../states/data/hierarchyListState";
-import roleListState from "../../../states/data/roleListState";
+import curMemberAddressState from "../../states/employee/CurMemberAddressState";
+import hierarchyListState from "../../states/data/hierarchyListState";
+import roleListState from "../../states/data/roleListState";
 
 type Props = {
   width?: string | number;
@@ -29,7 +29,7 @@ type Props = {
   memberInfo?: MemberInfo;
 };
 
-function EmployeePrivateCard({ width = "50%", memberInfo }: Props) {
+function PrivateCard({ width = "50%", memberInfo }: Props) {
   const [isEditMode, setIsEditMode] = useState(false);
 
   const [name, setName] = useState("");
@@ -249,4 +249,4 @@ function EmployeePrivateCard({ width = "50%", memberInfo }: Props) {
   );
 }
 
-export default EmployeePrivateCard;
+export default PrivateCard;

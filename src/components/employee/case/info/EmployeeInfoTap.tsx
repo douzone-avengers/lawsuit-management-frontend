@@ -1,17 +1,18 @@
 import Box from "@mui/material/Box";
-import KakaoMap from "../../common/KaKaoMap";
-import useWindowSize from "../../../hook/useWindowSize";
+import KakaoMap from "../../../common/KaKaoMap";
+import useWindowSize from "../../../../hook/useWindowSize";
 import { useEffect, useRef, useState } from "react";
+import { MemberInfo } from "../../type/MemberInfo";
+import { useRecoilValue } from "recoil";
+import curMemberAddressState from "../../../../states/employee/CurMemberAddressState";
+import EmployeeInfoCard from "./EmployeeInfoCard";
+import employeeIdState from "../../../../states/employee/EmployeeIdState";
 import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
-} from "../../../lib/requestDeprecated.ts";
-import { MemberInfo } from "../type/MemberInfo";
-import EmployeePrivateCard from "./EmployeePrivateCard";
-import { useRecoilValue } from "recoil";
-import curMemberAddressState from "../../../states/employee/CurMemberAddressState";
+} from "../../../../lib/requestDeprecated";
 
-function EmployeePrivatePage() {
+function EmployeeInfoTap() {
   const [width, height] = useWindowSize();
   const [boxWidth, setBoxWidth] = useState<number | undefined>(undefined);
   const [boxHeight, setBoxHeight] = useState<number | undefined>(undefined);
@@ -19,6 +20,7 @@ function EmployeePrivatePage() {
 
   const [memberInfo, setMemberInfo] = useState<MemberInfo>();
   const recoilAddress = useRecoilValue(curMemberAddressState);
+  const employeeId = useRecoilValue(employeeIdState);
 
   useEffect(() => {
     if (parentContainer.current) {
@@ -41,6 +43,8 @@ function EmployeePrivatePage() {
   }, [recoilAddress]);
 
   useEffect(() => {
+    if (employeeId === null) return;
+
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
       const memberInfo: MemberInfo = res.data;
       setMemberInfo(memberInfo);
@@ -49,17 +53,17 @@ function EmployeePrivatePage() {
       alert((e.response.data as { code: string; message: string }).message);
     };
 
-    requestDeprecated("GET", `/members/me`, {
+    requestDeprecated("GET", `/members/employees/${employeeId}`, {
       withToken: true,
 
       onSuccess: handleRequestSuccess,
       onFail: handelRequestFail,
     });
-  }, []);
+  }, [employeeId]);
 
   return (
     <Box sx={{ display: "flex", gap: 3, flexDirection: "row", height: "100%" }}>
-      <EmployeePrivateCard width={"50%"} memberInfo={memberInfo} />
+      <EmployeeInfoCard width={"50%"} memberInfo={memberInfo} />
 
       <Box
         ref={parentContainer}
@@ -79,4 +83,4 @@ function EmployeePrivatePage() {
   );
 }
 
-export default EmployeePrivatePage;
+export default EmployeeInfoTap;

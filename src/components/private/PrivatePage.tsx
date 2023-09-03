@@ -1,18 +1,17 @@
 import Box from "@mui/material/Box";
-import KakaoMap from "../../common/KaKaoMap";
-import useWindowSize from "../../../hook/useWindowSize";
+import KakaoMap from "../common/KaKaoMap";
+import useWindowSize from "../../hook/useWindowSize";
 import { useEffect, useRef, useState } from "react";
-import { MemberInfo } from "../type/MemberInfo";
-import { useRecoilValue } from "recoil";
-import curMemberAddressState from "../../../states/employee/CurMemberAddressState";
-import EmployeeInfoCard from "./EmployeeInfoCard";
-import employeeIdState from "../../../states/employee/EmployeeIdState";
 import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
-} from "../../../lib/requestDeprecated";
+} from "../../lib/requestDeprecated.ts";
+import { MemberInfo } from "../employee/type/MemberInfo";
+import PrivateCard from "./PrivateCard";
+import { useRecoilValue } from "recoil";
+import curMemberAddressState from "../../states/employee/CurMemberAddressState";
 
-function EmployeeDetailPage() {
+function PrivatePage() {
   const [width, height] = useWindowSize();
   const [boxWidth, setBoxWidth] = useState<number | undefined>(undefined);
   const [boxHeight, setBoxHeight] = useState<number | undefined>(undefined);
@@ -20,7 +19,6 @@ function EmployeeDetailPage() {
 
   const [memberInfo, setMemberInfo] = useState<MemberInfo>();
   const recoilAddress = useRecoilValue(curMemberAddressState);
-  const employeeId = useRecoilValue(employeeIdState);
 
   useEffect(() => {
     if (parentContainer.current) {
@@ -43,8 +41,6 @@ function EmployeeDetailPage() {
   }, [recoilAddress]);
 
   useEffect(() => {
-    if (employeeId === null) return;
-
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
       const memberInfo: MemberInfo = res.data;
       setMemberInfo(memberInfo);
@@ -53,17 +49,17 @@ function EmployeeDetailPage() {
       alert((e.response.data as { code: string; message: string }).message);
     };
 
-    requestDeprecated("GET", `/members/employees/${employeeId}`, {
+    requestDeprecated("GET", `/members/me`, {
       withToken: true,
 
       onSuccess: handleRequestSuccess,
       onFail: handelRequestFail,
     });
-  }, [employeeId]);
+  }, []);
 
   return (
     <Box sx={{ display: "flex", gap: 3, flexDirection: "row", height: "100%" }}>
-      <EmployeeInfoCard width={"50%"} memberInfo={memberInfo} />
+      <PrivateCard width={"50%"} memberInfo={memberInfo} />
 
       <Box
         ref={parentContainer}
@@ -83,4 +79,4 @@ function EmployeeDetailPage() {
   );
 }
 
-export default EmployeeDetailPage;
+export default PrivatePage;

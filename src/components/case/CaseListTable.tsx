@@ -10,6 +10,8 @@ import { LawsuitInfo } from "./type/LawsuitInfo.tsx";
 import { TableFooter, TablePagination, TableSortLabel } from "@mui/material";
 import React from "react";
 import { HeadCell } from "../employee/type/HeadCell.tsx";
+import Card from "@mui/material/Card";
+import CardTitle from "../common/CardTitle.tsx";
 
 type Props = {
   cases: (LawsuitInfo & { onClick: () => void })[];
@@ -95,83 +97,99 @@ function CaseListTable({
   ];
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead sx={{ background: "#2196f3" }}>
-          <TableRow>
-            {headCells.map((headCell) =>
-              !headCell.canSort ? (
-                <TableCell
-                  key={headCell.id}
-                  sx={{ color: "white" }}
-                  align="center"
-                >
-                  <b>{headCell.label}</b>
-                </TableCell>
-              ) : (
-                <TableCell key={headCell.id} align="center">
-                  <TableSortLabel
-                    sx={{ color: "white", align: "center", marginLeft: "25px" }}
-                    active={sortKey === headCell.id}
-                    direction={sortKey === headCell.id ? sortOrder : "asc"}
-                    onClick={() => {
-                      sortHandler(headCell.id);
-                    }}
-                  >
+    <Card sx={{ marginBottom: 2, marginTop: 3 }}>
+      <CardTitle text="사건 리스트" />
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              {headCells.map((headCell) =>
+                !headCell.canSort ? (
+                  <TableCell key={headCell.id} align="center">
                     <b>{headCell.label}</b>
-                  </TableSortLabel>
-                </TableCell>
-              ),
-            )}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {cases.map((item, index) => (
-            <TableRow
-              key={item.id}
-              hover={true}
-              sx={{
-                "&:last-child td, &:last-child th": { border: 0 },
-                cursor: "pointer",
-              }}
-              onClick={item.onClick}
-            >
-              <TableCell align="center" component="th" scope="row">
-                {page * rowsPerPage + index + 1}
+                  </TableCell>
+                ) : (
+                  <TableCell key={headCell.id} align="center">
+                    <TableSortLabel
+                      sx={{
+                        align: "center",
+                        marginLeft: "25px",
+                      }}
+                      active={sortKey === headCell.id}
+                      direction={sortKey === headCell.id ? sortOrder : "asc"}
+                      onClick={() => {
+                        sortHandler(headCell.id);
+                      }}
+                    >
+                      <b>{headCell.label}</b>
+                    </TableSortLabel>
+                  </TableCell>
+                ),
+              )}
+            </TableRow>
+          </TableHead>
+          {cases.length > 0 ? (
+            <TableBody>
+              {cases.map((item, index) => (
+                <TableRow
+                  key={item.id}
+                  hover={true}
+                  sx={{
+                    "&:last-child td, &:last-child th": { border: 0 },
+                    cursor: "pointer",
+                  }}
+                  onClick={item.onClick}
+                >
+                  <TableCell align="center" component="th" scope="row">
+                    {page * rowsPerPage + index + 1}
+                  </TableCell>
+                  <TableCell align="center">{item.name}</TableCell>
+                  <TableCell align="center">
+                    {item.lawsuitNum ? item.lawsuitNum : "-"}
+                  </TableCell>
+                  <TableCell align="center">{item.lawsuitStatus}</TableCell>
+                  <TableCell align="center">
+                    {delimiter(item.commissionFee)}
+                  </TableCell>
+                  <TableCell align="center">
+                    {delimiter(item.contingentFee)}
+                  </TableCell>
+                  <TableCell align="center">
+                    {item.createdAt.toString().substring(0, 10)}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          ) : (
+            <TableBody>
+              <TableCell align="center" component="th" scope="row" colSpan={7}>
+                <br />
+                사건이 없습니다. 사건을 등록해주세요.
+                <br />
+                <br />
               </TableCell>
-              <TableCell align="center">{item.name}</TableCell>
-              <TableCell align="center">{item.lawsuitNum}</TableCell>
-              <TableCell align="center">{item.lawsuitStatus}</TableCell>
-              <TableCell align="center">
-                {delimiter(item.commissionFee)}
-              </TableCell>
-              <TableCell align="center">
-                {delimiter(item.contingentFee)}
-              </TableCell>
-              <TableCell align="center">
-                {item.createdAt.toString().substring(0, 10)}
+            </TableBody>
+          )}
+
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={7} style={{ textAlign: "center" }}>
+                <TablePagination
+                  sx={{ display: "inline-flex", verticalAlign: "middle" }}
+                  rowsPerPageOptions={[5, 10, 25]}
+                  component="div"
+                  count={count}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  rowsPerPage={rowsPerPage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell colSpan={7} style={{ textAlign: "center" }}>
-              <TablePagination
-                sx={{ display: "inline-flex", verticalAlign: "middle" }}
-                rowsPerPageOptions={[5, 10, 25]}
-                component="div"
-                count={count}
-                page={page}
-                onPageChange={handleChangePage}
-                rowsPerPage={rowsPerPage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-              />
-            </TableCell>
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </TableContainer>
+          </TableFooter>
+        </Table>
+      </TableContainer>
+    </Card>
   );
 }
 

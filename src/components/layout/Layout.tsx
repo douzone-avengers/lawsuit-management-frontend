@@ -2,7 +2,6 @@ import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import isLoginState from "../../states/common/IsLoginState";
 import Debug from "./Debug";
 import Header from "./header/Header.tsx";
 import Main from "./main/Main.tsx";
@@ -20,9 +19,9 @@ import ClientRegisterPopUp from "../client/ClientRegisterPopUp.tsx";
 import ClientRemovePopUp from "../client/ClientRemovePopUp.tsx";
 import clientRegisterPopUpOpenState from "../../states/layout/ClientRegisterPopUpOpenState.tsx";
 import clientRemovePopUpOpenState from "../../states/client/ClientRemovePopUpOpenState.tsx";
+import userState, { UserStateType } from "../../states/user/UserState.ts";
 
 function Layout() {
-  const [isLogin, setIsLogin] = useRecoilState(isLoginState);
   const navigate = useNavigate();
   const [, setHierarchyList] = useRecoilState(hierarchyListState);
   const [, setRoleList] = useRecoilState(roleListState);
@@ -30,6 +29,7 @@ function Layout() {
   const [hierarchyLoaded, setHierarchyLoaded] = useState(false);
   const [clientRegisterPopUp] = useRecoilState(clientRegisterPopUpOpenState);
   const [clientRemovePopUpOpen] = useRecoilState(clientRemovePopUpOpenState);
+  const [user, setUser] = useRecoilState(userState);
 
   //set enum table
   //직급 리스트
@@ -76,15 +76,27 @@ function Layout() {
   }, []);
 
   useEffect(() => {
-    if (!isLogin) {
-      const accessToken = localStorage.getItem("accessToken");
-      if (!accessToken) {
-        setIsLogin(false);
-        navigate("login");
-      }
-      setIsLogin(true);
+    if (user) {
+      return;
     }
-  }, [isLogin]);
+
+    const accessToken = localStorage.getItem("accessToken");
+
+    if (!accessToken) {
+      navigate("/login");
+      return;
+    }
+
+    requestDeprecated("GET", "/members/me", {
+      onSuccess: (res) => {
+        const body: UserStateType = res.data;
+        setUser(body);
+      },
+      onFail: () => {
+        navigate("/login");
+      },
+    });
+  }, [user]);
 
   return (
     <>

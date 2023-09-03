@@ -7,7 +7,6 @@ import requestDeprecated, {
   RequestSuccessHandler,
 } from "../../lib/requestDeprecated.ts";
 import clientIdState from "../../states/client/ClientIdState";
-import ClientInfoCard from "../client/ClientInfoCard.tsx";
 import CaseListTable from "./CaseListTable.tsx";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -22,6 +21,7 @@ import CaseAddPopUpButton from "./CaseAddPopUpButton.tsx";
 import caseAddPopUpOpenState from "../../states/case/CaseAddPopUpOpenState.tsx";
 import CaseAddPopUp from "./CaseAddPopUp.tsx";
 import { LawsuitCountInfo } from "./type/LawsuitCountInfo.tsx";
+import CardTitle from "../common/CardTitle.tsx";
 
 function CaseListPage() {
   const clientId = useRecoilValue(clientIdState);
@@ -191,8 +191,8 @@ function CaseListPage() {
         position: "relative",
       }}
     >
-      <ClientInfoCard useEdit={false} />
       <Card>
+        <CardTitle text="검색" />
         <CardContent>
           <TextField
             size="small"
@@ -257,7 +257,7 @@ function CaseListPage() {
           cases={cases.map((item) => ({
             ...item,
             onClick: () => {
-              navigate(`/cases/${item.id}?client=${clientId}`);
+              navigate(`/cases/${item.id}/clients/${clientId}`);
             },
           }))}
           count={count}

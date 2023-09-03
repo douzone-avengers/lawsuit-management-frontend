@@ -58,14 +58,12 @@ function CaseExpenseHeaderRow({
     <Box
       sx={{
         display: "flex",
-        background: "#2196f3",
-        color: "white",
         width: "100%",
       }}
     >
       <Box
         sx={{
-          width: "15%",
+          width: 200,
           height: 40,
           display: "flex",
           justifyContent: "center",
@@ -93,7 +91,7 @@ function CaseExpenseHeaderRow({
       </Box>
       <Box
         sx={{
-          width: "55%",
+          width: 900,
           height: 40,
           display: "flex",
           justifyContent: "center",
@@ -121,7 +119,7 @@ function CaseExpenseHeaderRow({
       </Box>
       <Box
         sx={{
-          width: "15%",
+          width: 200,
           height: 40,
           display: "flex",
           justifyContent: "center",
@@ -149,7 +147,7 @@ function CaseExpenseHeaderRow({
       </Box>
       <Box
         sx={{
-          width: "20%",
+          width: 200,
           height: 40,
           display: "flex",
           justifyContent: "center",
@@ -158,7 +156,7 @@ function CaseExpenseHeaderRow({
       >
         <Button
           variant="contained"
-          sx={{ width: "73%", color: "secondary" }}
+          sx={{ width: 185, color: "secondary" }}
           onClick={handleExpenseAddButtonClick}
         >
           등록
