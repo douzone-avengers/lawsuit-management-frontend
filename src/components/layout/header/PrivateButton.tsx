@@ -1,21 +1,21 @@
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
-import scheduleButtonIsClickState from "../../schedule/ScheduleButtonIsClick.tsx";
 import { useRecoilValue } from "recoil";
+import privateButtonIsClickState from "../../../states/private/PrivateButtonIsClickState";
 
-function MyInfoButton() {
+function PrivateButton() {
   const navigate = useNavigate();
-  const scheduleButtonIsClick = useRecoilValue(scheduleButtonIsClickState);
+  const privateButtonIsClick = useRecoilValue(privateButtonIsClickState);
 
   const handleClick = () => {
-    navigate("schedule");
+    navigate("private");
   };
 
   return (
     <Button
       sx={{
         height: "100%",
-        background: scheduleButtonIsClick ? "#1565c0" : "",
+        background: privateButtonIsClick ? "#1565c0" : "",
       }}
       variant="contained"
       disableElevation
@@ -26,4 +26,4 @@ function MyInfoButton() {
   );
 }
 
-export default MyInfoButton;
+export default PrivateButton;

@@ -1,17 +1,17 @@
 import Box from "@mui/material/Box";
-import KakaoMap from "../../common/KaKaoMap";
-import useWindowSize from "../../../hook/useWindowSize";
+import KakaoMap from "../common/KaKaoMap";
+import useWindowSize from "../../hook/useWindowSize";
 import { useEffect, useRef, useState } from "react";
 import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
-} from "../../../lib/requestDeprecated.ts";
-import { MemberInfo } from "../type/MemberInfo";
-import EmployeePrivateCard from "./EmployeePrivateCard";
+} from "../../lib/requestDeprecated.ts";
+import { MemberInfo } from "../employee/type/MemberInfo";
+import PrivateCard from "./PrivateCard";
 import { useRecoilValue } from "recoil";
-import curMemberAddressState from "../../../states/employee/CurMemberAddressState";
+import curMemberAddressState from "../../states/employee/CurMemberAddressState";
 
-function EmployeePrivatePage() {
+function PrivatePage() {
   const [width, height] = useWindowSize();
   const [boxWidth, setBoxWidth] = useState<number | undefined>(undefined);
   const [boxHeight, setBoxHeight] = useState<number | undefined>(undefined);
@@ -59,7 +59,7 @@ function EmployeePrivatePage() {
 
   return (
     <Box sx={{ display: "flex", gap: 3, flexDirection: "row", height: "100%" }}>
-      <EmployeePrivateCard width={"50%"} memberInfo={memberInfo} />
+      <PrivateCard width={"50%"} memberInfo={memberInfo} />
 
       <Box
         ref={parentContainer}
@@ -79,4 +79,4 @@ function EmployeePrivatePage() {
   );
 }
 
-export default EmployeePrivatePage;
+export default PrivatePage;

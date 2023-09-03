@@ -17,7 +17,7 @@ import JoinPage from "../join/JoinPage";
 import Layout from "../layout/Layout";
 import LoginPage from "../login/LoginPage";
 import EmployeeLayout from "../employee/EmployeeLayout";
-import EmployeePrivatePage from "../employee/private/EmployeePrivatePage";
+import PrivatePage from "../private/PrivatePage";
 import employeeButtonIdState from "../../states/employee/EmployeeButtonIdState";
 import EmployeeListPage from "../employee/list/EmployeesListPage";
 import employeeIdState from "../../states/employee/EmployeeIdState";
@@ -36,6 +36,7 @@ import { MemberInfo } from "../employee/type/MemberInfo.tsx";
 import roleListState from "../../states/data/roleListState.ts";
 import snbLoadedState from "../../states/common/SnbLoadedState.ts";
 import EmployeeDetailPage from "../employee/detail/EmployeeDetailPage.tsx";
+import privateButtonIsClickState from "../../states/private/PrivateButtonIsClickState";
 
 function AppRoutes() {
   const location = useLocation();
@@ -55,6 +56,7 @@ function AppRoutes() {
   const setScheduleButtonIsClick = useSetRecoilState(
     scheduleButtonIsClickState,
   );
+  const setPrivateButtonIsClick = useSetRecoilState(privateButtonIsClickState);
   const roleList = useRecoilValue(roleListState);
   const employeeButton = useRecoilValue(employeeButtonIdState);
 
@@ -77,6 +79,7 @@ function AppRoutes() {
     // *
     setCaseTabId(0);
     setScheduleButtonIsClick(false);
+    setPrivateButtonIsClick(false);
 
     // /
     if (length === 1 && paths[1] === "") {
@@ -306,26 +309,6 @@ function AppRoutes() {
       return;
     }
 
-    // /employees/private
-    if (length === 2 && paths[1] === "employees" && paths[2] === "private") {
-      setMainNavigationBar({
-        ...mainNavigationBar,
-        curId: 2,
-      });
-      setSubNavigationBar({
-        type: "none",
-        curId: -1,
-        items: [],
-      });
-      setSnbLoaded(true);
-      setClientId(null);
-      setCaseId(null);
-      setEmployeeId(null);
-
-      setEmployeeButtonId(0);
-      return;
-    }
-
     // /employees/list
     if (length === 2 && paths[1] === "employees" && paths[2] === "list") {
       setMainNavigationBar({
@@ -459,6 +442,26 @@ function AppRoutes() {
       return;
     }
 
+    // /private
+    if (length === 1 && paths[1] === "private") {
+      setMainNavigationBar({
+        ...mainNavigationBar,
+        curId: -1,
+      });
+      setSubNavigationBar({
+        type: "none",
+        curId: -1,
+        items: [],
+      });
+      setSnbLoaded(true);
+      setClientId(null);
+      setCaseId(null);
+      setEmployeeId(null);
+
+      setPrivateButtonIsClick(true);
+      return;
+    }
+
     // /login
     if (length === 1 && paths[1] === "login") {
       setMainNavigationBar({
@@ -581,8 +584,6 @@ function AppRoutes() {
         <Route path="employees" element={<EmployeeLayout />}>
           {/* /employees */}
           <Route index element={<EmployeePage />} />
-          {/*/employees/private*/}
-          <Route path="private" element={<EmployeePrivatePage />} />
           {/*/employees/list*/}
           <Route path={"list"} element={<EmployeeListPage />} />
           {/* /employees/:employeeId */}
@@ -590,6 +591,7 @@ function AppRoutes() {
           <Route path=":employeeId/cases" element={<EmployeeCasePage />} />
         </Route>
         <Route path="schedule" element={<SchedulePage />} />
+        <Route path="private" element={<PrivatePage />} />
       </Route>
       {/* /login */}
       <Route path="login" element={<LoginPage />} />

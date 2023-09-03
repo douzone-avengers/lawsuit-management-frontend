@@ -13,14 +13,6 @@ function CaseLayout() {
     <Box sx={{ display: "flex", gap: 2, flexDirection: "column" }}>
       <ButtonGroup variant="outlined" size="large" fullWidth>
         <Button
-          variant={employeeButtonId === 0 ? "contained" : "outlined"}
-          onClick={() => {
-            navigate(`/employees/private`);
-          }}
-        >
-          개인정보
-        </Button>
-        <Button
           variant={employeeButtonId === 1 ? "contained" : "outlined"}
           onClick={() => {
             navigate(`/employees/list`);
