@@ -1,18 +1,18 @@
 import Box from "@mui/material/Box";
-import KakaoMap from "../../common/KaKaoMap";
-import useWindowSize from "../../../hook/useWindowSize";
+import KakaoMap from "../../../common/KaKaoMap";
+import useWindowSize from "../../../../hook/useWindowSize";
 import { useEffect, useRef, useState } from "react";
-import { MemberInfo } from "../type/MemberInfo";
+import { MemberInfo } from "../../type/MemberInfo";
 import { useRecoilValue } from "recoil";
-import curMemberAddressState from "../../../states/employee/CurMemberAddressState";
+import curMemberAddressState from "../../../../states/employee/CurMemberAddressState";
 import EmployeeInfoCard from "./EmployeeInfoCard";
-import employeeIdState from "../../../states/employee/EmployeeIdState";
+import employeeIdState from "../../../../states/employee/EmployeeIdState";
 import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
-} from "../../../lib/requestDeprecated";
+} from "../../../../lib/requestDeprecated";
 
-function EmployeeDetailPage() {
+function EmployeeInfoTap() {
   const [width, height] = useWindowSize();
   const [boxWidth, setBoxWidth] = useState<number | undefined>(undefined);
   const [boxHeight, setBoxHeight] = useState<number | undefined>(undefined);
@@ -83,4 +83,4 @@ function EmployeeDetailPage() {
   );
 }
 
-export default EmployeeDetailPage;
+export default EmployeeInfoTap;
