@@ -1,6 +1,6 @@
 import { Box, CircularProgress } from "@mui/material";
 import List from "@mui/material/List";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import caseIdState from "../../../states/case/CaseIdState.tsx";
 import clientIdState from "../../../states/client/ClientIdState.tsx";
 import subNavigationBarState from "../../../states/layout/SubNavigationBarState.tsx";
@@ -14,8 +14,8 @@ function SubNavigationBar() {
   const clientId = useRecoilValue(clientIdState);
   const caseId = useRecoilValue(caseIdState);
   const employeeId = useRecoilValue(employeeIdState);
-  const subNavigationBar = useRecoilValue(subNavigationBarState);
-  const [snbLoaded] = useRecoilState(snbLoadedState);
+  const { type, items } = useRecoilValue(subNavigationBarState);
+  const snbLoaded = useRecoilValue(snbLoadedState);
 
   return (
     <Box
@@ -30,19 +30,17 @@ function SubNavigationBar() {
     >
       <List sx={{ width: 240, height: "100%", padding: 0 }}>
         {snbLoaded ? (
-          subNavigationBar.items.map((item) => (
+          items.map((item) => (
             <SubNavigationBarItem
               key={item.id}
               item={item}
               selected={
-                (subNavigationBar.type === "client" ||
-                  subNavigationBar.type === "caseClient") &&
+                (type === "client" || type === "caseClient") &&
                 clientId === item.id
                   ? true
-                  : subNavigationBar.type === "case" && caseId === item.id
+                  : type === "case" && caseId === item.id
                   ? true
-                  : subNavigationBar.type === "employee" &&
-                    employeeId === item.id
+                  : type === "employee" && employeeId === item.id
               }
             />
           ))
@@ -60,8 +58,7 @@ function SubNavigationBar() {
         )}
       </List>
 
-      {subNavigationBar.type === "client" ||
-      subNavigationBar.type === "caseClient" ? (
+      {type === "client" || type === "caseClient" ? (
         <ClientRegisterPopUpButton />
       ) : null}
     </Box>
