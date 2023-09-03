@@ -10,7 +10,7 @@ import jsPDF from "jspdf";
 import { delimiter } from "../../../../lib/convert.ts";
 import PageLoadingSpinner from "../../../layout/PageLoadingSpinner.tsx";
 
-type AllLawsuitType = {
+export type AllLawsuitType = {
   lawsuit: {
     id: number;
     name: string; // ㅇ

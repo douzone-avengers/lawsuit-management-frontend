@@ -50,7 +50,7 @@ function AdviceListTable({ advices }: Props) {
               <TableCell align="left">{item.title}</TableCell>
               <TableCell align="left">{trimContent(item.contents)}</TableCell>
               <TableCell align="left">
-                {new Date(item.date).toLocaleDateString()}
+                {new Date(item.advicedAt).toLocaleDateString()}
               </TableCell>
               <TableCell align="left"></TableCell>
             </TableRow>

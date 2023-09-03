@@ -4,7 +4,7 @@ export type Advicedata = {
   id: number;
   title: string;
   contents: string;
-  date: Date;
+  advicedAt: Date;
 };
 
 export type ClientData = {

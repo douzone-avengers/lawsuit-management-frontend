@@ -12,13 +12,13 @@ import AdviceListTable from "./AdviceListTable.tsx";
 import AdviceRegisterPopUp from "./AdviceRegisterPopUp.tsx";
 import AdviceRegisterPopUpButton from "./AdviceRegisterPopUpButton.tsx";
 import adviceDisplayState from "../../../states/advice/AdviceDisplayState.tsx";
-import AdviceDetailTable from "./AdviceDetailTable.tsx";
+import AdviceDetailPage from "./AdviceDetailPage.tsx";
 import { Advicedata } from "../../../type/ResponseType.ts";
 
 function Adviceinfo() {
   const clientId = useRecoilValue(clientIdState);
   const lawsuitId = useRecoilValue(caseIdState);
-  const [, setAdviceId] = useRecoilState(adviceIdState);
+  const [_, setAdviceId] = useRecoilState(adviceIdState);
   const adviceRegisterPopUpOpen = useRecoilValue(adviceRegisterPopUpOpenState);
   const [adviceDisplay, setAdviceDisplay] = useRecoilState(adviceDisplayState);
 
@@ -29,25 +29,22 @@ function Adviceinfo() {
   }, []);
 
   useEffect(() => {
-    if (typeof clientId !== "number") {
+    if (typeof clientId !== "number" || typeof lawsuitId !== "number") {
       // TODO
       return;
     }
 
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      const body: { data: Advicedata[] } = res.data;
-      const { data } = body;
-      setAdvices(data);
-      setAdviceId(data[0]?.id);
+      const body: Advicedata[] = res.data;
+      setAdvices(body);
+      console.log(body);
+      setAdviceId(body[0]?.id);
     };
 
-    requestDeprecated(
-      "GET",
-      `/lawsuit/${lawsuitId}/client/${clientId}/advices`,
-      {
-        onSuccess: handleRequestSuccess,
-      },
-    );
+    requestDeprecated("GET", `/advices?lawsuit=${lawsuitId}`, {
+      withToken: true,
+      onSuccess: handleRequestSuccess,
+    });
   }, [lawsuitId]);
 
   return (
@@ -59,10 +56,11 @@ function Adviceinfo() {
         position: "relative",
       }}
     >
-      {/* <ClientInfoCard /> */}
-      <Box>
-        <AdviceRegisterPopUpButton />
-      </Box>
+      {adviceDisplay === 0 && (
+        <Box>
+          <AdviceRegisterPopUpButton />
+        </Box>
+      )}
       <Box>
         {adviceDisplay === 0 ? (
           <AdviceListTable
@@ -75,10 +73,12 @@ function Adviceinfo() {
             }))}
           />
         ) : adviceDisplay === 1 ? (
-          <AdviceDetailTable />
+          <AdviceDetailPage />
         ) : null}
       </Box>
-      {adviceRegisterPopUpOpen ? <AdviceRegisterPopUp /> : null}
+      {adviceRegisterPopUpOpen ? (
+        <AdviceRegisterPopUp setAdvices={setAdvices} />
+      ) : null}
     </Box>
   );
 }
