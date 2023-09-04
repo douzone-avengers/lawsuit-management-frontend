@@ -3,8 +3,31 @@ import ChatAppNavigationFooter from "../layout/ChatAppNavigationFooter.tsx";
 import ChatAppPlainHeader from "../layout/ChatAppPlainHeader.tsx";
 import ChatAppPersonAddButton from "../button/ChatAppPersonAddButton.tsx";
 import ChatAppHeaderTitle from "../box/ChatAppHeaderTitle.tsx";
+import { useEffect } from "react";
+import requestDeprecated from "../../../lib/requestDeprecated.ts";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import userState from "../../../states/user/UserState.ts";
+import chatAppMyFriendsState from "../state/ChatAppMyFriendsState.ts";
+import { convertHierarchy } from "../../../lib/convert.ts";
+import ChatAppPersonItem from "../box/ChatAppPersonItem.tsx";
+import ChatAppHeaderText from "../box/ChatAppHeaderText.tsx";
+import chatAppSceneState from "../state/ChatAppSceneState.ts";
 
 function ChatAppPersonScene() {
+  const user = useRecoilValue(userState);
+  const setScene = useSetRecoilState(chatAppSceneState);
+  const [friends, setFriends] = useRecoilState(chatAppMyFriendsState);
+
+  useEffect(() => {
+    if (user) {
+      requestDeprecated("GET", `/chats/friends?email=${user.email}`, {
+        onSuccess: (res) => {
+          setFriends(res.data);
+        },
+      });
+    }
+  }, [user]);
+
   return (
     <>
       <ChatAppPlainHeader
@@ -12,7 +35,41 @@ function ChatAppPersonScene() {
         left={<ChatAppHeaderTitle>친구</ChatAppHeaderTitle>}
         right={<ChatAppPersonAddButton />}
       />
-      <ChatAppBodyContainer></ChatAppBodyContainer>
+      <ChatAppBodyContainer style={{ paddingLeft: 20, paddingRight: 20 }}>
+        <div>
+          <ChatAppHeaderText
+            style={{
+              color: "gray",
+              paddingTop: 10,
+              paddingLeft: 5,
+            }}
+          >
+            나
+          </ChatAppHeaderText>
+          <ChatAppPersonItem
+            hierarchy={convertHierarchy(user?.hierarchyId ?? 0)}
+            name={user?.name ?? ""}
+            style={{ borderBottom: "1px solid lightgray" }}
+          />
+        </div>
+        <ChatAppHeaderText
+          style={{
+            color: "gray",
+            paddingTop: 10,
+            paddingLeft: 5,
+          }}
+        >
+          친구 ({friends.length})
+        </ChatAppHeaderText>
+        {friends.map((item) => (
+          <ChatAppPersonItem
+            key={item.id}
+            name={item.name}
+            hierarchy={item.hierarchy}
+            onClick={() => {}}
+          />
+        ))}
+      </ChatAppBodyContainer>
       <ChatAppNavigationFooter />
     </>
   );

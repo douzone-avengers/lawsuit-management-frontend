@@ -75,6 +75,7 @@ function ChatAppPersonAddCard({ name, hierarchy, email }: Props) {
                 justifyContent: "center",
                 alignItems: "center",
                 width: 100,
+                height: "100%",
                 background: "#1976D2",
                 padding: "4px 8px",
                 color: "white",
