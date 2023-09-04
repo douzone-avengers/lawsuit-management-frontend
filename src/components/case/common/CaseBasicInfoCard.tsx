@@ -18,18 +18,14 @@ function CaseBasicInfoCard() {
   return (
     <Card sx={{ width: "100%" }}>
       <CardTitle text="사건" />
-      <List
-        className="custom-scroll"
-        sx={{ display: "flex", padding: 0, overflowX: "scroll" }}
-      >
+      <List sx={{ display: "flex", padding: 0, overflowX: "auto" }}>
         <ListProfileItem
           SvgIcon={WorkHistoryIcon}
-          primary="사건 상태"
+          primary=" 사건 상태"
           secondary={mapLawsuitStatus(
             caseInfo?.lawsuit?.lawsuitStatus ?? "미정",
           )}
         />
-
         <ListProfileItem
           SvgIcon={FormatListNumberedIcon}
           primary="사건 번호"

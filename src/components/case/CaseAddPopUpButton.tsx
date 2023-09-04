@@ -12,7 +12,7 @@ function CaseAddPopUpButton() {
   return (
     <Button
       variant="contained"
-      sx={{ position: "fixed", bottom: 24, right: 24 }}
+      sx={{ position: "absolute", bottom: 24, right: 24 }}
       onClick={handleCaseAddButtonClick}
     >
       사건 추가

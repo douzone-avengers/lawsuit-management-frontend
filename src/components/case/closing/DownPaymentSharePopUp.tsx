@@ -98,10 +98,7 @@ function DownPaymentSharePopUp() {
         />
       </Box>
       <Card>
-        <List
-          className="custom-scroll-bar"
-          sx={{ height: 240, paddingLeft: 1, overflow: "scroll" }}
-        >
+        <List sx={{ height: 240, paddingLeft: 1, overflow: "auto" }}>
           {emails.map((item) => (
             <ListItem
               key={item}
