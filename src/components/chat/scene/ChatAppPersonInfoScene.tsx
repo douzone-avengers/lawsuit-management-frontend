@@ -10,6 +10,7 @@ import ChatAppPlainHeader from "../layout/ChatAppPlainHeader.tsx";
 import ChatAppBackButton from "../button/ChatAppBackButton.tsx";
 import PersonIcon from "@mui/icons-material/Person";
 import ChatAppTag from "../box/ChatAppTag.tsx";
+import ChatAppNavigationFooter from "../layout/ChatAppNavigationFooter.tsx";
 
 function ChatAppPersonInfoScene() {
   const setScene = useSetRecoilState(chatAppSceneState);
@@ -68,19 +69,14 @@ function ChatAppPersonInfoScene() {
           </div>
         }
       />
-      <ChatAppBodyContainer
-        style={{
-          height: "calc(100% - 64px)",
-        }}
-      >
+      <ChatAppBodyContainer>
         {personInfo.state === "Complete" && personInfo.result === "Success" ? (
           <div
             style={{
               display: "flex",
-              height: "100%",
+              marginTop: 40,
               flexDirection: "column",
               alignItems: "center",
-              justifyContent: "center",
             }}
           >
             <div
@@ -113,7 +109,7 @@ function ChatAppPersonInfoScene() {
               style={{
                 border: "1px solid #1976D2",
                 width: 320,
-                height: 240,
+                height: 420,
               }}
             >
               <div
@@ -163,6 +159,7 @@ function ChatAppPersonInfoScene() {
           <CircularProgress />
         ) : null}
       </ChatAppBodyContainer>
+      <ChatAppNavigationFooter />
     </>
   );
 }

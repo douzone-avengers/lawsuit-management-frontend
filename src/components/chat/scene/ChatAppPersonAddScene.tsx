@@ -1,7 +1,6 @@
 import ChatAppPlainHeader from "../layout/ChatAppPlainHeader.tsx";
 import ChatAppBodyContainer from "../layout/ChatAppBodyContainer.tsx";
 import ChatAppBackButton from "../button/ChatAppBackButton.tsx";
-import ChatAppHeaderTitle from "../box/ChatAppHeaderTitle.tsx";
 import ChatAppPersonSearchInput from "../input/ChatAppPersonSearchInput.tsx";
 import ChatAppPersonSearchButton from "../button/ChatAppPersonSearchButton.tsx";
 import ChatAppPersonSearchBox from "../box/ChatAppPersonSearchBox.tsx";
@@ -25,11 +24,11 @@ function ChatAppPersonAddScene() {
       <ChatAppPlainHeader
         containerStyle={{
           paddingLeft: 5,
+          border: "none",
         }}
         left={
           <div style={{ display: "flex", gap: 5 }}>
             <ChatAppBackButton />
-            <ChatAppHeaderTitle>친구 추가</ChatAppHeaderTitle>
           </div>
         }
       />

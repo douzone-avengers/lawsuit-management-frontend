@@ -12,7 +12,6 @@ function SchedulePage() {
         display: "flex",
         height: "100%",
         justifyContent: "center",
-        alignItems: "center",
       }}
     >
       <Calendar />

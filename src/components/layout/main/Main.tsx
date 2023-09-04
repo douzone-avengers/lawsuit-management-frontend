@@ -6,7 +6,7 @@ function Main() {
       style={{
         position: "relative",
         padding: 20,
-        flexGrow: 1,
+        height: "calc(100vh - 64px)",
         overflow: "auto",
       }}
     >
