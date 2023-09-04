@@ -14,8 +14,8 @@ type Props = {
 
 function CaseExpenseDataRow({ item, caseId }: Props) {
   return (
-    <Box sx={{ display: "flex", width: "100%", justifyContent: "center" }}>
-      <Box sx={{ width: 200 }}>
+    <Box sx={{ display: "flex", width: "100%" }}>
+      <Box sx={{ width: 200, flex: 1 }}>
         <CaseExpenseSpeningAtCell item={item} />
       </Box>
       <Box sx={{ width: 900 }}>
