@@ -32,7 +32,7 @@ function CalendarPopUp() {
 
   const handleToLawsuit = () => {
     setCalendarPopUpOpen(false);
-    navigate(`/cases/${info?.lawsuit.id}?client=${info?.clients[0].id}`);
+    navigate(`/cases/${info?.lawsuit.id}/clients/${info?.clients[0].id}`);
   };
 
   return (
