@@ -1,15 +1,16 @@
 type Props = {
   header: string;
   content: string;
+  width?: number | string;
 };
 
-function ChatAppTag({ header, content }: Props) {
+function ChatAppTag({ header, content, width }: Props) {
   return (
     <div
       style={{
         display: "flex",
         alignItems: "center",
-        width: 320,
+        width: width ? width : 320,
         height: 40,
         border: "1px solid #1976D2",
       }}
@@ -29,10 +30,11 @@ function ChatAppTag({ header, content }: Props) {
       </div>
       <div
         style={{
-          display: "flex",
-          alignItems: "center",
           paddingLeft: 10,
           width: "calc(100% - 60px)",
+          overflowX: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
         }}
       >
         {content}

@@ -10,7 +10,7 @@ import ChatAppPlainHeader from "../layout/ChatAppPlainHeader.tsx";
 import ChatAppBackButton from "../button/ChatAppBackButton.tsx";
 import PersonIcon from "@mui/icons-material/Person";
 import ChatAppTag from "../box/ChatAppTag.tsx";
-import ChatAppNavigationFooter from "../layout/ChatAppNavigationFooter.tsx";
+import ChatAppFooterContainer from "../layout/ChatAppFooterContainer.tsx";
 
 function ChatAppPersonInfoScene() {
   const setScene = useSetRecoilState(chatAppSceneState);
@@ -129,14 +129,30 @@ function ChatAppPersonInfoScene() {
                 style={{
                   height: "calc(100% - 40px)",
                   overflow: "auto",
+                  padding: 20,
+                  gap: 5,
                 }}
               >
                 {personInfo.value.lawsuits.length !== 0 ? (
-                  personInfo.value.lawsuits.map((item) => (
-                    <div key={item.id} style={{ display: "flex" }}>
-                      <div>{item.type}</div>
-                      <div>{item.num}</div>
-                      <div>{item.name}</div>
+                  personInfo.value.lawsuits.map((item, index) => (
+                    <div
+                      key={item.id}
+                      style={{
+                        overflowX: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                        width: "100%",
+                        marginBottom:
+                          index !== personInfo.value.lawsuits.length - 1
+                            ? 10
+                            : 0,
+                      }}
+                    >
+                      <ChatAppTag
+                        header={item.type}
+                        content={item.name}
+                        width="100%"
+                      />
                     </div>
                   ))
                 ) : (
@@ -159,7 +175,16 @@ function ChatAppPersonInfoScene() {
           <CircularProgress />
         ) : null}
       </ChatAppBodyContainer>
-      <ChatAppNavigationFooter />
+      <ChatAppFooterContainer>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "Center",
+            height: "100%",
+            gap: 20,
+          }}
+        ></div>
+      </ChatAppFooterContainer>
     </>
   );
 }
