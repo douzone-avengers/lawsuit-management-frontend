@@ -11,7 +11,7 @@ function CasesPage() {
     if (subNavigationBar.type !== "caseClient") {
       return;
     }
-    navigate(`/cases/list?client=${subNavigationBar.curId}`);
+    navigate(`/cases/clients/${subNavigationBar.curId}`);
   }, [subNavigationBar]);
 
   return <></>;

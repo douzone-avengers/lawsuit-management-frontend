@@ -7,6 +7,12 @@ import SubNavigationBarItem from "./SubNavigationBarItem.tsx";
 import ClientRegisterPopUpButton from "../../client/ClientRegisterPopUpButton.tsx";
 import employeeIdState from "../../../states/employee/EmployeeIdState";
 import snbLoadedState from "../../../states/common/SnbLoadedState.ts";
+import { Box, CircularProgress, TextField } from "@mui/material";
+import List from "@mui/material/List";
+import { useRecoilValue } from "recoil";
+import "../../../stylesheet/custom.css";
+import { useMemo, useState } from "react";
+
 
 function SubNavigationBar() {
   const clientId = useRecoilValue(clientIdState);
@@ -14,6 +20,17 @@ function SubNavigationBar() {
   const employeeId = useRecoilValue(employeeIdState);
   const subNavigationBar = useRecoilValue(subNavigationBarState);
   const [snbLoaded] = useRecoilState(snbLoadedState);
+  const { type, items } = useRecoilValue(subNavigationBarState);
+  const snbLoaded = useRecoilValue(snbLoadedState);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredItems = useMemo(
+    () =>
+      items.filter((it) =>
+        it.text.toLowerCase().includes(searchTerm.toLowerCase()),
+      ),
+    [items, searchTerm],
+  );
 
   return (
     <div
@@ -43,6 +60,23 @@ function SubNavigationBar() {
             padding: 0,
           }}
         >
+          <TextField
+            variant="standard"
+            placeholder="검색..."
+            value={searchTerm}
+            type="search"
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+            }}
+            sx={{
+              width: "100%",
+              marginBottom: 2,
+              "& .MuiInputBase-input": {
+                padding: "10px",
+                fontSize: "1rem",
+              },
+            }}
+          />
           {snbLoaded ? (
             subNavigationBar.items.map((item) => (
               <SubNavigationBarItem
@@ -54,8 +88,8 @@ function SubNavigationBar() {
                   clientId === item.id
                     ? true
                     : subNavigationBar.type === "case" && caseId === item.id
-                    ? true
-                    : subNavigationBar.type === "employee" &&
+                      ? true
+                      : subNavigationBar.type === "employee" &&
                       employeeId === item.id
                 }
               />
@@ -79,6 +113,7 @@ function SubNavigationBar() {
         <ClientRegisterPopUpButton />
       ) : null}
     </div>
+
   );
 }
 

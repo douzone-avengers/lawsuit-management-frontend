@@ -29,16 +29,17 @@ function SideNavigationBar() {
 
     if (length === 2 && paths[1] === "clients" && paths[2]) {
     } else if (
-      length === 2 &&
+      length === 3 &&
       paths[1] === "cases" &&
-      paths[2] === "list" &&
-      param["client"]
+      paths[2] === "clients" &&
+      paths[3]
     ) {
     } else if (
-      length === 2 &&
+      length === 4 &&
       paths[1] === "cases" &&
       paths[2] &&
-      param["client"]
+      paths[3] === "clients" &&
+      paths[4]
     ) {
     } else if (
       length === 2 &&

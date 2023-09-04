@@ -4,6 +4,7 @@ import Title from "./Title.tsx";
 import ScheduleButton from "./ScheduleButton.tsx";
 import { useTheme } from "@mui/material";
 import ChatAppOpenButton from "./ChatAppOpenButton.tsx";
+import PrivateButton from "./PrivateButton";
 
 function Header() {
   const theme = useTheme();
@@ -34,6 +35,7 @@ function Header() {
         <div style={{ display: "flex" }}>
           <ChatAppOpenButton />
           <ScheduleButton />
+          <PrivateButton />
           <LogoutButton />
         </div>
       </div>

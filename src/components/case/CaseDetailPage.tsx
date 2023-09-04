@@ -33,7 +33,7 @@ function CaseDetailPage() {
   const setCaseInfo = useSetRecoilState(caseInfoState);
 
   const handleClickListButton = () => {
-    navigate(`/cases/list?client=${clientId}`);
+    navigate(`/cases/clients/${clientId}`);
   };
 
   const [clientTab] = useState<TabItem[]>([
