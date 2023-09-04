@@ -96,7 +96,7 @@ function ClientCaseListTab() {
         cases={cases.map((item) => ({
           ...item,
           onClick: () => {
-            navigate(`/cases/${item.id}?client=${clientId}`);
+            navigate(`/cases/${item.id}/clients/${clientId}`);
           },
         }))}
         count={count}
