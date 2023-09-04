@@ -12,9 +12,11 @@ import { convertHierarchy } from "../../../lib/convert.ts";
 import ChatAppPersonItem from "../box/ChatAppPersonItem.tsx";
 import ChatAppHeaderText from "../box/ChatAppHeaderText.tsx";
 import chatAppSceneState from "../state/ChatAppSceneState.ts";
+import chatAppPersonInfoState from "../state/ChatAppPersonInfo.ts";
 
 function ChatAppPersonScene() {
   const user = useRecoilValue(userState);
+  const setUserInfo = useSetRecoilState(chatAppPersonInfoState);
   const setScene = useSetRecoilState(chatAppSceneState);
   const [friends, setFriends] = useRecoilState(chatAppMyFriendsState);
 
@@ -50,6 +52,14 @@ function ChatAppPersonScene() {
             hierarchy={convertHierarchy(user?.hierarchyId ?? 0)}
             name={user?.name ?? ""}
             style={{ borderBottom: "1px solid lightgray" }}
+            hover={true}
+            onClick={() => {
+              setUserInfo({
+                state: "Ready",
+                targetEmail: user?.email ?? "",
+              });
+              setScene("PersonInfo");
+            }}
           />
         </div>
         <ChatAppHeaderText
@@ -66,7 +76,14 @@ function ChatAppPersonScene() {
             key={item.id}
             name={item.name}
             hierarchy={item.hierarchy}
-            onClick={() => {}}
+            hover={true}
+            onClick={() => {
+              setUserInfo({
+                state: "Ready",
+                targetEmail: item.email,
+              });
+              setScene("PersonInfo");
+            }}
           />
         ))}
       </ChatAppBodyContainer>

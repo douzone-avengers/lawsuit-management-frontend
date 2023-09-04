@@ -155,8 +155,8 @@ function Layout() {
                   chatAppOpen
                 ? "calc(100% - 960px)" // 1 1 1
                 : "calc(100%)",
-            display: "flex",
-            flexDirection: "column",
+            // display: "flex",
+            // flexDirection: "column",
             height: "100%",
           }}
         >

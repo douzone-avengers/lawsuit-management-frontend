@@ -3,6 +3,7 @@ import chatAppOpenState from "./state/ChatAppOpenState.ts";
 import chatAppSceneState from "./state/ChatAppSceneState.ts";
 import ChatAppPersonScene from "./scene/ChatAppPersonScene.tsx";
 import ChatAppRoomScene from "./scene/ChatAppRoomScene.tsx";
+import ChatAppPersonInfoScene from "./scene/ChatAppPersonInfoScene.tsx";
 import ChatAppPersonAddScene from "./scene/ChatAppPersonAddScene.tsx";
 import ChatAppErrorPopUp from "./popup/ChatAppErrorPopUp.tsx";
 import chatAppErrorState from "./state/ChatAppErrorState.ts";
@@ -28,12 +29,15 @@ function ChatApp() {
         height: "100%",
         borderLeft: "1px solid lightgray",
         background: "white",
+        userSelect: "none",
       }}
     >
       {scene === "Person" ? (
         <ChatAppPersonScene />
       ) : scene === "PersonAdd" ? (
         <ChatAppPersonAddScene />
+      ) : scene === "PersonInfo" ? (
+        <ChatAppPersonInfoScene />
       ) : scene === "Room" ? (
         <ChatAppRoomScene />
       ) : null}
