@@ -1,7 +1,6 @@
 import { useRecoilValue } from "recoil";
 import chatAppUserSearchResultState from "../state/ChatAppUserSearchResultState.ts";
 import { CircularProgress } from "@mui/material";
-import ChatAppPersonAddCard from "./ChatAppPersonAddCard.tsx";
 
 function ChatAppPersonSearchBox() {
   const searchResult = useRecoilValue(chatAppUserSearchResultState);
@@ -25,12 +24,6 @@ function ChatAppPersonSearchBox() {
       >
         <CircularProgress />
       </div>
-    ) : searchResult.status === "Success" ? (
-      <ChatAppPersonAddCard
-        name={searchResult.result?.name ?? ""}
-        email={searchResult.result?.email ?? ""}
-        hierarchy={searchResult.result?.hierarchy ?? ""}
-      />
     ) : searchResult.status === "Fail" ? (
       <div
         style={{

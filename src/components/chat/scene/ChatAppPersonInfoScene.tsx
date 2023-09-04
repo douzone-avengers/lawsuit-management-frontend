@@ -18,6 +18,12 @@ function ChatAppPersonInfoScene() {
   const setError = useSetRecoilState(chatAppErrorState);
 
   useEffect(() => {
+    return () => {
+      setPersonInfo({ state: "Init" });
+    };
+  }, []);
+
+  useEffect(() => {
     if (personInfo.state === "Init") {
       setScene("Person");
     } else if (personInfo.state === "Ready") {

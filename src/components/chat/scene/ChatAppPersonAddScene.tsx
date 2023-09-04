@@ -12,11 +12,11 @@ function ChatAppPersonAddScene() {
   const setSearchResult = useSetRecoilState(chatAppUserSearchResultState);
 
   useEffect(() => {
-    setSearchResult({
-      status: "Init",
-      result: null,
-      errMsg: null,
-    });
+    return () => {
+      setSearchResult({
+        status: "Init",
+      });
+    };
   }, []);
 
   return (
