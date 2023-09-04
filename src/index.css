@@ -4,11 +4,16 @@ body,
   height: 100%;
 }
 
-.custom-scroll {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
 }
 
-.custom-scroll::-webkit-scrollbar {
-  display: none;
+::-webkit-scrollbar-thumb {
+  background: rgb(25, 118, 210);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(15, 108, 200);
 }

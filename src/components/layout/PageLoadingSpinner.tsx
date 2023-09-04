@@ -13,7 +13,7 @@ function PageLoadingSpinner({ children }: Props) {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        position: "absolute",
+        position: "fixed",
         top: 0,
         left: 0,
         background: "#00000080",

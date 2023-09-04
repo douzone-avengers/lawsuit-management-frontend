@@ -178,6 +178,7 @@ function Calendar() {
         flexDirection: "column",
         gap: 10,
         width: "100%",
+        height: 780,
       }}
     >
       <AppBar position="static">

@@ -45,6 +45,8 @@ function CalendarInformation({ item }: Props) {
           : "",
         color: item.receptionStatus ? theme.palette.primary.main : "white",
         textDecoration: item.receptionStatus ? "line-through" : "",
+        height: 24,
+        minHeight: 24,
       }}
       label={contents}
       onClick={handleClick}

@@ -7,7 +7,14 @@ function MainNavigationBar() {
   const mainNavigationBar = useRecoilValue(mainNavigationBarState);
 
   return (
-    <List sx={{ width: 240, padding: 0 }}>
+    <List
+      sx={{
+        width: 240,
+        minWidth: 240,
+        padding: 0,
+        borderRight: "1px solid lightgray",
+      }}
+    >
       {mainNavigationBar.items.map((item) => (
         <MainNavigationBarItem
           key={item.id}
