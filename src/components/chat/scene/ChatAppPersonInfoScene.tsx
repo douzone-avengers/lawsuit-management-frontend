@@ -1,21 +1,29 @@
 import ChatAppBodyContainer from "../layout/ChatAppBodyContainer.tsx";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import chatAppPersonInfoState from "../state/ChatAppPersonInfo.ts";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import chatAppSceneState from "../state/ChatAppSceneState.ts";
 import requestDeprecated from "../../../lib/requestDeprecated.ts";
 import chatAppErrorState from "../state/ChatAppErrorState.ts";
 import { CircularProgress } from "@mui/material";
 import ChatAppPlainHeader from "../layout/ChatAppPlainHeader.tsx";
-import ChatAppBackButton from "../button/ChatAppBackButton.tsx";
 import PersonIcon from "@mui/icons-material/Person";
 import ChatAppTag from "../box/ChatAppTag.tsx";
 import ChatAppFooterContainer from "../layout/ChatAppFooterContainer.tsx";
+import userState from "../../../states/user/UserState.ts";
+import { SearchUserDetailByEmail } from "../type/ResponseType.ts";
+import ChatAppCloseButton from "../button/ChatAppCloseButton.tsx";
+import ChatAppFriendAddButton from "../button/ChatAppFriendAddButton.tsx";
+import ChatAppFriendRemoveButton from "../button/ChatAppFriendRemoveButton.tsx";
+import ChatAppChatButton from "../button/ChatAppChatButton.tsx";
 
 function ChatAppPersonInfoScene() {
+  const user = useRecoilValue(userState);
   const setScene = useSetRecoilState(chatAppSceneState);
   const [personInfo, setPersonInfo] = useRecoilState(chatAppPersonInfoState);
   const setError = useSetRecoilState(chatAppErrorState);
+
+  const [isFriend, setIsFriend] = useState<boolean | null>(null);
 
   useEffect(() => {
     return () => {
@@ -29,14 +37,26 @@ function ChatAppPersonInfoScene() {
     } else if (personInfo.state === "Ready") {
       requestDeprecated(
         "GET",
-        `/chats/user/detail?email=${personInfo.targetEmail}`,
+        `/chats/users/detail?email=${personInfo.targetEmail}`,
         {
           onSuccess: (res) => {
+            const body = res.data as SearchUserDetailByEmail;
             setPersonInfo({
               state: "Complete",
               result: "Success",
-              value: res.data,
+              value: body,
             });
+            if (user) {
+              requestDeprecated(
+                "GET",
+                `/chats/friends/check?user=${user.email}&friend=${body.email}`,
+                {
+                  onSuccess: (res) => {
+                    setIsFriend(res.data);
+                  },
+                },
+              );
+            }
           },
           onFail: (e) => {
             setPersonInfo({
@@ -62,6 +82,34 @@ function ChatAppPersonInfoScene() {
     }
   }, [personInfo]);
 
+  const footerContents =
+    isFriend === true ? (
+      <>
+        <ChatAppChatButton />
+        <ChatAppFriendRemoveButton
+          userEmail={user?.email ?? ""}
+          friendEmail={
+            personInfo.state === "Complete" && personInfo.result === "Success"
+              ? personInfo.value.email
+              : ""
+          }
+          setIsFriend={setIsFriend}
+        />
+      </>
+    ) : personInfo.state === "Complete" &&
+      personInfo.result === "Success" &&
+      personInfo.value.email === user?.email ? null : isFriend === false ? (
+      <ChatAppFriendAddButton
+        userEmail={user?.email ?? ""}
+        friendEmail={
+          personInfo.state === "Complete" && personInfo.result === "Success"
+            ? personInfo.value.email
+            : ""
+        }
+        setIsFriend={setIsFriend}
+      />
+    ) : null;
+
   return (
     <>
       <ChatAppPlainHeader
@@ -69,9 +117,9 @@ function ChatAppPersonInfoScene() {
           paddingLeft: 5,
           borderBottom: "none",
         }}
-        left={
-          <div style={{ display: "flex", gap: 5 }}>
-            <ChatAppBackButton />
+        right={
+          <div style={{ display: "flex", gap: 5, marginRight: 5 }}>
+            <ChatAppCloseButton />
           </div>
         }
       />
@@ -129,7 +177,7 @@ function ChatAppPersonInfoScene() {
                   height: 40,
                 }}
               >
-                담당 사건
+                사건
               </div>
               <div
                 style={{
@@ -178,18 +226,31 @@ function ChatAppPersonInfoScene() {
             </div>
           </div>
         ) : personInfo.state === "Loading" ? (
-          <CircularProgress />
+          <div
+            style={{
+              display: "flex",
+              width: "100%",
+              height: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CircularProgress />
+          </div>
         ) : null}
       </ChatAppBodyContainer>
       <ChatAppFooterContainer>
         <div
           style={{
             display: "flex",
-            justifyContent: "Center",
+            alignItems: "center",
+            justifyContent: "center",
             height: "100%",
-            gap: 20,
+            gap: 50,
           }}
-        ></div>
+        >
+          {footerContents}
+        </div>
       </ChatAppFooterContainer>
     </>
   );

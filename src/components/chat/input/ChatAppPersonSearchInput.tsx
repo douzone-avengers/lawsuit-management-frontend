@@ -4,12 +4,14 @@ import requestDeprecated from "../../../lib/requestDeprecated.ts";
 import chatAppUserSearchResultState from "../state/ChatAppUserSearchResultState.ts";
 import chatAppSceneState from "../state/ChatAppSceneState.ts";
 import chatAppPersonInfoState from "../state/ChatAppPersonInfo.ts";
+import chatAppErrorState from "../state/ChatAppErrorState.ts";
 
 function ChatAppPersonSearchInput() {
   const [email, setEmail] = useRecoilState(chatAppUserSearchEmailState);
   const setSearchResult = useSetRecoilState(chatAppUserSearchResultState);
   const setScene = useSetRecoilState(chatAppSceneState);
   const setPersonInfo = useSetRecoilState(chatAppPersonInfoState);
+  const setError = useSetRecoilState(chatAppErrorState);
 
   return (
     <input
@@ -28,7 +30,7 @@ function ChatAppPersonSearchInput() {
       onChange={(e) => setEmail(e.target.value)}
       onKeyDown={(e) => {
         if (e.key === "Enter") {
-          requestDeprecated("GET", `/chats/user?email=${email}`, {
+          requestDeprecated("GET", `/chats/users?email=${email}`, {
             onSuccess: (res) => {
               setEmail("");
               if (!res.data) {
@@ -47,7 +49,11 @@ function ChatAppPersonSearchInput() {
                 targetEmail: email,
               });
             },
-            onFail: () => {
+            onFail: (e) => {
+              setError({
+                msg: e.response.data.message,
+                callback: () => {},
+              });
               setEmail("");
               setSearchResult({
                 status: "Init",
