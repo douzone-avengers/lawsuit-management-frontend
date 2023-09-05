@@ -1,5 +1,6 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import * as React from "react";
 import { useEffect, useState } from "react";
 
 import requestDeprecated, {
@@ -8,11 +9,14 @@ import requestDeprecated, {
 } from "../../lib/requestDeprecated.ts";
 import Button from "@mui/material/Button";
 import {
+  Card,
+  CardContent,
   FormControl,
   Grid,
   InputLabel,
   MenuItem,
   Select,
+  SvgIcon,
   TextField,
 } from "@mui/material";
 import { MemberInfo } from "../employee/type/MemberInfo";
@@ -22,14 +26,17 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import curMemberAddressState from "../../states/employee/CurMemberAddressState";
 import hierarchyListState from "../../states/data/hierarchyListState";
 import roleListState from "../../states/data/roleListState";
+import { Person } from "@mui/icons-material";
+import ClientRemovePopUpButton from "../client/ClientRemovePopUpButton";
 
 type Props = {
   width?: string | number;
   height?: string | number;
-  memberInfo?: MemberInfo;
+  memberInfo: MemberInfo;
+  setMemberInfo: React.Dispatch<React.SetStateAction<MemberInfo>>;
 };
 
-function PrivateCard({ width = "50%", memberInfo }: Props) {
+function PrivateCard({ width = "50%", memberInfo, setMemberInfo }: Props) {
   const [isEditMode, setIsEditMode] = useState(false);
 
   const [name, setName] = useState("");
@@ -42,6 +49,13 @@ function PrivateCard({ width = "50%", memberInfo }: Props) {
   const setRecoilAddress = useSetRecoilState(curMemberAddressState);
   const hierarchyList = useRecoilValue(hierarchyListState);
   const roleList = useRecoilValue(roleListState);
+
+  //수정 취소 시 사용
+  const [previousName, setPreviousName] = useState("");
+  const [previousPhone, setPreviousPhone] = useState("");
+  const [previousEmail, setPreviousEmail] = useState("");
+  const [previousHierarchyId, setPreviousHierarchyId] = useState(0);
+  const [previousAddress, setPreviousAddress] = useState("");
 
   useEffect(() => {
     if (memberInfo?.email) {
@@ -67,6 +81,17 @@ function PrivateCard({ width = "50%", memberInfo }: Props) {
   const updateRequest = () => {
     const handelRequestSuccess: RequestSuccessHandler = () => {
       alert("정보가 수정되었습니다.");
+
+      const newMemberInfo = {
+        ...memberInfo,
+        name: name,
+        email: email,
+        phone: phone,
+        address: address,
+        hierarchyId: hierarchyId,
+      };
+      setMemberInfo(newMemberInfo);
+      setIsEditMode(false);
     };
     const handelRequestFail: RequestFailHandler = (e) => {
       alert((e.response.data as { code: string; message: string }).message);
@@ -86,6 +111,26 @@ function PrivateCard({ width = "50%", memberInfo }: Props) {
         roleId,
       },
     });
+  };
+
+  const handleUpdateButton = () => {
+    setPreviousName(name);
+    setPreviousPhone(phone);
+    setPreviousEmail(email);
+    setPreviousAddress(address);
+    setPreviousHierarchyId(hierarchyId);
+
+    setIsEditMode(true);
+  };
+
+  const handleCancelUpdateButton = () => {
+    setName(previousName);
+    setPhone(previousPhone);
+    setEmail(previousEmail);
+    setAddress(previousAddress);
+    setHierarchyId(previousHierarchyId);
+
+    setIsEditMode(false);
   };
 
   return (
@@ -121,6 +166,83 @@ function PrivateCard({ width = "50%", memberInfo }: Props) {
           defaultQuery={address}
         />
       </ReactModal>
+
+      <Card>
+        <CardContent>
+          <Box
+            sx={{ display: "flex", justifyContent: "space-between", flex: 1 }}
+          >
+            {!isEditMode ? (
+              <Box>
+                <SvgIcon
+                  component={Person}
+                  sx={{ color: "#1976d2", marginTop: "5px" }}
+                />
+                &nbsp;
+                <Typography sx={{ display: "inline-block" }} variant="h4">
+                  {name}
+                </Typography>
+              </Box>
+            ) : (
+              <Box>
+                <SvgIcon
+                  component={Person}
+                  sx={{ color: "#1976d2", marginTop: "15px" }}
+                />
+                &nbsp;
+                <TextField
+                  sx={{ display: "inline-block" }}
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
+                />
+              </Box>
+            )}
+            <Box sx={{ display: "flex", justifyContent: "right", gap: 1 }}>
+              {isEditMode ? (
+                <>
+                  <Button
+                    variant="outlined"
+                    sx={{ width: "64px", height: "41.98px" }}
+                    onClick={() => {
+                      updateRequest();
+                    }}
+                  >
+                    확인
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    sx={{
+                      width: "64px",
+                      height: "41.98px",
+                    }}
+                    onClick={() => {
+                      handleCancelUpdateButton();
+                    }}
+                  >
+                    취소
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    onClick={() => {
+                      handleUpdateButton();
+                    }}
+                  >
+                    수정
+                  </Button>
+                  <ClientRemovePopUpButton />
+                </>
+              )}
+            </Box>
+          </Box>
+        </CardContent>
+      </Card>
 
       <div
         style={{
