@@ -12,8 +12,6 @@ import {
   Card,
   CardContent,
   FormControl,
-  Grid,
-  InputLabel,
   MenuItem,
   Select,
   SvgIcon,
@@ -26,14 +24,20 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import curMemberAddressState from "../../states/employee/CurMemberAddressState";
 import hierarchyListState from "../../states/data/hierarchyListState";
 import roleListState from "../../states/data/roleListState";
-import { Person } from "@mui/icons-material";
-import ClientRemovePopUpButton from "../client/ClientRemovePopUpButton";
+import {
+  Badge,
+  Email,
+  Grade,
+  LocationOn,
+  Person,
+  PhoneIphone,
+} from "@mui/icons-material";
 
 type Props = {
   width?: string | number;
   height?: string | number;
   memberInfo: MemberInfo;
-  setMemberInfo: React.Dispatch<React.SetStateAction<MemberInfo>>;
+  setMemberInfo: React.Dispatch<React.SetStateAction<MemberInfo | undefined>>;
 };
 
 function PrivateCard({ width = "50%", memberInfo, setMemberInfo }: Props) {
@@ -56,6 +60,52 @@ function PrivateCard({ width = "50%", memberInfo, setMemberInfo }: Props) {
   const [previousEmail, setPreviousEmail] = useState("");
   const [previousHierarchyId, setPreviousHierarchyId] = useState(0);
   const [previousAddress, setPreviousAddress] = useState("");
+
+  //수정 시 에러 표시
+  const [isEmailOk, setIsEmailOk] = useState(true);
+  const [emailMessage, setEmailMessage] = useState("");
+  const [isPhoneOk, setIsPhoneOk] = useState(true);
+  const [phoneMessage, setPhoneMessage] = useState("");
+
+  const onEmailChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const emailRegex =
+      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    const emailCurrent = e.target.value;
+    setEmail(emailCurrent);
+
+    if (!emailRegex.test(emailCurrent)) {
+      setEmailMessage("이메일 형식이 틀렸습니다.");
+      setIsEmailOk(false);
+    } else {
+      setEmailMessage("올바른 이메일 형식입니다.");
+      setIsEmailOk(true);
+    }
+  };
+
+  const onPhoneChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    let input = e.target.value.replace(/\D/g, ""); // 모든 숫자 아닌 문자를 제거합니다.
+    if (input.length > 2) {
+      input = input.substring(0, 3) + "-" + input.substring(3);
+    }
+    if (input.length > 7) {
+      input = input.substring(0, 8) + "-" + input.substring(8);
+    }
+    setPhone(input);
+
+    const phonePattern = /^010-\d{4}-?\d{4}$/;
+
+    if (phonePattern.test(input)) {
+      setPhoneMessage("올바른 전화번호 형식입니다.");
+      setIsPhoneOk(true);
+    } else {
+      setPhoneMessage("올바르지 않은 전화번호 형식입니다.");
+      setIsPhoneOk(false);
+    }
+  };
 
   useEffect(() => {
     if (memberInfo?.email) {
@@ -80,8 +130,6 @@ function PrivateCard({ width = "50%", memberInfo, setMemberInfo }: Props) {
 
   const updateRequest = () => {
     const handelRequestSuccess: RequestSuccessHandler = () => {
-      alert("정보가 수정되었습니다.");
-
       const newMemberInfo = {
         ...memberInfo,
         name: name,
@@ -92,8 +140,16 @@ function PrivateCard({ width = "50%", memberInfo, setMemberInfo }: Props) {
       };
       setMemberInfo(newMemberInfo);
       setIsEditMode(false);
+
+      setIsEmailOk(true);
+      setEmailMessage("");
+      setIsPhoneOk(true);
+      setPhoneMessage("");
+
+      alert("정보가 수정되었습니다.");
     };
     const handelRequestFail: RequestFailHandler = (e) => {
+      console.dir(e);
       alert((e.response.data as { code: string; message: string }).message);
     };
 
@@ -130,15 +186,15 @@ function PrivateCard({ width = "50%", memberInfo, setMemberInfo }: Props) {
     setAddress(previousAddress);
     setHierarchyId(previousHierarchyId);
 
+    setIsEmailOk(true);
+    setEmailMessage("");
+    setIsPhoneOk(true);
+    setPhoneMessage("");
     setIsEditMode(false);
   };
 
   return (
-    <Box
-      style={{
-        width: width,
-      }}
-    >
+    <>
       <ReactModal
         style={{
           overlay: {
@@ -167,7 +223,7 @@ function PrivateCard({ width = "50%", memberInfo, setMemberInfo }: Props) {
         />
       </ReactModal>
 
-      <Card>
+      <Card sx={{ width }}>
         <CardContent>
           <Box
             sx={{ display: "flex", justifyContent: "space-between", flex: 1 }}
@@ -236,138 +292,222 @@ function PrivateCard({ width = "50%", memberInfo, setMemberInfo }: Props) {
                   >
                     수정
                   </Button>
-                  <ClientRemovePopUpButton />
                 </>
               )}
             </Box>
           </Box>
-        </CardContent>
-      </Card>
-
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginTop: "40px",
-        }}
-      >
-        <Typography variant="h4">개인정보</Typography>
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            if (isEditMode) {
-              updateRequest();
-              setIsEditMode(false);
-            } else {
-              setIsEditMode(true);
-            }
-          }}
-        >
-          {isEditMode ? "저장" : "수정"}
-        </Button>
-      </div>
-      <Grid container spacing={3}>
-        <Grid item xs={6}>
-          <TextField
-            disabled={!isEditMode}
-            label="이메일"
-            name="email"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-            margin="normal"
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            disabled={!isEditMode}
-            label="이름"
-            name="name"
-            value={name}
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
-            margin="normal"
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            disabled={!isEditMode}
-            label="전화번호"
-            name="phone"
-            value={phone}
-            onChange={(e) => {
-              setPhone(e.target.value);
-            }}
-            margin="normal"
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            disabled={!isEditMode}
-            label="주소"
-            name="address"
-            value={address}
-            margin="normal"
-            fullWidth
-          />
-          {isEditMode ? (
-            <Button
-              size="small"
-              onClick={() => {
-                setIsModalOpen(true);
+          <hr />
+          <br />
+          <Box sx={{ marginBottom: "15px" }}>
+            {isEditMode ? (
+              <Box>
+                <SvgIcon
+                  component={Email}
+                  sx={{ color: "#1976d2", marginTop: "5px" }}
+                />{" "}
+                &nbsp;
+                <TextField
+                  {...(isEmailOk ? {} : { error: true })}
+                  id="email-input"
+                  disabled={!isEditMode}
+                  type="email"
+                  size="small"
+                  sx={{ display: "inline-block", fontSize: 20 }}
+                  value={email}
+                  onChange={onEmailChange}
+                  helperText={emailMessage}
+                />
+              </Box>
+            ) : (
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <SvgIcon
+                  component={Email}
+                  sx={{ color: "#1976d2", marginBottom: "5px" }}
+                />{" "}
+                &nbsp;&nbsp;
+                <Typography
+                  sx={{
+                    display: "inline-block",
+                    fontSize: 18,
+                    fontWeight: "bold",
+                  }}
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  {email}
+                </Typography>
+              </Box>
+            )}
+          </Box>
+          <Box sx={{ marginBottom: "15px" }}>
+            {isEditMode ? (
+              <Box>
+                <SvgIcon
+                  component={PhoneIphone}
+                  sx={{ color: "#1976d2", marginTop: "5px" }}
+                />{" "}
+                &nbsp;
+                <TextField
+                  {...(isPhoneOk ? {} : { error: true })}
+                  id="phone-input"
+                  disabled={!isEditMode}
+                  type="tel"
+                  size="small"
+                  sx={{ display: "inline-block", fontSize: 20 }}
+                  value={phone}
+                  onChange={onPhoneChange}
+                  helperText={phoneMessage}
+                />
+              </Box>
+            ) : (
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <SvgIcon
+                  component={PhoneIphone}
+                  sx={{ color: "#1976d2", marginBottom: "5px" }}
+                />{" "}
+                &nbsp;&nbsp;
+                <Typography
+                  sx={{
+                    display: "inline-block",
+                    fontSize: 18,
+                    fontWeight: "bold",
+                  }}
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  {phone}
+                </Typography>
+              </Box>
+            )}
+          </Box>
+          <Box sx={{ marginBottom: "15px", display: "flex" }}>
+            {isEditMode ? (
+              <>
+                <Box sx={{ display: "flex" }}>
+                  <SvgIcon
+                    component={LocationOn}
+                    sx={{ color: "#1976d2", marginTop: "5px" }}
+                  />{" "}
+                  &nbsp;
+                  <TextField
+                    disabled={!isEditMode}
+                    size="small"
+                    fullWidth
+                    sx={{
+                      display: "inline-block",
+                      fontSize: 20,
+                      width: 300,
+                      marginLeft: "4px",
+                    }}
+                    value={address}
+                  />
+                </Box>
+                <Box sx={{ marginTop: "5px" }}>
+                  <Button
+                    size="small"
+                    onClick={() => {
+                      setIsModalOpen(true);
+                    }}
+                  >
+                    주소검색
+                  </Button>
+                </Box>
+              </>
+            ) : (
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <SvgIcon
+                  component={LocationOn}
+                  sx={{ color: "#1976d2", marginBottom: "8px" }}
+                />{" "}
+                &nbsp;&nbsp;
+                <Typography
+                  sx={{
+                    display: "inline-block",
+                    fontSize: 18,
+                    fontWeight: "bold",
+                  }}
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  {address}
+                </Typography>
+              </Box>
+            )}
+          </Box>
+          <Box sx={{ marginBottom: "12px" }}>
+            {isEditMode ? (
+              <Box>
+                <SvgIcon
+                  component={Badge}
+                  sx={{ color: "#1976d2", marginTop: "5px" }}
+                />{" "}
+                &nbsp;
+                <FormControl>
+                  <Select
+                    inputProps={{ "aria-label": "Without label" }}
+                    size="small"
+                    value={hierarchyId}
+                    onChange={(e) =>
+                      setHierarchyId(parseInt(e.target.value as string))
+                    }
+                  >
+                    {hierarchyList.map((hierarchy) => (
+                      <MenuItem key={hierarchy.id} value={hierarchy.id}>
+                        {hierarchy.nameKr}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Box>
+            ) : (
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <SvgIcon
+                  component={Badge}
+                  sx={{ color: "#1976d2", marginBottom: "13px" }}
+                />{" "}
+                &nbsp;&nbsp;
+                <Typography
+                  sx={{
+                    display: "inline-block",
+                    fontSize: 18,
+                    fontWeight: "bold",
+                  }}
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  {hierarchyList.find((it) => it.id === hierarchyId)?.nameKr}
+                </Typography>
+              </Box>
+            )}
+          </Box>
+          <Box>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
               }}
             >
-              주소검색
-            </Button>
-          ) : (
-            ""
-          )}
-        </Grid>
-        <Grid item xs={6}>
-          <FormControl margin="normal" fullWidth disabled={!isEditMode}>
-            <InputLabel>직책</InputLabel>
-            <Select
-              value={hierarchyId}
-              label="hierarchy"
-              onChange={(e) =>
-                setHierarchyId(parseInt(e.target.value as string))
-              }
-            >
-              {hierarchyList.map((hierarchy) => (
-                <MenuItem key={hierarchy.id} value={hierarchy.id}>
-                  {hierarchy.nameKr}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-
-        <Grid item xs={6}>
-          <FormControl margin="normal" fullWidth disabled>
-            <InputLabel>권한</InputLabel>
-            <Select
-              value={roleId}
-              label="role"
-              onChange={(e) => setRoleId(parseInt(e.target.value as string))}
-            >
-              {roleList.map((role) => (
-                <MenuItem key={role.id} value={role.id}>
-                  {role.nameKr}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-      </Grid>
-    </Box>
+              <SvgIcon
+                component={Grade}
+                sx={{ color: "#1976d2", marginBottom: "13px" }}
+              />{" "}
+              &nbsp;&nbsp;
+              <Typography
+                sx={{
+                  display: "inline-block",
+                  fontSize: 18,
+                  fontWeight: "bold",
+                }}
+                color="text.secondary"
+                gutterBottom
+              >
+                {roleList.find((it) => it.id === roleId)?.nameKr}
+              </Typography>
+            </Box>
+          </Box>
+        </CardContent>
+      </Card>
+    </>
   );
 }
 
