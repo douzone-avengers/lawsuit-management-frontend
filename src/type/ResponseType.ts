@@ -5,6 +5,8 @@ export type Advicedata = {
   title: string;
   contents: string;
   advicedAt: Date;
+  clientId: string;
+  memberId: string;
 };
 
 export type ClientData = {

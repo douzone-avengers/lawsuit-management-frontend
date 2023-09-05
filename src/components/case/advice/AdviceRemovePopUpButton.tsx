@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 import { useSetRecoilState } from "recoil";
-import adviceRemovePopUpOpenState from "../../../states/advice/AdviceRemovePopUpOpenState.tsx";
+import adviceRemovePopUpOpenState from "../../../states/advice/adviceRemovePopUpOpenState.tsx";
 
 function AdviceRemovePopUpButton() {
   const setAdviceRemovePopUp = useSetRecoilState(adviceRemovePopUpOpenState);

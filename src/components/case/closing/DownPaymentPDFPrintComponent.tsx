@@ -11,7 +11,7 @@ import downPaymentPDFPrintLoadingState from "../../../states/case/info/closing/D
 import { delimiter } from "../../../lib/convert.ts";
 import userState from "../../../states/user/UserState.ts";
 
-type AllLawsuitType = {
+export type AllLawsuitType = {
   lawsuit: {
     id: number;
     name: string;

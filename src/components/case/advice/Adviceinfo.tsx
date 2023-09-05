@@ -11,8 +11,6 @@ import clientIdState from "../../../states/client/ClientIdState.tsx";
 import AdviceListTable from "./AdviceListTable.tsx";
 import AdviceRegisterPopUp from "./AdviceRegisterPopUp.tsx";
 import AdviceRegisterPopUpButton from "./AdviceRegisterPopUpButton.tsx";
-import adviceDisplayState from "../../../states/advice/AdviceDisplayState.tsx";
-import AdviceDetailPage from "./AdviceDetailPage.tsx";
 import { Advicedata } from "../../../type/ResponseType.ts";
 
 function Adviceinfo() {
@@ -20,13 +18,8 @@ function Adviceinfo() {
   const lawsuitId = useRecoilValue(caseIdState);
   const [_, setAdviceId] = useRecoilState(adviceIdState);
   const adviceRegisterPopUpOpen = useRecoilValue(adviceRegisterPopUpOpenState);
-  const [adviceDisplay, setAdviceDisplay] = useRecoilState(adviceDisplayState);
 
   const [advices, setAdvices] = useState<Advicedata[]>([]);
-
-  useEffect(() => {
-    setAdviceDisplay(0);
-  }, []);
 
   useEffect(() => {
     if (typeof clientId !== "number" || typeof lawsuitId !== "number") {
@@ -56,25 +49,15 @@ function Adviceinfo() {
         position: "relative",
       }}
     >
-      {adviceDisplay === 0 && (
-        <Box>
-          <AdviceRegisterPopUpButton />
-        </Box>
-      )}
       <Box>
-        {adviceDisplay === 0 ? (
-          <AdviceListTable
-            advices={advices.map((item) => ({
-              ...item,
-              onClick: () => {
-                setAdviceId(item.id);
-                setAdviceDisplay(1);
-              },
-            }))}
-          />
-        ) : adviceDisplay === 1 ? (
-          <AdviceDetailPage />
-        ) : null}
+        <AdviceRegisterPopUpButton />
+      </Box>
+      <Box>
+        <AdviceListTable
+          advices={advices.map((item) => ({
+            ...item,
+          }))}
+        />
       </Box>
       {adviceRegisterPopUpOpen ? (
         <AdviceRegisterPopUp setAdvices={setAdvices} />

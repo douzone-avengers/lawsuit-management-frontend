@@ -6,13 +6,14 @@ import requestDeprecated, {
   RequestSuccessHandler,
 } from "../../../lib/requestDeprecated.ts";
 import adviceRemovePopUpOpenState from "../../../states/advice/adviceRemovePopUpOpenState.tsx";
-import { AllLawsuitType } from "../closing/print/PdfComponent.tsx";
+
 import PopUp from "../../common/PopUp.tsx";
 import CloseButton from "../../common/CloseButton.tsx";
 import Typography from "@mui/material/Typography";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { AllLawsuitType } from "../closing/CaseBookPDFPrintComponent.tsx";
 
 function AdviceRemovePopUp() {
   const [data, setData] = useState<AllLawsuitType | null>(null);
