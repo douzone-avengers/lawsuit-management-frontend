@@ -148,7 +148,7 @@ function PrivateCard({ width = "50%", memberInfo, setMemberInfo }: Props) {
     if (memberInfo?.roleId) {
       setRoleId(memberInfo.roleId);
     }
-  }, [memberInfo]);
+  }, []);
 
   const updateRequest = () => {
     const handelRequestSuccess: RequestSuccessHandler = () => {
@@ -246,6 +246,9 @@ function PrivateCard({ width = "50%", memberInfo, setMemberInfo }: Props) {
             setRecoilAddress(data.address);
             setAddressDetail("");
             setIsModalOpen(false);
+            setAddressDetail("");
+            setAddressDetailMessage("상세주소를 입력해 주세요.");
+            setIsAddressDetailOk(false);
           }}
           autoClose={false}
           defaultQuery={address}

@@ -160,8 +160,6 @@ function EmployeeInfoCard({ width = "50%", memberInfo, setMemberInfo }: Props) {
   };
 
   useEffect(() => {
-    setIsEditMode(false);
-
     if (memberInfo?.email) {
       setEmail(memberInfo.email);
     }
@@ -183,7 +181,7 @@ function EmployeeInfoCard({ width = "50%", memberInfo, setMemberInfo }: Props) {
     if (memberInfo?.roleId) {
       setRoleId(memberInfo.roleId);
     }
-  }, [memberInfo]);
+  }, [employeeId]);
 
   const updateRequest = () => {
     const handelRequestSuccess: RequestSuccessHandler = () => {
@@ -252,6 +250,8 @@ function EmployeeInfoCard({ width = "50%", memberInfo, setMemberInfo }: Props) {
             setAddress(data.address);
             setRecoilAddress(data.address);
             setAddressDetail("");
+            setAddressDetailMessage("상세주소를 입력해 주세요.");
+            setIsAddressDetailOk(false);
             setIsModalOpen(false);
           }}
           autoClose={false}
