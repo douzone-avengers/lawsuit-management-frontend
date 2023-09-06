@@ -2,29 +2,41 @@ import Card from "@mui/material/Card";
 import CardTitle from "../common/CardTitle.tsx";
 import List from "@mui/material/List";
 import ListProfileItem from "../common/ListProfileItem.tsx";
-import { useRecoilValue } from "recoil";
-import caseInfoState from "../../../../states/case/info/caseInfoState.tsx";
-import BadgeIcon from "@mui/icons-material/Badge";
+import { useRecoilState } from "recoil";
+import adviceIdState from "../../../../states/advice/AdviceState.tsx";
+import caseIdState from "../../../../states/case/CaseIdState.tsx";
+import { useEffect, useState } from "react";
+import { AllLawsuitType } from "../../closing/print/PrintComponent.tsx";
+import requestDeprecated, {
+  RequestSuccessHandler,
+} from "../../../../lib/requestDeprecated.ts";
+import PersonIcon from "@mui/icons-material/Person";
 
 function AdviceMemberInfoCard() {
-  const caseInfo = useRecoilValue(caseInfoState);
+  const [adviceId] = useRecoilState(adviceIdState);
+  const [caseId] = useRecoilState(caseIdState);
+  const [data, setData] = useState<AllLawsuitType | null>(null);
 
+  useEffect(() => {
+    const handleRequestSuccess: RequestSuccessHandler = (res) => {
+      const body: AllLawsuitType = res.data;
+      console.log(adviceId);
+      setData(body);
+    };
+    requestDeprecated("GET", `/lawsuits/${caseId}/print`, {
+      withToken: true,
+      onSuccess: handleRequestSuccess,
+    });
+  }, []);
+  const advice = data?.advices.filter((item) => item.id === adviceId)[0];
   return (
-    <Card
-      sx={{
-        width: "50%",
-      }}
-    >
+    <Card sx={{ width: "50%" }}>
       <CardTitle text="상담관" />
       <List sx={{ display: "flex", padding: 0 }}>
-        {caseInfo?.employees.map((item) => (
-          <ListProfileItem
-            key={item.id}
-            SvgIcon={BadgeIcon}
-            primary={item.name}
-            secondary={item.email}
-          />
-        ))}
+        <ListProfileItem
+          SvgIcon={PersonIcon}
+          primary={advice?.memberNames.join(", ")}
+        />
       </List>
     </Card>
   );

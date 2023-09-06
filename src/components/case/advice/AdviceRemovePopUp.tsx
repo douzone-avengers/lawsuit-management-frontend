@@ -1,65 +1,54 @@
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import React, { useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useState } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import adviceIdState from "../../../states/advice/AdviceState.tsx";
+import caseIdState from "../../../states/case/CaseIdState.tsx";
 import requestDeprecated, {
   RequestSuccessHandler,
 } from "../../../lib/requestDeprecated.ts";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import adviceRegisterPopUpOpenState from "../../../states/advice/AdviceRegisterPopUpOpenState.tsx";
-import adviceIdState from "../../../states/advice/AdviceState.tsx";
-import CloseButton from "../../common/CloseButton.tsx";
+import adviceRemovePopUpOpenState from "../../../states/advice/adviceRemovePopUpOpenState.tsx";
+
 import PopUp from "../../common/PopUp.tsx";
-import "../../../stylesheet/calendar.css";
-import { Advicedata } from "../../../type/ResponseType.ts";
-import caseInfoState from "../../../states/case/info/caseInfoState.tsx";
-import caseIdState from "../../../states/case/CaseIdState.tsx";
-//import { DatePicker } from "@mui/x-date-pickers";
+import CloseButton from "../../common/CloseButton.tsx";
+import Typography from "@mui/material/Typography";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import { AllLawsuitType } from "../closing/CaseBookPDFPrintComponent.tsx";
 
-type Props = {
-  setAdvices: React.Dispatch<React.SetStateAction<Advicedata[]>>;
-};
-
-function AdviceRegisterPopUp({ setAdvices }: Props) {
-  const caseInfo = useRecoilValue(caseInfoState);
+function AdviceRemovePopUp() {
+  const [data, setData] = useState<AllLawsuitType | null>(null);
+  const [adviceId] = useRecoilState(adviceIdState);
+  const [caseId] = useRecoilState(caseIdState);
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
   const [clientIdList, setclientIdList] = useState<string[]>([]);
   const [memberIdList, setmemberIdList] = useState<string[]>([]);
   const [advicedAt, setadvicedAt] = useState<string | null>(null);
-  // const [_, setAdvices] = useState<Advicedata[]>([]);
-  const setAdviceId = useSetRecoilState(adviceIdState);
-  const caseId = useRecoilValue(caseIdState);
-
-  const setAdviceRegisterPopUpOpen = useSetRecoilState(
-    adviceRegisterPopUpOpenState,
+  const setAdviceRemovePopUpOpen = useSetRecoilState(
+    adviceRemovePopUpOpenState,
   );
-
   const handleCloseButtonClick = () => {
-    setAdviceRegisterPopUpOpen(false);
+    setAdviceRemovePopUpOpen(false);
   };
-
-  const handleRegisterButtonClick = () => {
+  const handleRemoveButtonClick = () => {
     const handleRequestSuccess: RequestSuccessHandler = () => {
       const handleRequestSuccess2: RequestSuccessHandler = (res) => {
-        const body: Advicedata[] = res.data;
-        console.log(body);
-        setAdvices(body);
-        setAdviceId(body[0]?.id);
+        const body: AllLawsuitType = res.data;
+        console.log(adviceId);
+        setData(body);
       };
-      requestDeprecated("GET", `/advices?lawsuit=${caseId}`, {
+      requestDeprecated("GET", `/lawsuits/${caseId}/print`, {
         withToken: true,
         onSuccess: handleRequestSuccess2,
       });
     };
-    setAdviceRegisterPopUpOpen(false);
+    setAdviceRemovePopUpOpen(false);
     setclientIdList([]);
     setmemberIdList([]);
     setTitle("");
     setContents("");
     setadvicedAt("");
-    requestDeprecated("POST", "/advices", {
+    requestDeprecated("PATCH", `advices/${adviceId}`, {
       withToken: true,
       body: {
         lawsuitId: caseId,
@@ -72,7 +61,6 @@ function AdviceRegisterPopUp({ setAdvices }: Props) {
       onSuccess: handleRequestSuccess,
     });
   };
-
   return (
     <PopUp width={600}>
       <CloseButton onClick={handleCloseButtonClick} />
@@ -88,9 +76,9 @@ function AdviceRegisterPopUp({ setAdvices }: Props) {
           value={memberIdList}
           onChange={(e) => setmemberIdList(e.target.value as string[])}
         >
-          {caseInfo?.employees.map((employees) => (
-            <MenuItem key={employees.id} value={employees.id}>
-              {employees.name}
+          {data?.advices.map((data) => (
+            <MenuItem key={data.id} value={data.id}>
+              {data.memberNames}
             </MenuItem>
           ))}
         </Select>
@@ -105,9 +93,9 @@ function AdviceRegisterPopUp({ setAdvices }: Props) {
           value={clientIdList}
           onChange={(e) => setclientIdList(e.target.value as string[])}
         >
-          {caseInfo?.clients.map((clients) => (
-            <MenuItem key={clients.id} value={clients.id}>
-              {clients.name}
+          {data?.advices.map((data) => (
+            <MenuItem key={data.id} value={data.id}>
+              {data.clientNames}
             </MenuItem>
           ))}
         </Select>
@@ -139,7 +127,7 @@ function AdviceRegisterPopUp({ setAdvices }: Props) {
       <Button
         variant="contained"
         size="large"
-        onClick={handleRegisterButtonClick}
+        onClick={handleRemoveButtonClick}
       >
         등록
       </Button>
@@ -147,4 +135,4 @@ function AdviceRegisterPopUp({ setAdvices }: Props) {
   );
 }
 
-export default AdviceRegisterPopUp;
+export default AdviceRemovePopUp;
