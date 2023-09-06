@@ -41,7 +41,7 @@ type Props = {
   setMemberInfo: React.Dispatch<React.SetStateAction<MemberInfo | undefined>>;
 };
 
-function EmployeeInfoCard({ width = "50%", memberInfo, setMemberInfo }: Props) {
+function EmployeeInfoCard({ width, height, memberInfo, setMemberInfo }: Props) {
   const employeeId = useRecoilValue(employeeIdState);
   const [isEditMode, setIsEditMode] = useState(false);
   const [name, setName] = useState("");
@@ -259,7 +259,7 @@ function EmployeeInfoCard({ width = "50%", memberInfo, setMemberInfo }: Props) {
         />
       </ReactModal>
 
-      <Card sx={{ width }}>
+      <Card sx={{ width, height }}>
         <CardContent>
           <Box
             sx={{ display: "flex", justifyContent: "space-between", flex: 1 }}
