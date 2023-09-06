@@ -4,6 +4,7 @@ export type MemberInfo = {
   name: string;
   phone: string;
   address: string;
+  addressDetail: string;
   hierarchyId: number;
   roleId: number;
   createdAt: string;

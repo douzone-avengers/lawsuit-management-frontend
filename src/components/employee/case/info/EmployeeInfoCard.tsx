@@ -48,6 +48,7 @@ function EmployeeInfoCard({ width = "50%", memberInfo, setMemberInfo }: Props) {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
+  const [addressDetail, setAddressDetail] = useState("");
   const [hierarchyId, setHierarchyId] = useState(0);
   const [roleId, setRoleId] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -63,12 +64,15 @@ function EmployeeInfoCard({ width = "50%", memberInfo, setMemberInfo }: Props) {
   const [previousHierarchyId, setPreviousHierarchyId] = useState(0);
   const [previousRoleId, setPreviousRoleId] = useState(0);
   const [previousAddress, setPreviousAddress] = useState("");
+  const [previousAddressDetail, setPreviousAddressDetail] = useState("");
 
   //수정 시 에러 표시
   const [isEmailOk, setIsEmailOk] = useState(true);
   const [emailMessage, setEmailMessage] = useState("");
   const [isPhoneOk, setIsPhoneOk] = useState(true);
   const [phoneMessage, setPhoneMessage] = useState("");
+  const [isAddressDetailOk, setIsAddressDetailOk] = useState(true);
+  const [addressDetailMessage, setAddressDetailMessage] = useState("");
 
   const onEmailChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -110,11 +114,27 @@ function EmployeeInfoCard({ width = "50%", memberInfo, setMemberInfo }: Props) {
     }
   };
 
+  const onAddressDetailChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    let input = e.target.value;
+    setAddressDetail(input);
+
+    if (input.length === 0) {
+      setAddressDetailMessage("상세주소를 입력해 주세요.");
+      setIsAddressDetailOk(false);
+    } else {
+      setIsAddressDetailOk(true);
+      setAddressDetailMessage("");
+    }
+  };
+
   const handleUpdateButton = () => {
     setPreviousName(name);
     setPreviousPhone(phone);
     setPreviousEmail(email);
     setPreviousAddress(address);
+    setPreviousAddressDetail(addressDetail);
     setPreviousHierarchyId(hierarchyId);
     setPreviousRoleId(roleId);
 
@@ -126,6 +146,7 @@ function EmployeeInfoCard({ width = "50%", memberInfo, setMemberInfo }: Props) {
     setPhone(previousPhone);
     setEmail(previousEmail);
     setAddress(previousAddress);
+    setAddressDetail(previousAddressDetail);
     setHierarchyId(previousHierarchyId);
     setRoleId(previousRoleId);
 
@@ -151,6 +172,9 @@ function EmployeeInfoCard({ width = "50%", memberInfo, setMemberInfo }: Props) {
     if (memberInfo?.address) {
       setAddress(memberInfo.address);
     }
+    if (memberInfo?.addressDetail) {
+      setAddressDetail(memberInfo.addressDetail);
+    }
     if (memberInfo?.hierarchyId) {
       setHierarchyId(memberInfo.hierarchyId);
     }
@@ -167,6 +191,7 @@ function EmployeeInfoCard({ width = "50%", memberInfo, setMemberInfo }: Props) {
         email: email,
         phone: phone,
         address: address,
+        addressDetail: addressDetail,
         hierarchyId: hierarchyId,
         roleId: roleId,
       };
@@ -194,6 +219,7 @@ function EmployeeInfoCard({ width = "50%", memberInfo, setMemberInfo }: Props) {
         name,
         phone,
         address,
+        addressDetail,
         hierarchyId,
         roleId,
       },
@@ -223,6 +249,7 @@ function EmployeeInfoCard({ width = "50%", memberInfo, setMemberInfo }: Props) {
             // handle the complete event with selected data
             setAddress(data.address);
             setRecoilAddress(data.address);
+            setAddressDetail("");
             setIsModalOpen(false);
           }}
           autoClose={false}
@@ -437,6 +464,47 @@ function EmployeeInfoCard({ width = "50%", memberInfo, setMemberInfo }: Props) {
                   gutterBottom
                 >
                   {address}
+                </Typography>
+              </Box>
+            )}
+          </Box>
+          <Box sx={{ marginBottom: "15px" }}>
+            {isEditMode ? (
+              <Box>
+                <SvgIcon
+                  component={LocationOn}
+                  sx={{ color: "#1976d2", marginTop: "5px" }}
+                />{" "}
+                &nbsp;
+                <TextField
+                  {...(isAddressDetailOk ? {} : { error: true })}
+                  id="phone-input"
+                  disabled={!isEditMode}
+                  type="tel"
+                  size="small"
+                  sx={{ display: "inline-block", fontSize: 20 }}
+                  value={addressDetail}
+                  onChange={onAddressDetailChange}
+                  helperText={addressDetailMessage}
+                />
+              </Box>
+            ) : (
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <SvgIcon
+                  component={LocationOn}
+                  sx={{ color: "#1976d2", marginBottom: "5px" }}
+                />{" "}
+                &nbsp;&nbsp;
+                <Typography
+                  sx={{
+                    display: "inline-block",
+                    fontSize: 18,
+                    fontWeight: "bold",
+                  }}
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  {addressDetail}
                 </Typography>
               </Box>
             )}
