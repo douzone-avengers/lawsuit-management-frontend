@@ -154,6 +154,8 @@ function EmployeeInfoCard({ width = "50%", memberInfo, setMemberInfo }: Props) {
     setEmailMessage("");
     setIsPhoneOk(true);
     setPhoneMessage("");
+    setIsAddressDetailOk(true);
+    setAddressDetailMessage("");
     setIsEditMode(false);
   };
 
