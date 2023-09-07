@@ -1,22 +1,30 @@
-import PersonIcon from "@mui/icons-material/Person";
 import { CSSProperties, useState } from "react";
+import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
+import * as dayjs from "dayjs";
 
 type Props = {
-  hierarchy: string;
-  name: string;
+  roomName: string;
+  recentMsg: string;
+  recentMsgTime: string;
   style?: CSSProperties;
   hover?: boolean;
   onClick?: () => void;
 };
 
-function ChatAppPersonItem({
-  hierarchy,
-  name,
+function ChatAppRoomItem({
+  roomName,
+  recentMsg,
+  recentMsgTime,
   style,
   onClick,
   hover = false,
 }: Props) {
   const [background, setBackground] = useState("white");
+  const recentDayjs = dayjs(recentMsgTime);
+  const recentContent = `${recentDayjs.year()}년 ${
+    recentDayjs.month() + 1
+  }월 ${recentDayjs.date()}일`;
+  const recentContent2 = `${recentDayjs.hour()}시 ${recentDayjs.minute()}분`;
 
   return (
     <div
@@ -53,12 +61,12 @@ function ChatAppPersonItem({
           height: 48,
         }}
       >
-        <PersonIcon sx={{ color: "white", width: 32, height: 32 }} />
+        <ChatBubbleIcon sx={{ color: "white", width: 32, height: 32 }} />
       </div>
       <div
         style={{
           display: "flex",
-          width: 300,
+          width: 180,
           flexDirection: "column",
           paddingLeft: 10,
         }}
@@ -71,7 +79,7 @@ function ChatAppPersonItem({
               fontSize: 16,
             }}
           >
-            {name}
+            {roomName}
           </div>
           <div
             style={{
@@ -84,12 +92,49 @@ function ChatAppPersonItem({
               whiteSpace: "nowrap",
             }}
           >
-            {hierarchy}
+            {recentMsg}
           </div>
+        </div>
+      </div>
+      <div
+        style={{
+          width: 120,
+          marginLeft: 15,
+          fontSize: 12,
+          overflow: "hidden",
+        }}
+      >
+        <div>{recentContent}</div>
+        <div>{recentContent2}</div>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginLeft: 15,
+          width: 64,
+          height: 64,
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            background: "#1976D2",
+            color: "white",
+            width: "50%",
+            height: "50%",
+            borderRadius: "50%",
+            fontSize: 12,
+          }}
+        >
+          TODO
         </div>
       </div>
     </div>
   );
 }
 
-export default ChatAppPersonItem;
+export default ChatAppRoomItem;

@@ -11,11 +11,11 @@ import PersonIcon from "@mui/icons-material/Person";
 import ChatAppTag from "../box/ChatAppTag.tsx";
 import ChatAppFooterContainer from "../layout/ChatAppFooterContainer.tsx";
 import userState from "../../../states/user/UserState.ts";
-import { SearchUserDetailByEmail } from "../type/ResponseType.ts";
+import { SearchUserDetailByEmailResponseType } from "../type/ResponseType.ts";
 import ChatAppCloseButton from "../button/ChatAppCloseButton.tsx";
 import ChatAppFriendAddButton from "../button/ChatAppFriendAddButton.tsx";
 import ChatAppFriendRemoveButton from "../button/ChatAppFriendRemoveButton.tsx";
-import ChatAppChatButton from "../button/ChatAppChatButton.tsx";
+import ChatAppRoomChatButton from "../button/ChatAppRoomChatButton.tsx";
 
 function ChatAppPersonInfoScene() {
   const user = useRecoilValue(userState);
@@ -40,7 +40,7 @@ function ChatAppPersonInfoScene() {
         `/chats/users/detail?email=${personInfo.targetEmail}`,
         {
           onSuccess: (res) => {
-            const body = res.data as SearchUserDetailByEmail;
+            const body = res.data as SearchUserDetailByEmailResponseType;
             setPersonInfo({
               state: "Complete",
               result: "Success",
@@ -49,7 +49,7 @@ function ChatAppPersonInfoScene() {
             if (user) {
               requestDeprecated(
                 "GET",
-                `/chats/friends/check?user=${user.email}&friend=${body.email}`,
+                `/chats/friends/check?email=${body.email}`,
                 {
                   onSuccess: (res) => {
                     setIsFriend(res.data);
@@ -82,32 +82,21 @@ function ChatAppPersonInfoScene() {
     }
   }, [personInfo]);
 
+  const email =
+    personInfo.state === "Complete" && personInfo.result === "Success"
+      ? personInfo.value.email
+      : "";
+
   const footerContents =
     isFriend === true ? (
       <>
-        <ChatAppChatButton />
-        <ChatAppFriendRemoveButton
-          userEmail={user?.email ?? ""}
-          friendEmail={
-            personInfo.state === "Complete" && personInfo.result === "Success"
-              ? personInfo.value.email
-              : ""
-          }
-          setIsFriend={setIsFriend}
-        />
+        <ChatAppRoomChatButton email={email} />
+        <ChatAppFriendRemoveButton email={email} setIsFriend={setIsFriend} />
       </>
     ) : personInfo.state === "Complete" &&
       personInfo.result === "Success" &&
       personInfo.value.email === user?.email ? null : isFriend === false ? (
-      <ChatAppFriendAddButton
-        userEmail={user?.email ?? ""}
-        friendEmail={
-          personInfo.state === "Complete" && personInfo.result === "Success"
-            ? personInfo.value.email
-            : ""
-        }
-        setIsFriend={setIsFriend}
-      />
+      <ChatAppFriendAddButton email={email} setIsFriend={setIsFriend} />
     ) : null;
 
   return (

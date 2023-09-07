@@ -53,7 +53,6 @@ function App() {
       },
       (res: ResponseType) => {
         console.log(res);
-        // setChats((prev) => [...prev, res]);
       },
     );
   };
@@ -89,7 +88,6 @@ function App() {
         />
         <button
           onClick={() => {
-            console.log("click");
             handleToSendMessage();
           }}
         >

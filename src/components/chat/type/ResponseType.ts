@@ -1,21 +1,34 @@
-type BasicPersonInfo = {
+type UserBasicInfoType = {
   id: number;
   email: string;
   name: string;
   hierarchy: string;
 };
 
-type BasicLawsuitInfo = {
+type CaseBasicInfoType = {
   id: number;
   type: string;
   num: string;
   name: string;
 };
 
-export type SearchUserByEmail = BasicPersonInfo | null;
-
-export type SearchUserDetailByEmail = BasicPersonInfo & {
-  lawsuits: BasicLawsuitInfo[];
+export type RoomBasicInfoType = {
+  id: number;
+  type: string;
+  name: string | null;
+  users: UserBasicInfoType[];
 };
 
-export type SearchFriendsByEmail = BasicPersonInfo[];
+export type SearchUserByEmailResponseType = UserBasicInfoType | null;
+
+export type SearchUserDetailByEmailResponseType = UserBasicInfoType & {
+  lawsuits: CaseBasicInfoType[];
+};
+
+export type SearchFriendsByEmailResponseType = UserBasicInfoType[];
+
+export type GetOneToOneRoomByEmailResponseType = RoomBasicInfoType | null;
+
+export type CreateRoomResponseType = RoomBasicInfoType;
+
+export type GetAllRoomsResponseType = RoomBasicInfoType[];

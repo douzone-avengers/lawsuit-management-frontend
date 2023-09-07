@@ -6,43 +6,33 @@ import chatAppErrorState from "../state/ChatAppErrorState.ts";
 import { Dispatch, SetStateAction } from "react";
 
 type Props = {
-  userEmail: string;
-  friendEmail: string;
+  email: string;
   setIsFriend: Dispatch<SetStateAction<boolean | null>>;
 };
 
-function ChatAppFriendAddButton({
-  userEmail,
-  friendEmail,
-  setIsFriend,
-}: Props) {
+function ChatAppFriendAddButton({ email, setIsFriend }: Props) {
   const setError = useSetRecoilState(chatAppErrorState);
   return (
     <ChatAppHoverButton
       Icon={PersonAddAlt1Icon}
       text="추가"
       onClick={() => {
-        console.dir(friendEmail);
         requestDeprecated("POST", `/chats/friends`, {
           body: {
-            email: friendEmail,
+            email: email,
           },
           onSuccess: () => {
-            requestDeprecated(
-              "GET",
-              `/chats/friends/check?user=${userEmail}&friend=${friendEmail}`,
-              {
-                onSuccess: (res) => {
-                  setIsFriend(res.data);
-                },
-                onFail: (e) => {
-                  setError({
-                    msg: e.response.data.message,
-                    callback: () => {},
-                  });
-                },
+            requestDeprecated("GET", `/chats/friends/check?email=${email}`, {
+              onSuccess: (res) => {
+                setIsFriend(res.data);
               },
-            );
+              onFail: (e) => {
+                setError({
+                  msg: e.response.data.message,
+                  callback: () => {},
+                });
+              },
+            });
           },
           onFail: (e) => {
             setError({

@@ -6,15 +6,10 @@ import chatAppErrorState from "../state/ChatAppErrorState.ts";
 import requestDeprecated from "../../../lib/requestDeprecated.ts";
 
 type Props = {
-  userEmail: string;
-  friendEmail: string;
+  email: string;
   setIsFriend: Dispatch<SetStateAction<boolean | null>>;
 };
-function ChatAppFriendRemoveButton({
-  userEmail,
-  friendEmail,
-  setIsFriend,
-}: Props) {
+function ChatAppFriendRemoveButton({ email, setIsFriend }: Props) {
   const setError = useSetRecoilState(chatAppErrorState);
 
   return (
@@ -22,27 +17,22 @@ function ChatAppFriendRemoveButton({
       Icon={PersonRemoveAlt1Icon}
       text="삭제"
       onClick={() => {
-        console.dir(friendEmail);
         requestDeprecated("PATCH", `/chats/friends/delete`, {
           body: {
-            email: friendEmail,
+            email: email,
           },
           onSuccess: () => {
-            requestDeprecated(
-              "GET",
-              `/chats/friends/check?user=${userEmail}&friend=${friendEmail}`,
-              {
-                onSuccess: (res) => {
-                  setIsFriend(res.data);
-                },
-                onFail: (e) => {
-                  setError({
-                    msg: e.response.data.message,
-                    callback: () => {},
-                  });
-                },
+            requestDeprecated("GET", `/chats/friends/check?email=${email}`, {
+              onSuccess: (res) => {
+                setIsFriend(res.data);
               },
-            );
+              onFail: (e) => {
+                setError({
+                  msg: e.response.data.message,
+                  callback: () => {},
+                });
+              },
+            });
           },
           onFail: (e) => {
             setError({

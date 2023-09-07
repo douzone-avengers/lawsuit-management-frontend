@@ -9,6 +9,7 @@ import ChatAppErrorPopUp from "./popup/ChatAppErrorPopUp.tsx";
 import chatAppErrorState from "./state/ChatAppErrorState.ts";
 import chatAppSuccessState from "./state/ChatAppSuccessState.ts";
 import ChatAppSuccessPopUp from "./popup/ChatAppSuccessPopUp.tsx";
+import ChatAppRoomChatScene from "./scene/ChatAppRoomChatScene.tsx";
 
 function ChatApp() {
   const open = useRecoilValue(chatAppOpenState);
@@ -40,6 +41,8 @@ function ChatApp() {
         <ChatAppPersonInfoScene />
       ) : scene === "Room" ? (
         <ChatAppRoomScene />
+      ) : scene === "RoomChat" ? (
+        <ChatAppRoomChatScene />
       ) : null}
       {success !== null ? <ChatAppSuccessPopUp /> : null}
       {error !== null ? <ChatAppErrorPopUp /> : null}

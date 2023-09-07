@@ -1,7 +1,7 @@
 import { atom } from "recoil";
-import { SearchFriendsByEmail } from "../type/ResponseType.ts";
+import { SearchFriendsByEmailResponseType } from "../type/ResponseType.ts";
 
-const chatAppMyFriendsState = atom<SearchFriendsByEmail>({
+const chatAppMyFriendsState = atom<SearchFriendsByEmailResponseType>({
   key: "chatAppMyFriendsState",
   default: [],
 });

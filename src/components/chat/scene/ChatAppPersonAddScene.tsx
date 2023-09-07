@@ -7,15 +7,18 @@ import ChatAppPersonSearchBox from "../box/ChatAppPersonSearchBox.tsx";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import chatAppUserSearchResultState from "../state/ChatAppUserSearchResultState.ts";
+import chatAppUserSearchEmailState from "../state/ChatAppUserSearchEmailState.ts";
 
 function ChatAppPersonAddScene() {
   const setSearchResult = useSetRecoilState(chatAppUserSearchResultState);
+  const setSearchEmail = useSetRecoilState(chatAppUserSearchEmailState);
 
   useEffect(() => {
     return () => {
       setSearchResult({
         status: "Init",
       });
+      setSearchEmail("");
     };
   }, []);
 
