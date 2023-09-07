@@ -40,6 +40,10 @@ function ClientJoinPage() {
 
   const [address, setAddress] = useState("");
 
+  const [addressDetail, setAddressDetail] = useState("");
+  const [isAddressDetailOk, setIsAddressDetailOk] = useState(true);
+  const [addressDetailMessage, setAddressDetailMessage] = useState("");
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // const handleChange = (event: SelectChangeEvent) => {
@@ -64,6 +68,9 @@ function ClientJoinPage() {
     if (validatedClient?.address) {
       setAddress(validatedClient.address);
     }
+    if (validatedClient?.addressDetail) {
+      setAddressDetail(validatedClient.addressDetail);
+    }
   }, [validatedClient]);
 
   const canRequest = () => {
@@ -74,9 +81,15 @@ function ClientJoinPage() {
       passwordConfirm &&
       name &&
       phone &&
-      address;
+      address &&
+      addressDetail;
     const isDataValid =
-      isEmailOk && isPasswordOk && isPasswordConfirmOk && isNameOk && isPhoneOk;
+      isEmailOk &&
+      isPasswordOk &&
+      isPasswordConfirmOk &&
+      isNameOk &&
+      isPhoneOk &&
+      isAddressDetailOk;
 
     return hasRequiredFields && isDataValid;
   };
@@ -107,6 +120,7 @@ function ClientJoinPage() {
         name,
         phone,
         address,
+        addressDetail,
       },
     });
   };
@@ -123,7 +137,7 @@ function ClientJoinPage() {
       setEmailMessage("이메일 형식이 틀렸습니다.");
       setIsEmailOk(false);
     } else {
-      setEmailMessage("올바른 이메일 형식입니다.");
+      setEmailMessage("");
       setIsEmailOk(true);
     }
   };
@@ -140,7 +154,7 @@ function ClientJoinPage() {
       setPasswordMessage("숫자+영문자+특수문자 조합 8자리 이상 입력하세요");
       setIsPasswordOk(false);
     } else {
-      setPasswordMessage("안전한 비밀번호입니다.");
+      setPasswordMessage("");
       setIsPasswordOk(true);
     }
   };
@@ -152,7 +166,7 @@ function ClientJoinPage() {
     setPasswordConfirm(passwordConfirmCurrent);
 
     if (password === passwordConfirmCurrent) {
-      setPasswordConfirmMessage("비밀번호가 일치합니다.");
+      setPasswordConfirmMessage("");
       setIsPasswordConfirmOk(true);
     } else {
       setPasswordConfirmMessage("비밀번호가 다릅니다.");
@@ -168,7 +182,7 @@ function ClientJoinPage() {
       setNameMessage("2글자 이상 10글자 이하로 입력해주세요.");
       setIsNameOk(false);
     } else {
-      setNameMessage("올바른 이름 형식입니다.");
+      setNameMessage("");
       setIsNameOk(true);
     }
   };
@@ -188,11 +202,23 @@ function ClientJoinPage() {
     const phonePattern = /^010-\d{4}-?\d{4}$/;
 
     if (phonePattern.test(input)) {
-      setPhoneMessage("올바른 전화번호 형식입니다.");
+      setPhoneMessage("");
       setIsPhoneOk(true);
     } else {
       setPhoneMessage("올바르지 않은 전화번호 형식입니다.");
       setIsPhoneOk(false);
+    }
+  };
+  const onAddressDetailChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    setAddressDetail(e.target.value);
+    if (e.target.value.length === 0) {
+      setAddressDetailMessage("상세주소를 입력해주세요.");
+      setIsAddressDetailOk(false);
+    } else {
+      setAddressDetailMessage("");
+      setIsAddressDetailOk(true);
     }
   };
 
@@ -292,6 +318,16 @@ function ClientJoinPage() {
           주소검색
         </Button>
       </Box>
+
+      <TextField
+        {...(isAddressDetailOk ? {} : { error: true })}
+        type="text"
+        size="small"
+        label="상세주소"
+        value={addressDetail}
+        onChange={onAddressDetailChange}
+        helperText={addressDetailMessage}
+      />
 
       <Button variant="contained" size="large" onClick={joinRequest}>
         회원 가입
