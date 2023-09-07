@@ -181,7 +181,7 @@ function EmployeeInfoCard({ width, height, memberInfo, setMemberInfo }: Props) {
     if (memberInfo?.roleId) {
       setRoleId(memberInfo.roleId);
     }
-  }, [employeeId]);
+  }, [memberInfo]);
 
   const updateRequest = () => {
     const handelRequestSuccess: RequestSuccessHandler = () => {
@@ -202,8 +202,7 @@ function EmployeeInfoCard({ width, height, memberInfo, setMemberInfo }: Props) {
       setEmailMessage("");
       setIsPhoneOk(true);
       setPhoneMessage("");
-
-      alert("정보가 수정되었습니다.");
+      setIsAddressDetailOk(true);
     };
     const handelRequestFail: RequestFailHandler = (e) => {
       alert((e.response.data as { code: string; message: string }).message);

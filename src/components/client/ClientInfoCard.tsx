@@ -41,16 +41,24 @@ function ClientInfoCard({ width, height }: Props) {
   const [isEmailOk, setIsEmailOk] = useState(true);
   const [emailMessage, setEmailMessage] = useState("");
   const [address, setAddress] = useState("");
+  const [addressDetail, setAddressDetail] = useState("");
+
   const [previousName, setPreviousName] = useState("");
   const [previousPhone, setPreviousPhone] = useState("");
   const [previousEmail, setPreviousEmail] = useState("");
   const [previousAddress, setPreviousAddress] = useState("");
+  const [previousAddressDetail, setPreviousAddressDetail] = useState("");
+
   const [memberId, setMemberId] = useState<number>();
   const [editMode, setEditMode] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const setRecoilAddress = useSetRecoilState(curMemberAddressState);
+
   const [isPromotionDialogOpen, setIsPromotionDialogOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isAddressDetailOk, setIsAddressDetailOk] = useState(true);
+  const [addressDetailMessage, setAddressDetailMessage] = useState("");
+
   const [promotionKey, setPromotionKey] = useState("");
 
   const onEmailChange = (
@@ -93,6 +101,21 @@ function ClientInfoCard({ width, height }: Props) {
     }
   };
 
+  const onAddressDetailChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    let input = e.target.value;
+    setAddressDetail(input);
+
+    if (input.length === 0) {
+      setAddressDetailMessage("상세주소를 입력해 주세요.");
+      setIsAddressDetailOk(false);
+    } else {
+      setIsAddressDetailOk(true);
+      setAddressDetailMessage("");
+    }
+  };
+
   useEffect(() => {
     if (typeof clientId !== "number") {
       return;
@@ -108,6 +131,7 @@ function ClientInfoCard({ width, height }: Props) {
       setPhone(clientData.phone);
       setEmail(clientData.email);
       setAddress(clientData.address);
+      setAddressDetail(clientData.addressDetail);
       setMemberId(clientData.memberId);
     };
 
@@ -138,9 +162,11 @@ function ClientInfoCard({ width, height }: Props) {
         setPhone(updatedData.phone);
         setEmail(updatedData.email);
         setAddress(updatedData.address);
+        setAddressDetail(updatedData.addressDetail);
         setMemberId(updatedData.memberId);
         setEmailMessage("");
         setPhoneMessage("");
+        setAddressDetailMessage("");
       };
 
       const handleRequestFail2: RequestFailHandler = (e) => {
@@ -164,6 +190,7 @@ function ClientInfoCard({ width, height }: Props) {
         name,
         phone,
         address,
+        addressDetail,
       },
       onSuccess: handleRequestSuccess,
       onFail: handleRequestFail,
@@ -177,6 +204,7 @@ function ClientInfoCard({ width, height }: Props) {
     setPreviousEmail(email);
     setPreviousPhone(phone);
     setPreviousAddress(address);
+    setPreviousAddressDetail(addressDetail);
   };
 
   const handleCancelUpdateButton = () => {
@@ -184,8 +212,15 @@ function ClientInfoCard({ width, height }: Props) {
     setEmail(previousEmail);
     setPhone(previousPhone);
     setAddress(previousAddress);
+    setAddressDetail(previousAddressDetail);
+
+    setIsEmailOk(true);
     setEmailMessage("");
+    setIsPhoneOk(true);
     setPhoneMessage("");
+    setIsAddressDetailOk(true);
+    setAddressDetailMessage("");
+    setEditMode(false);
   };
 
   const requestCreateClientPromotion = () => {
@@ -455,7 +490,7 @@ function ClientInfoCard({ width, height }: Props) {
             )}
           </Box>
           <br />
-          <Box sx={{ display: "flex" }}>
+          <Box sx={{ display: "flex", marginBottom: "15px" }}>
             {editMode ? (
               <>
                 <Box sx={{ display: "flex" }}>
@@ -507,18 +542,47 @@ function ClientInfoCard({ width, height }: Props) {
                 </Typography>
               </Box>
             )}
-            {/*{editMode ? (*/}
-            {/*  <Button*/}
-            {/*    size="small"*/}
-            {/*    onClick={() => {*/}
-            {/*      setIsModalOpen(true);*/}
-            {/*    }}*/}
-            {/*  >*/}
-            {/*    주소검색*/}
-            {/*  </Button>*/}
-            {/*) : (*/}
-            {/*  ""*/}
-            {/*)}*/}
+          </Box>
+          <Box sx={{ marginBottom: "15px" }}>
+            {editMode ? (
+              <Box>
+                <SvgIcon
+                  component={LocationOn}
+                  sx={{ color: "#1976d2", marginTop: "5px" }}
+                />{" "}
+                &nbsp;
+                <TextField
+                  {...(isAddressDetailOk ? {} : { error: true })}
+                  id="phone-input"
+                  disabled={!editMode}
+                  type="tel"
+                  size="small"
+                  sx={{ display: "inline-block", fontSize: 20 }}
+                  value={addressDetail}
+                  onChange={onAddressDetailChange}
+                  helperText={addressDetailMessage}
+                />
+              </Box>
+            ) : (
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <SvgIcon
+                  component={LocationOn}
+                  sx={{ color: "#1976d2", marginBottom: "5px" }}
+                />{" "}
+                &nbsp;&nbsp;
+                <Typography
+                  sx={{
+                    display: "inline-block",
+                    fontSize: 18,
+                    fontWeight: "bold",
+                  }}
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  {addressDetail}
+                </Typography>
+              </Box>
+            )}
           </Box>
         </CardContent>
       </Card>
