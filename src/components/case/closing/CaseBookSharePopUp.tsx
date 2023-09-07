@@ -19,7 +19,6 @@ import IconButton from "@mui/material/IconButton";
 import Card from "@mui/material/Card";
 import { produce } from "immer";
 import TextField from "@mui/material/TextField";
-import "../../../stylesheet/custom.css";
 
 function CaseBookSharePopUp() {
   const caseId = useRecoilValue(caseIdState);
@@ -99,10 +98,7 @@ function CaseBookSharePopUp() {
         />
       </Box>
       <Card>
-        <List
-          className="custom-scroll-bar"
-          sx={{ height: 240, paddingLeft: 1, overflow: "scroll" }}
-        >
+        <List sx={{ height: 240, paddingLeft: 1, overflow: "auto" }}>
           {emails.map((item) => (
             <ListItem
               key={item}

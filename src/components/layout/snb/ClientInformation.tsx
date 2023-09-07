@@ -48,7 +48,12 @@ function ClientInformation() {
     ) : null;
 
   return (
-    <List sx={{ height: "100%", padding: 0 }}>
+    <List
+      sx={{
+        height: 64,
+        padding: 0,
+      }}
+    >
       <ListItem sx={{ height: "100%", padding: 0 }}>{contents}</ListItem>
     </List>
   );

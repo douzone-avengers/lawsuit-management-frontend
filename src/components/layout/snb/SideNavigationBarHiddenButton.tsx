@@ -1,10 +1,10 @@
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import sideNavigationBarOpenState from "../../../states/layout/SideNavigationBarOpenState.tsx";
 import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
 function SideNavigationBarHiddenButton() {
-  const setSideNavigationBarOpen = useSetRecoilState(
+  const [, setSideNavigationBarOpen] = useRecoilState(
     sideNavigationBarOpenState,
   );
 

@@ -49,3 +49,26 @@ export function mapLawsuitStatus(status: string) {
       return status as LawsuitStatus;
   }
 }
+
+export function convertHierarchy(id: number) {
+  switch (id) {
+    case 1:
+      return "없음";
+    case 2:
+      return "사원";
+    case 3:
+      return "대리";
+    case 4:
+      return "과장";
+    case 5:
+      return "부장";
+    case 6:
+      return "변호사";
+    case 7:
+      return "법무사";
+    case 8:
+      return "사무장";
+    default:
+      return "";
+  }
+}
