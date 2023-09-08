@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import { Button, TableSortLabel } from "@mui/material";
 import React from "react";
 import TableCell from "@mui/material/TableCell";
-import { HeadCell } from "../../../type/HeadCell.ts";
+import { HeadCell } from "../../../type/HeadCell.tsx";
 
 type Props = {
   sortKey: string;

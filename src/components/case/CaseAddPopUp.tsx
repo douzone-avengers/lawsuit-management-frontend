@@ -17,7 +17,7 @@ import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
 } from "../../lib/requestDeprecated.ts";
-import { Court } from "./type/CourtInfo.ts";
+import { Court } from "./type/CourtInfo.tsx";
 import { MemberInfo } from "../employee/type/MemberInfo.tsx";
 import { ClientInfo } from "../client/type/ClientInfo.ts";
 import { LawsuitInfo } from "./type/LawsuitInfo.tsx";

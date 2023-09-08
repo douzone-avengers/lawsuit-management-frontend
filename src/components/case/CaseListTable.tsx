@@ -11,7 +11,7 @@ import { TableFooter, TablePagination, TableSortLabel } from "@mui/material";
 import React from "react";
 import Card from "@mui/material/Card";
 import CardTitle from "../common/CardTitle.tsx";
-import { HeadCell } from "./type/HeadCell.ts";
+import { HeadCell } from "./type/HeadCell.tsx";
 
 type Props = {
   cases: (LawsuitInfo & { onClick: () => void })[];
