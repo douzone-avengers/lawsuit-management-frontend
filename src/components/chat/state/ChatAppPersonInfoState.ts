@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { SearchUserDetailByEmail } from "../type/ResponseType.ts";
+import { SearchUserDetailByEmailResponseType } from "../type/ResponseType.ts";
 
 type ChatAppPersonInfoType =
   | {
@@ -17,7 +17,7 @@ type ChatAppPersonInfoType =
     } & (
       | {
           result: "Success";
-          value: SearchUserDetailByEmail;
+          value: SearchUserDetailByEmailResponseType;
         }
       | { result: "Failure"; errMsg: string }
     ));

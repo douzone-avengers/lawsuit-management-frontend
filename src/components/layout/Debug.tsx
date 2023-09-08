@@ -13,7 +13,6 @@ function Debug() {
   const employeeId = useRecoilValue(employeeIdState);
   const subNavigationBar = useRecoilValue(subNavigationBarState);
   const user = useRecoilValue(userState);
-
   const [show, setShow] = useState(true);
 
   const handleKeydown = (e: KeyboardEvent) => {

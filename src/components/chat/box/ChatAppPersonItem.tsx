@@ -58,32 +58,34 @@ function ChatAppPersonItem({
       <div
         style={{
           display: "flex",
+          width: 300,
           flexDirection: "column",
           paddingLeft: 10,
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            width: 100,
-            height: "100%",
-            fontSize: 16,
-          }}
-        >
-          {name}
-        </div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            width: 100,
-            height: "100%",
-            fontSize: 14,
-            paddingLeft: 2,
-          }}
-        >
-          {hierarchy}
+        <div>
+          <div
+            style={{
+              height: "100%",
+              width: "100%",
+              fontSize: 16,
+            }}
+          >
+            {name}
+          </div>
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              fontSize: 14,
+              paddingLeft: 2,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {hierarchy}
+          </div>
         </div>
       </div>
     </div>

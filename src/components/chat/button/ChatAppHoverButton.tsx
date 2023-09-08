@@ -4,10 +4,11 @@ import { SvgIconTypeMap } from "@mui/material/SvgIcon/SvgIcon";
 
 type Props = {
   Icon: OverridableComponent<SvgIconTypeMap> & { muiName: string };
+  text?: string;
   onClick?: () => void;
 };
 
-function ChatAppHoverButton({ Icon, onClick }: Props) {
+function ChatAppHoverButton({ Icon, text, onClick }: Props) {
   const [color, setColor] = useState("gray");
   const [background, setBackground] = useState("white");
 
@@ -15,6 +16,7 @@ function ChatAppHoverButton({ Icon, onClick }: Props) {
     <div
       style={{
         display: "flex",
+        flexDirection: "column",
         height: 48,
         width: 48,
         background,
@@ -34,6 +36,13 @@ function ChatAppHoverButton({ Icon, onClick }: Props) {
       }}
     >
       <Icon sx={{ color }} />
+      <div
+        style={{
+          color,
+        }}
+      >
+        {text}
+      </div>
     </div>
   );
 }

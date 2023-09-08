@@ -12,7 +12,7 @@ import { convertHierarchy } from "../../../lib/convert.ts";
 import ChatAppPersonItem from "../box/ChatAppPersonItem.tsx";
 import ChatAppHeaderText from "../box/ChatAppHeaderText.tsx";
 import chatAppSceneState from "../state/ChatAppSceneState.ts";
-import chatAppPersonInfoState from "../state/ChatAppPersonInfo.ts";
+import chatAppPersonInfoState from "../state/ChatAppPersonInfoState.ts";
 
 function ChatAppPersonScene() {
   const user = useRecoilValue(userState);
