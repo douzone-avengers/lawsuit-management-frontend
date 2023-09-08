@@ -61,7 +61,13 @@ function CaseExpenseTable() {
   }, [caseId, sortKey, sortOrder]);
 
   return (
-    <Box sx={{ display: "flex", width: "100%", flexDirection: "column" }}>
+    <Box
+      sx={{
+        display: "flex",
+        width: "70%",
+        flexDirection: "column",
+      }}
+    >
       <Box sx={{ marginBottom: 2 }}></Box>
       <Divider />
       <CaseExpenseHeaderRow
@@ -79,7 +85,7 @@ function CaseExpenseTable() {
         <Box
           sx={{
             width: "100%",
-            height: 120,
+            height: 200,
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -88,6 +94,9 @@ function CaseExpenseTable() {
           지출정보가 존재하지 않습니다.
         </Box>
       )}
+      {Array.from({ length: 5 - expenses.length }).map((_, index) => (
+        <Box key={index} sx={{ width: "100%", height: 40 }}></Box>
+      ))}
       <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
       <Box
         sx={{
@@ -158,6 +167,7 @@ function CaseExpenseTable() {
           next
         </Button>
       </Box>
+      <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
     </Box>
   );
 }

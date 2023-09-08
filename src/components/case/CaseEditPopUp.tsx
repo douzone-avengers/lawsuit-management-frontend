@@ -13,7 +13,7 @@ import PopUp from "../common/PopUp.tsx";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import caseEditPopUpOpenState from "../../states/case/CaseEditPopUpOpenState.tsx";
 import { useEffect, useState } from "react";
-import { Court } from "./type/CourtInfo.ts";
+import { Court } from "./type/CourtInfo.tsx";
 import { MemberInfo } from "../employee/type/MemberInfo.tsx";
 import { ClientInfo } from "../client/type/ClientInfo.ts";
 import requestDeprecated, {
@@ -173,6 +173,7 @@ function CaseEditPopUp({ courtList }: Props) {
       onFail: handleRequestFail,
     });
   };
+  console.dir(selectMemberIdList);
 
   return (
     <PopUp width={600} height={763.27}>
