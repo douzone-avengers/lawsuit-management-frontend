@@ -126,7 +126,17 @@ function AdviceListTable({ advices }: Props) {
                           shrink: true,
                         }}
                       />
-
+                      <TextField
+                        style={{ margin: "10px 0" }}
+                        label="상담 날짜"
+                        value={advice?.advicedAt}
+                        InputProps={{
+                          readOnly: true,
+                        }}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
                       <TextField
                         style={{ margin: "10px 0" }}
                         label="상담관"
@@ -158,17 +168,6 @@ function AdviceListTable({ advices }: Props) {
                         }}
                         multiline
                         rows={4}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                      />
-                      <TextField
-                        style={{ margin: "10px 0" }}
-                        label="상담 날짜"
-                        value={advice?.advicedAt}
-                        InputProps={{
-                          readOnly: true,
-                        }}
                         InputLabelProps={{
                           shrink: true,
                         }}
