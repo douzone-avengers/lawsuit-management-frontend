@@ -46,9 +46,6 @@ function ClientJoinPage() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // const handleChange = (event: SelectChangeEvent) => {
-  //   setHierarchy(event.target.value as string);
-  // };
   const navigate = useNavigate();
 
   useEffect(() => {

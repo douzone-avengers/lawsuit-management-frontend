@@ -1,11 +1,4 @@
-import {
-  Button,
-  CircularProgress,
-  Divider,
-  TextField,
-  Typography,
-} from "@mui/material";
-import Box from "@mui/material/Box";
+import { Button, CircularProgress, TextField } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import requestDeprecated, {
@@ -102,30 +95,6 @@ function LoginPage() {
             </Button>
           </>
         )}
-
-        <Divider />
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 1,
-          }}
-        >
-          <Typography variant="caption">아이디 찾기</Typography>
-          <Divider orientation="vertical" flexItem />
-          <Typography variant="caption">비밀번호 찾기</Typography>
-          <Divider orientation="vertical" flexItem />
-          <Typography
-            sx={{ cursor: "pointer" }}
-            variant="caption"
-            onClick={() => {
-              navigate("/validate");
-            }}
-          >
-            회원가입
-          </Typography>
-        </Box>
       </PopUp>
       {import.meta.env.DEV ? <Debug /> : null}
     </>
