@@ -2,9 +2,9 @@ import { useSetRecoilState } from "recoil";
 import caseExpenseAddPopUpOpenState from "../../../../../states/case/info/expense/CaseExpenseAddPopUpOpenState.tsx";
 import Box from "@mui/material/Box";
 import { Button, TableSortLabel } from "@mui/material";
-import { HeadCell } from "../../../../employee/type/HeadCell.tsx";
 import React from "react";
 import TableCell from "@mui/material/TableCell";
+import { HeadCell } from "../../../type/HeadCell.tsx";
 
 type Props = {
   sortKey: string;
@@ -68,14 +68,23 @@ function CaseExpenseHeaderRow({
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          flex: 1,
         }}
       >
         {!headCells[0].canSort ? (
-          <TableCell key={headCells[0].id} align="center">
+          <TableCell
+            key={headCells[0].id}
+            sx={{ fontSize: 16, padding: 0, borderBottom: "none" }}
+            align="center"
+          >
             <b>{headCells[0].label}</b>
           </TableCell>
         ) : (
-          <TableCell key={headCells[0].id} align="center">
+          <TableCell
+            key={headCells[0].id}
+            sx={{ fontSize: 16, paddingLeft: "40px", borderBottom: "none" }}
+            align="center"
+          >
             <TableSortLabel
               sx={{ align: "center" }}
               active={sortKey === headCells[0].id}
@@ -99,11 +108,19 @@ function CaseExpenseHeaderRow({
         }}
       >
         {!headCells[1].canSort ? (
-          <TableCell key={headCells[1].id} align="center">
+          <TableCell
+            key={headCells[1].id}
+            sx={{ fontSize: 16, padding: 0, borderBottom: "none" }}
+            align="center"
+          >
             <b>{headCells[1].label}</b>
           </TableCell>
         ) : (
-          <TableCell key={headCells[1].id} align="center">
+          <TableCell
+            key={headCells[1].id}
+            sx={{ fontSize: 16, paddingLeft: "40px", borderBottom: "none" }}
+            align="center"
+          >
             <TableSortLabel
               sx={{ align: "center" }}
               active={sortKey === headCells[1].id}
@@ -127,11 +144,19 @@ function CaseExpenseHeaderRow({
         }}
       >
         {!headCells[2].canSort ? (
-          <TableCell key={headCells[2].id} align="center">
+          <TableCell
+            key={headCells[2].id}
+            sx={{ fontSize: 16, padding: 0, borderBottom: "none" }}
+            align="center"
+          >
             <b>{headCells[2].label}</b>
           </TableCell>
         ) : (
-          <TableCell key={headCells[2].id} align="center">
+          <TableCell
+            key={headCells[2].id}
+            sx={{ fontSize: 16, paddingLeft: "40px", borderBottom: "none" }}
+            align="center"
+          >
             <TableSortLabel
               sx={{ align: "center" }}
               active={sortKey === headCells[2].id}
@@ -156,7 +181,7 @@ function CaseExpenseHeaderRow({
       >
         <Button
           variant="contained"
-          sx={{ width: 185, color: "secondary" }}
+          sx={{ width: 185, color: "secondary", fontSize: 16 }}
           onClick={handleExpenseAddButtonClick}
         >
           등록
