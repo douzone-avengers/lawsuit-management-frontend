@@ -63,7 +63,13 @@ function EmployeeInfoTap() {
 
   return (
     <Box sx={{ display: "flex", gap: 3, flexDirection: "row", height: "100%" }}>
-      <EmployeeInfoCard width={"50%"} memberInfo={memberInfo} />
+      {memberInfo && setMemberInfo && (
+        <EmployeeInfoCard
+          width={"50%"}
+          memberInfo={memberInfo}
+          setMemberInfo={setMemberInfo}
+        />
+      )}
 
       <Box
         ref={parentContainer}

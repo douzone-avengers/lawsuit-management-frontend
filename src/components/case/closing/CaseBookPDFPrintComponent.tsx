@@ -10,7 +10,7 @@ import { delimiter } from "../../../lib/convert.ts";
 import PageLoadingSpinner from "../../layout/PageLoadingSpinner.tsx";
 import caseBookPDFPrintLoadingState from "../../../states/case/info/closing/CaseBookPDFPrintLoadingState.tsx";
 
-type AllLawsuitType = {
+export type AllLawsuitType = {
   lawsuit: {
     id: number;
     name: string;

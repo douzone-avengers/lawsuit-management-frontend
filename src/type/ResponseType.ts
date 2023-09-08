@@ -4,7 +4,9 @@ export type Advicedata = {
   id: number;
   title: string;
   contents: string;
-  date: Date;
+  advicedAt: Date;
+  clientId: string;
+  memberId: string;
 };
 
 export type ClientData = {

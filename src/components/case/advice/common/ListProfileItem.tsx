@@ -6,7 +6,7 @@ import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { SvgIconTypeMap } from "@mui/material/SvgIcon/SvgIcon";
 
 type Props = {
-  SvgIcon: OverridableComponent<SvgIconTypeMap>;
+  SvgIcon?: OverridableComponent<SvgIconTypeMap>;
   primary?: number | string;
   secondary?: number | string;
 };
@@ -15,9 +15,7 @@ function ListProfileItem({ SvgIcon, primary, secondary }: Props) {
   return (
     <ListItem>
       <ListItemAvatar>
-        <Avatar>
-          <SvgIcon />
-        </Avatar>
+        <Avatar>{SvgIcon && <SvgIcon />}</Avatar>
       </ListItemAvatar>
       <ListItemText
         primary={primary}
