@@ -39,6 +39,14 @@ function AdviceRegisterPopUp({ setAdvices }: Props) {
   const handleCloseButtonClick = () => {
     setAdviceRegisterPopUpOpen(false);
   };
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newTitle = e.target.value;
+    if (newTitle.length <= 15) {
+      setTitle(newTitle);
+    } else {
+      alert("상담 제목은 최대 15자까지 가능합니다.");
+    }
+  };
 
   const handleRegisterButtonClick = () => {
     const handleRequestSuccess: RequestSuccessHandler = () => {
@@ -115,9 +123,9 @@ function AdviceRegisterPopUp({ setAdvices }: Props) {
       <TextField
         type="text"
         size="small"
-        label="상담 제목"
+        label="상담 제목(15글자 이하)"
         value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        onChange={handleTitleChange}
       />
 
       <TextField
