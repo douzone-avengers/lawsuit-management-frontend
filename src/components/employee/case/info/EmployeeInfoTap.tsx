@@ -62,7 +62,7 @@ function EmployeeInfoTap() {
   }, [employeeId]);
 
   return (
-    <Box sx={{ display: "flex", gap: 3, flexDirection: "row", height: "100%" }}>
+    <Box sx={{ display: "flex", gap: 3, flexDirection: "row", height: "90%" }}>
       {memberInfo && setMemberInfo && (
         <EmployeeInfoCard
           width={"50%"}
@@ -76,7 +76,7 @@ function EmployeeInfoTap() {
         sx={{
           display: "inline-block",
           width: "50%",
-          height: height - 210,
+          height: height - 230,
         }}
       >
         <KakaoMap
