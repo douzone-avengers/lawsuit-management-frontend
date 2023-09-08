@@ -59,14 +59,20 @@ function PrivatePage() {
 
   return (
     <Box sx={{ display: "flex", gap: 3, flexDirection: "row", height: "100%" }}>
-      <PrivateCard width={"50%"} memberInfo={memberInfo} />
+      {memberInfo && setMemberInfo && (
+        <PrivateCard
+          width={"50%"}
+          memberInfo={memberInfo}
+          setMemberInfo={setMemberInfo}
+        />
+      )}
 
       <Box
         ref={parentContainer}
         sx={{
           display: "inline-block",
           width: "50%",
-          height: height - 210,
+          height: height - 105,
         }}
       >
         <KakaoMap

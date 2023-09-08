@@ -11,16 +11,22 @@ import requestDeprecated, {
   RequestSuccessHandler,
 } from "../../lib/requestDeprecated.ts";
 import clientIdState from "../../states/client/ClientIdState.tsx";
+import { ClientData } from "../../type/ResponseType";
+import { SubNavigationBarItemState } from "../layout/snb/SubNavigationBarItem";
+import PersonIcon from "@mui/icons-material/Person";
+import subNavigationBarState from "../../states/layout/SubNavigationBarState";
 
 function ClientRemovePopUp() {
   const setClientRemovePopUpOpen = useSetRecoilState(
     clientRemovePopUpOpenState,
   );
+  const setSubNavigationBar = useSetRecoilState(subNavigationBarState);
   const clientId = useRecoilValue(clientIdState);
 
   const handleRemoveButtonClick = () => {
     const handleRequestSuccess: RequestSuccessHandler = () => {
       alert("의뢰인이 삭제되었습니다.");
+      handelAfterRegister();
     };
 
     const handleRequestFail: RequestFailHandler = (e) => {
@@ -36,6 +42,34 @@ function ClientRemovePopUp() {
 
   const handleCloseButtonClick = () => {
     setClientRemovePopUpOpen(false);
+  };
+
+  const handelAfterRegister = () => {
+    const handleRequestSuccess: RequestSuccessHandler = (res) => {
+      const body: ClientData[] = res.data;
+      const newItems: SubNavigationBarItemState[] = body.map((item) => {
+        return {
+          id: item.id,
+          text: item.name,
+          url: `clients/${item.id}`,
+          SvgIcon: PersonIcon,
+        };
+      });
+      setSubNavigationBar({
+        type: "client",
+        curId: newItems[0].id,
+        items: newItems,
+      });
+    };
+
+    const handleRequestFail: RequestFailHandler = (e) => {
+      alert((e.response.data as { code: string; message: string }).message);
+    };
+
+    requestDeprecated("GET", "/clients", {
+      onSuccess: handleRequestSuccess,
+      onFail: handleRequestFail,
+    });
   };
 
   return (
