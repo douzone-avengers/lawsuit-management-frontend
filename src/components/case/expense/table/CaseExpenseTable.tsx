@@ -61,7 +61,14 @@ function CaseExpenseTable() {
   }, [caseId, sortKey, sortOrder]);
 
   return (
-    <Box sx={{ display: "flex", width: "100%", flexDirection: "column" }}>
+    <Box
+      sx={{
+        display: "flex",
+        width: "70%",
+        minHeight: 300,
+        flexDirection: "column",
+      }}
+    >
       <Box sx={{ marginBottom: 2 }}></Box>
       <Divider />
       <CaseExpenseHeaderRow
@@ -79,7 +86,7 @@ function CaseExpenseTable() {
         <Box
           sx={{
             width: "100%",
-            height: 120,
+            height: 200,
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -158,6 +165,7 @@ function CaseExpenseTable() {
           next
         </Button>
       </Box>
+      <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
     </Box>
   );
 }

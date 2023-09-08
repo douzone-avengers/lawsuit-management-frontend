@@ -71,41 +71,27 @@ function CaseExpenseHeaderRow({
           flex: 1,
         }}
       >
-        {!headCells[0].canSort ? (
-          <TableCell
-            key={headCells[0].id}
-            sx={{
-              fontSize: 16,
-              padding: 0,
-              borderBottom: "none",
+        <TableCell
+          key={headCells[0].id}
+          sx={{
+            minWidth: 150,
+            fontSize: 16,
+            padding: 0,
+            borderBottom: "none",
+          }}
+          align="center"
+        >
+          <TableSortLabel
+            sx={{ align: "center", paddingLeft: "17.99px" }}
+            active={sortKey === headCells[0].id}
+            direction={sortKey === headCells[0].id ? sortOrder : "asc"}
+            onClick={() => {
+              sortHandler(headCells[0].id);
             }}
-            align="center"
           >
             <b>{headCells[0].label}</b>
-          </TableCell>
-        ) : (
-          <TableCell
-            key={headCells[0].id}
-            sx={{
-              minWidth: 150,
-              fontSize: 16,
-              padding: 0,
-              borderBottom: "none",
-            }}
-            align="center"
-          >
-            <TableSortLabel
-              sx={{ align: "center", paddingLeft: "17.99px" }}
-              active={sortKey === headCells[0].id}
-              direction={sortKey === headCells[0].id ? sortOrder : "asc"}
-              onClick={() => {
-                sortHandler(headCells[0].id);
-              }}
-            >
-              <b>{headCells[0].label}</b>
-            </TableSortLabel>
-          </TableCell>
-        )}
+          </TableSortLabel>
+        </TableCell>
       </Box>
       <Box
         sx={{
@@ -116,42 +102,27 @@ function CaseExpenseHeaderRow({
           alignItems: "center",
         }}
       >
-        {!headCells[1].canSort ? (
-          <TableCell
-            key={headCells[1].id}
-            sx={{
-              fontSize: 16,
-              padding: 0,
-              borderBottom: "none",
-              minWidth: 200,
+        <TableCell
+          key={headCells[1].id}
+          sx={{
+            fontSize: 16,
+            padding: 0,
+            borderBottom: "none",
+            minWidth: 200,
+          }}
+          align="center"
+        >
+          <TableSortLabel
+            sx={{ align: "center", paddingLeft: "17.99px" }}
+            active={sortKey === headCells[1].id}
+            direction={sortKey === headCells[1].id ? sortOrder : "asc"}
+            onClick={() => {
+              sortHandler(headCells[1].id);
             }}
-            align="center"
           >
             <b>{headCells[1].label}</b>
-          </TableCell>
-        ) : (
-          <TableCell
-            key={headCells[1].id}
-            sx={{
-              fontSize: 16,
-              padding: 0,
-              borderBottom: "none",
-              minWidth: 200,
-            }}
-            align="center"
-          >
-            <TableSortLabel
-              sx={{ align: "center", paddingLeft: "17.99px" }}
-              active={sortKey === headCells[1].id}
-              direction={sortKey === headCells[1].id ? sortOrder : "asc"}
-              onClick={() => {
-                sortHandler(headCells[1].id);
-              }}
-            >
-              <b>{headCells[1].label}</b>
-            </TableSortLabel>
-          </TableCell>
-        )}
+          </TableSortLabel>
+        </TableCell>
       </Box>
       <Box
         sx={{
@@ -162,42 +133,27 @@ function CaseExpenseHeaderRow({
           alignItems: "center",
         }}
       >
-        {!headCells[2].canSort ? (
-          <TableCell
-            key={headCells[2].id}
-            sx={{
-              fontSize: 16,
-              padding: 0,
-              borderBottom: "none",
-              minWidth: 100,
+        <TableCell
+          key={headCells[2].id}
+          sx={{
+            fontSize: 16,
+            padding: 0,
+            borderBottom: "none",
+            minWidth: 100,
+          }}
+          align="center"
+        >
+          <TableSortLabel
+            sx={{ align: "center", paddingLeft: "17.99px" }}
+            active={sortKey === headCells[2].id}
+            direction={sortKey === headCells[2].id ? sortOrder : "asc"}
+            onClick={() => {
+              sortHandler(headCells[2].id);
             }}
-            align="center"
           >
             <b>{headCells[2].label}</b>
-          </TableCell>
-        ) : (
-          <TableCell
-            key={headCells[2].id}
-            sx={{
-              fontSize: 16,
-              padding: 0,
-              borderBottom: "none",
-              minWidth: 100,
-            }}
-            align="center"
-          >
-            <TableSortLabel
-              sx={{ align: "center", paddingLeft: "17.99px" }}
-              active={sortKey === headCells[2].id}
-              direction={sortKey === headCells[2].id ? sortOrder : "asc"}
-              onClick={() => {
-                sortHandler(headCells[2].id);
-              }}
-            >
-              <b>{headCells[2].label}</b>
-            </TableSortLabel>
-          </TableCell>
-        )}
+          </TableSortLabel>
+        </TableCell>
       </Box>
       <Box
         sx={{
