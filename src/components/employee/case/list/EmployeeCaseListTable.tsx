@@ -119,41 +119,49 @@ function EmployeeCaseListTable({
       id: "number",
       label: "번호",
       canSort: false,
+      width: "5%",
     },
     {
       id: "name",
       label: "사건명",
       canSort: true,
+      width: "20%",
     },
     {
       id: "lawsuitNum",
       label: "사건번호",
       canSort: true,
+      width: "15%",
     },
     {
       id: "lawsuitStatus",
       label: "사건상태",
       canSort: true,
+      width: "15%",
     },
     {
       id: "commissionFee",
       label: "의뢰비",
       canSort: true,
+      width: "10%",
     },
     {
       id: "contingentFee",
       label: "성공보수",
       canSort: true,
+      width: "10%",
     },
     {
       id: "createdAt",
       label: "등록일",
       canSort: true,
+      width: "15%",
     },
     {
       id: "remove",
       label: "담당자 제거",
       canSort: false,
+      width: "10%",
     },
   ];
 
@@ -182,16 +190,20 @@ function EmployeeCaseListTable({
               <TableRow>
                 {headCells.map((headCell) =>
                   !headCell.canSort ? (
-                    <TableCell key={headCell.id} align="center">
+                    <TableCell
+                      key={headCell.id}
+                      align="left"
+                      style={{ width: headCell.width }}
+                    >
                       <b>{headCell.label}</b>
                     </TableCell>
                   ) : (
-                    <TableCell key={headCell.id} align="center">
+                    <TableCell
+                      key={headCell.id}
+                      align="left"
+                      style={{ width: headCell.width }}
+                    >
                       <TableSortLabel
-                        sx={{
-                          align: "center",
-                          marginLeft: "25px",
-                        }}
                         active={sortKey === headCell.id}
                         direction={sortKey === headCell.id ? sortOrder : "asc"}
                         onClick={() => {
@@ -217,24 +229,54 @@ function EmployeeCaseListTable({
                     }}
                     onClick={item.onClick}
                   >
-                    <TableCell align="center" component="th" scope="row">
+                    <TableCell
+                      align="left"
+                      component="th"
+                      scope="row"
+                      style={{ width: headCells[0].width }}
+                    >
                       {page * rowsPerPage + index + 1}
                     </TableCell>
-                    <TableCell align="center">{item.name}</TableCell>
-                    <TableCell align="center">
+                    <TableCell
+                      align="left"
+                      style={{ width: headCells[1].width }}
+                    >
+                      {item.name}
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      style={{ width: headCells[2].width }}
+                    >
                       {item.lawsuitNum ? item.lawsuitNum : "-"}
                     </TableCell>
-                    <TableCell align="center">{item.lawsuitStatus}</TableCell>
-                    <TableCell align="center">
+                    <TableCell
+                      align="left"
+                      style={{ width: headCells[3].width }}
+                    >
+                      {item.lawsuitStatus}
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      style={{ width: headCells[4].width }}
+                    >
                       {delimiter(item.commissionFee)}
                     </TableCell>
-                    <TableCell align="center">
+                    <TableCell
+                      align="left"
+                      style={{ width: headCells[5].width }}
+                    >
                       {delimiter(item.contingentFee)}
                     </TableCell>
-                    <TableCell align="center">
+                    <TableCell
+                      align="left"
+                      style={{ width: headCells[6].width }}
+                    >
                       {item.createdAt.toString().substring(0, 10)}
                     </TableCell>
-                    <TableCell align="center">
+                    <TableCell
+                      align="left"
+                      style={{ width: headCells[7].width }}
+                    >
                       <Button
                         variant="contained"
                         color="primary"
