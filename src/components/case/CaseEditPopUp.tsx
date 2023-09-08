@@ -173,6 +173,7 @@ function CaseEditPopUp({ courtList }: Props) {
       onFail: handleRequestFail,
     });
   };
+  console.dir(selectMemberIdList);
 
   return (
     <PopUp width={600} height={763.27}>

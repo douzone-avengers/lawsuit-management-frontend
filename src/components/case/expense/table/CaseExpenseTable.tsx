@@ -65,7 +65,6 @@ function CaseExpenseTable() {
       sx={{
         display: "flex",
         width: "70%",
-        minHeight: 300,
         flexDirection: "column",
       }}
     >
@@ -95,6 +94,9 @@ function CaseExpenseTable() {
           지출정보가 존재하지 않습니다.
         </Box>
       )}
+      {Array.from({ length: 5 - expenses.length }).map((_, index) => (
+        <Box key={index} sx={{ width: "100%", height: 40 }}></Box>
+      ))}
       <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
       <Box
         sx={{

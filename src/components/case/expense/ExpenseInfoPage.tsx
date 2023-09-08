@@ -10,11 +10,16 @@ import caseExpenseRemovePopUpOpenState from "../../../states/case/info/expense/C
 import CaseExpenseRemovePopUp from "./table/popup/CaseExpenseRemovePopUp.tsx";
 import CaseExpenseBillTable from "./table/CaseExpenseBillTable.tsx";
 import { Divider } from "@mui/material";
+import caseExpenseBillRemovePopUpOpenState from "../../../states/case/info/expense/CaseExpenseBillRemovePopUpOpenState.tsx";
+import CaseExpenseBillRemovePopUp from "./table/popup/CaseExpenseBillRemovePopUp.tsx";
 
 function ExpenseInfoPage() {
   const expenseAddPopUpOpen = useRecoilValue(caseExpenseAddPopUpOpenState);
   const expenseRemovePopUpOpen = useRecoilValue(
     caseExpenseRemovePopUpOpenState,
+  );
+  const expenseBillRemovePopUpOpen = useRecoilValue(
+    caseExpenseBillRemovePopUpOpenState,
   );
 
   return (
@@ -25,7 +30,7 @@ function ExpenseInfoPage() {
           <CaseExpenseSearchBox />
         </Box>
       </Card>
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex", height: "326.87px" }}>
         <Divider
           sx={{ marginTop: "16px", marginBottom: "8px" }}
           orientation="vertical"
@@ -51,6 +56,7 @@ function ExpenseInfoPage() {
       </Box>
       {expenseAddPopUpOpen ? <CaseExpenseAddPopUp /> : null}
       {expenseRemovePopUpOpen ? <CaseExpenseRemovePopUp /> : null}
+      {expenseBillRemovePopUpOpen ? <CaseExpenseBillRemovePopUp /> : null}
     </>
   );
 }
