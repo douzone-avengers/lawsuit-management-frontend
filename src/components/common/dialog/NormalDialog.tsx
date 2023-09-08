@@ -1,4 +1,3 @@
-import * as React from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -8,7 +7,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 
 type Props = {
   openStatus: boolean;
-  setOpenStatus: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpenStatus: any;
+  action?: any;
   title: string;
   text: string;
 };
@@ -18,9 +18,13 @@ export default function NormalDialog({
   setOpenStatus,
   title,
   text,
+  action,
 }: Props) {
   const handleClickAgree = async () => {
     setOpenStatus(false);
+    if (action) {
+      action();
+    }
   };
 
   return (
