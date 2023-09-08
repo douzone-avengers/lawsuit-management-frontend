@@ -14,7 +14,7 @@ import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
 } from "../../../lib/requestDeprecated.ts";
-import AdviceRemovePopUpButton from "./AdviceRemovePopUpButton.tsx";
+import TextField from "@mui/material/TextField";
 
 type Advice = {
   id: number;
@@ -74,7 +74,6 @@ function AdviceListTable({ advices }: Props) {
             <TableCell align="left">상담 제목</TableCell>
             <TableCell align="left">상담 내용</TableCell>
             <TableCell align="left">상담 일시</TableCell>
-            <TableCell align="left"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -83,11 +82,13 @@ function AdviceListTable({ advices }: Props) {
               <TableRow
                 key={item.id}
                 hover={true}
+                onClick={() => handleExpandClick(index)}
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   cursor: "pointer",
+                  backgroundColor:
+                    expandedRow === index ? "grey.300" : "inherit",
                 }}
-                onClick={() => handleExpandClick(index)}
               >
                 <TableCell>
                   <IconButton>
@@ -98,7 +99,7 @@ function AdviceListTable({ advices }: Props) {
                     )}
                   </IconButton>
                 </TableCell>
-                <TableCell align="left">{item.title}</TableCell>
+                <TableCell align="left">{trimContent(item.title)}</TableCell>
                 <TableCell align="left">{trimContent(item.contents)}</TableCell>
                 <TableCell align="left">
                   {new Date(item.advicedAt).toLocaleDateString()}
@@ -107,24 +108,70 @@ function AdviceListTable({ advices }: Props) {
               {expandedRow === index && (
                 <TableRow>
                   <TableCell colSpan={4}>
-                    <div>
-                      <AdviceRemovePopUpButton />
-                    </div>
                     <div
                       style={{
-                        maxHeight: "300px",
-                        maxWidth: "300px",
-                        overflowY: "auto",
-                        whiteSpace: "normal",
-                        wordWrap: "break-word",
+                        display: "flex",
+                        flexDirection: "column",
+                        padding: "10px 30px 10px 30px",
                       }}
                     >
-                      상담 제목:{advice?.title}
-                      <br />
-                      상담 내용: {advice?.contents} <br />
-                      상담 일시: {advice?.advicedAt} <br />
-                      상담관: {advice?.memberId.join(", ")} <br />
-                      상담자: {advice?.clientId.join(", ")} <br />
+                      <TextField
+                        style={{ margin: "10px 0" }}
+                        label="상담 제목"
+                        value={advice?.title}
+                        InputProps={{
+                          readOnly: true,
+                        }}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
+                      <TextField
+                        style={{ margin: "10px 0" }}
+                        label="상담 날짜"
+                        value={advice?.advicedAt}
+                        InputProps={{
+                          readOnly: true,
+                        }}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
+                      <TextField
+                        style={{ margin: "10px 0" }}
+                        label="상담관"
+                        value={advice?.memberId.join(", ")}
+                        InputProps={{
+                          readOnly: true,
+                        }}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
+                      <TextField
+                        style={{ margin: "10px 0" }}
+                        label="상담자"
+                        value={advice?.clientId.join(", ")}
+                        InputProps={{
+                          readOnly: true,
+                        }}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
+                      <TextField
+                        style={{ margin: "10px 0" }}
+                        label="상담 내용"
+                        value={advice?.contents}
+                        InputProps={{
+                          readOnly: true,
+                        }}
+                        multiline
+                        rows={4}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
                     </div>
                   </TableCell>
                 </TableRow>
