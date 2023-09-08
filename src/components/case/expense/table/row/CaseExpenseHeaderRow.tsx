@@ -74,7 +74,11 @@ function CaseExpenseHeaderRow({
         {!headCells[0].canSort ? (
           <TableCell
             key={headCells[0].id}
-            sx={{ fontSize: 16, padding: 0, borderBottom: "none" }}
+            sx={{
+              fontSize: 16,
+              padding: 0,
+              borderBottom: "none",
+            }}
             align="center"
           >
             <b>{headCells[0].label}</b>
@@ -82,11 +86,16 @@ function CaseExpenseHeaderRow({
         ) : (
           <TableCell
             key={headCells[0].id}
-            sx={{ fontSize: 16, paddingLeft: "40px", borderBottom: "none" }}
+            sx={{
+              minWidth: 150,
+              fontSize: 16,
+              padding: 0,
+              borderBottom: "none",
+            }}
             align="center"
           >
             <TableSortLabel
-              sx={{ align: "center" }}
+              sx={{ align: "center", paddingLeft: "17.99px" }}
               active={sortKey === headCells[0].id}
               direction={sortKey === headCells[0].id ? sortOrder : "asc"}
               onClick={() => {
@@ -100,7 +109,7 @@ function CaseExpenseHeaderRow({
       </Box>
       <Box
         sx={{
-          width: 900,
+          width: 500,
           height: 40,
           display: "flex",
           justifyContent: "center",
@@ -110,7 +119,12 @@ function CaseExpenseHeaderRow({
         {!headCells[1].canSort ? (
           <TableCell
             key={headCells[1].id}
-            sx={{ fontSize: 16, padding: 0, borderBottom: "none" }}
+            sx={{
+              fontSize: 16,
+              padding: 0,
+              borderBottom: "none",
+              minWidth: 200,
+            }}
             align="center"
           >
             <b>{headCells[1].label}</b>
@@ -118,11 +132,16 @@ function CaseExpenseHeaderRow({
         ) : (
           <TableCell
             key={headCells[1].id}
-            sx={{ fontSize: 16, paddingLeft: "40px", borderBottom: "none" }}
+            sx={{
+              fontSize: 16,
+              padding: 0,
+              borderBottom: "none",
+              minWidth: 200,
+            }}
             align="center"
           >
             <TableSortLabel
-              sx={{ align: "center" }}
+              sx={{ align: "center", paddingLeft: "17.99px" }}
               active={sortKey === headCells[1].id}
               direction={sortKey === headCells[1].id ? sortOrder : "asc"}
               onClick={() => {
@@ -146,7 +165,12 @@ function CaseExpenseHeaderRow({
         {!headCells[2].canSort ? (
           <TableCell
             key={headCells[2].id}
-            sx={{ fontSize: 16, padding: 0, borderBottom: "none" }}
+            sx={{
+              fontSize: 16,
+              padding: 0,
+              borderBottom: "none",
+              minWidth: 100,
+            }}
             align="center"
           >
             <b>{headCells[2].label}</b>
@@ -154,11 +178,16 @@ function CaseExpenseHeaderRow({
         ) : (
           <TableCell
             key={headCells[2].id}
-            sx={{ fontSize: 16, paddingLeft: "40px", borderBottom: "none" }}
+            sx={{
+              fontSize: 16,
+              padding: 0,
+              borderBottom: "none",
+              minWidth: 100,
+            }}
             align="center"
           >
             <TableSortLabel
-              sx={{ align: "center" }}
+              sx={{ align: "center", paddingLeft: "17.99px" }}
               active={sortKey === headCells[2].id}
               direction={sortKey === headCells[2].id ? sortOrder : "asc"}
               onClick={() => {
@@ -172,7 +201,8 @@ function CaseExpenseHeaderRow({
       </Box>
       <Box
         sx={{
-          width: 200,
+          width: 150,
+          minWidth: 150,
           height: 40,
           display: "flex",
           justifyContent: "center",
@@ -181,7 +211,7 @@ function CaseExpenseHeaderRow({
       >
         <Button
           variant="contained"
-          sx={{ width: 185, color: "secondary", fontSize: 16 }}
+          sx={{ width: "100%", color: "secondary", fontSize: 16 }}
           onClick={handleExpenseAddButtonClick}
         >
           등록
