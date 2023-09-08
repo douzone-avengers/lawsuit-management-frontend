@@ -1,14 +1,14 @@
 import ChatAppHoverButton from "./ChatAppHoverButton.tsx";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { useSetRecoilState } from "recoil";
 import chatAppSceneState from "../state/ChatAppSceneState.ts";
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 
 function ChatAppPersonAddButton() {
   const setScene = useSetRecoilState(chatAppSceneState);
 
   return (
     <ChatAppHoverButton
-      Icon={PersonAddIcon}
+      Icon={PersonAddAlt1Icon}
       onClick={() => setScene("PersonAdd")}
     />
   );

@@ -15,6 +15,7 @@ export type ClientData = {
   phone: string;
   email: string;
   address: string;
+  addressDetail: string;
   memberId: number;
 };
 

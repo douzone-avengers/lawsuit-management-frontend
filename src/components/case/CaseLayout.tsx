@@ -8,7 +8,7 @@ import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
 } from "../../lib/requestDeprecated.ts";
-import { Court } from "./type/CourtInfo.ts";
+import { Court } from "./type/CourtInfo.tsx";
 import CaseRemovePopUp from "./CaseRemovePopUp.tsx";
 import caseBookPDFUploadLoadingState from "../../states/case/info/closing/CaseBookPDFUploadLoadingState.tsx";
 import CaseBookPDFShareComponent from "./closing/CaseBookPDFShareComponent.tsx";

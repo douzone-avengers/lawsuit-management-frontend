@@ -8,11 +8,18 @@ import CaseExpenseAddPopUp from "./table/popup/CaseExpenseAddPopUp.tsx";
 import CardTitle from "../../common/CardTitle.tsx";
 import caseExpenseRemovePopUpOpenState from "../../../states/case/info/expense/CaseExpenseRemovePopUpOpenState.tsx";
 import CaseExpenseRemovePopUp from "./table/popup/CaseExpenseRemovePopUp.tsx";
+import CaseExpenseBillTable from "./table/CaseExpenseBillTable.tsx";
+import { Divider } from "@mui/material";
+import caseExpenseBillRemovePopUpOpenState from "../../../states/case/info/expense/CaseExpenseBillRemovePopUpOpenState.tsx";
+import CaseExpenseBillRemovePopUp from "./table/popup/CaseExpenseBillRemovePopUp.tsx";
 
 function ExpenseInfoPage() {
   const expenseAddPopUpOpen = useRecoilValue(caseExpenseAddPopUpOpenState);
   const expenseRemovePopUpOpen = useRecoilValue(
     caseExpenseRemovePopUpOpenState,
+  );
+  const expenseBillRemovePopUpOpen = useRecoilValue(
+    caseExpenseBillRemovePopUpOpenState,
   );
 
   return (
@@ -21,11 +28,35 @@ function ExpenseInfoPage() {
         <CardTitle text="지출" />
         <Box sx={{ marginTop: 2 }}>
           <CaseExpenseSearchBox />
-          <CaseExpenseTable />
         </Box>
       </Card>
+      <Box sx={{ display: "flex", height: "326.87px" }}>
+        <Divider
+          sx={{ marginTop: "16px", marginBottom: "8px" }}
+          orientation="vertical"
+          flexItem
+        />
+        <CaseExpenseTable />
+        <Divider
+          sx={{ marginTop: "16px", marginRight: "5px", marginBottom: "8px" }}
+          orientation="vertical"
+          flexItem
+        />
+        <Divider
+          sx={{ marginTop: "16px", marginBottom: "8px" }}
+          orientation="vertical"
+          flexItem
+        />
+        <CaseExpenseBillTable />
+        <Divider
+          sx={{ marginTop: "16px", marginBottom: "8px" }}
+          orientation="vertical"
+          flexItem
+        />
+      </Box>
       {expenseAddPopUpOpen ? <CaseExpenseAddPopUp /> : null}
       {expenseRemovePopUpOpen ? <CaseExpenseRemovePopUp /> : null}
+      {expenseBillRemovePopUpOpen ? <CaseExpenseBillRemovePopUp /> : null}
     </>
   );
 }

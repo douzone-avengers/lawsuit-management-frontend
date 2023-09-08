@@ -14,39 +14,47 @@ type Props = {
 
 function CaseExpenseDataRow({ item, caseId }: Props) {
   return (
-    <Box sx={{ display: "flex", width: "100%", justifyContent: "center" }}>
-      <Box sx={{ width: 200 }}>
+    <Box
+      sx={{
+        display: "flex",
+        width: "100%",
+        height: 40,
+      }}
+    >
+      <Box sx={{ width: 200, minWidth: 150 }}>
         <CaseExpenseSpeningAtCell item={item} />
       </Box>
-      <Box sx={{ width: 900 }}>
+      <Box sx={{ width: 500, minWidth: 200 }}>
         <CaseExpenseContentsCell item={item} />
       </Box>
-      <Box sx={{ width: 200 }}>
+      <Box sx={{ width: 200, minWidth: 100 }}>
         <CaseExpenseAmountCell item={item} />
       </Box>
-      <Box
-        sx={{
-          width: 100,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        {item.editable ? (
-          <CaseExpenseEditConfirmButton item={item} caseId={caseId} />
-        ) : (
-          <CaseExpenseEditButton item={item} />
-        )}
-      </Box>
-      <Box
-        sx={{
-          width: 100,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <CaseExpenseDeleteButton item={item} />
+      <Box sx={{ display: "flex", width: 150, minWidth: 150 }}>
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {item.editable ? (
+            <CaseExpenseEditConfirmButton item={item} caseId={caseId} />
+          ) : (
+            <CaseExpenseEditButton item={item} />
+          )}
+        </Box>
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CaseExpenseDeleteButton item={item} />
+        </Box>
       </Box>
     </Box>
   );
