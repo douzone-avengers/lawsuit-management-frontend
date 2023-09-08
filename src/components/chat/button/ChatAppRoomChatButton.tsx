@@ -2,7 +2,7 @@ import ChatAppHoverButton from "./ChatAppHoverButton.tsx";
 import ForumIcon from "@mui/icons-material/Forum";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import chatAppSceneState from "../state/ChatAppSceneState.ts";
-import chatAppRoomInfoState from "../state/ChatAppRoomInfoState.tsx";
+import chatAppRoomInfoState from "../state/ChatAppRoomInfoState.ts";
 import requestDeprecated from "../../../lib/requestDeprecated.ts";
 import {
   CreateRoomResponseType,

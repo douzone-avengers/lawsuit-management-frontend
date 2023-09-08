@@ -1,6 +1,6 @@
 import ChatAppBodyContainer from "../layout/ChatAppBodyContainer.tsx";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import chatAppPersonInfoState from "../state/ChatAppPersonInfo.ts";
+import chatAppPersonInfoState from "../state/ChatAppPersonInfoState.ts";
 import { useEffect, useState } from "react";
 import chatAppSceneState from "../state/ChatAppSceneState.ts";
 import requestDeprecated from "../../../lib/requestDeprecated.ts";

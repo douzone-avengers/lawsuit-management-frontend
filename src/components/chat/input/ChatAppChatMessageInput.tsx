@@ -1,10 +1,29 @@
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import chatAppChatMessageState from "../state/ChatAppChatMessageState.ts";
 import { useState } from "react";
+import userState from "../../../states/user/UserState.ts";
+import socket from "../socket.ts";
 
-function ChatAppChatMessageInput() {
+type Props = {
+  roomId: number;
+};
+
+function ChatAppChatMessageInput({ roomId }: Props) {
   const [borderColor, setBorderColor] = useState("lightgray");
+  const user = useRecoilValue(userState);
   const [message, setMessage] = useRecoilState(chatAppChatMessageState);
+
+  const handleSend = () => {
+    if (user) {
+      socket.emit("send-message", {
+        roomId,
+        senderId: user.id,
+        content: message,
+      });
+    }
+    setMessage("");
+  };
+
   return (
     <textarea
       style={{
@@ -25,6 +44,12 @@ function ChatAppChatMessageInput() {
       onChange={(e) => setMessage(e.target.value)}
       onFocus={() => setBorderColor("#1976D2")}
       onBlur={() => setBorderColor("lightgray")}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          handleSend();
+        }
+      }}
     />
   );
 }

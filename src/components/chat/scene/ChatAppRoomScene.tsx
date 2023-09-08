@@ -3,24 +3,23 @@ import ChatAppNavigationFooter from "../layout/ChatAppNavigationFooter.tsx";
 import ChatAppPlainHeader from "../layout/ChatAppPlainHeader.tsx";
 import ChatAppHeaderTitle from "../box/ChatAppHeaderTitle.tsx";
 import { useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import chatAppRoomListState from "../state/ChatAppRoomListState.ts";
-import requestDeprecated from "../../../lib/requestDeprecated.ts";
 import ChatAppRoomItem from "../box/ChatAppRoomItem.tsx";
+import chatAppSceneState from "../state/ChatAppSceneState.ts";
+import chatAppRoomInfoState from "../state/ChatAppRoomInfoState.ts";
+import requestDeprecated from "../../../lib/requestDeprecated.ts";
 
 function ChatAppRoomScene() {
+  const setScene = useSetRecoilState(chatAppSceneState);
+  const setRoomInfo = useSetRecoilState(chatAppRoomInfoState);
   const [rooms, setRooms] = useRecoilState(chatAppRoomListState);
   useEffect(() => {
     requestDeprecated("GET", "/chats/rooms", {
       onSuccess: (res) => {
-        console.dir(res.data);
         setRooms(res.data);
       },
     });
-
-    return () => {
-      setRooms([]);
-    };
   }, []);
 
   return (
@@ -38,9 +37,17 @@ function ChatAppRoomScene() {
             roomName={
               item.name ?? item.users.map((it) => it.name).join(",") ?? "???"
             }
-            recentMsg={"TODO"}
-            recentMsgTime={"TODO"}
+            recentMsg={item.recentMessage?.content ?? null}
+            recentMsgTime={item.recentMessage?.createdAt ?? null}
+            unreadMessageCount={item.unreadMessageCount}
             hover={true}
+            onClick={() => {
+              setScene("RoomChat");
+              setRoomInfo({
+                state: "Ready",
+                value: item,
+              });
+            }}
           />
         ))}
       </ChatAppBodyContainer>

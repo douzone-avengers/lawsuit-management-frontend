@@ -4,7 +4,7 @@ import chatAppUserSearchEmailState from "../state/ChatAppUserSearchEmailState.ts
 import requestDeprecated from "../../../lib/requestDeprecated.ts";
 import chatAppUserSearchResultState from "../state/ChatAppUserSearchResultState.ts";
 import chatAppSceneState from "../state/ChatAppSceneState.ts";
-import chatAppPersonInfoState from "../state/ChatAppPersonInfo.ts";
+import chatAppPersonInfoState from "../state/ChatAppPersonInfoState.ts";
 import chatAppErrorState from "../state/ChatAppErrorState.ts";
 
 function ChatAppPersonSearchButton() {

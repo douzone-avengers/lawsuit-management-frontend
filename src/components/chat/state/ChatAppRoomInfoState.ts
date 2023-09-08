@@ -15,6 +15,7 @@ type ChatAppRoomInfoStateType =
     }
   | {
       state: "Complete";
+      value: RoomBasicInfoType;
     };
 
 const chatAppRoomInfoState = atom<ChatAppRoomInfoStateType>({

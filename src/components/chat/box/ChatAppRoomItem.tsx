@@ -4,11 +4,12 @@ import * as dayjs from "dayjs";
 
 type Props = {
   roomName: string;
-  recentMsg: string;
-  recentMsgTime: string;
+  recentMsg: string | null;
+  recentMsgTime: string | null;
   style?: CSSProperties;
   hover?: boolean;
   onClick?: () => void;
+  unreadMessageCount: number;
 };
 
 function ChatAppRoomItem({
@@ -17,6 +18,7 @@ function ChatAppRoomItem({
   recentMsgTime,
   style,
   onClick,
+  unreadMessageCount,
   hover = false,
 }: Props) {
   const [background, setBackground] = useState("white");
@@ -71,7 +73,7 @@ function ChatAppRoomItem({
           paddingLeft: 10,
         }}
       >
-        <div>
+        <div style={{ width: "100%" }}>
           <div
             style={{
               height: "100%",
@@ -96,17 +98,19 @@ function ChatAppRoomItem({
           </div>
         </div>
       </div>
-      <div
-        style={{
-          width: 120,
-          marginLeft: 15,
-          fontSize: 12,
-          overflow: "hidden",
-        }}
-      >
-        <div>{recentContent}</div>
-        <div>{recentContent2}</div>
-      </div>
+      {recentMsgTime && (
+        <div
+          style={{
+            width: 120,
+            marginLeft: 15,
+            fontSize: 12,
+            overflow: "hidden",
+          }}
+        >
+          <div>{recentContent}</div>
+          <div>{recentContent2}</div>
+        </div>
+      )}
       <div
         style={{
           display: "flex",
@@ -117,21 +121,23 @@ function ChatAppRoomItem({
           height: 64,
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            background: "#1976D2",
-            color: "white",
-            width: "50%",
-            height: "50%",
-            borderRadius: "50%",
-            fontSize: 12,
-          }}
-        >
-          TODO
-        </div>
+        {unreadMessageCount >= 1 ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              background: "#1976D2",
+              color: "white",
+              width: "50%",
+              height: "50%",
+              borderRadius: "50%",
+              fontSize: 12,
+            }}
+          >
+            {unreadMessageCount}
+          </div>
+        ) : null}
       </div>
     </div>
   );
