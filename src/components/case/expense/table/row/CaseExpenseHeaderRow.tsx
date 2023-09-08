@@ -2,9 +2,9 @@ import { useSetRecoilState } from "recoil";
 import caseExpenseAddPopUpOpenState from "../../../../../states/case/info/expense/CaseExpenseAddPopUpOpenState.tsx";
 import Box from "@mui/material/Box";
 import { Button, TableSortLabel } from "@mui/material";
-import { HeadCell } from "../../../../employee/type/HeadCell.tsx";
 import React from "react";
 import TableCell from "@mui/material/TableCell";
+import { HeadCell } from "../../../type/HeadCell.ts";
 
 type Props = {
   sortKey: string;

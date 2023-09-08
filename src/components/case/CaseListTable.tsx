@@ -9,9 +9,9 @@ import { delimiter } from "../../lib/convert.ts";
 import { LawsuitInfo } from "./type/LawsuitInfo.tsx";
 import { TableFooter, TablePagination, TableSortLabel } from "@mui/material";
 import React from "react";
-import { HeadCell } from "../employee/type/HeadCell.tsx";
 import Card from "@mui/material/Card";
 import CardTitle from "../common/CardTitle.tsx";
+import { HeadCell } from "./type/HeadCell.ts";
 
 type Props = {
   cases: (LawsuitInfo & { onClick: () => void })[];
