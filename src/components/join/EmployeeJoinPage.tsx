@@ -14,12 +14,7 @@ import requestDeprecated, {
 import { useRecoilValue } from "recoil";
 import validatedEmployeeKeyState from "../../states/join/ValidatedEmployeeKeyState";
 import NormalDialog from "../common/dialog/NormalDialog";
-
-type AlertState = {
-  isOpen: boolean;
-  message: string;
-  action: any;
-};
+import { AlertState } from "./type/AlertState";
 
 type Hierarchy = {
   id: number;

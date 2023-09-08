@@ -13,6 +13,8 @@ import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
 } from "../../lib/requestDeprecated.ts";
+import { AlertState } from "./type/AlertState";
+import NormalDialog from "../common/dialog/NormalDialog";
 
 function ClientJoinPage() {
   const validatedClient = useRecoilValue(validatedClientState);
@@ -45,6 +47,14 @@ function ClientJoinPage() {
   const [addressDetailMessage, setAddressDetailMessage] = useState("");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [alert, setAlert] = useState<AlertState>({
+    isOpen: false,
+    message: "",
+    action: null,
+  });
+  const setAlertIsOpen = (isOpen: boolean) => {
+    setAlert((prevState) => ({ ...prevState, isOpen: isOpen }));
+  };
 
   const navigate = useNavigate();
 
@@ -92,17 +102,29 @@ function ClientJoinPage() {
   };
 
   const handelRequestSuccess: RequestSuccessHandler = () => {
-    alert("가입 되었습니다.");
-    navigate("/login");
+    const afterClose = () => {
+      navigate("/login");
+    };
+    setAlert({
+      isOpen: true,
+      message: "가입 되었습니다.",
+      action: afterClose,
+    });
   };
 
   const handelRequestFail: RequestFailHandler = (e) => {
-    alert((e.response.data as { code: string; message: string }).message);
+    const message = (e.response.data as { code: string; message: string })
+      .message;
+    setAlert({ isOpen: true, message: message, action: null });
   };
 
   const joinRequest = () => {
     if (!canRequest()) {
-      alert("입력되지 않은 정보가 있습니다.");
+      setAlert({
+        isOpen: true,
+        message: "입력되지 않은 정보가 있습니다.",
+        action: null,
+      });
       return;
     }
     requestDeprecated("POST", `/members/clients`, {
@@ -220,116 +242,125 @@ function ClientJoinPage() {
   };
 
   return (
-    <PopUp>
-      <ReactModal
-        style={{
-          overlay: {
-            zIndex: 10000, // 여기서 z-index 값을 높여주세요
-          },
-          content: {
-            width: "30%", // 모달의 너비를 50%로 설정
-            height: "60%", // 모달의 높이를 50%로 설정
-            margin: "auto", // 모달을 화면 가운데에 위치시킴
-          },
-        }}
-        isOpen={isModalOpen}
-      >
-        <DaumPostcode
+    <>
+      <NormalDialog
+        openStatus={alert.isOpen}
+        setOpenStatus={setAlertIsOpen}
+        title={"알림"}
+        text={alert.message}
+        action={alert.action}
+      />
+      <PopUp>
+        <ReactModal
           style={{
-            height: "100%",
+            overlay: {
+              zIndex: 10000, // 여기서 z-index 값을 높여주세요
+            },
+            content: {
+              width: "30%", // 모달의 너비를 50%로 설정
+              height: "60%", // 모달의 높이를 50%로 설정
+              margin: "auto", // 모달을 화면 가운데에 위치시킴
+            },
           }}
-          onComplete={(data) => {
-            // handle the complete event with selected data
-            setAddress(data.address);
-            setIsModalOpen(false);
-          }}
-          autoClose={false}
-          defaultQuery="부산 해운대구 센텀중앙로 79"
-        />
-      </ReactModal>
-
-      <Logo sx={{ width: "50%", marginBottom: 2 }} />
-      <TextField
-        disabled
-        type="text"
-        size="small"
-        label="가입키"
-        value={promotionKey}
-      />
-      <TextField
-        {...(isEmailOk ? {} : { error: true })}
-        type="email"
-        size="small"
-        label="이메일"
-        value={email}
-        onChange={onEmailChange}
-        helperText={emailMessage}
-      />
-      <TextField
-        {...(isPasswordOk ? {} : { error: true })}
-        type="password"
-        size="small"
-        label="비밀번호"
-        value={password}
-        onChange={onPasswordChange}
-        helperText={passwordMessage}
-      />
-      <TextField
-        {...(isPasswordConfirmOk ? {} : { error: true })}
-        type="password"
-        size="small"
-        label="비밀번호 확인"
-        value={passwordConfirm}
-        onChange={onPasswordConfirmChange}
-        helperText={passwordConfirmMessage}
-      />
-
-      <TextField
-        {...(isNameOk ? {} : { error: true })}
-        type="text"
-        size="small"
-        label="이름"
-        value={name}
-        onChange={onNameChange}
-        helperText={nameMessage}
-      />
-
-      <TextField
-        {...(isPhoneOk ? {} : { error: true })}
-        type="tel"
-        size="small"
-        label="전화번호"
-        value={phone}
-        onChange={onPhoneChange}
-        helperText={phoneMessage}
-      />
-
-      <Box>
-        <TextField type="text" size="small" label="주소" value={address} />
-        <Button
-          size="small"
-          onClick={() => {
-            setIsModalOpen(true);
-          }}
+          isOpen={isModalOpen}
         >
-          주소검색
+          <DaumPostcode
+            style={{
+              height: "100%",
+            }}
+            onComplete={(data) => {
+              // handle the complete event with selected data
+              setAddress(data.address);
+              setIsModalOpen(false);
+            }}
+            autoClose={false}
+            defaultQuery="부산 해운대구 센텀중앙로 79"
+          />
+        </ReactModal>
+
+        <Logo sx={{ width: "50%", marginBottom: 2 }} />
+        <TextField
+          disabled
+          type="text"
+          size="small"
+          label="가입키"
+          value={promotionKey}
+        />
+        <TextField
+          {...(isEmailOk ? {} : { error: true })}
+          type="email"
+          size="small"
+          label="이메일"
+          value={email}
+          onChange={onEmailChange}
+          helperText={emailMessage}
+        />
+        <TextField
+          {...(isPasswordOk ? {} : { error: true })}
+          type="password"
+          size="small"
+          label="비밀번호"
+          value={password}
+          onChange={onPasswordChange}
+          helperText={passwordMessage}
+        />
+        <TextField
+          {...(isPasswordConfirmOk ? {} : { error: true })}
+          type="password"
+          size="small"
+          label="비밀번호 확인"
+          value={passwordConfirm}
+          onChange={onPasswordConfirmChange}
+          helperText={passwordConfirmMessage}
+        />
+
+        <TextField
+          {...(isNameOk ? {} : { error: true })}
+          type="text"
+          size="small"
+          label="이름"
+          value={name}
+          onChange={onNameChange}
+          helperText={nameMessage}
+        />
+
+        <TextField
+          {...(isPhoneOk ? {} : { error: true })}
+          type="tel"
+          size="small"
+          label="전화번호"
+          value={phone}
+          onChange={onPhoneChange}
+          helperText={phoneMessage}
+        />
+
+        <Box>
+          <TextField type="text" size="small" label="주소" value={address} />
+          <Button
+            size="small"
+            onClick={() => {
+              setIsModalOpen(true);
+            }}
+          >
+            주소검색
+          </Button>
+        </Box>
+
+        <TextField
+          {...(isAddressDetailOk ? {} : { error: true })}
+          type="text"
+          size="small"
+          label="상세주소"
+          value={addressDetail}
+          onChange={onAddressDetailChange}
+          helperText={addressDetailMessage}
+        />
+
+        <Button variant="contained" size="large" onClick={joinRequest}>
+          회원 가입
         </Button>
-      </Box>
-
-      <TextField
-        {...(isAddressDetailOk ? {} : { error: true })}
-        type="text"
-        size="small"
-        label="상세주소"
-        value={addressDetail}
-        onChange={onAddressDetailChange}
-        helperText={addressDetailMessage}
-      />
-
-      <Button variant="contained" size="large" onClick={joinRequest}>
-        회원 가입
-      </Button>
-    </PopUp>
+      </PopUp>
+    </>
   );
 }
 
