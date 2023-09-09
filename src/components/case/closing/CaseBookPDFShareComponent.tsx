@@ -121,7 +121,7 @@ function CaseBookPDFShareComponent() {
                 toList: emails,
               },
               onSuccess: () => {},
-              onFail: (e) => {},
+              onFail: () => {},
             });
           };
           reader.readAsDataURL(pdf);

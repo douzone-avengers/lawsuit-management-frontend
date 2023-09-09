@@ -6,7 +6,7 @@ import ChatAppHeaderTitle from "../box/ChatAppHeaderTitle.tsx";
 import { useEffect, useState } from "react";
 import requestDeprecated from "../../../lib/requestDeprecated.ts";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import userState from "../../../states/user/UserState.ts";
+import userState, { isEmployeeState } from "../../../states/user/UserState.ts";
 import chatAppMyFriendsState from "../state/ChatAppMyFriendsState.ts";
 import { convertHierarchy, convertRole } from "../../../lib/convert.ts";
 import ChatAppPersonItem from "../box/ChatAppPersonItem.tsx";
@@ -30,6 +30,8 @@ function ChatAppPersonScene() {
   const [displayEmployees, setDisplayEmployees] = useState(false);
   const [displayClients, setDisplayClients] = useState(false);
 
+  const isEmployee = useRecoilValue(isEmployeeState);
+
   useEffect(() => {
     if (user) {
       requestDeprecated("GET", `/chats/friends?email=${user.email}`, {
@@ -49,7 +51,15 @@ function ChatAppPersonScene() {
 
     requestDeprecated("GET", `/chats/users/employees`, {
       onSuccess: (res) => {
-        setEmployees(res.data);
+        const body = res.data as SearchFriendsByEmailResponseType;
+        setEmployees(
+          body.map((item) => {
+            if (item.role === "의뢰인") {
+              item.hierarchy = "고객";
+            }
+            return item;
+          }),
+        );
       },
     });
 
@@ -72,8 +82,8 @@ function ChatAppPersonScene() {
     <>
       <ChatAppPlainHeader
         containerStyle={{ paddingLeft: 20, paddingRight: 20 }}
-        left={<ChatAppHeaderTitle>목록</ChatAppHeaderTitle>}
-        right={<ChatAppPersonAddButton />}
+        left={<ChatAppHeaderTitle>홈</ChatAppHeaderTitle>}
+        right={isEmployee ? <ChatAppPersonAddButton /> : null}
       />
       <ChatAppBodyContainer style={{ paddingLeft: 20, paddingRight: 20 }}>
         <div>
@@ -107,7 +117,11 @@ function ChatAppPersonScene() {
           {displayMe && (
             <ChatAppPersonItem
               role={convertRole(user?.roleId ?? 0)}
-              hierarchy={convertHierarchy(user?.hierarchyId ?? 0)}
+              hierarchy={
+                (user?.roleId ?? 1) === 1
+                  ? "고객"
+                  : convertHierarchy(user?.hierarchyId ?? 0)
+              }
               name={user?.name ?? ""}
               hover={true}
               onClick={() => {
@@ -121,140 +135,145 @@ function ChatAppPersonScene() {
           )}
         </div>
         <div style={{ borderBottom: "1px solid lightgray" }}></div>
-        <ChatAppHeaderText
-          style={{
-            color: "gray",
-            display: "flex",
-            justifyContent: "space-between",
-            paddingTop: 10,
-            paddingLeft: 5,
-            minHeight: 40,
-          }}
-        >
-          <div>즐겨찾기 ({friends.length})</div>
-          {displayFriends ? (
-            <div
-              style={{ cursor: "pointer" }}
-              onClick={() => setDisplayFriends(false)}
-            >
-              ▼
-            </div>
-          ) : (
-            <div
-              style={{ cursor: "pointer" }}
-              onClick={() => setDisplayFriends(true)}
-            >
-              ▲
-            </div>
-          )}
-        </ChatAppHeaderText>
-        {displayFriends &&
-          friends.map((item) => (
-            <ChatAppPersonItem
-              key={item.id}
-              name={item.name}
-              role={item.role}
-              hierarchy={item.hierarchy}
-              hover={true}
-              onClick={() => {
-                setUserInfo({
-                  state: "Ready",
-                  targetEmail: item.email,
-                });
-                setScene("PersonInfo");
+
+        {isEmployee && (
+          <div>
+            <ChatAppHeaderText
+              style={{
+                color: "gray",
+                display: "flex",
+                justifyContent: "space-between",
+                paddingTop: 10,
+                paddingLeft: 5,
+                minHeight: 40,
               }}
-            />
-          ))}
-        <div style={{ borderBottom: "1px solid lightgray" }}></div>
-        <ChatAppHeaderText
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            color: "gray",
-            paddingTop: 10,
-            paddingLeft: 5,
-            minHeight: 40,
-          }}
-        >
-          <div>사원 ({employees.length})</div>
-          {displayEmployees ? (
-            <div
-              style={{ cursor: "pointer" }}
-              onClick={() => setDisplayEmployees(false)}
             >
-              ▼
-            </div>
-          ) : (
-            <div
-              style={{ cursor: "pointer" }}
-              onClick={() => setDisplayEmployees(true)}
-            >
-              ▲
-            </div>
-          )}
-        </ChatAppHeaderText>
-        {displayEmployees &&
-          employees.map((item) => (
-            <ChatAppPersonItem
-              key={item.id}
-              name={item.name}
-              role={item.role}
-              hierarchy={item.hierarchy}
-              hover={true}
-              onClick={() => {
-                setUserInfo({
-                  state: "Ready",
-                  targetEmail: item.email,
-                });
-                setScene("PersonInfo");
+              <div>즐겨찾기 ({friends.length})</div>
+              {displayFriends ? (
+                <div
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setDisplayFriends(false)}
+                >
+                  ▼
+                </div>
+              ) : (
+                <div
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setDisplayFriends(true)}
+                >
+                  ▲
+                </div>
+              )}
+            </ChatAppHeaderText>
+            {displayFriends &&
+              friends.map((item) => (
+                <ChatAppPersonItem
+                  key={item.id}
+                  name={item.name}
+                  role={item.role}
+                  hierarchy={item.hierarchy}
+                  hover={true}
+                  onClick={() => {
+                    setUserInfo({
+                      state: "Ready",
+                      targetEmail: item.email,
+                    });
+                    setScene("PersonInfo");
+                  }}
+                />
+              ))}
+            <div style={{ borderBottom: "1px solid lightgray" }}></div>
+            <ChatAppHeaderText
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                color: "gray",
+                paddingTop: 10,
+                paddingLeft: 5,
+                minHeight: 40,
               }}
-            />
-          ))}
-        <div style={{ borderBottom: "1px solid lightgray" }}></div>
-        <ChatAppHeaderText
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            color: "gray",
-            paddingTop: 10,
-            paddingLeft: 5,
-            minHeight: 40,
-          }}
-        >
-          <div>고객 ({clients.length})</div>
-          {displayClients ? (
-            <div
-              style={{ cursor: "pointer" }}
-              onClick={() => setDisplayClients(false)}
             >
-              ▼
-            </div>
-          ) : (
-            <div
-              style={{ cursor: "pointer" }}
-              onClick={() => setDisplayClients(true)}
-            >
-              ▲
-            </div>
-          )}
-        </ChatAppHeaderText>
-        {displayClients &&
-          clients.map((item) => (
-            <ChatAppPersonItem
-              key={item.id}
-              name={item.name}
-              role={item.role}
-              hierarchy="고객"
-              hover={true}
-              onClick={() => {
-                setUserInfo({
-                  state: "Ready",
-                  targetEmail: item.email,
-                });
-                setScene("PersonInfo");
+              <div>사원 ({employees.length})</div>
+              {displayEmployees ? (
+                <div
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setDisplayEmployees(false)}
+                >
+                  ▼
+                </div>
+              ) : (
+                <div
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setDisplayEmployees(true)}
+                >
+                  ▲
+                </div>
+              )}
+            </ChatAppHeaderText>
+            {displayEmployees &&
+              employees.map((item) => (
+                <ChatAppPersonItem
+                  key={item.id}
+                  name={item.name}
+                  role={item.role}
+                  hierarchy={item.hierarchy}
+                  hover={true}
+                  onClick={() => {
+                    setUserInfo({
+                      state: "Ready",
+                      targetEmail: item.email,
+                    });
+                    setScene("PersonInfo");
+                  }}
+                />
+              ))}
+            <div style={{ borderBottom: "1px solid lightgray" }}></div>
+            <ChatAppHeaderText
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                color: "gray",
+                paddingTop: 10,
+                paddingLeft: 5,
+                minHeight: 40,
               }}
-            />
-          ))}
+            >
+              <div>고객 ({clients.length})</div>
+              {displayClients ? (
+                <div
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setDisplayClients(false)}
+                >
+                  ▼
+                </div>
+              ) : (
+                <div
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setDisplayClients(true)}
+                >
+                  ▲
+                </div>
+              )}
+            </ChatAppHeaderText>
+            {displayClients &&
+              clients.map((item) => (
+                <ChatAppPersonItem
+                  key={item.id}
+                  name={item.name}
+                  role={item.role}
+                  hierarchy="고객"
+                  hover={true}
+                  onClick={() => {
+                    setUserInfo({
+                      state: "Ready",
+                      targetEmail: item.email,
+                    });
+                    setScene("PersonInfo");
+                  }}
+                />
+              ))}
+          </div>
+        )}
       </ChatAppBodyContainer>
       <ChatAppNavigationFooter />
     </>
