@@ -63,7 +63,6 @@ function ChatAppRoomChatScene() {
       });
     } else if (roomInfo.state === "Loading") {
       setRoomInfo((prev) => {
-        console.log("loading");
         if (prev.state !== "Loading") {
           throw new Error("");
         }

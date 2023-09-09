@@ -33,12 +33,8 @@ function ChatApp() {
   const setRooms = useSetRecoilState(chatAppRoomListState);
 
   useEffect(() => {
-    const handleConnect = () => {
-      console.log("Connect");
-    };
-    const handleDisconnect = () => {
-      console.log("Disconnect");
-    };
+    const handleConnect = () => {};
+    const handleDisconnect = () => {};
 
     socket.on("connect", handleConnect);
     socket.on("disconnect", handleDisconnect);
@@ -99,7 +95,7 @@ function ChatApp() {
   }, [user, roomInfo]);
 
   useEffect(() => {
-    requestDeprecated("GET", `/messages/unread/total`, {
+    requestDeprecated("GET", `/chats/messages/unread/total`, {
       onSuccess: (res) => {
         setUnreadCount(res.data);
       },

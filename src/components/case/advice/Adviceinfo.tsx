@@ -30,7 +30,6 @@ function Adviceinfo() {
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
       const body: Advicedata[] = res.data;
       setAdvices(body);
-      console.log(body);
       setAdviceId(body[0]?.id);
     };
 

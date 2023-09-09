@@ -96,7 +96,10 @@ function ChatAppPersonInfoScene() {
     ) : personInfo.state === "Complete" &&
       personInfo.result === "Success" &&
       personInfo.value.email === user?.email ? null : isFriend === false ? (
-      <ChatAppFriendAddButton email={email} setIsFriend={setIsFriend} />
+      <>
+        <ChatAppRoomChatButton email={email} />
+        <ChatAppFriendAddButton email={email} setIsFriend={setIsFriend} />
+      </>
     ) : null;
 
   return (
@@ -128,7 +131,8 @@ function ChatAppPersonInfoScene() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                background: "#1976D2",
+                background:
+                  personInfo.value.role !== "의뢰인" ? "#1976D2" : "gray",
                 width: 96,
                 height: 96,
                 marginBottom: 20,
@@ -144,20 +148,38 @@ function ChatAppPersonInfoScene() {
                 marginBottom: 5,
               }}
             >
-              <ChatAppTag header="이름" content={personInfo.value.name} />
-              <ChatAppTag header="직급" content={personInfo.value.hierarchy} />
-              <ChatAppTag header="이메일" content={personInfo.value.email} />
+              <ChatAppTag
+                header="이름"
+                content={personInfo.value.name}
+                role={personInfo.value.role}
+              />
+              {personInfo.value.role !== "의뢰인" && (
+                <ChatAppTag
+                  header="직급"
+                  content={personInfo.value.hierarchy}
+                  role={personInfo.value.role}
+                />
+              )}
+              <ChatAppTag
+                header="이메일"
+                content={personInfo.value.email}
+                role={personInfo.value.role}
+              />
             </div>
             <div
               style={{
-                border: "1px solid #1976D2",
+                border:
+                  personInfo.value.role !== "의뢰인"
+                    ? "1px solid #1976D2"
+                    : "1px solid gray",
                 width: 320,
                 height: 420,
               }}
             >
               <div
                 style={{
-                  background: "#1976D2",
+                  background:
+                    personInfo.value.role !== "의뢰인" ? "#1976D2" : "gray",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -194,6 +216,7 @@ function ChatAppPersonInfoScene() {
                       <ChatAppTag
                         header={item.type}
                         content={item.name}
+                        role={personInfo.value.role}
                         width="100%"
                       />
                     </div>
@@ -208,7 +231,7 @@ function ChatAppPersonInfoScene() {
                       height: "100%",
                     }}
                   >
-                    담당 중인 사건이 없습니다.
+                    진행 중인 사건이 없습니다.
                   </div>
                 )}
               </div>

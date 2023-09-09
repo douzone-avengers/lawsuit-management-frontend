@@ -60,8 +60,6 @@ function AppRoutes() {
   useEffect(() => {
     const { pathname, search } = location;
 
-    console.log(`${pathname}${search}`);
-
     const paths = pathname.split("/");
     const param: Record<string, string> = {};
     if (search !== "") {
