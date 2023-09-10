@@ -44,6 +44,8 @@ function EmployeeCaseListTab() {
     searchLawsuitStatus,
     rowsPerPage,
     page,
+    sortKey,
+    sortOrder,
   });
 
   useEffect(() => {
