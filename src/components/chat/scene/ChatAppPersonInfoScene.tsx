@@ -10,7 +10,7 @@ import ChatAppPlainHeader from "../layout/ChatAppPlainHeader.tsx";
 import PersonIcon from "@mui/icons-material/Person";
 import ChatAppTag from "../box/ChatAppTag.tsx";
 import ChatAppFooterContainer from "../layout/ChatAppFooterContainer.tsx";
-import userState from "../../../states/user/UserState.ts";
+import userState, { isEmployeeState } from "../../../states/user/UserState.ts";
 import { SearchUserDetailByEmailResponseType } from "../type/ResponseType.ts";
 import ChatAppCloseButton from "../button/ChatAppCloseButton.tsx";
 import ChatAppFriendAddButton from "../button/ChatAppFriendAddButton.tsx";
@@ -24,6 +24,7 @@ function ChatAppPersonInfoScene() {
   const setError = useSetRecoilState(chatAppErrorState);
 
   const [isFriend, setIsFriend] = useState<boolean | null>(null);
+  const isEmployee = useRecoilValue(isEmployeeState);
 
   useEffect(() => {
     return () => {
@@ -88,7 +89,9 @@ function ChatAppPersonInfoScene() {
       : "";
 
   const footerContents =
-    isFriend === true ? (
+    !isEmployee && isFriend === true ? (
+      <ChatAppRoomChatButton email={email} />
+    ) : isFriend === true ? (
       <>
         <ChatAppRoomChatButton email={email} />
         <ChatAppFriendRemoveButton email={email} setIsFriend={setIsFriend} />

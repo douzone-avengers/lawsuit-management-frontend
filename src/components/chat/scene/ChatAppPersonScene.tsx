@@ -136,53 +136,54 @@ function ChatAppPersonScene() {
         </div>
         <div style={{ borderBottom: "1px solid lightgray" }}></div>
 
+        <ChatAppHeaderText
+          style={{
+            color: "gray",
+            display: "flex",
+            justifyContent: "space-between",
+            paddingTop: 10,
+            paddingLeft: 5,
+            minHeight: 40,
+          }}
+        >
+          <div>즐겨찾기 ({friends.length})</div>
+          {displayFriends ? (
+            <div
+              style={{ cursor: "pointer" }}
+              onClick={() => setDisplayFriends(false)}
+            >
+              ▼
+            </div>
+          ) : (
+            <div
+              style={{ cursor: "pointer" }}
+              onClick={() => setDisplayFriends(true)}
+            >
+              ▲
+            </div>
+          )}
+        </ChatAppHeaderText>
+
+        {displayFriends &&
+          friends.map((item) => (
+            <ChatAppPersonItem
+              key={item.id}
+              name={item.name}
+              role={item.role}
+              hierarchy={item.hierarchy}
+              hover={true}
+              onClick={() => {
+                setUserInfo({
+                  state: "Ready",
+                  targetEmail: item.email,
+                });
+                setScene("PersonInfo");
+              }}
+            />
+          ))}
+        <div style={{ borderBottom: "1px solid lightgray" }}></div>
         {isEmployee && (
           <div>
-            <ChatAppHeaderText
-              style={{
-                color: "gray",
-                display: "flex",
-                justifyContent: "space-between",
-                paddingTop: 10,
-                paddingLeft: 5,
-                minHeight: 40,
-              }}
-            >
-              <div>즐겨찾기 ({friends.length})</div>
-              {displayFriends ? (
-                <div
-                  style={{ cursor: "pointer" }}
-                  onClick={() => setDisplayFriends(false)}
-                >
-                  ▼
-                </div>
-              ) : (
-                <div
-                  style={{ cursor: "pointer" }}
-                  onClick={() => setDisplayFriends(true)}
-                >
-                  ▲
-                </div>
-              )}
-            </ChatAppHeaderText>
-            {displayFriends &&
-              friends.map((item) => (
-                <ChatAppPersonItem
-                  key={item.id}
-                  name={item.name}
-                  role={item.role}
-                  hierarchy={item.hierarchy}
-                  hover={true}
-                  onClick={() => {
-                    setUserInfo({
-                      state: "Ready",
-                      targetEmail: item.email,
-                    });
-                    setScene("PersonInfo");
-                  }}
-                />
-              ))}
-            <div style={{ borderBottom: "1px solid lightgray" }}></div>
             <ChatAppHeaderText
               style={{
                 display: "flex",

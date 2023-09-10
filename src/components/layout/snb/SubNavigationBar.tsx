@@ -8,6 +8,7 @@ import ClientRegisterPopUpButton from "../../client/ClientRegisterPopUpButton.ts
 import employeeIdState from "../../../states/employee/EmployeeIdState";
 import snbLoadedState from "../../../states/common/SnbLoadedState.ts";
 import { useMemo, useState } from "react";
+import { isEmployeeState } from "../../../states/user/UserState.ts";
 
 function SubNavigationBar() {
   const clientId = useRecoilValue(clientIdState);
@@ -17,6 +18,7 @@ function SubNavigationBar() {
   const { items } = useRecoilValue(subNavigationBarState);
   const snbLoaded = useRecoilValue(snbLoadedState);
   const [searchTerm, setSearchTerm] = useState("");
+  const isEmployee = useRecoilValue(isEmployeeState);
 
   const filteredItems = useMemo(
     () =>
@@ -54,26 +56,28 @@ function SubNavigationBar() {
             padding: 0,
           }}
         >
-          <div style={{ height: 48 }}>
-            <input
-              style={{
-                paddingLeft: 10,
-                paddingRight: 10,
-                fontSize: 16,
-                height: "100%",
-                width: "99%",
-                border: "none",
-                outline: "none",
-                borderBottom: "1px solid lightgray",
-              }}
-              placeholder="검색..."
-              value={searchTerm}
-              type="search"
-              onChange={(e) => {
-                setSearchTerm(e.target.value);
-              }}
-            />
-          </div>
+          {isEmployee && (
+            <div style={{ height: 48 }}>
+              <input
+                style={{
+                  paddingLeft: 10,
+                  paddingRight: 10,
+                  fontSize: 16,
+                  height: "100%",
+                  width: "99%",
+                  border: "none",
+                  outline: "none",
+                  borderBottom: "1px solid lightgray",
+                }}
+                placeholder="검색..."
+                value={searchTerm}
+                type="search"
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                }}
+              />
+            </div>
+          )}
           {snbLoaded ? (
             filteredItems.map((item) => (
               <SubNavigationBarItem
@@ -105,8 +109,9 @@ function SubNavigationBar() {
           )}
         </div>
       </div>
-      {subNavigationBar.type === "client" ||
-      subNavigationBar.type === "caseClient" ? (
+      {isEmployee &&
+      (subNavigationBar.type === "client" ||
+        subNavigationBar.type === "caseClient") ? (
         <ClientRegisterPopUpButton />
       ) : null}
     </div>

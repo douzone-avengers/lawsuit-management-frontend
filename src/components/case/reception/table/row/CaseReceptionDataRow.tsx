@@ -8,12 +8,15 @@ import { CaseReceptionRowType } from "../../../../../states/case/info/reception/
 import CaseReceptionEditConfirmButton from "../button/CaseReceptionEditConfirmButton.tsx";
 import CaseReceptionEditButton from "../button/CaseReceptionEditButton.tsx";
 import CaseReceptionDeleteButton from "../button/CaseReceptionDeleteButton.tsx";
+import { useRecoilValue } from "recoil";
+import { isEmployeeState } from "../../../../../states/user/UserState.ts";
 
 type Props = {
   item: CaseReceptionRowType & { editable: boolean };
 };
 
 function CaseReceptionDataRow({ item }: Props) {
+  const isEmployee = useRecoilValue(isEmployeeState);
   return (
     <Box
       sx={{
@@ -30,7 +33,7 @@ function CaseReceptionDataRow({ item }: Props) {
       </Box>
       <Box
         sx={{
-          width: "calc(100% - 720px)",
+          width: isEmployee ? "calc(100% - 720px)" : "calc(100% - 520px)",
         }}
       >
         <CaseReceptionContentsCell item={item} />
@@ -41,30 +44,34 @@ function CaseReceptionDataRow({ item }: Props) {
       <Box sx={{ width: 150 }}>
         <CaseReceptionReceivedAtCell item={item} />
       </Box>
-      <Box
-        sx={{
-          width: 100,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        {item.editable ? (
-          <CaseReceptionEditConfirmButton item={item} />
-        ) : (
-          <CaseReceptionEditButton item={item} />
-        )}
-      </Box>
-      <Box
-        sx={{
-          width: 100,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <CaseReceptionDeleteButton item={item} />
-      </Box>
+      {isEmployee && (
+        <>
+          <Box
+            sx={{
+              width: 100,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {item.editable ? (
+              <CaseReceptionEditConfirmButton item={item} />
+            ) : (
+              <CaseReceptionEditButton item={item} />
+            )}
+          </Box>
+          <Box
+            sx={{
+              width: 100,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CaseReceptionDeleteButton item={item} />
+          </Box>
+        </>
+      )}
     </Box>
   );
 }
