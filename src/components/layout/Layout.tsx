@@ -100,10 +100,10 @@ function Layout() {
       onSuccess: (res) => {
         const body: UserStateType = res.data;
         if (body.roleId === 1) {
-          requestDeprecated("GET", "/members/", {
+          requestDeprecated("GET", "/clients/me", {
             onSuccess: (res) => {
               setUser(body);
-              setUserClientId(res.data);
+              setUserClientId(res.data["id"]);
             },
           });
         } else {
