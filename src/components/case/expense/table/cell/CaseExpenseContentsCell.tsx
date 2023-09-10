@@ -9,9 +9,10 @@ import { ChangeEvent } from "react";
 
 type Props = {
   item: CaseExpenseRowType & { editable: boolean };
+  handleClickRow: any;
 };
 
-function CaseExpenseContentsCell({ item }: Props) {
+function CaseExpenseContentsCell({ item, handleClickRow }: Props) {
   const [expense, setExpense] = useRecoilState(caseExpensesState);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -42,7 +43,9 @@ function CaseExpenseContentsCell({ item }: Props) {
         alignItems: "center",
         overflow: "hidden",
         height: 40,
+        cursor: "pointer",
       }}
+      onClick={handleClickRow}
     >
       {item.contents}
     </Box>

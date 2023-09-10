@@ -6,6 +6,8 @@ import CaseExpenseAmountCell from "../cell/CaseExpenseAmountCell.tsx";
 import CaseExpenseEditConfirmButton from "../button/CaseExpenseEditConfirmButton.tsx";
 import CaseExpenseEditButton from "../button/CaseExpenseEditButton.tsx";
 import CaseExpenseDeleteButton from "../button/CaseExpenseDeleteButton.tsx";
+import { useSetRecoilState } from "recoil";
+import caseExpenseIdState from "../../../../../states/case/info/expense/CaseExpenseIdState.tsx";
 
 type Props = {
   item: CaseExpenseRowType & { editable: boolean };
@@ -13,6 +15,11 @@ type Props = {
 };
 
 function CaseExpenseDataRow({ item, caseId }: Props) {
+  const setExpenseId = useSetRecoilState(caseExpenseIdState);
+  const handleClickRow = () => {
+    setExpenseId(item.id);
+  };
+
   return (
     <Box
       sx={{
@@ -22,13 +29,13 @@ function CaseExpenseDataRow({ item, caseId }: Props) {
       }}
     >
       <Box sx={{ width: 200, minWidth: 150 }}>
-        <CaseExpenseSpeningAtCell item={item} />
+        <CaseExpenseSpeningAtCell item={item} handleClickRow={handleClickRow} />
       </Box>
       <Box sx={{ width: 500, minWidth: 200 }}>
-        <CaseExpenseContentsCell item={item} />
+        <CaseExpenseContentsCell item={item} handleClickRow={handleClickRow} />
       </Box>
       <Box sx={{ width: 200, minWidth: 100 }}>
-        <CaseExpenseAmountCell item={item} />
+        <CaseExpenseAmountCell item={item} handleClickRow={handleClickRow} />
       </Box>
       <Box sx={{ display: "flex", width: 150, minWidth: 150 }}>
         <Box

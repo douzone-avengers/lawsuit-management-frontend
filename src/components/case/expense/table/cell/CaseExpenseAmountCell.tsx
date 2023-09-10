@@ -10,9 +10,10 @@ import { delimiter } from "../../../../../lib/convert.ts";
 
 type Props = {
   item: CaseExpenseRowType & { editable: boolean };
+  handleClickRow: any;
 };
 
-function CaseExpenseAmountCell({ item }: Props) {
+function CaseExpenseAmountCell({ item, handleClickRow }: Props) {
   const [expenses, setExpenses] = useRecoilState(CaseExpenseState);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +46,9 @@ function CaseExpenseAmountCell({ item }: Props) {
         justifyContent: "center",
         alignItems: "center",
         height: 40,
+        cursor: "pointer",
       }}
+      onClick={handleClickRow}
     >
       {delimiter(item.amount)}
     </Box>
