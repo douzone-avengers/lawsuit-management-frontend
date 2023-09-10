@@ -99,7 +99,7 @@ function ChatAppRoomChatScene() {
       <ChatAppPlainHeader
         left={
           <div style={{ display: "flex", marginLeft: 5, gap: 5 }}>
-            <ChatAppBackButton />
+            <ChatAppBackButton scene="Room" />
             <ChatAppHeaderTitle>{roomTitle}</ChatAppHeaderTitle>
           </div>
         }

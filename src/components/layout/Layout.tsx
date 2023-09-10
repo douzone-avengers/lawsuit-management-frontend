@@ -23,7 +23,7 @@ import chatAppOpenState from "../chat/state/ChatAppOpenState.ts";
 import ChatApp from "../chat/ChatApp.tsx";
 import sideNavigationBarOpenState from "../../states/layout/SideNavigationBarOpenState.tsx";
 import subNavigationBarState from "../../states/layout/SubNavigationBarState.tsx";
-import mainNavigationBarState from "../../states/layout/MainNavigationBarState.tsx";
+import userClientIdState from "../../states/user/UserClientIdState.tsx";
 
 function Layout() {
   const navigate = useNavigate();
@@ -34,11 +34,11 @@ function Layout() {
   const [clientRegisterPopUp] = useRecoilState(clientRegisterPopUpOpenState);
   const [clientRemovePopUpOpen] = useRecoilState(clientRemovePopUpOpenState);
   const [user, setUser] = useRecoilState(userState);
+  const setUserClientId = useSetRecoilState(userClientIdState);
 
   const chatAppOpen = useRecoilValue(chatAppOpenState);
   const sideNavigationBarOpen = useRecoilValue(sideNavigationBarOpenState);
   const subNavigationBar = useRecoilValue(subNavigationBarState);
-  const setMainNavigationBar = useSetRecoilState(mainNavigationBarState);
 
   //set enum table
   //직급 리스트
@@ -100,9 +100,15 @@ function Layout() {
       onSuccess: (res) => {
         const body: UserStateType = res.data;
         if (body.roleId === 1) {
-          // TODO
+          requestDeprecated("GET", "/members/", {
+            onSuccess: (res) => {
+              setUser(body);
+              setUserClientId(res.data);
+            },
+          });
+        } else {
+          setUser(body);
         }
-        setUser(body);
       },
       onFail: () => {
         navigate("/login");
