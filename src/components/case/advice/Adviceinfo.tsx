@@ -5,20 +5,26 @@ import requestDeprecated, {
   RequestSuccessHandler,
 } from "../../../lib/requestDeprecated.ts";
 import adviceRegisterPopUpOpenState from "../../../states/advice/AdviceRegisterPopUpOpenState.tsx";
-import adviceIdState from "../../../states/advice/AdviceState.tsx";
+import adviceIdState from "../../../states/advice/AdviceIdState.tsx";
 import caseIdState from "../../../states/case/CaseIdState.tsx";
 import clientIdState from "../../../states/client/ClientIdState.tsx";
-import AdviceListTable from "./AdviceListTable.tsx";
-import AdviceRegisterPopUp from "./AdviceRegisterPopUp.tsx";
-import AdviceRegisterPopUpButton from "./AdviceRegisterPopUpButton.tsx";
+import AdviceListTable from "./table/AdviceListTable.tsx";
+import AdviceRegisterPopUp from "./table/popup/AdviceRegisterPopUp.tsx";
+import AdviceRegisterPopUpButton from "./table/button/AdviceRegisterPopUpButton.tsx";
 import { Advicedata } from "../../../type/ResponseType.ts";
+import adviceEditPopUpOpenState from "../../../states/advice/adviceEditPopUpOpenState.tsx";
+import AdviceEditPopUp from "./table/popup/AdviceEditPopUp.tsx";
 
-function Adviceinfo() {
+type Props = {
+  advice: Advicedata[];
+};
+
+function Adviceinfo({ advice }: Props) {
   const clientId = useRecoilValue(clientIdState);
   const lawsuitId = useRecoilValue(caseIdState);
   const [_, setAdviceId] = useRecoilState(adviceIdState);
   const adviceRegisterPopUpOpen = useRecoilValue(adviceRegisterPopUpOpenState);
-
+  const adviceEditPopUpOpen = useRecoilValue(adviceEditPopUpOpenState);
   const [advices, setAdvices] = useState<Advicedata[]>([]);
 
   useEffect(() => {
@@ -59,6 +65,7 @@ function Adviceinfo() {
           }))}
         />
       </Box>
+      {adviceEditPopUpOpen ? <AdviceEditPopUp advices={advice} /> : null}
       {adviceRegisterPopUpOpen ? (
         <AdviceRegisterPopUp setAdvices={setAdvices} />
       ) : null}

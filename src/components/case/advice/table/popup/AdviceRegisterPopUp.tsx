@@ -5,16 +5,16 @@ import React, { useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import requestDeprecated, {
   RequestSuccessHandler,
-} from "../../../lib/requestDeprecated.ts";
+} from "../../../../../lib/requestDeprecated.ts";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import adviceRegisterPopUpOpenState from "../../../states/advice/AdviceRegisterPopUpOpenState.tsx";
-import adviceIdState from "../../../states/advice/AdviceState.tsx";
-import CloseButton from "../../common/CloseButton.tsx";
-import PopUp from "../../common/PopUp.tsx";
-import "../../../stylesheet/calendar.css";
-import { Advicedata } from "../../../type/ResponseType.ts";
-import caseInfoState from "../../../states/case/info/caseInfoState.tsx";
-import caseIdState from "../../../states/case/CaseIdState.tsx";
+import adviceRegisterPopUpOpenState from "../../../../../states/advice/AdviceRegisterPopUpOpenState.tsx";
+import adviceIdState from "../../../../../states/advice/AdviceIdState.tsx";
+import CloseButton from "../../../../common/CloseButton.tsx";
+import PopUp from "../../../../common/PopUp.tsx";
+import "../../../../../stylesheet/calendar.css";
+import { Advicedata } from "../../../../../type/ResponseType.ts";
+import caseInfoState from "../../../../../states/case/info/caseInfoState.tsx";
+import caseIdState from "../../../../../states/case/CaseIdState.tsx";
 //import { DatePicker } from "@mui/x-date-pickers";
 
 type Props = {

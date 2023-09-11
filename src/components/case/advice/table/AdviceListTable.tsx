@@ -6,15 +6,16 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Advicedata } from "../../../type/ResponseType.ts";
+import { Advicedata } from "../../../../type/ResponseType.ts";
 import IconButton from "@mui/material/IconButton";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
-} from "../../../lib/requestDeprecated.ts";
+} from "../../../../lib/requestDeprecated.ts";
 import TextField from "@mui/material/TextField";
+import AdviceEditPopUpButton from "./button/AdviceEditPopUpButton.tsx";
 
 type Advice = {
   id: number;
@@ -44,7 +45,6 @@ function AdviceListTable({ advices }: Props) {
   const adviceRequest = (adviceId: number) => {
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
       const body: Advice = res.data;
-      console.dir(body);
       setAdvice(body);
     };
     const handelRequestFail: RequestFailHandler = (e) => {
@@ -74,6 +74,7 @@ function AdviceListTable({ advices }: Props) {
             <TableCell align="left">상담 제목</TableCell>
             <TableCell align="left">상담 내용</TableCell>
             <TableCell align="left">상담 일시</TableCell>
+            <TableCell />
           </TableRow>
         </TableHead>
         <TableBody>
@@ -82,7 +83,9 @@ function AdviceListTable({ advices }: Props) {
               <TableRow
                 key={item.id}
                 hover={true}
-                onClick={() => handleExpandClick(index)}
+                onClick={() => {
+                  handleExpandClick(index);
+                }}
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   cursor: "pointer",
@@ -104,6 +107,13 @@ function AdviceListTable({ advices }: Props) {
                 <TableCell align="left">
                   {new Date(item.advicedAt).toLocaleDateString()}
                 </TableCell>
+                {true && (
+                  <TableCell align="center">
+                    <div>
+                      <AdviceEditPopUpButton />
+                    </div>
+                  </TableCell>
+                )}
               </TableRow>
               {expandedRow === index && (
                 <TableRow>
