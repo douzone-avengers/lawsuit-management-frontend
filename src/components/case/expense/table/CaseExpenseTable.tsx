@@ -44,7 +44,7 @@ function CaseExpenseTable() {
 
       setExpenses(
         expenses.map((item) => {
-          return { ...item, editable: false };
+          return { ...item, editable: false, isSelected: false };
         }),
       );
       setSize(size);
@@ -94,9 +94,10 @@ function CaseExpenseTable() {
           지출정보가 존재하지 않습니다.
         </Box>
       )}
-      {Array.from({ length: 5 - expenses.length }).map((_, index) => (
-        <Box key={index} sx={{ width: "100%", height: 40 }}></Box>
-      ))}
+      {expenses.length > 0 &&
+        Array.from({ length: 5 - expenses.length }).map((_, index) => (
+          <Box key={index} sx={{ width: "100%", height: 40 }}></Box>
+        ))}
       <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
       <Box
         sx={{
@@ -118,7 +119,7 @@ function CaseExpenseTable() {
                 }: { expenses: CaseExpenseRowType[]; size: number } = res.data;
                 setExpenses(
                   expenses.map((item) => {
-                    return { ...item, editable: false };
+                    return { ...item, editable: false, isSelected: false };
                   }),
                 );
                 setSize(size);
@@ -150,7 +151,7 @@ function CaseExpenseTable() {
                 }: { expenses: CaseExpenseRowType[]; size: number } = res.data;
                 setExpenses(
                   expenses.map((item) => {
-                    return { ...item, editable: false };
+                    return { ...item, editable: false, isSelected: false };
                   }),
                 );
                 setSize(size);

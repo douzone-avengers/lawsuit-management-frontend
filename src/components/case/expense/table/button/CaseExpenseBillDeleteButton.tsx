@@ -1,12 +1,12 @@
-import { CaseExpenseBIllRowType } from "../../../../../states/case/info/expense/CaseExpenseBIllRowType.tsx";
 import { useSetRecoilState } from "recoil";
 import caseExpenseBillIdState from "../../../../../states/case/info/expense/CaseExpenseBillIdState.tsx";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Button } from "@mui/material";
 import caseExpenseBillRemovePopUpOpenState from "../../../../../states/case/info/expense/CaseExpenseBillRemovePopUpOpenState.tsx";
+import { CaseExpenseBillRowType } from "../../../../../states/case/info/expense/CaseExpenseBillState.tsx";
 
 type Props = {
-  item: CaseExpenseBIllRowType & { editable: boolean };
+  item: CaseExpenseBillRowType & { editable: boolean };
 };
 
 function CaseExpenseBillDeleteButton({ item }: Props) {
