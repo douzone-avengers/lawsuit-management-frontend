@@ -11,6 +11,7 @@ function CaseExpenseBillTable() {
   const theme = useTheme();
   const [expenseBill, setExpenseBill] = useRecoilState(caseExpenseBillState);
   const expenseBillId = useRecoilValue(caseExpenseBillIdState);
+
   return (
     <Box
       sx={{

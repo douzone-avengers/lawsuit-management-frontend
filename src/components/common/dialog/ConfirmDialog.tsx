@@ -28,9 +28,7 @@ export default function ConfirmDialog({
     if (agreeAction) {
       try {
         await agreeAction(); // agreeAction이 완료될 때까지 기다립니다.
-      } catch (error) {
-        console.error("Error occurred during agreeAction:", error);
-      }
+      } catch (error) {}
     }
     setOpenStatus(false);
     setTimeout(() => {

@@ -44,7 +44,6 @@ function AdviceListTable({ advices }: Props) {
   const adviceRequest = (adviceId: number) => {
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
       const body: Advice = res.data;
-      console.dir(body);
       setAdvice(body);
     };
     const handelRequestFail: RequestFailHandler = (e) => {

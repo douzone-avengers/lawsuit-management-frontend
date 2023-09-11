@@ -1,10 +1,11 @@
 type Props = {
   header: string;
   content: string;
+  role: string;
   width?: number | string;
 };
 
-function ChatAppTag({ header, content, width }: Props) {
+function ChatAppTag({ header, content, width, role }: Props) {
   return (
     <div
       style={{
@@ -12,7 +13,7 @@ function ChatAppTag({ header, content, width }: Props) {
         alignItems: "center",
         width: width ? width : 320,
         height: 40,
-        border: "1px solid #1976D2",
+        border: role !== "의뢰인" ? "1px solid #1976D2" : "1px solid gray",
       }}
     >
       <div
@@ -22,7 +23,7 @@ function ChatAppTag({ header, content, width }: Props) {
           justifyContent: "center",
           width: 60,
           height: "100%",
-          background: "#1976D2",
+          background: role !== "의뢰인" ? "#1976D2" : "gray",
           color: "white",
         }}
       >

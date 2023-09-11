@@ -24,6 +24,7 @@ import clientIdState from "../../states/client/ClientIdState.tsx";
 import { useNavigate } from "react-router-dom";
 import CaseEditPopUpButton from "./CaseEditPopUpButton.tsx";
 import CaseRemovePopUpButton from "./CaseRemovePopUpButton.tsx";
+import { isEmployeeState } from "../../states/user/UserState.ts";
 
 function CaseDetailPage() {
   const [caseTabId, setCaseTabId] = useRecoilState(caseTabIdState);
@@ -91,6 +92,8 @@ function CaseDetailPage() {
     });
   }, [caseId]);
 
+  const isEmployee = useRecoilValue(isEmployeeState);
+
   return (
     <>
       <Box
@@ -106,10 +109,12 @@ function CaseDetailPage() {
             &nbsp; 목록
           </Button>
         </Box>
-        <Box sx={{ display: "flex", gap: 1 }}>
-          <CaseEditPopUpButton />
-          <CaseRemovePopUpButton />
-        </Box>
+        {isEmployee && (
+          <Box sx={{ display: "flex", gap: 1 }}>
+            <CaseEditPopUpButton />
+            <CaseRemovePopUpButton />
+          </Box>
+        )}
       </Box>
       <Box
         sx={{

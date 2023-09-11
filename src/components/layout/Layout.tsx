@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import Debug from "./Debug";
 import Header from "./header/Header.tsx";
 import Main from "./main/Main.tsx";
@@ -23,6 +23,7 @@ import chatAppOpenState from "../chat/state/ChatAppOpenState.ts";
 import ChatApp from "../chat/ChatApp.tsx";
 import sideNavigationBarOpenState from "../../states/layout/SideNavigationBarOpenState.tsx";
 import subNavigationBarState from "../../states/layout/SubNavigationBarState.tsx";
+import userClientIdState from "../../states/user/UserClientIdState.tsx";
 
 function Layout() {
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ function Layout() {
   const [clientRegisterPopUp] = useRecoilState(clientRegisterPopUpOpenState);
   const [clientRemovePopUpOpen] = useRecoilState(clientRemovePopUpOpenState);
   const [user, setUser] = useRecoilState(userState);
+  const setUserClientId = useSetRecoilState(userClientIdState);
 
   const chatAppOpen = useRecoilValue(chatAppOpenState);
   const sideNavigationBarOpen = useRecoilValue(sideNavigationBarOpenState);
@@ -97,7 +99,16 @@ function Layout() {
     requestDeprecated("GET", "/members/me", {
       onSuccess: (res) => {
         const body: UserStateType = res.data;
-        setUser(body);
+        if (body.roleId === 1) {
+          requestDeprecated("GET", "/clients/me", {
+            onSuccess: (res) => {
+              setUser(body);
+              setUserClientId(res.data["id"]);
+            },
+          });
+        } else {
+          setUser(body);
+        }
       },
       onFail: () => {
         navigate("/login");

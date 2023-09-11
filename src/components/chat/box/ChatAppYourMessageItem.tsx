@@ -18,7 +18,12 @@ function ChatAppYourMessageItem({ item }: Props) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "#1976D2",
+          background:
+            roomInfo.value.users.filter(
+              (item2) => item2.id === item.senderId,
+            )[0].role !== "의뢰인"
+              ? "#1976D2"
+              : "gray",
           minWidth: 48,
           height: 48,
           marginRight: 10,
@@ -40,7 +45,12 @@ function ChatAppYourMessageItem({ item }: Props) {
             minHeight: 44,
             maxHeight: 620,
             color: "white",
-            background: "#1976D2",
+            background:
+              roomInfo.value.users.filter(
+                (item2) => item2.id === item.senderId,
+              )[0].role !== "의뢰인"
+                ? "#1976D2"
+                : "gray",
             borderTopRightRadius: 20,
             borderBottomLeftRadius: 20,
             borderBottomRightRadius: 20,

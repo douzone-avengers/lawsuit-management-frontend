@@ -53,7 +53,6 @@ export default function EmployeePromotionDialog() {
     try {
       await requestCreateEmployeePromotion();
     } catch (error) {
-      console.error("Error occurred during agreeAction:", error);
     } finally {
       setIsFormOpen(false);
       setEmail("");

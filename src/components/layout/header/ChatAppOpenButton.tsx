@@ -9,6 +9,7 @@ function ChatAppOpenButton() {
     <Button
       variant="contained"
       sx={{
+        height: "100%",
         background: chatAppOpen ? "#1565c0" : "",
       }}
       disableElevation

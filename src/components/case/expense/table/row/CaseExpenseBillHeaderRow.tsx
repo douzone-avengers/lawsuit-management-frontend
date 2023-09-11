@@ -1,8 +1,12 @@
 import Box from "@mui/material/Box";
 import TableCell from "@mui/material/TableCell";
 import { Button } from "@mui/material";
+import { useRecoilValue } from "recoil";
+import { isEmployeeState } from "../../../../../states/user/UserState.ts";
 
 function CaseExpenseBillHeaderRow() {
+  const isEmployee = useRecoilValue(isEmployeeState);
+
   return (
     <Box sx={{ display: "flex", width: "100%" }}>
       <Box
@@ -27,23 +31,25 @@ function CaseExpenseBillHeaderRow() {
           <b>지출 증빙자료</b>
         </TableCell>
       </Box>
-      <Box
-        sx={{
-          width: 150,
-          minWidth: 150,
-          height: 40,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Button
-          variant="contained"
-          sx={{ width: "100%", color: "secondary", fontSize: 16 }}
+      {isEmployee && (
+        <Box
+          sx={{
+            width: 150,
+            minWidth: 150,
+            height: 40,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
         >
-          등록
-        </Button>
-      </Box>
+          <Button
+            variant="contained"
+            sx={{ width: "100%", color: "secondary", fontSize: 16 }}
+          >
+            등록
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 }
