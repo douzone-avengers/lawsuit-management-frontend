@@ -10,10 +10,9 @@ import Box from "@mui/material/Box";
 
 type Props = {
   item: CaseExpenseRowType & { editable: boolean };
-  handleClickRow: any;
 };
 
-function CaseExpenseSpeningAtCell({ item, handleClickRow }: Props) {
+function CaseExpenseSpeningAtCell({ item }: Props) {
   const [expenses, setExpenses] = useRecoilState(caseExpensesState);
 
   const handleChange = (e: Dayjs | null) => {
@@ -45,7 +44,6 @@ function CaseExpenseSpeningAtCell({ item, handleClickRow }: Props) {
         height: 40,
         cursor: "pointer",
       }}
-      onClick={handleClickRow}
     >
       {item.speningAt}
     </Box>
