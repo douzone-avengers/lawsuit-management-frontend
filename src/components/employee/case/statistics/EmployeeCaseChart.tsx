@@ -2,20 +2,25 @@ import { useEffect, useRef } from "react";
 import * as echarts from "echarts";
 import { Box, Card } from "@mui/material";
 import { LawsuitCountStatus } from "../../type/LawsuitCountStatus";
+import { RevenueStatus } from "../../type/RevenueStatus";
 
 type EChartsOption = echarts.EChartsOption;
 
 type Props = {
   lawsuitCountStatus: LawsuitCountStatus;
+  revenueStatus: RevenueStatus;
 };
 
-export default function EmployeeCaseChart({ lawsuitCountStatus }: Props) {
+export default function EmployeeCaseChart({
+  lawsuitCountStatus,
+  revenueStatus,
+}: Props) {
   const lawsuitType_ChartRef = useRef<HTMLDivElement>(null);
-  const incomeType_ChartRef = useRef<HTMLDivElement>(null);
+  const revenueType_ChartRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const lawsuitTypeChart = echarts.init(lawsuitType_ChartRef.current);
-    const incomeTypeChart = echarts.init(incomeType_ChartRef.current);
+    const revenueTypeChart = echarts.init(revenueType_ChartRef.current);
 
     //승률 차트
 
@@ -66,25 +71,37 @@ export default function EmployeeCaseChart({ lawsuitCountStatus }: Props) {
         },
       ],
     };
-    const incomeTypeOption: EChartsOption = {
+    const revenueTypeOption: EChartsOption = {
       title: {
-        text: "수익 비율",
-        left: "left",
+        text: "수익 현황",
+        left: "center",
+      },
+      grid: {
+        width: "50%",
       },
       tooltip: {
         trigger: "item",
       },
       legend: {
-        orient: "horizontal",
-        left: "center",
+        orient: "vertical",
+        left: "left",
       },
       series: [
         {
+          name: "수익 현황",
           type: "pie",
-          radius: "50%",
+          radius: "70%",
           data: [
-            { value: 1000000, name: "기본 의뢰비" },
-            { value: 2000000, name: "성공보수" },
+            {
+              value: revenueStatus.contingentFee,
+              name: "의뢰비 수익",
+              itemStyle: { color: "#BACDF4" },
+            },
+            {
+              value: revenueStatus.commissionFee,
+              name: "성공보수 수익",
+              itemStyle: { color: "#59B0F7" },
+            },
           ],
           emphasis: {
             itemStyle: {
@@ -98,11 +115,11 @@ export default function EmployeeCaseChart({ lawsuitCountStatus }: Props) {
     };
 
     lawsuitTypeChart.setOption(lawsuitTypeOption);
-    incomeTypeChart.setOption(incomeTypeOption);
+    revenueTypeChart.setOption(revenueTypeOption);
     // 창 크기 조절 이벤트 핸들러 추가
     const handleResize = () => {
       lawsuitTypeChart.resize();
-      incomeTypeChart.resize();
+      revenueTypeChart.resize();
     };
 
     window.addEventListener("resize", handleResize);
@@ -127,7 +144,7 @@ export default function EmployeeCaseChart({ lawsuitCountStatus }: Props) {
         ></Card>
 
         <Card
-          ref={incomeType_ChartRef}
+          ref={revenueType_ChartRef}
           sx={{ width: "100%", height: "400px" }}
         ></Card>
       </Box>

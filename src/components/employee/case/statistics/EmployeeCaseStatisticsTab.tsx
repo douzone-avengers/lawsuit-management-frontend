@@ -9,6 +9,7 @@ import requestDeprecated, {
   RequestSuccessHandler,
 } from "../../../../lib/requestDeprecated";
 import { Box } from "@mui/material";
+import { RevenueStatus } from "../../type/RevenueStatus";
 
 // total: number;
 // commissionFee: number;
@@ -23,11 +24,20 @@ function EmployeeCaseStatisticsTab() {
     closing: 0,
     isLoading: false,
   };
+  const initialRevenue: RevenueStatus = {
+    total: 0,
+    commissionFee: 0,
+    contingentFee: 0,
+    isLoading: false,
+  };
+
   const [lawsuitCountStatus, setLawsuitCountStatus] =
     useState(initialLawsuitCount);
+  const [revenueStatus, setRevenueStatus] = useState(initialRevenue);
 
   useEffect(() => {
     lawsuitStatusRequest();
+    revenueStatusRequest();
   }, [employeeId]);
 
   const lawsuitStatusRequest = () => {
@@ -57,6 +67,28 @@ function EmployeeCaseStatisticsTab() {
     );
   };
 
+  const revenueStatusRequest = () => {
+    const handleRequestSuccess: RequestSuccessHandler = (res) => {
+      const data = res.data;
+      setRevenueStatus({
+        total: data.total,
+        commissionFee: data.commissionFee,
+        contingentFee: data.contingentFee,
+        isLoading: true,
+      });
+    };
+
+    const handleRequestFail: RequestFailHandler = (e) => {
+      alert((e.response.data as { code: string; message: string }).message);
+    };
+
+    requestDeprecated("GET", `/statistics/revenues/employees/${employeeId}`, {
+      withToken: true,
+      onSuccess: handleRequestSuccess,
+      onFail: handleRequestFail,
+    });
+  };
+
   return (
     <>
       <EmployeeCaseStatisticsInfoCard
@@ -79,7 +111,10 @@ function EmployeeCaseStatisticsTab() {
           담당 사건이 없습니다.
         </Box>
       ) : (
-        <EmployeeCaseChart lawsuitCountStatus={lawsuitCountStatus} />
+        <EmployeeCaseChart
+          lawsuitCountStatus={lawsuitCountStatus}
+          revenueStatus={revenueStatus}
+        />
       )}
     </>
   );
