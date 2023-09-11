@@ -52,7 +52,6 @@ function AdviceRegisterPopUp({ setAdvices }: Props) {
     const handleRequestSuccess: RequestSuccessHandler = () => {
       const handleRequestSuccess2: RequestSuccessHandler = (res) => {
         const body: Advicedata[] = res.data;
-        console.log(body);
         setAdvices(body);
         setAdviceId(body[0]?.id);
       };

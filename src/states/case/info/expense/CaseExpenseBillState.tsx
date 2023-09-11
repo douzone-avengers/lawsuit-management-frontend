@@ -1,15 +1,15 @@
 import { atom } from "recoil";
 
-export type CaseExpenseBIllRowType = {
+export type CaseExpenseBillRowType = {
   id: number;
-  showFilename: string;
-  originFilename: string;
+  showFileName: string;
+  originFileName: string;
   path: string;
   extension: string;
 };
 
 const caseExpenseBillState = atom<
-  (CaseExpenseBIllRowType & { editable: boolean })[]
+  (CaseExpenseBillRowType & { editable: boolean })[]
 >({
   key: "caseExpenseBillState",
   default: [],

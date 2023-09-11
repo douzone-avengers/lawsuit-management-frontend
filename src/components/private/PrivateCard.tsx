@@ -172,7 +172,6 @@ function PrivateCard({ width = "50%", memberInfo, setMemberInfo }: Props) {
       alert("정보가 수정되었습니다.");
     };
     const handelRequestFail: RequestFailHandler = (e) => {
-      console.dir(e);
       alert((e.response.data as { code: string; message: string }).message);
     };
 

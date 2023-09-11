@@ -120,13 +120,8 @@ function CaseBookPDFShareComponent() {
                 pdfData: data,
                 toList: emails,
               },
-              onSuccess: () => {
-                console.log("success");
-              },
-              onFail: (e) => {
-                console.log("fail");
-                console.dir(e);
-              },
+              onSuccess: () => {},
+              onFail: () => {},
             });
           };
           reader.readAsDataURL(pdf);

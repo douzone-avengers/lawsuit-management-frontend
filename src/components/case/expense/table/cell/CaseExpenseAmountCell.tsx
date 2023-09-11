@@ -45,6 +45,7 @@ function CaseExpenseAmountCell({ item }: Props) {
         justifyContent: "center",
         alignItems: "center",
         height: 40,
+        cursor: "pointer",
       }}
     >
       {delimiter(item.amount)}

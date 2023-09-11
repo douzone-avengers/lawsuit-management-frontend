@@ -1,13 +1,13 @@
-import caseExpenseBillState, {
-  CaseExpenseBIllRowType,
-} from "../../../../../states/case/info/expense/CaseExpenseBIllRowType.tsx";
 import { useRecoilState } from "recoil";
 import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
 import { produce } from "immer";
+import caseExpenseBillState, {
+  CaseExpenseBillRowType,
+} from "../../../../../states/case/info/expense/CaseExpenseBillState.tsx";
 
 type Props = {
-  item: CaseExpenseBIllRowType & { editable: boolean };
+  item: CaseExpenseBillRowType & { editable: boolean };
 };
 function CaseExpenseBillEditButton({ item }: Props) {
   const [expenseBill, setExpenseBill] = useRecoilState(caseExpenseBillState);

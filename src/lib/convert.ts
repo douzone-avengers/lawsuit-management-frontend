@@ -50,6 +50,19 @@ export function mapLawsuitStatus(status: string) {
   }
 }
 
+export function convertRole(id: number) {
+  switch (id) {
+    case 1:
+      return "의뢰인";
+    case 2:
+      return "일반직원";
+    case 3:
+      return "관리자";
+    default:
+      return "";
+  }
+}
+
 export function convertHierarchy(id: number) {
   switch (id) {
     case 1:

@@ -42,6 +42,7 @@ function CaseExpenseContentsCell({ item }: Props) {
         alignItems: "center",
         overflow: "hidden",
         height: 40,
+        cursor: "pointer",
       }}
     >
       {item.contents}

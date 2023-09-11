@@ -1,9 +1,12 @@
 import Box from "@mui/material/Box";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import caseReceptionAddPopUpOpenState from "../../../../../states/case/info/reception/CaseReceptionAddPopUpOpenState.tsx";
 import Button from "@mui/material/Button";
+import { isEmployeeState } from "../../../../../states/user/UserState.ts";
 
 function CaseReceptionHeaderRow() {
+  const isEmployee = useRecoilValue(isEmployeeState);
+
   const setReceptionAddPopUpOpen = useSetRecoilState(
     caseReceptionAddPopUpOpenState,
   );
@@ -75,23 +78,25 @@ function CaseReceptionHeaderRow() {
       >
         <Box>완료일</Box>
       </Box>
-      <Box
-        sx={{
-          width: 200,
-          height: 40,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Button
-          sx={{ width: 185 }}
-          variant="contained"
-          onClick={handleReceptionAddButtonClick}
+      {isEmployee && (
+        <Box
+          sx={{
+            width: 200,
+            height: 40,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
         >
-          등록
-        </Button>
-      </Box>
+          <Button
+            sx={{ width: 185 }}
+            variant="contained"
+            onClick={handleReceptionAddButtonClick}
+          >
+            등록
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 }

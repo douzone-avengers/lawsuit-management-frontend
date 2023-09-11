@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom, selector } from "recoil";
 
 export type UserStateType = {
   id: number;
@@ -13,6 +13,17 @@ export type UserStateType = {
 const userState = atom<UserStateType | null>({
   key: "userState",
   default: null,
+});
+
+export const isEmployeeState = selector<boolean>({
+  key: "isEmployeeState",
+  get: ({ get }) => {
+    const user = get(userState);
+    if (!user) {
+      return false;
+    }
+    return user.roleId !== 1;
+  },
 });
 
 export default userState;

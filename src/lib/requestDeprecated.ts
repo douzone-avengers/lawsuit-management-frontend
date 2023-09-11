@@ -20,7 +20,7 @@ function requestDeprecated(
   path: string,
   config?: {
     withToken?: boolean;
-    body?: Record<string, unknown>;
+    body?: Record<string, unknown> | FormData;
     params?: Record<string, string>;
     headers?: Record<string, string>;
     timeout?: number;

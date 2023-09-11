@@ -1,20 +1,12 @@
-import caseExpenseBillState, {
-  CaseExpenseBIllRowType,
-} from "../../../../../states/case/info/expense/CaseExpenseBIllRowType.tsx";
-import { useRecoilState } from "recoil";
 import Box from "@mui/material/Box";
+import { CaseExpenseBillRowType } from "../../../../../states/case/info/expense/CaseExpenseBillState.tsx";
 
 type Props = {
-  item: CaseExpenseBIllRowType & { editable: boolean };
+  item: CaseExpenseBillRowType & { editable: boolean };
 };
 
 function CaseExpenseBillShowNameCell({ item }: Props) {
-  const [expenseBill, setExpenseBill] = useRecoilState(caseExpenseBillState);
-
-  return item.editable ? (
-    // 파일 업로드 창
-    <Box></Box>
-  ) : (
+  return (
     <Box
       sx={{
         display: "flex",
@@ -23,7 +15,7 @@ function CaseExpenseBillShowNameCell({ item }: Props) {
         height: 40,
       }}
     >
-      {item.showFilename}
+      {item.showFileName + "." + item.extension}
     </Box>
   );
 }

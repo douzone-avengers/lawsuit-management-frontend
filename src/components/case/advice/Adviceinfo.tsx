@@ -12,6 +12,7 @@ import AdviceListTable from "./table/AdviceListTable.tsx";
 import AdviceRegisterPopUp from "./table/popup/AdviceRegisterPopUp.tsx";
 import AdviceRegisterPopUpButton from "./table/button/AdviceRegisterPopUpButton.tsx";
 import { Advicedata } from "../../../type/ResponseType.ts";
+import { isEmployeeState } from "../../../states/user/UserState.ts";
 import adviceEditPopUpOpenState from "../../../states/advice/adviceEditPopUpOpenState.tsx";
 import AdviceEditPopUp from "./table/popup/AdviceEditPopUp.tsx";
 
@@ -26,6 +27,7 @@ function Adviceinfo({ advice }: Props) {
   const adviceRegisterPopUpOpen = useRecoilValue(adviceRegisterPopUpOpenState);
   const adviceEditPopUpOpen = useRecoilValue(adviceEditPopUpOpenState);
   const [advices, setAdvices] = useState<Advicedata[]>([]);
+  const isEmployee = useRecoilValue(isEmployeeState);
 
   useEffect(() => {
     if (typeof clientId !== "number" || typeof lawsuitId !== "number") {
@@ -36,7 +38,6 @@ function Adviceinfo({ advice }: Props) {
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
       const body: Advicedata[] = res.data;
       setAdvices(body);
-      console.log(body);
       setAdviceId(body[0]?.id);
     };
 
@@ -55,9 +56,11 @@ function Adviceinfo({ advice }: Props) {
         position: "relative",
       }}
     >
-      <Box>
-        <AdviceRegisterPopUpButton />
-      </Box>
+      {isEmployee && (
+        <Box>
+          <AdviceRegisterPopUpButton />
+        </Box>
+      )}
       <Box>
         <AdviceListTable
           advices={advices.map((item) => ({

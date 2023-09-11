@@ -63,7 +63,6 @@ function ChatAppRoomChatScene() {
       });
     } else if (roomInfo.state === "Loading") {
       setRoomInfo((prev) => {
-        console.log("loading");
         if (prev.state !== "Loading") {
           throw new Error("");
         }
@@ -100,7 +99,7 @@ function ChatAppRoomChatScene() {
       <ChatAppPlainHeader
         left={
           <div style={{ display: "flex", marginLeft: 5, gap: 5 }}>
-            <ChatAppBackButton />
+            <ChatAppBackButton scene="Room" />
             <ChatAppHeaderTitle>{roomTitle}</ChatAppHeaderTitle>
           </div>
         }
