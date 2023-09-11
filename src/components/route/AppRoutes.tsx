@@ -34,6 +34,7 @@ import { MemberInfo } from "../employee/type/MemberInfo.tsx";
 import roleListState from "../../states/data/roleListState.ts";
 import snbLoadedState from "../../states/common/SnbLoadedState.ts";
 import privateButtonIsClickState from "../../states/private/PrivateButtonIsClickState";
+import userState, { isEmployeeState } from "../../states/user/UserState.ts";
 
 function AppRoutes() {
   const location = useLocation();
@@ -56,11 +57,11 @@ function AppRoutes() {
   );
   const setPrivateButtonIsClick = useSetRecoilState(privateButtonIsClickState);
   const roleList = useRecoilValue(roleListState);
+  const isEmployee = useRecoilValue(isEmployeeState);
+  const user = useRecoilValue(userState);
 
   useEffect(() => {
     const { pathname, search } = location;
-
-    console.log(`${pathname}${search}`);
 
     const paths = pathname.split("/");
     const param: Record<string, string> = {};
@@ -98,6 +99,10 @@ function AppRoutes() {
 
     // /clients
     if (length === 1 && paths[1] === "clients") {
+      if (!isEmployee) {
+        navigate("/error");
+        return;
+      }
       setMainNavigationBar({
         ...mainNavigationBar,
         curId: 0,
@@ -130,6 +135,10 @@ function AppRoutes() {
 
     // /clients/:clientId
     if (length === 2 && paths[1] === "clients" && paths[2]) {
+      if (!isEmployee) {
+        navigate("/error");
+        return;
+      }
       const newClientId = Number.parseInt(paths[2]);
       if (subNavigationBar.type === "client") {
         setClientId(newClientId);
@@ -169,6 +178,10 @@ function AppRoutes() {
 
     // /cases
     if (length === 1 && paths[1] === "cases") {
+      if (!isEmployee) {
+        navigate("/error");
+        return;
+      }
       if (subNavigationBar.type === "caseClient") {
         setClientId(null);
         setCaseId(null);
@@ -214,7 +227,6 @@ function AppRoutes() {
       paths[3]
     ) {
       const newClientId = Number.parseInt(paths[3]);
-
       if (subNavigationBar.type === "caseClient") {
         setClientId(newClientId);
         setCaseId(null);
@@ -316,6 +328,11 @@ function AppRoutes() {
 
     // /employees
     if (length === 1 && paths[1] === "employees") {
+      if (!isEmployee) {
+        navigate("/error");
+        return;
+      }
+
       setMainNavigationBar({
         ...mainNavigationBar,
         curId: 2, //사원
@@ -339,6 +356,11 @@ function AppRoutes() {
       paths[2] &&
       !isNaN(Number(paths[2]))
     ) {
+      if (!isEmployee) {
+        navigate("/error");
+        return;
+      }
+
       if (subNavigationBar.type === "employee") {
         setClientId(null);
         setCaseId(null);
@@ -383,6 +405,11 @@ function AppRoutes() {
 
     // /schedule
     if (length === 1 && paths[1] === "schedule") {
+      if (!isEmployee) {
+        navigate("/error");
+        return;
+      }
+
       setMainNavigationBar({
         ...mainNavigationBar,
         curId: -1,

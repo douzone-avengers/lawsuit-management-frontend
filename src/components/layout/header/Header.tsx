@@ -5,11 +5,15 @@ import ScheduleButton from "./ScheduleButton.tsx";
 import { useTheme } from "@mui/material";
 import ChatAppOpenButton from "./ChatAppOpenButton.tsx";
 import PrivateButton from "./PrivateButton";
+import { useRecoilValue } from "recoil";
+import { isEmployeeState } from "../../../states/user/UserState.ts";
 
 function Header() {
   const theme = useTheme();
   const color = "white";
   const background = theme.palette.primary.main;
+  const isEmployee = useRecoilValue(isEmployeeState);
+
   return (
     <div
       style={{
@@ -34,7 +38,7 @@ function Header() {
         </div>
         <div style={{ display: "flex" }}>
           <ChatAppOpenButton />
-          <ScheduleButton />
+          {isEmployee ? <ScheduleButton /> : null}
           <PrivateButton />
           <LogoutButton />
         </div>

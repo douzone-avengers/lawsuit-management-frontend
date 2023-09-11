@@ -7,6 +7,7 @@ import requestDeprecated, {
   RequestSuccessHandler,
 } from "../../../../../lib/requestDeprecated.ts";
 import { useRecoilValue } from "recoil";
+import { isEmployeeState } from "../../../../../states/user/UserState.ts";
 import caseExpenseIdState from "../../../../../states/case/info/expense/CaseExpenseIdState.tsx";
 
 type Props = {
@@ -14,6 +15,7 @@ type Props = {
 };
 
 function CaseExpenseBillHeaderRow({ setTrigger }: Props) {
+  const isEmployee = useRecoilValue(isEmployeeState);
   const expenseId = useRecoilValue(caseExpenseIdState);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -72,31 +74,33 @@ function CaseExpenseBillHeaderRow({ setTrigger }: Props) {
           <b>지출 증빙자료</b>
         </TableCell>
       </Box>
-      <Box
-        sx={{
-          width: 150,
-          minWidth: 150,
-          height: 40,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <input
-          type="file"
-          accept=".jpg, .jpeg, .png, .gif" // 허용할 파일 확장자를 지정
-          style={{ display: "none" }}
-          ref={fileInputRef}
-          onChange={handleFileInputChange}
-        />
-        <Button
-          variant="contained"
-          sx={{ width: "100%", color: "secondary", fontSize: 16 }}
-          onClick={handleExpenseBillAddButtonClick}
+      {isEmployee && (
+        <Box
+          sx={{
+            width: 150,
+            minWidth: 150,
+            height: 40,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
         >
-          등록
-        </Button>
-      </Box>
+          <input
+            type="file"
+            accept=".jpg, .jpeg, .png, .gif" // 허용할 파일 확장자를 지정
+            style={{ display: "none" }}
+            ref={fileInputRef}
+            onChange={handleFileInputChange}
+          />
+          <Button
+            variant="contained"
+            sx={{ width: "100%", color: "secondary", fontSize: 16 }}
+            onClick={handleExpenseBillAddButtonClick}
+          >
+            등록
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 }

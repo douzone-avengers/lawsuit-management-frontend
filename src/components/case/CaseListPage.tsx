@@ -22,6 +22,7 @@ import caseAddPopUpOpenState from "../../states/case/CaseAddPopUpOpenState.tsx";
 import CaseAddPopUp from "./CaseAddPopUp.tsx";
 import { LawsuitCountInfo } from "./type/LawsuitCountInfo.tsx";
 import CardTitle from "../common/CardTitle.tsx";
+import { isEmployeeState } from "../../states/user/UserState.ts";
 
 function CaseListPage() {
   const clientId = useRecoilValue(clientIdState);
@@ -44,6 +45,7 @@ function CaseListPage() {
   const [sortKey, setSortKey] = useState("createdAt");
   const [sortOrder, setSortOrder] = useState<"desc" | "asc">("desc");
   const caseAddPopUpOpen = useRecoilValue(caseAddPopUpOpenState);
+  const isEmployee = useRecoilValue(isEmployeeState);
 
   const prevDependencies = useRef({
     sortKey,
@@ -289,7 +291,7 @@ function CaseListPage() {
           />
         ) : null}
       </Box>
-      <CaseAddPopUpButton />
+      {isEmployee ? <CaseAddPopUpButton /> : null}
     </>
   );
 }

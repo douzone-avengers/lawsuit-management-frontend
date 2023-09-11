@@ -22,6 +22,7 @@ function CaseExpenseBillTable() {
   const [expenseId, setExpenseId] = useRecoilState(caseExpenseIdState);
   const [expenseBill, setExpenseBill] = useRecoilState(caseExpenseBillState);
   const expenseBillId = useRecoilValue(caseExpenseBillIdState);
+
   const [trigger, setTrigger] = useState(false);
 
   useEffect(() => {

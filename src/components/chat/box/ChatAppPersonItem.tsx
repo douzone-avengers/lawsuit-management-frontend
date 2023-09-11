@@ -4,6 +4,7 @@ import { CSSProperties, useState } from "react";
 type Props = {
   hierarchy: string;
   name: string;
+  role: string;
   style?: CSSProperties;
   hover?: boolean;
   onClick?: () => void;
@@ -12,6 +13,7 @@ type Props = {
 function ChatAppPersonItem({
   hierarchy,
   name,
+  role,
   style,
   onClick,
   hover = false,
@@ -48,7 +50,7 @@ function ChatAppPersonItem({
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "#1976D2",
+          background: role !== "의뢰인" ? "#1976D2" : "gray",
           width: 48,
           height: 48,
         }}

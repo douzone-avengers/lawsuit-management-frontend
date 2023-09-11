@@ -34,7 +34,6 @@ function AdviceRemovePopUp() {
     const handleRequestSuccess: RequestSuccessHandler = () => {
       const handleRequestSuccess2: RequestSuccessHandler = (res) => {
         const body: AllLawsuitType = res.data;
-        console.log(adviceId);
         setData(body);
       };
       requestDeprecated("GET", `/lawsuits/${caseId}/print`, {

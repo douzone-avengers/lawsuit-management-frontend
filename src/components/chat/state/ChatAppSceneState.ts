@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-type ChatAppSceneType =
+export type ChatAppSceneType =
   | "Person"
   | "PersonAdd"
   | "PersonInfo"

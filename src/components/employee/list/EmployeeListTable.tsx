@@ -96,9 +96,11 @@ function EmployeeListTable({
             <TableRow>
               {headCells.map((headCell) =>
                 !headCell.canSort ? (
-                  <TableCell align="left">{headCell.label}</TableCell>
+                  <TableCell align="left" style={{ width: headCell.width }}>
+                    <b>{headCell.label}</b>
+                  </TableCell>
                 ) : (
-                  <TableCell align="left">
+                  <TableCell align="left" style={{ width: headCell.width }}>
                     <TableSortLabel
                       active={sortKey === headCell.id}
                       direction={sortKey === headCell.id ? sortOrder : "asc"}
@@ -106,7 +108,7 @@ function EmployeeListTable({
                         sortHandler(headCell.id);
                       }}
                     >
-                      {headCell.label}
+                      <b>{headCell.label}</b>
                     </TableSortLabel>
                   </TableCell>
                 ),

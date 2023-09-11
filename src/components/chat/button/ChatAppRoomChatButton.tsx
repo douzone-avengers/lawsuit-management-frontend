@@ -40,6 +40,7 @@ function ChatAppRoomChatButton({ email }: Props) {
                 body: {
                   type: "oneToOne",
                   name: null,
+                  isShow: false,
                   emails: [user.email, email],
                 },
                 onSuccess: (res) => {
