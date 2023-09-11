@@ -27,6 +27,7 @@ export default function EmployeeCaseChart({
         text: "사건 현황",
         left: "center",
         subtext: `총 사건: ${lawsuitCountStatus.total}`,
+        top: "5%",
       },
       grid: {
         width: "50%",
@@ -43,6 +44,7 @@ export default function EmployeeCaseChart({
           name: "사건 수",
           type: "pie",
           radius: "70%",
+          center: ["50%", "60%"],
           label: {
             show: true, // 항상 라벨을 표시
             formatter: "{b}: {c}",
@@ -79,7 +81,7 @@ export default function EmployeeCaseChart({
         text: "수익 현황",
         left: "center",
         subtext: `총수익: ${revenueStatus.localeTotal}`,
-        // padding: [0, 0, 20, 0], // 상 우 하 좌
+        top: "5%",
       },
       grid: {
         width: "50%",
@@ -96,6 +98,7 @@ export default function EmployeeCaseChart({
           name: "수익 현황",
           type: "pie",
           radius: "70%",
+          center: ["50%", "60%"],
           label: {
             show: true,
             formatter: function (params) {

@@ -1,5 +1,4 @@
 import EmployeeCaseChart from "./EmployeeCaseChart";
-import EmployeeCaseStatisticsInfoCard from "./EmployeeCaseStatisticsInfoCard";
 import { useRecoilValue } from "recoil";
 import employeeIdState from "../../../../states/employee/EmployeeIdState";
 import { LawsuitCountStatus } from "../../type/LawsuitCountStatus";
@@ -10,11 +9,9 @@ import requestDeprecated, {
 } from "../../../../lib/requestDeprecated";
 import { Box } from "@mui/material";
 import { RevenueStatus } from "../../type/RevenueStatus";
+import { MemberInfo } from "../../type/MemberInfo";
+import EmployeeInfoCard from "../info/EmployeeInfoCard";
 
-// total: number;
-// commissionFee: number;
-// contingentFee: number;
-// isLoading: boolean;
 function EmployeeCaseStatisticsTab() {
   const employeeId = useRecoilValue(employeeIdState);
   const initialLawsuitCount: LawsuitCountStatus = {
@@ -35,10 +32,12 @@ function EmployeeCaseStatisticsTab() {
   const [lawsuitCountStatus, setLawsuitCountStatus] =
     useState(initialLawsuitCount);
   const [revenueStatus, setRevenueStatus] = useState(initialRevenue);
+  const [memberInfo, setMemberInfo] = useState<MemberInfo>();
 
   useEffect(() => {
     lawsuitStatusRequest();
     revenueStatusRequest();
+    memberRequest();
   }, [employeeId]);
 
   const lawsuitStatusRequest = () => {
@@ -91,15 +90,33 @@ function EmployeeCaseStatisticsTab() {
     });
   };
 
+  const memberRequest = () => {
+    const handleRequestSuccess: RequestSuccessHandler = (res) => {
+      const memberInfo: MemberInfo = res.data;
+      setMemberInfo(memberInfo);
+    };
+    const handelRequestFail: RequestFailHandler = (e) => {
+      alert((e.response.data as { code: string; message: string }).message);
+    };
+
+    requestDeprecated("GET", `/members/employees/${employeeId}`, {
+      withToken: true,
+
+      onSuccess: handleRequestSuccess,
+      onFail: handelRequestFail,
+    });
+  };
+
   return (
     <>
-      <EmployeeCaseStatisticsInfoCard
-        width={"100%"}
-        name={"김더존"}
-        winCnt={100}
-        loseCnt={56}
-        income={3000000}
-      />
+      {memberInfo && setMemberInfo && (
+        <EmployeeInfoCard
+          width={"100%"}
+          memberInfo={memberInfo}
+          setMemberInfo={setMemberInfo}
+          isEditable={false}
+        />
+      )}
       <br />
 
       {lawsuitCountStatus.total === 0 ? (
