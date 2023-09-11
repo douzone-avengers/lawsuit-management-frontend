@@ -10,16 +10,21 @@ import requestDeprecated, {
 } from "../../../../lib/requestDeprecated";
 import { Box } from "@mui/material";
 
+// total: number;
+// commissionFee: number;
+// contingentFee: number;
+// isLoading: boolean;
 function EmployeeCaseStatisticsTab() {
   const employeeId = useRecoilValue(employeeIdState);
-  const initialState: LawsuitCountStatus = {
+  const initialLawsuitCount: LawsuitCountStatus = {
     total: 0,
     registration: 0,
     proceeding: 0,
     closing: 0,
     isLoading: false,
   };
-  const [lawsuitCountStatus, setLawsuitCountStatus] = useState(initialState);
+  const [lawsuitCountStatus, setLawsuitCountStatus] =
+    useState(initialLawsuitCount);
 
   useEffect(() => {
     lawsuitStatusRequest();
@@ -43,7 +48,7 @@ function EmployeeCaseStatisticsTab() {
 
     requestDeprecated(
       "GET",
-      `/statistics/lawsuits-status/employee/${employeeId}`,
+      `/statistics/lawsuits-status/employees/${employeeId}`,
       {
         withToken: true,
         onSuccess: handleRequestSuccess,
