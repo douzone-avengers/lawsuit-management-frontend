@@ -39,9 +39,16 @@ type Props = {
   height?: string | number;
   memberInfo: MemberInfo;
   setMemberInfo: React.Dispatch<React.SetStateAction<MemberInfo | undefined>>;
+  isEditable?: boolean;
 };
 
-function EmployeeInfoCard({ width, height, memberInfo, setMemberInfo }: Props) {
+function EmployeeInfoCard({
+  width,
+  height,
+  memberInfo,
+  setMemberInfo,
+  isEditable = true,
+}: Props) {
   const employeeId = useRecoilValue(employeeIdState);
   const [isEditMode, setIsEditMode] = useState(false);
   const [name, setName] = useState("");
@@ -318,15 +325,17 @@ function EmployeeInfoCard({ width, height, memberInfo, setMemberInfo }: Props) {
                 </>
               ) : (
                 <>
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    onClick={() => {
-                      handleUpdateButton();
-                    }}
-                  >
-                    수정
-                  </Button>
+                  {isEditable ? (
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      onClick={() => {
+                        handleUpdateButton();
+                      }}
+                    >
+                      수정
+                    </Button>
+                  ) : null}
                 </>
               )}
             </Box>
