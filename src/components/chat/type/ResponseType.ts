@@ -2,6 +2,7 @@ type UserBasicInfoType = {
   id: number;
   email: string;
   name: string;
+  role: string;
   hierarchy: string;
 };
 

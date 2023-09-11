@@ -1,10 +1,11 @@
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import caseExpenseAddPopUpOpenState from "../../../../../states/case/info/expense/CaseExpenseAddPopUpOpenState.tsx";
 import Box from "@mui/material/Box";
 import { Button, TableSortLabel } from "@mui/material";
 import React from "react";
 import TableCell from "@mui/material/TableCell";
 import { HeadCell } from "../../../type/HeadCell.tsx";
+import { isEmployeeState } from "../../../../../states/user/UserState.ts";
 
 type Props = {
   sortKey: string;
@@ -19,6 +20,8 @@ function CaseExpenseHeaderRow({
   sortOrder,
   setSortOrder,
 }: Props) {
+  const isEmployee = useRecoilValue(isEmployeeState);
+
   const setExpenseAddPopUpOpen = useSetRecoilState(
     caseExpenseAddPopUpOpenState,
   );
@@ -155,24 +158,26 @@ function CaseExpenseHeaderRow({
           </TableSortLabel>
         </TableCell>
       </Box>
-      <Box
-        sx={{
-          width: 150,
-          minWidth: 150,
-          height: 40,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Button
-          variant="contained"
-          sx={{ width: "100%", color: "secondary", fontSize: 16 }}
-          onClick={handleExpenseAddButtonClick}
+      {isEmployee && (
+        <Box
+          sx={{
+            width: 150,
+            minWidth: 150,
+            height: 40,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
         >
-          등록
-        </Button>
-      </Box>
+          <Button
+            variant="contained"
+            sx={{ width: "100%", color: "secondary", fontSize: 16 }}
+            onClick={handleExpenseAddButtonClick}
+          >
+            등록
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 }

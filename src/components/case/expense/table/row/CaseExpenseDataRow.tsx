@@ -6,6 +6,8 @@ import CaseExpenseAmountCell from "../cell/CaseExpenseAmountCell.tsx";
 import CaseExpenseEditConfirmButton from "../button/CaseExpenseEditConfirmButton.tsx";
 import CaseExpenseEditButton from "../button/CaseExpenseEditButton.tsx";
 import CaseExpenseDeleteButton from "../button/CaseExpenseDeleteButton.tsx";
+import { useRecoilValue } from "recoil";
+import { isEmployeeState } from "../../../../../states/user/UserState.ts";
 
 type Props = {
   item: CaseExpenseRowType & { editable: boolean };
@@ -13,6 +15,8 @@ type Props = {
 };
 
 function CaseExpenseDataRow({ item, caseId }: Props) {
+  const isEmployee = useRecoilValue(isEmployeeState);
+
   return (
     <Box
       sx={{
@@ -30,32 +34,34 @@ function CaseExpenseDataRow({ item, caseId }: Props) {
       <Box sx={{ width: 200, minWidth: 100 }}>
         <CaseExpenseAmountCell item={item} />
       </Box>
-      <Box sx={{ display: "flex", width: 150, minWidth: 150 }}>
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          {item.editable ? (
-            <CaseExpenseEditConfirmButton item={item} caseId={caseId} />
-          ) : (
-            <CaseExpenseEditButton item={item} />
-          )}
+      {isEmployee && (
+        <Box sx={{ display: "flex", width: 150, minWidth: 150 }}>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {item.editable ? (
+              <CaseExpenseEditConfirmButton item={item} caseId={caseId} />
+            ) : (
+              <CaseExpenseEditButton item={item} />
+            )}
+          </Box>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CaseExpenseDeleteButton item={item} />
+          </Box>
         </Box>
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <CaseExpenseDeleteButton item={item} />
-        </Box>
-      </Box>
+      )}
     </Box>
   );
 }

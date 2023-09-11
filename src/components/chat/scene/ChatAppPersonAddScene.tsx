@@ -31,7 +31,7 @@ function ChatAppPersonAddScene() {
         }}
         left={
           <div style={{ display: "flex", gap: 5 }}>
-            <ChatAppBackButton />
+            <ChatAppBackButton scene={"Person"} />
           </div>
         }
       />

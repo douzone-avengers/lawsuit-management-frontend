@@ -2,9 +2,11 @@ import List from "@mui/material/List";
 import { useRecoilValue } from "recoil";
 import mainNavigationBarState from "../../../states/layout/MainNavigationBarState.tsx";
 import MainNavigationBarItem from "./MainNavigationBarItem.tsx";
+import { isEmployeeState } from "../../../states/user/UserState.ts";
 
 function MainNavigationBar() {
   const mainNavigationBar = useRecoilValue(mainNavigationBarState);
+  const isEmployee = useRecoilValue(isEmployeeState);
 
   return (
     <List
@@ -15,13 +17,23 @@ function MainNavigationBar() {
         borderRight: "1px solid lightgray",
       }}
     >
-      {mainNavigationBar.items.map((item) => (
-        <MainNavigationBarItem
-          key={item.id}
-          item={item}
-          selected={mainNavigationBar.curId === item.id}
-        />
-      ))}
+      {isEmployee
+        ? mainNavigationBar.items.map((item) => (
+            <MainNavigationBarItem
+              key={item.id}
+              item={item}
+              selected={mainNavigationBar.curId === item.id}
+            />
+          ))
+        : mainNavigationBar.items
+            .filter((item) => item.id === 1)
+            .map((item) => (
+              <MainNavigationBarItem
+                key={item.id}
+                item={item}
+                selected={mainNavigationBar.curId === item.id}
+              />
+            ))}
     </List>
   );
 }
