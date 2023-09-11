@@ -108,7 +108,7 @@ function CaseExpenseSearchBox() {
       }: { expenses: CaseExpenseRowType[]; size: number } = res.data;
       setCaseExpenses(
         expenses.map((item) => {
-          return { ...item, editable: false };
+          return { ...item, editable: false, isSelected: false };
         }),
       );
       setSize(size);

@@ -37,7 +37,7 @@ function CaseExpenseRemovePopUp() {
         }: { expenses: CaseExpenseRowType[]; size: number } = res.data;
         setExpenses(
           expenses.map((item) => {
-            return { ...item, editable: false };
+            return { ...item, editable: false, isSelected: false };
           }),
         );
 

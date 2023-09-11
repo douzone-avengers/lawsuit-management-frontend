@@ -42,6 +42,7 @@ function CaseExpenseSpeningAtCell({ item }: Props) {
         justifyContent: "center",
         alignItems: "center",
         height: 40,
+        cursor: "pointer",
       }}
     >
       {item.speningAt}
