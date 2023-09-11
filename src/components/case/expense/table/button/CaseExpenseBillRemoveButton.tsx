@@ -9,7 +9,7 @@ type Props = {
   item: CaseExpenseBillRowType & { editable: boolean };
 };
 
-function CaseExpenseBillDeleteButton({ item }: Props) {
+function CaseExpenseBillRemoveButton({ item }: Props) {
   const setCaseExpenseBillId = useSetRecoilState(caseExpenseBillIdState);
   const setExpenseBillRemovePopUpOpen = useSetRecoilState(
     caseExpenseBillRemovePopUpOpenState,
@@ -22,7 +22,7 @@ function CaseExpenseBillDeleteButton({ item }: Props) {
 
   return (
     <Button
-      sx={{ width: "100%", marginLeft: 1 }}
+      sx={{ width: "100%" }}
       size="small"
       variant="contained"
       fullWidth
@@ -33,4 +33,4 @@ function CaseExpenseBillDeleteButton({ item }: Props) {
   );
 }
 
-export default CaseExpenseBillDeleteButton;
+export default CaseExpenseBillRemoveButton;

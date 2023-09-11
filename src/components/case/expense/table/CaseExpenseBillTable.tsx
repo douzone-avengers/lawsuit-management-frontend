@@ -3,11 +3,7 @@ import { Divider, useTheme } from "@mui/material";
 import CaseExpenseBillHeaderRow from "./row/CaseExpenseBillHeaderRow.tsx";
 import { useRecoilState, useRecoilValue } from "recoil";
 import CaseExpenseBillDataRow from "./row/CaseExpenseBillDataRow.tsx";
-import caseExpenseBillIdState from "../../../../states/case/info/expense/CaseExpenseBillIdState.tsx";
 import Button from "@mui/material/Button";
-import caseExpenseBillState, {
-  CaseExpenseBillRowType,
-} from "../../../../states/case/info/expense/CaseExpenseBillState.tsx";
 import caseExpenseIdState from "../../../../states/case/info/expense/CaseExpenseIdState.tsx";
 import { useEffect, useState } from "react";
 import requestDeprecated, {
@@ -15,13 +11,15 @@ import requestDeprecated, {
   RequestSuccessHandler,
 } from "../../../../lib/requestDeprecated.ts";
 import caseExpensesState from "../../../../states/case/info/expense/CaseExpensesState.tsx";
+import caseExpenseBillState, {
+  CaseExpenseBillRowType,
+} from "../../../../states/case/info/expense/CaseExpenseBillState.tsx";
 
 function CaseExpenseBillTable() {
   const theme = useTheme();
   const expenses = useRecoilValue(caseExpensesState);
   const [expenseId, setExpenseId] = useRecoilState(caseExpenseIdState);
   const [expenseBill, setExpenseBill] = useRecoilState(caseExpenseBillState);
-  const expenseBillId = useRecoilValue(caseExpenseBillIdState);
 
   const [trigger, setTrigger] = useState(false);
 
@@ -72,11 +70,7 @@ function CaseExpenseBillTable() {
       <Divider />
       {expenseBill.length > 0 ? (
         expenseBill.map((item) => (
-          <CaseExpenseBillDataRow
-            key={item.id}
-            item={item}
-            expenseBillId={expenseBillId}
-          />
+          <CaseExpenseBillDataRow key={item.id} item={item} />
         ))
       ) : (
         <Box
