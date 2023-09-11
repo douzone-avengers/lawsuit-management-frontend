@@ -26,6 +26,7 @@ export default function EmployeeCaseChart({
       title: {
         text: "사건 현황",
         left: "center",
+        subtext: `총 사건: ${lawsuitCountStatus.total}`,
       },
       grid: {
         width: "50%",
@@ -77,6 +78,8 @@ export default function EmployeeCaseChart({
       title: {
         text: "수익 현황",
         left: "center",
+        subtext: `총수익: ${revenueStatus.localeTotal}`,
+        // padding: [0, 0, 20, 0], // 상 우 하 좌
       },
       grid: {
         width: "50%",

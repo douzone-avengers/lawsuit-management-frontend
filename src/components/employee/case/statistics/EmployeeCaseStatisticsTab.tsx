@@ -26,6 +26,7 @@ function EmployeeCaseStatisticsTab() {
   };
   const initialRevenue: RevenueStatus = {
     total: 0,
+    localeTotal: "",
     commissionFee: 0,
     contingentFee: 0,
     isLoading: false,
@@ -72,6 +73,7 @@ function EmployeeCaseStatisticsTab() {
       const data = res.data;
       setRevenueStatus({
         total: data.total,
+        localeTotal: data.total.toLocaleString(),
         commissionFee: data.commissionFee,
         contingentFee: data.contingentFee,
         isLoading: true,
