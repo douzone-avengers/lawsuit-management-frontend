@@ -22,8 +22,6 @@ export default function EmployeeCaseChart({
     const lawsuitTypeChart = echarts.init(lawsuitType_ChartRef.current);
     const revenueTypeChart = echarts.init(revenueType_ChartRef.current);
 
-    //승률 차트
-
     const lawsuitTypeOption: EChartsOption = {
       title: {
         text: "사건 현황",
@@ -44,6 +42,10 @@ export default function EmployeeCaseChart({
           name: "사건 수",
           type: "pie",
           radius: "70%",
+          label: {
+            show: true, // 항상 라벨을 표시
+            formatter: "{b}: {c}",
+          },
           data: [
             {
               value: lawsuitCountStatus.registration,
@@ -91,6 +93,14 @@ export default function EmployeeCaseChart({
           name: "수익 현황",
           type: "pie",
           radius: "70%",
+          label: {
+            show: true,
+            formatter: function (params) {
+              // 숫자 값을 천의 자리마다 쉼표로 구분하여 표시
+              const formattedValue = params.value.toLocaleString();
+              return `${params.name}: ${formattedValue}`;
+            },
+          },
           data: [
             {
               value: revenueStatus.contingentFee,
@@ -116,7 +126,6 @@ export default function EmployeeCaseChart({
 
     lawsuitTypeChart.setOption(lawsuitTypeOption);
     revenueTypeChart.setOption(revenueTypeOption);
-    // 창 크기 조절 이벤트 핸들러 추가
     const handleResize = () => {
       lawsuitTypeChart.resize();
       revenueTypeChart.resize();
@@ -127,7 +136,7 @@ export default function EmployeeCaseChart({
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [lawsuitCountStatus]);
+  }, [lawsuitCountStatus, revenueStatus]);
 
   return (
     <Box>
