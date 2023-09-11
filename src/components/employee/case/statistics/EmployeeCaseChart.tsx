@@ -26,7 +26,7 @@ export default function EmployeeCaseChart({
       title: {
         text: "사건 현황",
         left: "center",
-        subtext: `총 사건: ${lawsuitCountStatus.total}`,
+        subtext: `총 사건: ${lawsuitCountStatus.total} 건`,
         top: "5%",
       },
       grid: {
@@ -47,7 +47,7 @@ export default function EmployeeCaseChart({
           center: ["50%", "60%"],
           label: {
             show: true, // 항상 라벨을 표시
-            formatter: "{b}: {c}",
+            formatter: "{b}: {c} 건",
           },
           data: [
             {
@@ -80,7 +80,7 @@ export default function EmployeeCaseChart({
       title: {
         text: "수익 현황",
         left: "center",
-        subtext: `총수익: ${revenueStatus.localeTotal}`,
+        subtext: `총수익: ${revenueStatus.localeTotal} 원`,
         top: "5%",
       },
       grid: {
@@ -104,18 +104,18 @@ export default function EmployeeCaseChart({
             formatter: function (params) {
               // 숫자 값을 천의 자리마다 쉼표로 구분하여 표시
               const formattedValue = params.value.toLocaleString();
-              return `${params.name}: ${formattedValue}`;
+              return `${params.name}: ${formattedValue} 원`;
             },
           },
           data: [
             {
               value: revenueStatus.contingentFee,
-              name: "의뢰비 수익",
+              name: " 의뢰비 수익",
               itemStyle: { color: "#BACDF4" },
             },
             {
               value: revenueStatus.commissionFee,
-              name: "성공보수 수익",
+              name: " 성공보수 수익",
               itemStyle: { color: "#59B0F7" },
             },
           ],
