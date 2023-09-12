@@ -114,7 +114,11 @@ function ChatAppRoomChatScene() {
             >
               {roomMessages.map((item) =>
                 user?.id === item.senderId ? (
-                  <ChatAppMyMessageItem key={item.id} item={item} />
+                  <ChatAppMyMessageItem
+                    key={item.id}
+                    isClient={user?.roleId === 1}
+                    item={item}
+                  />
                 ) : (
                   <ChatAppMessageYourItem key={item.id} item={item} />
                 ),

@@ -10,6 +10,8 @@ import PageLoadingSpinner from "../../layout/PageLoadingSpinner.tsx";
 import downPaymentPDFPrintLoadingState from "../../../states/case/info/closing/DownPaymentPDFPrintLoadingState.tsx";
 import { delimiter } from "../../../lib/convert.ts";
 import userState from "../../../states/user/UserState.ts";
+import downPaymentBankState from "../../../states/case/info/closing/DownPaymentBankState.ts";
+import downPaymentAccountState from "../../../states/case/info/closing/DownPaymentAccountState.ts";
 
 export type AllLawsuitType = {
   lawsuit: {
@@ -58,6 +60,8 @@ function DownPaymentPDFPrintComponent() {
   const user = useRecoilValue(userState);
   const setPdfPrintLoading = useSetRecoilState(downPaymentPDFPrintLoadingState);
   const ref = useRef<HTMLDivElement>(null);
+  const account = useRecoilValue(downPaymentAccountState);
+  const bank = useRecoilValue(downPaymentBankState);
 
   useEffect(() => {
     const handleSuccessRequest: RequestSuccessHandler = async (res) => {
@@ -363,7 +367,7 @@ function DownPaymentPDFPrintComponent() {
                 결제 정보는 아래를 참고부탁드립니다.
               </div>
               <div>
-                계좌 입금 : OO은행 <b>OOO-OOO-OOOOOOO</b>
+                계좌 입금 : {bank} <b>{account}</b>
               </div>
             </div>
             <div

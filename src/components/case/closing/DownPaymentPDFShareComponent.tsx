@@ -12,6 +12,8 @@ import userState from "../../../states/user/UserState.ts";
 import { delimiter } from "../../../lib/convert.ts";
 import downPaymentShareEmailsState from "../../../states/case/info/closing/DownPaymentShareEmailsState.ts";
 import downPaymentSharePopUpOpenState from "../../../states/case/info/closing/DownPaymentSharePopUpOpenState.ts";
+import downPaymentAccountState from "../../../states/case/info/closing/DownPaymentAccountState.ts";
+import downPaymentBankState from "../../../states/case/info/closing/DownPaymentBankState.ts";
 
 type AllLawsuitType = {
   lawsuit: {
@@ -66,6 +68,8 @@ function DownPaymentPDFShareComponent() {
     downPaymentPDFUploadLoadingState,
   );
   const ref = useRef<HTMLDivElement>(null);
+  const account = useRecoilValue(downPaymentAccountState);
+  const bank = useRecoilValue(downPaymentBankState);
 
   useEffect(() => {
     const handleSuccessRequest: RequestSuccessHandler = async (res) => {
@@ -389,7 +393,7 @@ function DownPaymentPDFShareComponent() {
                 결제 정보는 아래를 참고부탁드립니다.
               </div>
               <div>
-                계좌 입금 : OO은행 <b>OOO-OOO-OOOOOOO</b>
+                계좌 입금 : {bank} <b>{account}</b>
               </div>
             </div>
             <div

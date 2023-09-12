@@ -177,7 +177,7 @@ function Calendar() {
         display: "flex",
         flexDirection: "column",
         gap: 10,
-        width: "100%",
+        minWidth: "100%",
         height: 780,
       }}
     >

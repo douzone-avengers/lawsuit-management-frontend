@@ -56,3 +56,7 @@ export type CreateRoomResponseType = RoomBasicInfoType;
 export type GetAllRoomsResponseType = RoomDetailInfoType[];
 
 export type GetAllMessagesResponseType = MessageInfoType[];
+
+export type SearchAllUsersResponseType = (UserBasicInfoType & {
+  isFriend: boolean;
+})[];
