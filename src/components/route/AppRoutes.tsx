@@ -34,7 +34,6 @@ import { MemberInfo } from "../employee/type/MemberInfo.tsx";
 import roleListState from "../../states/data/roleListState.ts";
 import snbLoadedState from "../../states/common/SnbLoadedState.ts";
 import privateButtonIsClickState from "../../states/private/PrivateButtonIsClickState";
-import { isEmployeeState } from "../../states/user/UserState.ts";
 
 function AppRoutes() {
   const location = useLocation();
@@ -57,7 +56,6 @@ function AppRoutes() {
   );
   const setPrivateButtonIsClick = useSetRecoilState(privateButtonIsClickState);
   const roleList = useRecoilValue(roleListState);
-  const isEmployee = useRecoilValue(isEmployeeState);
 
   useEffect(() => {
     const { pathname, search } = location;
