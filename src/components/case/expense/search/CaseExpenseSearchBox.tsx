@@ -20,11 +20,13 @@ import requestDeprecated, {
 import RefreshIcon from "@mui/icons-material/Refresh";
 import IconButton from "@mui/material/IconButton";
 import { updateUrl } from "../../reception/table/CaseReceptionTable.tsx";
+import caseExpenseBillState from "../../../../states/case/info/expense/expenseBill/CaseExpenseBillState.tsx";
 
 function CaseExpenseSearchBox() {
   const [expenseSearch, setExpenseSearch] = useRecoilState(
     caseExpenseSearchState,
   );
+  const setExpenseBill = useSetRecoilState(caseExpenseBillState);
   const setPage = useSetRecoilState(caseExpensePageState);
   const url = useRecoilValue(caseExpenseSearchUrlState);
   const setSize = useSetRecoilState(caseExpenseSizeState);
@@ -96,6 +98,8 @@ function CaseExpenseSearchBox() {
   };
 
   const handleSubmitButtonClick = () => {
+    setExpenseBill([]);
+
     if (caseId === null) {
       // TODO
       return;

@@ -171,7 +171,7 @@ function CaseExpenseHeaderRow({
         >
           <Button
             variant="contained"
-            sx={{ width: "100%", color: "secondary", fontSize: 16 }}
+            sx={{ width: "100%", height: 35, color: "secondary", fontSize: 16 }}
             onClick={handleExpenseAddButtonClick}
           >
             등록

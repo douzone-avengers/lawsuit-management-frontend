@@ -2,7 +2,7 @@ import { Button, Divider, useTheme } from "@mui/material";
 import { useEffect } from "react";
 import Box from "@mui/material/Box";
 import caseIdState from "../../../../states/case/CaseIdState.tsx";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
@@ -18,11 +18,13 @@ import caseExpenseSizeState from "../../../../states/case/info/expense/CaseExpen
 import caseExpensePageState from "../../../../states/case/info/expense/CaseExpensePageState.tsx";
 import caseExpenseSortKeyState from "../../../../states/case/info/expense/CaseExpenseSortKeyState.tsx";
 import caseExpenseSortOrderState from "../../../../states/case/info/expense/CaseExpenseSortOrderState.tsx";
+import caseExpenseBillState from "../../../../states/case/info/expense/expenseBill/CaseExpenseBillState.tsx";
 
 function CaseExpenseTable() {
   const theme = useTheme();
   const caseId = useRecoilValue(caseIdState);
   const [expenses, setExpenses] = useRecoilState(caseExpensesState);
+  const setExpenseBill = useSetRecoilState(caseExpenseBillState);
   const [page, setPage] = useRecoilState(caseExpensePageState);
   const [size, setSize] = useRecoilState(caseExpenseSizeState);
   const [sortKey, setSortKey] = useRecoilState(caseExpenseSortKeyState);
@@ -32,6 +34,7 @@ function CaseExpenseTable() {
   const isNextDisabled = (page + 1) * 5 >= size;
 
   useEffect(() => {
+    setExpenseBill([]);
     if (caseId === null) {
       return;
     }

@@ -1,16 +1,13 @@
 import Box from "@mui/material/Box";
 import CaseExpenseBillShowNameCell from "../cell/CaseExpenseBillShowNameCell.tsx";
-import CaseExpenseBillEditConfirmButton from "../button/CaseExpenseBillEditConfirmButton.tsx";
-import CaseExpenseBillEditButton from "../button/CaseExpenseBillEditButton.tsx";
-import CaseExpenseBillDeleteButton from "../button/CaseExpenseBillDeleteButton.tsx";
-import { CaseExpenseBillRowType } from "../../../../../states/case/info/expense/CaseExpenseBillState.tsx";
+import CaseExpenseBillRemoveButton from "../button/CaseExpenseBillRemoveButton.tsx";
+import { CaseExpenseBillRowType } from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillState.tsx";
 
 type Props = {
   item: CaseExpenseBillRowType & { editable: boolean };
-  expenseBillId: number | null;
 };
 
-function CaseExpenseBillDataRow({ item, expenseBillId }: Props) {
+function CaseExpenseBillDataRow({ item }: Props) {
   return (
     <Box sx={{ display: "flex", width: "100%", height: 40 }}>
       <Box
@@ -30,24 +27,7 @@ function CaseExpenseBillDataRow({ item, expenseBillId }: Props) {
             alignItems: "center",
           }}
         >
-          {item.editable ? (
-            <CaseExpenseBillEditConfirmButton
-              item={item}
-              expenseBillId={expenseBillId}
-            />
-          ) : (
-            <CaseExpenseBillEditButton item={item} />
-          )}
-        </Box>
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <CaseExpenseBillDeleteButton item={item} />
+          <CaseExpenseBillRemoveButton item={item} />
         </Box>
       </Box>
     </Box>

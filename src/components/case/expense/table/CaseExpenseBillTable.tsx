@@ -3,59 +3,61 @@ import { Divider, useTheme } from "@mui/material";
 import CaseExpenseBillHeaderRow from "./row/CaseExpenseBillHeaderRow.tsx";
 import { useRecoilState, useRecoilValue } from "recoil";
 import CaseExpenseBillDataRow from "./row/CaseExpenseBillDataRow.tsx";
-import caseExpenseBillIdState from "../../../../states/case/info/expense/CaseExpenseBillIdState.tsx";
 import Button from "@mui/material/Button";
-import caseExpenseBillState, {
-  CaseExpenseBillRowType,
-} from "../../../../states/case/info/expense/CaseExpenseBillState.tsx";
-import caseExpenseIdState from "../../../../states/case/info/expense/CaseExpenseIdState.tsx";
-import { useEffect, useState } from "react";
 import requestDeprecated, {
-  RequestFailHandler,
   RequestSuccessHandler,
 } from "../../../../lib/requestDeprecated.ts";
-import caseExpensesState from "../../../../states/case/info/expense/CaseExpensesState.tsx";
+import caseExpenseBillState, {
+  CaseExpenseBillRowType,
+} from "../../../../states/case/info/expense/expenseBill/CaseExpenseBillState.tsx";
+import caseExpenseBillPageState, {
+  caseExpenseBillUrlState,
+} from "../../../../states/case/info/expense/expenseBill/CaseExpenseBillPageState.tsx";
+import caseExpenseBillSizeState from "../../../../states/case/info/expense/expenseBill/CaseExpenseBillSizeState.tsx";
+import { updateUrl } from "../../reception/table/CaseReceptionTable.tsx";
+import { useEffect } from "react";
+import caseExpenseIdState from "../../../../states/case/info/expense/CaseExpenseIdState.tsx";
 
 function CaseExpenseBillTable() {
   const theme = useTheme();
-  const expenses = useRecoilValue(caseExpensesState);
-  const [expenseId, setExpenseId] = useRecoilState(caseExpenseIdState);
   const [expenseBill, setExpenseBill] = useRecoilState(caseExpenseBillState);
-  const expenseBillId = useRecoilValue(caseExpenseBillIdState);
+  const expenseId = useRecoilValue(caseExpenseIdState);
+  const [page, setPage] = useRecoilState(caseExpenseBillPageState);
+  const [size, setSize] = useRecoilState(caseExpenseBillSizeState);
+  const isNextDisabled = (page + 1) * 5 >= size;
 
-  const [trigger, setTrigger] = useState(false);
-
-  useEffect(() => {
-    if (expenses.length > 0) {
-      setExpenseId(expenses[0].id);
-    }
-  }, [expenses]);
+  const url = useRecoilValue(caseExpenseBillUrlState);
 
   useEffect(() => {
-    if (!trigger) {
-      return;
+    setPage(0);
+  }, [expenseId]);
+
+  useEffect(() => {
+    if (page > 0 && (page + 1) * 5 > size) {
+      setPage(page - 1);
     }
+  }, [size]);
+
+  const handlePageChange = (newPage: number) => {
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      const expenseBill: CaseExpenseBillRowType[] = res.data;
+      const {
+        expenseBill,
+        size,
+      }: { expenseBill: CaseExpenseBillRowType[]; size: number } = res.data;
 
       setExpenseBill(
         expenseBill.map((item) => {
           return { ...item, editable: false };
         }),
       );
-
-      setTrigger(false);
+      setSize(size);
+      setPage(newPage); // 페이지 업데이트
     };
 
-    const handleRequestFail: RequestFailHandler = (e) => {
-      alert((e.response.data as { code: string; message: string }).message);
-    };
-
-    requestDeprecated("GET", `/expenses/${expenseId}/bill`, {
+    requestDeprecated("GET", updateUrl(url, newPage), {
       onSuccess: handleRequestSuccess,
-      onFail: handleRequestFail,
     });
-  }, [trigger]);
+  };
 
   return (
     <Box
@@ -68,15 +70,11 @@ function CaseExpenseBillTable() {
     >
       <Box sx={{ marginBottom: 2 }}></Box>
       <Divider />
-      <CaseExpenseBillHeaderRow setTrigger={setTrigger} />
+      <CaseExpenseBillHeaderRow />
       <Divider />
       {expenseBill.length > 0 ? (
         expenseBill.map((item) => (
-          <CaseExpenseBillDataRow
-            key={item.id}
-            item={item}
-            expenseBillId={expenseBillId}
-          />
+          <CaseExpenseBillDataRow key={item.id} item={item} />
         ))
       ) : (
         <Box
@@ -103,11 +101,23 @@ function CaseExpenseBillTable() {
           justifyContent: "center",
         }}
       >
-        <Button>prev</Button>
-        <Button disabled>
-          <Box sx={{ color: theme.palette.primary.main }}></Box>
+        <Button
+          disabled={page === 0}
+          onClick={() => {
+            handlePageChange(page - 1);
+          }}
+        >
+          prev
         </Button>
-        <Button>next</Button>
+        <Button disabled>
+          <Box sx={{ color: theme.palette.primary.main }}>{page + 1}</Box>
+        </Button>
+        <Button
+          disabled={isNextDisabled}
+          onClick={() => handlePageChange(page + 1)}
+        >
+          next
+        </Button>
       </Box>
       <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
     </Box>
