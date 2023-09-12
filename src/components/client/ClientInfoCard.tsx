@@ -39,7 +39,6 @@ function ClientInfoCard({ width, height }: Props) {
   const [phoneMessage, setPhoneMessage] = useState("");
   const [email, setEmail] = useState("");
   const [isEmailOk, setIsEmailOk] = useState(true);
-  const [emailMessage, setEmailMessage] = useState("");
   const [address, setAddress] = useState("");
   const [addressDetail, setAddressDetail] = useState("");
 
@@ -61,22 +60,22 @@ function ClientInfoCard({ width, height }: Props) {
 
   const [promotionKey, setPromotionKey] = useState("");
 
-  const onEmailChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const emailRegex =
-      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-    const emailCurrent = e.target.value;
-    setEmail(emailCurrent);
-
-    if (!emailRegex.test(emailCurrent)) {
-      setEmailMessage("이메일 형식이 틀렸습니다.");
-      setIsEmailOk(false);
-    } else {
-      setEmailMessage("올바른 이메일 형식입니다.");
-      setIsEmailOk(true);
-    }
-  };
+  // const onEmailChange = (
+  //   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  // ) => {
+  //   const emailRegex =
+  //     /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+  //   const emailCurrent = e.target.value;
+  //   setEmail(emailCurrent);
+  //
+  //   if (!emailRegex.test(emailCurrent)) {
+  //     setEmailMessage("이메일 형식이 틀렸습니다.");
+  //     setIsEmailOk(false);
+  //   } else {
+  //     setEmailMessage("올바른 이메일 형식입니다.");
+  //     setIsEmailOk(true);
+  //   }
+  // };
 
   const onPhoneChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -164,7 +163,6 @@ function ClientInfoCard({ width, height }: Props) {
         setAddress(updatedData.address);
         setAddressDetail(updatedData.addressDetail);
         setMemberId(updatedData.memberId);
-        setEmailMessage("");
         setPhoneMessage("");
         setAddressDetailMessage("");
       };
@@ -215,7 +213,6 @@ function ClientInfoCard({ width, height }: Props) {
     setAddressDetail(previousAddressDetail);
 
     setIsEmailOk(true);
-    setEmailMessage("");
     setIsPhoneOk(true);
     setPhoneMessage("");
     setIsAddressDetailOk(true);
@@ -291,18 +288,7 @@ function ClientInfoCard({ width, height }: Props) {
           <Box
             sx={{ display: "flex", justifyContent: "space-between", flex: 1 }}
           >
-            {!editMode ? (
-              <Box>
-                <SvgIcon
-                  component={Person}
-                  sx={{ color: "#1976d2", marginTop: "5px" }}
-                />
-                &nbsp;
-                <Typography sx={{ display: "inline-block" }} variant="h4">
-                  {name}
-                </Typography>
-              </Box>
-            ) : (
+            {editMode && !memberId ? (
               <Box>
                 <SvgIcon
                   component={Person}
@@ -316,6 +302,17 @@ function ClientInfoCard({ width, height }: Props) {
                     setName(e.target.value);
                   }}
                 />
+              </Box>
+            ) : (
+              <Box>
+                <SvgIcon
+                  component={Person}
+                  sx={{ color: "#1976d2", marginTop: "5px" }}
+                />
+                &nbsp;
+                <Typography sx={{ display: "inline-block" }} variant="h4">
+                  {name}
+                </Typography>
               </Box>
             )}
             <Box sx={{ display: "flex", justifyContent: "right", gap: 1 }}>
@@ -407,45 +404,24 @@ function ClientInfoCard({ width, height }: Props) {
           <br />
           <br />
           <Box>
-            {editMode ? (
-              <Box>
-                <SvgIcon
-                  component={Email}
-                  sx={{ color: "#1976d2", marginTop: "5px" }}
-                />{" "}
-                &nbsp;
-                <TextField
-                  {...(isEmailOk ? {} : { error: true })}
-                  id="email-input"
-                  disabled={!editMode}
-                  type="email"
-                  size="small"
-                  sx={{ display: "inline-block", fontSize: 20 }}
-                  value={email}
-                  onChange={onEmailChange}
-                  helperText={emailMessage}
-                />
-              </Box>
-            ) : (
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <SvgIcon
-                  component={Email}
-                  sx={{ color: "#1976d2", marginBottom: "5px" }}
-                />{" "}
-                &nbsp;&nbsp;
-                <Typography
-                  sx={{
-                    display: "inline-block",
-                    fontSize: 18,
-                    fontWeight: "bold",
-                  }}
-                  color="text.secondary"
-                  gutterBottom
-                >
-                  {email}
-                </Typography>
-              </Box>
-            )}
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <SvgIcon
+                component={Email}
+                sx={{ color: "#1976d2", marginBottom: "5px" }}
+              />{" "}
+              &nbsp;&nbsp;
+              <Typography
+                sx={{
+                  display: "inline-block",
+                  fontSize: 18,
+                  fontWeight: "bold",
+                }}
+                color="text.secondary"
+                gutterBottom
+              >
+                {email}
+              </Typography>
+            </Box>
           </Box>
           <br />
           <Box>
