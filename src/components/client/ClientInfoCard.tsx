@@ -357,7 +357,7 @@ function ClientInfoCard({ width, height }: Props) {
                   >
                     수정
                   </Button>
-                  <ClientRemovePopUpButton />
+                  {memberId ? null : <ClientRemovePopUpButton />}
                 </>
               )}
             </Box>
