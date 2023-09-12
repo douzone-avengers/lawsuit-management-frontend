@@ -5,77 +5,47 @@ import ChatAppPersonAddButton from "../button/ChatAppPersonAddButton.tsx";
 import ChatAppHeaderTitle from "../box/ChatAppHeaderTitle.tsx";
 import { useEffect, useState } from "react";
 import requestDeprecated from "../../../lib/requestDeprecated.ts";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import userState, { isEmployeeState } from "../../../states/user/UserState.ts";
-import chatAppMyFriendsState from "../state/ChatAppMyFriendsState.ts";
 import { convertHierarchy, convertRole } from "../../../lib/convert.ts";
 import ChatAppPersonItem from "../box/ChatAppPersonItem.tsx";
 import ChatAppHeaderText from "../box/ChatAppHeaderText.tsx";
-import chatAppSceneState from "../state/ChatAppSceneState.ts";
-import chatAppPersonInfoState from "../state/ChatAppPersonInfoState.ts";
-import chatAppEmployeesState from "../state/ChatAppEmployeesState.ts";
-import chatAppClientsState from "../state/ChatAppClientsState.ts";
-import { SearchFriendsByEmailResponseType } from "../type/ResponseType.ts";
+import chatAppAllUserState from "../state/ChatAppAllUserState.ts";
+import { SearchAllUsersResponseType } from "../type/ResponseType.ts";
 
 function ChatAppPersonScene() {
   const user = useRecoilValue(userState);
-  const setUserInfo = useSetRecoilState(chatAppPersonInfoState);
-  const setScene = useSetRecoilState(chatAppSceneState);
-  const [friends, setFriends] = useRecoilState(chatAppMyFriendsState);
-  const [employees, setEmployees] = useRecoilState(chatAppEmployeesState);
-  const [clients, setClients] = useRecoilState(chatAppClientsState);
+  const [allUser, setAllUser] = useRecoilState(chatAppAllUserState);
+
+  const isEmployee = useRecoilValue(isEmployeeState);
 
   const [displayMe, setDisplayMe] = useState(true);
   const [displayFriends, setDisplayFriends] = useState(true);
   const [displayEmployees, setDisplayEmployees] = useState(false);
   const [displayClients, setDisplayClients] = useState(false);
 
-  const isEmployee = useRecoilValue(isEmployeeState);
+  const friends = allUser.filter(
+    (item) => item.isFriend && item.id !== user?.id,
+  );
+  const employees = allUser.filter((item) => item.role !== "의뢰인");
+  const clients = allUser.filter((item) => item.role === "의뢰인");
 
   useEffect(() => {
     if (user) {
-      requestDeprecated("GET", `/chats/friends?email=${user.email}`, {
+      requestDeprecated("GET", `/chats/users/all?email=${user.email}`, {
         onSuccess: (res) => {
-          const body = res.data as SearchFriendsByEmailResponseType;
-          setFriends(
-            body.map((item) => {
-              if (item.role === "의뢰인") {
-                item.hierarchy = "고객";
-              }
-              return item;
-            }),
-          );
+          const body: SearchAllUsersResponseType = res.data;
+          const newAllUser = body.map((item) => ({
+            ...item,
+            hierarchy:
+              item.role === "의뢰인" && item.hierarchy === "없음"
+                ? "고객"
+                : item.hierarchy,
+          }));
+          setAllUser(newAllUser);
         },
       });
     }
-
-    requestDeprecated("GET", `/chats/users/employees`, {
-      onSuccess: (res) => {
-        const body = res.data as SearchFriendsByEmailResponseType;
-        setEmployees(
-          body.map((item) => {
-            if (item.role === "의뢰인") {
-              item.hierarchy = "고객";
-            }
-            return item;
-          }),
-        );
-      },
-    });
-
-    requestDeprecated("GET", `/chats/users/clients`, {
-      onSuccess: (res) => {
-        const body = res.data as SearchFriendsByEmailResponseType;
-        setClients(
-          body.map((item) => {
-            if (item.role === "의뢰인") {
-              item.hierarchy = "고객";
-            }
-            return item;
-          }),
-        );
-      },
-    });
   }, [user]);
 
   return (
@@ -116,6 +86,7 @@ function ChatAppPersonScene() {
           </ChatAppHeaderText>
           {displayMe && (
             <ChatAppPersonItem
+              email={user?.email ?? ""}
               role={convertRole(user?.roleId ?? 0)}
               hierarchy={
                 (user?.roleId ?? 1) === 1
@@ -123,14 +94,16 @@ function ChatAppPersonScene() {
                   : convertHierarchy(user?.hierarchyId ?? 0)
               }
               name={user?.name ?? ""}
-              hover={true}
-              onClick={() => {
-                setUserInfo({
-                  state: "Ready",
-                  targetEmail: user?.email ?? "",
-                });
-                setScene("PersonInfo");
-              }}
+              hover={false}
+              // onClick={() => {
+              //   setUserInfo({
+              //     state: "Ready",
+              //     targetEmail: user?.email ?? "",
+              //   });
+              //   setScene("PersonInfo");
+              // }}
+              me={true}
+              isFriend={false}
             />
           )}
         </div>
@@ -163,22 +136,24 @@ function ChatAppPersonScene() {
             </div>
           )}
         </ChatAppHeaderText>
-
         {displayFriends &&
           friends.map((item) => (
             <ChatAppPersonItem
               key={item.id}
+              email={item.email}
               name={item.name}
               role={item.role}
               hierarchy={item.hierarchy}
-              hover={true}
-              onClick={() => {
-                setUserInfo({
-                  state: "Ready",
-                  targetEmail: item.email,
-                });
-                setScene("PersonInfo");
-              }}
+              hover={false}
+              // onClick={() => {
+              //   setUserInfo({
+              //     state: "Ready",
+              //     targetEmail: item.email,
+              //   });
+              //   setScene("PersonInfo");
+              // }}
+              me={item.id === user?.id}
+              isFriend={item.isFriend}
             />
           ))}
         <div style={{ borderBottom: "1px solid lightgray" }}></div>
@@ -215,17 +190,20 @@ function ChatAppPersonScene() {
               employees.map((item) => (
                 <ChatAppPersonItem
                   key={item.id}
+                  email={item.email}
                   name={item.name}
                   role={item.role}
                   hierarchy={item.hierarchy}
-                  hover={true}
-                  onClick={() => {
-                    setUserInfo({
-                      state: "Ready",
-                      targetEmail: item.email,
-                    });
-                    setScene("PersonInfo");
-                  }}
+                  hover={false}
+                  // onClick={() => {
+                  //   setUserInfo({
+                  //     state: "Ready",
+                  //     targetEmail: item.email,
+                  //   });
+                  //   setScene("PersonInfo");
+                  // }}
+                  me={item.id === user?.id}
+                  isFriend={item.isFriend}
                 />
               ))}
             <div style={{ borderBottom: "1px solid lightgray" }}></div>
@@ -260,17 +238,20 @@ function ChatAppPersonScene() {
               clients.map((item) => (
                 <ChatAppPersonItem
                   key={item.id}
+                  email={item.email}
                   name={item.name}
                   role={item.role}
                   hierarchy="고객"
-                  hover={true}
-                  onClick={() => {
-                    setUserInfo({
-                      state: "Ready",
-                      targetEmail: item.email,
-                    });
-                    setScene("PersonInfo");
-                  }}
+                  hover={false}
+                  // onClick={() => {
+                  //   setUserInfo({
+                  //     state: "Ready",
+                  //     targetEmail: item.email,
+                  //   });
+                  //   setScene("PersonInfo");
+                  // }}
+                  me={item.id === user?.id}
+                  isFriend={item.isFriend}
                 />
               ))}
           </div>

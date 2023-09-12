@@ -4,9 +4,10 @@ import chatAppRoomInfoState from "../state/ChatAppRoomInfoState.ts";
 
 type Props = {
   item: MessageInfoType;
+  isClient: boolean;
 };
 
-function ChatAppMyMessageItem({ item }: Props) {
+function ChatAppMyMessageItem({ item, isClient }: Props) {
   const roomInfo = useRecoilValue(chatAppRoomInfoState);
 
   return roomInfo.state === "Complete" ? (
@@ -32,7 +33,7 @@ function ChatAppMyMessageItem({ item }: Props) {
             minHeight: 44,
             maxHeight: 620,
             color: "white",
-            background: "#1976D2",
+            background: isClient ? "gray" : "#1976D2",
             borderTopLeftRadius: 20,
             borderBottomLeftRadius: 20,
             borderBottomRightRadius: 20,
