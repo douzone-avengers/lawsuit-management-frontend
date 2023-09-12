@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import CaseExpenseBillShowNameCell from "../cell/CaseExpenseBillShowNameCell.tsx";
 import CaseExpenseBillRemoveButton from "../button/CaseExpenseBillRemoveButton.tsx";
-import { CaseExpenseBillRowType } from "../../../../../states/case/info/expense/CaseExpenseBillState.tsx";
+import { CaseExpenseBillRowType } from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillState.tsx";
 
 type Props = {
   item: CaseExpenseBillRowType & { editable: boolean };

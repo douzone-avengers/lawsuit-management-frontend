@@ -1,9 +1,9 @@
 import { useSetRecoilState } from "recoil";
-import caseExpenseBillIdState from "../../../../../states/case/info/expense/CaseExpenseBillIdState.tsx";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Button } from "@mui/material";
-import caseExpenseBillRemovePopUpOpenState from "../../../../../states/case/info/expense/CaseExpenseBillRemovePopUpOpenState.tsx";
-import { CaseExpenseBillRowType } from "../../../../../states/case/info/expense/CaseExpenseBillState.tsx";
+import caseExpenseBillRemovePopUpOpenState from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillRemovePopUpOpenState.tsx";
+import { CaseExpenseBillRowType } from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillState.tsx";
+import caseExpenseBillIdState from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillIdState.tsx";
 
 type Props = {
   item: CaseExpenseBillRowType & { editable: boolean };

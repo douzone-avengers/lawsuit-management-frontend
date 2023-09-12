@@ -3,8 +3,7 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import PopUp from "../../../../common/PopUp.tsx";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import caseExpenseBillRemovePopUpOpenState from "../../../../../states/case/info/expense/CaseExpenseBillRemovePopUpOpenState.tsx";
-import caseExpenseBillIdState from "../../../../../states/case/info/expense/CaseExpenseBillIdState.tsx";
+import caseExpenseBillRemovePopUpOpenState from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillRemovePopUpOpenState.tsx";
 import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
@@ -12,31 +11,34 @@ import requestDeprecated, {
 import caseExpenseIdState from "../../../../../states/case/info/expense/CaseExpenseIdState.tsx";
 import caseExpenseBillState, {
   CaseExpenseBillRowType,
-} from "../../../../../states/case/info/expense/CaseExpenseBillState.tsx";
+} from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillState.tsx";
+import caseExpenseBillSizeState from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillSizeState.tsx";
+import caseExpenseBillPageState from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillPageState.tsx";
+import caseExpenseBillIdState from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillIdState.tsx";
 
 function CaseExpenseBillRemovePopUp() {
   const caseExpenseId = useRecoilValue(caseExpenseIdState);
   const caseExpenseBillId = useRecoilValue(caseExpenseBillIdState);
+  const page = useRecoilValue(caseExpenseBillPageState);
+  const setSize = useSetRecoilState(caseExpenseBillSizeState);
   const setExpenseBill = useSetRecoilState(caseExpenseBillState);
   const setExpenseRemovePopUpOpen = useSetRecoilState(
     caseExpenseBillRemovePopUpOpenState,
   );
 
   const handleRemoveButtonClick = () => {
-    const handleRequestSuccess: RequestSuccessHandler = () => {
-      const handleRequestSuccess2: RequestSuccessHandler = (res) => {
-        const expenseBill: CaseExpenseBillRowType[] = res.data;
+    const handleRequestSuccess: RequestSuccessHandler = (res) => {
+      const {
+        expenseBill,
+        size,
+      }: { expenseBill: CaseExpenseBillRowType[]; size: number } = res.data;
 
-        setExpenseBill(
-          expenseBill.map((item) => {
-            return { ...item, editable: false };
-          }),
-        );
-      };
-
-      requestDeprecated("GET", `expenses/${caseExpenseId}/bill`, {
-        onSuccess: handleRequestSuccess2,
-      });
+      setExpenseBill(
+        expenseBill.map((item) => {
+          return { ...item, editable: false };
+        }),
+      );
+      setSize(size);
     };
 
     const handleRequestFail: RequestFailHandler = (e) => {
@@ -47,6 +49,7 @@ function CaseExpenseBillRemovePopUp() {
       params: {
         ...(caseExpenseId !== null && {
           expenseId: caseExpenseId.toString(),
+          page: page.toString(),
         }),
       },
       onSuccess: handleRequestSuccess,

@@ -25,6 +25,7 @@ import { useNavigate } from "react-router-dom";
 import CaseEditPopUpButton from "./CaseEditPopUpButton.tsx";
 import CaseRemovePopUpButton from "./CaseRemovePopUpButton.tsx";
 import { isEmployeeState } from "../../states/user/UserState.ts";
+import caseExpenseIdState from "../../states/case/info/expense/CaseExpenseIdState.tsx";
 
 function CaseDetailPage() {
   const [caseTabId, setCaseTabId] = useRecoilState(caseTabIdState);
@@ -32,6 +33,7 @@ function CaseDetailPage() {
   const navigate = useNavigate();
   const caseId = useRecoilValue(caseIdState);
   const setCaseInfo = useSetRecoilState(caseInfoState);
+  const setExpenseId = useSetRecoilState(caseExpenseIdState);
 
   const handleClickListButton = () => {
     navigate(`/cases/clients/${clientId}`);
@@ -76,6 +78,8 @@ function CaseDetailPage() {
     if (caseId === null) {
       return;
     }
+
+    setExpenseId(null);
 
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
       const body: CaseInfoType = res.data;

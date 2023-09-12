@@ -16,8 +16,14 @@ import requestDeprecated, {
 } from "../../../../../lib/requestDeprecated.ts";
 import caseExpenseBillState, {
   CaseExpenseBillRowType,
-} from "../../../../../states/case/info/expense/CaseExpenseBillState.tsx";
+} from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillState.tsx";
 import { produce } from "immer";
+import caseExpenseIdState from "../../../../../states/case/info/expense/CaseExpenseIdState.tsx";
+import caseExpenseBillPageState, {
+  caseExpenseBillUrlState,
+} from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillPageState.tsx";
+import { useEffect } from "react";
+import caseExpenseBillSizeState from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillSizeState.tsx";
 
 type Props = {
   item: CaseExpenseRowType & { editable: boolean; isSelected: boolean };
@@ -29,34 +35,47 @@ function CaseExpenseDataRow({ item, caseId }: Props) {
 
   const [expenses, setExpenses] = useRecoilState(CaseExpensesState);
   const setExpenseBill = useSetRecoilState(caseExpenseBillState);
+  const [expenseId, setExpenseId] = useRecoilState(caseExpenseIdState);
+  const [page, setPage] = useRecoilState(caseExpenseBillPageState);
+  const setSize = useSetRecoilState(caseExpenseBillSizeState);
+  const url = useRecoilValue(caseExpenseBillUrlState);
 
-  const handleClickRow = (expenseId: number) => {
-    const newExpenses = produce(expenses, (draft) => {
-      for (const d of draft) {
-        d.isSelected = false;
-      }
-      const expense = draft.filter((item2) => item2.id === item.id)[0];
-      expense.isSelected = true;
-    });
-    setExpenses(newExpenses);
-
+  useEffect(() => {
     if (expenseId === null) {
       return;
     }
 
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      const expenseBill: CaseExpenseBillRowType[] = res.data;
+      const {
+        expenseBill,
+        size,
+      }: { expenseBill: CaseExpenseBillRowType[]; size: number } = res.data;
 
       setExpenseBill(
         expenseBill.map((item) => {
           return { ...item, editable: false };
         }),
       );
+      setSize(size);
     };
 
-    requestDeprecated("GET", `/expenses/${expenseId}/bill`, {
+    requestDeprecated("GET", url, {
       onSuccess: handleRequestSuccess,
     });
+  }, [expenseId, page]);
+
+  const handleClickRow = (expenseId: number) => {
+    const newExpenses = produce(expenses, (draft) => {
+      for (const d of draft) {
+        d.isSelected = false;
+      }
+      const expense = draft.filter((item2) => item2.id === expenseId)[0];
+      expense.isSelected = true;
+    });
+
+    setExpenses(newExpenses);
+    setExpenseId(expenseId);
+    setPage(0);
   };
 
   return (
@@ -66,7 +85,7 @@ function CaseExpenseDataRow({ item, caseId }: Props) {
         width: "100%",
         height: 40,
         minWidth: "715.69px",
-        background: item.isSelected ? "lightgray" : "none",
+        background: item.isSelected ? "#DCE8F6" : "none",
       }}
     >
       <Box

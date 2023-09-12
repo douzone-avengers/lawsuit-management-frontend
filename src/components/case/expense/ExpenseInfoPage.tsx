@@ -10,7 +10,7 @@ import caseExpenseRemovePopUpOpenState from "../../../states/case/info/expense/C
 import CaseExpenseRemovePopUp from "./table/popup/CaseExpenseRemovePopUp.tsx";
 import CaseExpenseBillTable from "./table/CaseExpenseBillTable.tsx";
 import { Divider } from "@mui/material";
-import caseExpenseBillRemovePopUpOpenState from "../../../states/case/info/expense/CaseExpenseBillRemovePopUpOpenState.tsx";
+import caseExpenseBillRemovePopUpOpenState from "../../../states/case/info/expense/expenseBill/CaseExpenseBillRemovePopUpOpenState.tsx";
 import CaseExpenseBillRemovePopUp from "./table/popup/CaseExpenseBillRemovePopUp.tsx";
 // import { isEmployeeState } from "../../../states/user/UserState.ts";
 
