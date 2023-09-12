@@ -176,7 +176,7 @@ function DownPaymentPDFShareComponent() {
               <div
                 style={{ textAlign: "center", padding: "10px 0", fontSize: 20 }}
               >
-                계약금 청구서
+                청구서
               </div>
               <div style={{ borderTop: "2px solid lightgrey" }}></div>
             </div>
@@ -350,8 +350,8 @@ function DownPaymentPDFShareComponent() {
                   안녕하세요, 법무법인 더존비즈온 입니다.
                 </div>
                 <div>
-                  고객님께서 의뢰하신 <b>{data?.lawsuit.name}</b>에 대한
-                  계약금을 청구합니다.
+                  고객님께서 의뢰하신 <b>{data?.lawsuit.name}</b>에 대한 비용을
+                  청구합니다.
                 </div>
               </div>
               <div style={{ marginBottom: 40 }}>

@@ -232,7 +232,7 @@ function ChatAppPersonItem({
               );
             }}
           >
-            <ChatBubbleOutlineOutlined sx={{ height: 21 }} />
+            <ChatBubbleOutlineOutlined sx={{ height: 21, color: "" }} />
           </div>
         </div>
       )}

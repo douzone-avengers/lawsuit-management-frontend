@@ -131,54 +131,60 @@ function ClosingInfo() {
           </Box>
         </Card>
       ) : null}
-      <Card>
-        <Box
-          sx={{
-            margin: "10px 20px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Box>청구서</Box>
+      {isEmployee ? (
+        <Card>
+          <Box
+            sx={{
+              margin: "10px 20px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Box>청구서</Box>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: 1,
+              }}
+            >
+              <DownPaymentPrintButton />
+              <DownPaymentShareButton />
+            </Box>
+          </Box>
           <Box
             sx={{
               display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
               gap: 1,
+              padding: 1,
+              justifyContent: "space-between",
             }}
           >
-            <DownPaymentPrintButton />
-            <DownPaymentShareButton />
+            <TextField
+              sx={{
+                width: 100,
+              }}
+              label="은행"
+              onChange={(e) => setBank(e.target.value)}
+              value={bank}
+            />
+            <TextField
+              sx={{
+                flexGrow: 1,
+              }}
+              label="계좌번호"
+              value={account}
+              onChange={(e) => setAccount(e.target.value)}
+            />
           </Box>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            gap: 1,
-            padding: 1,
-            justifyContent: "space-between",
-          }}
-        >
-          <TextField
-            sx={{
-              width: 100,
-            }}
-            label="은행"
-            onChange={(e) => setBank(e.target.value)}
-            value={bank}
-          />
-          <TextField
-            sx={{
-              flexGrow: 1,
-            }}
-            label="계좌번호"
-            value={account}
-            onChange={(e) => setAccount(e.target.value)}
-          />
-        </Box>
-      </Card>
+        </Card>
+      ) : (
+        <div style={{ marginLeft: 15, color: "gray" }}>
+          종결되지 않은 사건입니다.
+        </div>
+      )}
     </Box>
   );
 }
