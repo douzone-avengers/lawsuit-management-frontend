@@ -70,6 +70,7 @@ function CaseLayout() {
           display: "flex",
           gap: 2,
           flexDirection: "column",
+          minWidth: 960,
         }}
       >
         <Outlet />

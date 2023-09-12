@@ -11,7 +11,7 @@ function CaseReceptionInfoCard() {
   const receptionAddPopUpOpen = useRecoilValue(caseReceptionAddPopUpOpenState);
   return (
     <>
-      <Card>
+      <Card sx={{ minWidth: 960 }}>
         <CardTitle text="접수" />
         <Box sx={{ marginTop: 2 }}>
           <CaseReceptionSearchBox />

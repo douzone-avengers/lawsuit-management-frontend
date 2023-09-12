@@ -23,6 +23,8 @@ function CalendarCell({
       style={{
         display: "flex",
         flexDirection: "column",
+        overflow: "hidden",
+
         gap: 5,
         height: 100,
         color,
