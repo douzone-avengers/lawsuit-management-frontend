@@ -502,7 +502,7 @@ function AppRoutes() {
       return;
     }
 
-    // /error
+    //error
     if (length === 1 && paths[1] === "error") {
       setMainNavigationBar({
         ...mainNavigationBar,

@@ -22,7 +22,7 @@ import caseExpenseIdState from "../../../../../states/case/info/expense/CaseExpe
 import caseExpenseBillPageState, {
   caseExpenseBillUrlState,
 } from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillPageState.tsx";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import caseExpenseBillSizeState from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillSizeState.tsx";
 
 type Props = {
@@ -39,6 +39,7 @@ function CaseExpenseDataRow({ item, caseId }: Props) {
   const [page, setPage] = useRecoilState(caseExpenseBillPageState);
   const setSize = useSetRecoilState(caseExpenseBillSizeState);
   const url = useRecoilValue(caseExpenseBillUrlState);
+  const [isHover, setIsHover] = useState(false);
 
   useEffect(() => {
     if (expenseId === null) {
@@ -85,24 +86,52 @@ function CaseExpenseDataRow({ item, caseId }: Props) {
         width: "100%",
         height: 40,
         minWidth: "715.69px",
-        background: item.isSelected ? "#DCE8F6" : "none",
+        background: item.isSelected || isHover ? "#DCE8F6" : "white",
       }}
     >
       <Box
-        sx={{ width: 200, minWidth: 150 }}
+        sx={{
+          width: 200,
+          minWidth: 150,
+          flex: 1,
+        }}
         onClick={() => handleClickRow(item.id)}
+        onMouseOver={() => {
+          setIsHover(true);
+        }}
+        onMouseLeave={() => {
+          setIsHover(false);
+        }}
       >
         <CaseExpenseSpeningAtCell item={item} />
       </Box>
       <Box
-        sx={{ width: 500, minWidth: 200 }}
+        sx={{
+          width: 500,
+          minWidth: 200,
+        }}
         onClick={() => handleClickRow(item.id)}
+        onMouseOver={() => {
+          setIsHover(true);
+        }}
+        onMouseLeave={() => {
+          setIsHover(false);
+        }}
       >
         <CaseExpenseContentsCell item={item} />
       </Box>
       <Box
-        sx={{ width: 200, minWidth: 100 }}
+        sx={{
+          width: 200,
+          minWidth: 100,
+        }}
         onClick={() => handleClickRow(item.id)}
+        onMouseOver={() => {
+          setIsHover(true);
+        }}
+        onMouseLeave={() => {
+          setIsHover(false);
+        }}
       >
         <CaseExpenseAmountCell item={item} />
       </Box>

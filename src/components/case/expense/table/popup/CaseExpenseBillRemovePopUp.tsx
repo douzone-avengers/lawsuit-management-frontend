@@ -66,7 +66,7 @@ function CaseExpenseBillRemovePopUp() {
   return (
     <>
       <PopUp width={480} popUpType="alert">
-        <DialogTitle>해당 지출 내역을 삭제하시겠습니까?</DialogTitle>
+        <DialogTitle>해당 증빙 자료를 삭제하시겠습니까?</DialogTitle>
         <DialogActions>
           <Button variant="contained" onClick={handleRemoveButtonClick}>
             예
