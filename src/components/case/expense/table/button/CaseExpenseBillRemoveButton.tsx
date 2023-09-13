@@ -1,9 +1,10 @@
 import { useSetRecoilState } from "recoil";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { Button } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import caseExpenseBillRemovePopUpOpenState from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillRemovePopUpOpenState.tsx";
 import { CaseExpenseBillRowType } from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillState.tsx";
 import caseExpenseBillIdState from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillIdState.tsx";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
 
 type Props = {
   item: CaseExpenseBillRowType & { editable: boolean };
@@ -21,15 +22,17 @@ function CaseExpenseBillRemoveButton({ item }: Props) {
   };
 
   return (
-    <Button
-      sx={{ width: "100%" }}
-      size="small"
-      variant="contained"
-      fullWidth
+    <Box
+      sx={{ width: "100%", textAlign: "center" }}
       onClick={handleExpenseBillRemoveButtonClick}
     >
-      <DeleteIcon />
-    </Button>
+      <IconButton
+        sx={{ size: "small" }}
+        onClick={handleExpenseBillRemoveButtonClick}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </Box>
   );
 }
 

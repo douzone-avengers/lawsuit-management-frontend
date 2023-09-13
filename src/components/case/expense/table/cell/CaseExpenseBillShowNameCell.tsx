@@ -1,15 +1,11 @@
 import Box from "@mui/material/Box";
 import { CaseExpenseBillRowType } from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillState.tsx";
-import { useState } from "react";
 
 type Props = {
   item: CaseExpenseBillRowType & { editable: boolean };
 };
 
 function CaseExpenseBillShowNameCell({ item }: Props) {
-  const [background, setBackground] = useState("white");
-  const [isHover, setIsHover] = useState(false);
-
   const handleDownloadClick = async (fileId: number) => {
     // 브라우저가 Blob을 지원하는지 여부 체크
     // const blobSupported = new Blob(["ä"]).size === 2; // Boolean
@@ -66,24 +62,19 @@ function CaseExpenseBillShowNameCell({ item }: Props) {
   return (
     <Box
       sx={{
-        display: "flex",
         justifyContent: "center",
         alignItems: "center",
         height: 40,
         cursor: "pointer",
-        background: background,
-        textDecoration: isHover ? "underline" : "none",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+        paddingTop: 1,
+        textAlign: "center",
+        color: "rgba(0, 0, 0, 0.54)",
       }}
       onClick={() => {
         handleDownloadClick(item.id);
-      }}
-      onMouseOver={() => {
-        setIsHover(true);
-        setBackground("#DCE8F6");
-      }}
-      onMouseLeave={() => {
-        setIsHover(false);
-        setBackground("white");
       }}
     >
       {item.showFileName + "." + item.extension}
