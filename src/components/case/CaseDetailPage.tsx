@@ -1,6 +1,5 @@
 import { Box, SvgIcon } from "@mui/material";
 import { useEffect, useState } from "react";
-import Info from "./advice/Adviceinfo";
 import TabBar, { TabItem } from "../common/TabBar";
 import ExpenseInfoPage from "./expense/ExpenseInfoPage.tsx";
 import Closing from "./closing/ClosingInfo.tsx";
@@ -25,6 +24,7 @@ import { useNavigate } from "react-router-dom";
 import CaseEditPopUpButton from "./CaseEditPopUpButton.tsx";
 import CaseRemovePopUpButton from "./CaseRemovePopUpButton.tsx";
 import { isEmployeeState } from "../../states/user/UserState.ts";
+import Adviceinfo from "./advice/Adviceinfo.tsx";
 
 function CaseDetailPage() {
   const [caseTabId, setCaseTabId] = useRecoilState(caseTabIdState);
@@ -48,7 +48,7 @@ function CaseDetailPage() {
       name: "상담 정보",
       children: (
         <div>
-          <Info></Info>
+          <Adviceinfo />
         </div>
       ),
     },

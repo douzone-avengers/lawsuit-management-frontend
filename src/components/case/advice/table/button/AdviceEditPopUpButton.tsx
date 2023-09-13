@@ -1,13 +1,21 @@
 import Button from "@mui/material/Button";
 import { useSetRecoilState } from "recoil";
-import AdviceEditPopUpOpenState from "../../../../../states/advice/adviceEditPopUpOpenState.tsx";
+import adviceIdState from "../../../../../states/advice/AdviceIdState.tsx";
+import adviceEditPopUpOpenState from "../../../../../states/advice/adviceEditPopUpOpenState.tsx";
 
-function AdviceEditPopUpButton() {
-  const setAdviceEditPopUp = useSetRecoilState(AdviceEditPopUpOpenState);
+type Props = {
+  curAdviceId: number;
+};
+
+function AdviceEditPopUpButton({ curAdviceId }: Props) {
+  const setAdviceId = useSetRecoilState(adviceIdState);
+  const setAdviceEditPopUpOpen = useSetRecoilState(adviceEditPopUpOpenState);
 
   const handleClick = () => {
-    setAdviceEditPopUp(true);
+    setAdviceId(curAdviceId);
+    setAdviceEditPopUpOpen(true);
   };
+
   return (
     <Button size="large" variant="contained" onClick={handleClick}>
       수정

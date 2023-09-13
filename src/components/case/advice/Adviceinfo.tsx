@@ -16,11 +16,7 @@ import { isEmployeeState } from "../../../states/user/UserState.ts";
 import adviceEditPopUpOpenState from "../../../states/advice/adviceEditPopUpOpenState.tsx";
 import AdviceEditPopUp from "./table/popup/AdviceEditPopUp.tsx";
 
-type Props = {
-  advice: Advicedata[];
-};
-
-function Adviceinfo({ advice }: Props) {
+function Adviceinfo() {
   const clientId = useRecoilValue(clientIdState);
   const lawsuitId = useRecoilValue(caseIdState);
   const [_, setAdviceId] = useRecoilState(adviceIdState);
@@ -68,7 +64,7 @@ function Adviceinfo({ advice }: Props) {
           }))}
         />
       </Box>
-      {adviceEditPopUpOpen ? <AdviceEditPopUp advices={advice} /> : null}
+      {adviceEditPopUpOpen ? <AdviceEditPopUp setAdvices={advices} /> : null}
       {adviceRegisterPopUpOpen ? (
         <AdviceRegisterPopUp setAdvices={setAdvices} />
       ) : null}

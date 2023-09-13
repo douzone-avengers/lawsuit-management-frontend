@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import React, { useEffect, useState } from "react";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import adviceIdState from "../../../../../states/advice/AdviceIdState.tsx";
 import caseIdState from "../../../../../states/case/CaseIdState.tsx";
 import requestDeprecated, {
@@ -15,74 +15,88 @@ import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Advicedata } from "../../../../../type/ResponseType.ts";
+import caseInfoState from "../../../../../states/case/info/caseInfoState.tsx";
+import { DetailAdviceType, IdNameType } from "../AdviceListTable.tsx";
 
-type Advice = {
+/*type Advice = {
   id: number;
   title: string;
   contents: string;
   advicedAt: string;
   memberId: string[];
   clientId: string[];
-};
-
+};*/
 type Props = {
-  advices: Advicedata[];
+  setAdvices: React.Dispatch<React.SetStateAction<Advicedata[]>>;
 };
-function AdviceEditPopUp({ advices }: Props) {
-  const [advice, setAdvice] = useState<Advice | null>();
+function AdviceEditPopUp({ setAdvices }: Props) {
+  /*const [advice, setAdvice] = useState<Advice | null>();*/
+  /*const [adviceInfo, setAdviceInfo] = useRecoilState(adviceInfoState);*/
+  const caseInfo = useRecoilValue(caseInfoState);
   const [adviceId] = useRecoilState(adviceIdState);
   const [caseId] = useRecoilState(caseIdState);
-  const [title, setTitle] = useState(advice?.title ?? "");
-  const [contents, setContents] = useState(advice?.contents ?? "");
-  const [clientIdList, setClientIdList] = useState<string[]>(
-    advice?.clientId.map((item: any) => item.id) ?? [],
-  );
-  const [memberIdList, setMemberIdList] = useState<string[]>(
-    advice?.memberId.map((item: any) => item.id) ?? [],
-  );
-  const [advicedAt, setadvicedAt] = useState<string | null>(
-    advice?.advicedAt ?? null,
-  );
+  const [title, setTitle] = useState("");
+  const [contents, setContents] = useState("");
+  const [clients, setClients] = useState<IdNameType[]>([]);
+  const [members, setMembers] = useState<IdNameType[]>([]);
+  const [advicedAt, setadvicedAt] = useState<string | null>(null);
   const setAdviceEditPopUpOpen = useSetRecoilState(adviceEditPopUpOpenState);
 
   const handleCloseButtonClick = () => {
     setAdviceEditPopUpOpen(false);
   };
 
+  useEffect(() => {
+    getAdviceInfo();
+  }, [adviceId]);
+  const getAdviceInfo = () => {
+    const handleRequestSuccess: RequestSuccessHandler = (res) => {
+      const data: DetailAdviceType = res.data;
+      console.log("dd", data);
+      setTitle(data.title);
+      setContents(data.contents);
+      setClients(data.clients);
+      setMembers(data.members);
+      setadvicedAt(data.advicedAt);
+    };
+    const handleRequestFail: RequestFailHandler = (e) => {
+      console.dir(e);
+      // alert((e.response.data as { code: string; message: string }).message);
+    };
+    requestDeprecated("GET", `/advices/${adviceId}`, {
+      onSuccess: handleRequestSuccess,
+      onFail: handleRequestFail,
+    });
+  };
+
+  const handleRequestSuccess: RequestSuccessHandler = (res) => {
+    const body: Advicedata[] = res.data;
+    setAdvices(body);
+    /*setAdviceId(body[0]?.id);*/
+  };
+  requestDeprecated("GET", `/advices?lawsuit=${caseId}`, {
+    withToken: true,
+    onSuccess: handleRequestSuccess,
+  });
+
   const handleEditButtonClick = () => {
     const handleRequestSuccess: RequestSuccessHandler = () => {
-      console.log("첫번째 성공");
-      const handleRequestSuccess2: RequestSuccessHandler = (res) => {
-        console.log("request success2");
-        const data: Advice = res.data;
-        console.log("data");
-        console.log(data);
-        setAdvice(data);
-        console.log(advice);
-        setAdviceEditPopUpOpen(false);
-      };
-      const handleRequestFail2: RequestFailHandler = (e) => {
-        alert((e.response.data as { code: string; message: string }).message);
-      };
-      requestDeprecated("GET", `/advices/${adviceId}`, {
-        onSuccess: handleRequestSuccess2,
-        onFail: handleRequestFail2,
-      });
+      setAdviceEditPopUpOpen(false);
     };
     const handleRequestFail: RequestFailHandler = (e) => {
       alert((e.response.data as { code: string; message: string }).message);
     };
-    setClientIdList([]);
-    setMemberIdList([]);
+    setClients([]);
+    setMembers([]);
     setTitle("");
     setContents("");
     setadvicedAt("");
-    requestDeprecated("PATCH", `advices/${adviceId}`, {
+    requestDeprecated("PUT", `advices/${adviceId}`, {
       withToken: true,
       body: {
         lawsuitId: caseId,
-        clientIdList,
-        memberIdList,
+        clientIdList: clients,
+        memberIdList: setMembers,
         title,
         contents,
         advicedAt,
@@ -95,7 +109,7 @@ function AdviceEditPopUp({ advices }: Props) {
     <PopUp width={600}>
       <CloseButton onClick={handleCloseButtonClick} />
       <Typography variant="h5" sx={{ textAlign: "center" }}>
-        상담 등록
+        상담 수정
       </Typography>
       <FormControl fullWidth>
         <InputLabel id="member">상담관</InputLabel>
@@ -103,12 +117,14 @@ function AdviceEditPopUp({ advices }: Props) {
           labelId="member"
           label="상담관"
           multiple
-          value={memberIdList}
-          onChange={(e) => setMemberIdList(e.target.value as string[])}
+          value={members.map((item) => item.name)}
+          onChange={(e) => {
+            return [];
+          }}
         >
-          {advices?.map((data) => (
+          {caseInfo?.employees.map((data) => (
             <MenuItem key={data.id} value={data.id}>
-              {data.memberId}
+              {data.name}
             </MenuItem>
           ))}
         </Select>
@@ -120,12 +136,12 @@ function AdviceEditPopUp({ advices }: Props) {
           labelId="client"
           label="상담자"
           multiple
-          value={clientIdList}
-          onChange={(e) => setClientIdList(e.target.value as string[])}
+          value={clients}
+          onChange={(e) => setClients(e.target.value as string[])}
         >
-          {advices?.map((data) => (
+          {caseInfo?.clients.map((data) => (
             <MenuItem key={data.id} value={data.id}>
-              {data.clientId}
+              {data.name}
             </MenuItem>
           ))}
         </Select>
@@ -155,7 +171,7 @@ function AdviceEditPopUp({ advices }: Props) {
       />
 
       <Button variant="contained" size="large" onClick={handleEditButtonClick}>
-        등록
+        수정
       </Button>
     </PopUp>
   );
