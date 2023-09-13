@@ -74,29 +74,10 @@ function EmployeeInfoCard({
   const [previousAddressDetail, setPreviousAddressDetail] = useState("");
 
   //수정 시 에러 표시
-  const [isEmailOk, setIsEmailOk] = useState(true);
-  const [emailMessage, setEmailMessage] = useState("");
   const [isPhoneOk, setIsPhoneOk] = useState(true);
   const [phoneMessage, setPhoneMessage] = useState("");
   const [isAddressDetailOk, setIsAddressDetailOk] = useState(true);
   const [addressDetailMessage, setAddressDetailMessage] = useState("");
-
-  const onEmailChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const emailRegex =
-      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-    const emailCurrent = e.target.value;
-    setEmail(emailCurrent);
-
-    if (!emailRegex.test(emailCurrent)) {
-      setEmailMessage("이메일 형식이 틀렸습니다.");
-      setIsEmailOk(false);
-    } else {
-      setEmailMessage("올바른 이메일 형식입니다.");
-      setIsEmailOk(true);
-    }
-  };
 
   const onPhoneChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -157,8 +138,6 @@ function EmployeeInfoCard({
     setHierarchyId(previousHierarchyId);
     setRoleId(previousRoleId);
 
-    setIsEmailOk(true);
-    setEmailMessage("");
     setIsPhoneOk(true);
     setPhoneMessage("");
     setIsAddressDetailOk(true);
@@ -204,9 +183,6 @@ function EmployeeInfoCard({
       };
       setMemberInfo(newMemberInfo);
       setIsEditMode(false);
-
-      setIsEmailOk(true);
-      setEmailMessage("");
       setIsPhoneOk(true);
       setPhoneMessage("");
       setIsAddressDetailOk(true);
@@ -343,45 +319,24 @@ function EmployeeInfoCard({
           <hr />
           <br />
           <Box sx={{ marginBottom: "15px" }}>
-            {isEditMode ? (
-              <Box>
-                <SvgIcon
-                  component={Email}
-                  sx={{ color: "#1976d2", marginTop: "5px" }}
-                />{" "}
-                &nbsp;
-                <TextField
-                  {...(isEmailOk ? {} : { error: true })}
-                  id="email-input"
-                  disabled={!isEditMode}
-                  type="email"
-                  size="small"
-                  sx={{ display: "inline-block", fontSize: 20 }}
-                  value={email}
-                  onChange={onEmailChange}
-                  helperText={emailMessage}
-                />
-              </Box>
-            ) : (
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <SvgIcon
-                  component={Email}
-                  sx={{ color: "#1976d2", marginBottom: "5px" }}
-                />{" "}
-                &nbsp;&nbsp;
-                <Typography
-                  sx={{
-                    display: "inline-block",
-                    fontSize: 18,
-                    fontWeight: "bold",
-                  }}
-                  color="text.secondary"
-                  gutterBottom
-                >
-                  {email}
-                </Typography>
-              </Box>
-            )}
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <SvgIcon
+                component={Email}
+                sx={{ color: "#1976d2", marginBottom: "5px" }}
+              />{" "}
+              &nbsp;&nbsp;
+              <Typography
+                sx={{
+                  display: "inline-block",
+                  fontSize: 18,
+                  fontWeight: "bold",
+                }}
+                color="text.secondary"
+                gutterBottom
+              >
+                {email}
+              </Typography>
+            </Box>
           </Box>
           <Box sx={{ marginBottom: "15px" }}>
             {isEditMode ? (
