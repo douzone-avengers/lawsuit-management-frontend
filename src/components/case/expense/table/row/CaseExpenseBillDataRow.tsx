@@ -14,6 +14,7 @@ function CaseExpenseBillDataRow({ item }: Props) {
         sx={{
           width: 300,
           minWidth: 150,
+          flex: 1,
         }}
       >
         <CaseExpenseBillShowNameCell item={item} />

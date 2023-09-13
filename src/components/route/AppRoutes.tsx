@@ -503,25 +503,25 @@ function AppRoutes() {
     }
 
     // /error
-    if (length === 1 && paths[1] === "error") {
-      setMainNavigationBar({
-        ...mainNavigationBar,
-        curId: -1,
-      });
-      setSubNavigationBar({
-        type: "none",
-        curId: -1,
-        items: [],
-      });
-      setSnbLoaded(true);
-      setClientId(null);
-      setCaseId(null);
-      setEmployeeId(null);
-
-      return;
-    }
-
-    navigate("error");
+    // if (length === 1 && paths[1] === "error") {
+    //   setMainNavigationBar({
+    //     ...mainNavigationBar,
+    //     curId: -1,
+    //   });
+    //   setSubNavigationBar({
+    //     type: "none",
+    //     curId: -1,
+    //     items: [],
+    //   });
+    //   setSnbLoaded(true);
+    //   setClientId(null);
+    //   setCaseId(null);
+    //   setEmployeeId(null);
+    //
+    //   return;
+    // }
+    //
+    // navigate("error");
   }, [location, clientId]);
 
   return (
@@ -563,7 +563,7 @@ function AppRoutes() {
       <Route path="validate" element={<ValidatePage />} />
       {/* /join */}
       <Route path="join" element={<JoinPage />} />
-      <Route path="*" element={<NotFoundPage />} />
+      {/*<Route path="*" element={<NotFoundPage />} />*/}
     </Routes>
   );
 }
