@@ -64,7 +64,7 @@ function Adviceinfo() {
           }))}
         />
       </Box>
-      {adviceEditPopUpOpen ? <AdviceEditPopUp setAdvices={advices} /> : null}
+      {adviceEditPopUpOpen ? <AdviceEditPopUp /> : null}
       {adviceRegisterPopUpOpen ? (
         <AdviceRegisterPopUp setAdvices={setAdvices} />
       ) : null}

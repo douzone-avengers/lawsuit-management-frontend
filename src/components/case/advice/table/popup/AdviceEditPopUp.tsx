@@ -14,22 +14,10 @@ import Typography from "@mui/material/Typography";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { Advicedata } from "../../../../../type/ResponseType.ts";
 import caseInfoState from "../../../../../states/case/info/caseInfoState.tsx";
 import { DetailAdviceType, IdNameType } from "../AdviceListTable.tsx";
 
-/*type Advice = {
-  id: number;
-  title: string;
-  contents: string;
-  advicedAt: string;
-  memberId: string[];
-  clientId: string[];
-};*/
-type Props = {
-  setAdvices: React.Dispatch<React.SetStateAction<Advicedata[]>>;
-};
-function AdviceEditPopUp({ setAdvices }: Props) {
+function AdviceEditPopUp() {
   /*const [advice, setAdvice] = useState<Advice | null>();*/
   /*const [adviceInfo, setAdviceInfo] = useRecoilState(adviceInfoState);*/
   const caseInfo = useRecoilValue(caseInfoState);
@@ -69,11 +57,7 @@ function AdviceEditPopUp({ setAdvices }: Props) {
     });
   };
 
-  const handleRequestSuccess: RequestSuccessHandler = (res) => {
-    const body: Advicedata[] = res.data;
-    setAdvices(body);
-    /*setAdviceId(body[0]?.id);*/
-  };
+  const handleRequestSuccess: RequestSuccessHandler = (res) => {};
   requestDeprecated("GET", `/advices?lawsuit=${caseId}`, {
     withToken: true,
     onSuccess: handleRequestSuccess,
