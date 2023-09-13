@@ -180,7 +180,8 @@ function ClosingInfo() {
             />
           </Box>
         </Card>
-      ) : (
+      ) : null}
+      {caseInfo?.lawsuit.lawsuitStatus !== "CLOSING" && (
         <div style={{ marginLeft: 15, color: "gray" }}>
           종결되지 않은 사건입니다.
         </div>
