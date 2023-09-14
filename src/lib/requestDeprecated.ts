@@ -28,7 +28,9 @@ function requestDeprecated(
     onFail?: RequestFailHandler;
   },
 ) {
-  const ROOT = import.meta.env.DEV ? "http://localhost:8080" : "";
+  const ROOT = import.meta.env.DEV
+    ? "http://localhost:8080"
+    : "52.79.44.141:8080";
 
   const url = path.startsWith("/") ? `${ROOT}${path}` : `${ROOT}/${path}`;
 
