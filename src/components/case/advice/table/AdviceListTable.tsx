@@ -15,8 +15,7 @@ import requestDeprecated, {
 } from "../../../../lib/requestDeprecated.ts";
 import TextField from "@mui/material/TextField";
 import AdviceEditPopUpButton from "./button/AdviceEditPopUpButton.tsx";
-
-export type IdNameType = { id: number; name: string };
+import { IdNameType } from "../../../../states/advice/adviceInfoState.tsx";
 
 export type DetailAdviceType = {
   adviceId: number;
