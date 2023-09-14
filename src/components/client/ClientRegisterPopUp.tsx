@@ -3,13 +3,13 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import requestDeprecated, {
+  RequestFailHandler,
   RequestSuccessHandler,
 } from "../../lib/requestDeprecated.ts";
 import clientRegisterPopUpState from "../../states/layout/ClientRegisterPopUpOpenState.tsx";
 import subNavigationBarState from "../../states/layout/SubNavigationBarState.tsx";
-import { MainNavigationBarItemState } from "../layout/snb/MainNavigationBarItem.tsx";
 import PopUp from "../common/PopUp.tsx";
 import CloseButton from "../common/CloseButton.tsx";
 import { ClientData } from "../../type/ResponseType.ts";
@@ -17,12 +17,14 @@ import curMemberAddressState from "../../states/employee/CurMemberAddressState.t
 import DaumPostcode from "react-daum-postcode";
 import ReactModal from "react-modal";
 import Box from "@mui/material/Box";
+import { SubNavigationBarItemState } from "../layout/snb/SubNavigationBarItem";
 
 function ClientRegisterPopUp() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
+  const [addressDetail, setAddressDetail] = useState("");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const setRecoilAddress = useSetRecoilState(curMemberAddressState);
@@ -30,29 +32,23 @@ function ClientRegisterPopUp() {
   const setClientRegisterPopUpOpen = useSetRecoilState(
     clientRegisterPopUpState,
   );
-  const [subNavigationBar, setSubNavigationBar] = useRecoilState(
-    subNavigationBarState,
-  );
+  const setSubNavigationBar = useSetRecoilState(subNavigationBarState);
   const handleCloseButtonClick = () => {
     setClientRegisterPopUpOpen(false);
   };
   const handleRegisterButtonClick = () => {
-    const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      const body: { data: ClientData[] } = res.data;
-      const newItems: MainNavigationBarItemState[] = body.data.map((item) => {
-        return {
-          id: item.id,
-          text: item.name,
-          url: `clients/${item.id}`,
-          SvgIcon: PersonIcon,
-        };
-      });
-      setSubNavigationBar({ ...subNavigationBar, items: newItems });
+    const handleRequestSuccess: RequestSuccessHandler = () => {
       setClientRegisterPopUpOpen(false);
       setName("");
       setPhone("");
       setEmail("");
       setAddress("");
+      setAddressDetail("");
+      handelAfterRegister();
+    };
+
+    const handleRequestFail: RequestFailHandler = (e) => {
+      alert((e.response.data as { code: string; message: string }).message);
     };
 
     requestDeprecated("POST", "/clients", {
@@ -61,12 +57,42 @@ function ClientRegisterPopUp() {
         phone,
         email,
         address,
+        addressDetail,
       },
-      useMock: false,
+
       onSuccess: handleRequestSuccess,
+      onFail: handleRequestFail,
     });
 
     setClientRegisterPopUpOpen(false);
+  };
+
+  const handelAfterRegister = () => {
+    const handleRequestSuccess: RequestSuccessHandler = (res) => {
+      const body: ClientData[] = res.data;
+      const newItems: SubNavigationBarItemState[] = body.map((item) => {
+        return {
+          id: item.id,
+          text: item.name,
+          url: `clients/${item.id}`,
+          SvgIcon: PersonIcon,
+        };
+      });
+      setSubNavigationBar({
+        type: "client",
+        curId: newItems[0].id,
+        items: newItems,
+      });
+    };
+
+    const handleRequestFail: RequestFailHandler = (e) => {
+      alert((e.response.data as { code: string; message: string }).message);
+    };
+
+    requestDeprecated("GET", "/clients", {
+      onSuccess: handleRequestSuccess,
+      onFail: handleRequestFail,
+    });
   };
 
   return (
@@ -99,10 +125,22 @@ function ClientRegisterPopUp() {
         />
       </ReactModal>
 
-      <CloseButton onClick={handleCloseButtonClick} />
-      <Typography variant="h5" sx={{ textAlign: "center" }}>
-        의뢰인 등록
-      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "1rem",
+        }}
+      >
+        <Typography
+          variant="h5"
+          sx={{ textAlign: "center", flex: 1, marginLeft: "20px" }}
+        >
+          의뢰인 등록
+        </Typography>
+        <CloseButton onClick={handleCloseButtonClick} />
+      </Box>
       <TextField
         type="text"
         size="small"
@@ -136,6 +174,13 @@ function ClientRegisterPopUp() {
           주소검색
         </Button>
       </Box>
+      <TextField
+        type="addressDetail"
+        size="small"
+        label="상세주소"
+        value={addressDetail}
+        onChange={(e) => setAddressDetail(e.target.value)}
+      />
       <Button
         variant="contained"
         size="large"

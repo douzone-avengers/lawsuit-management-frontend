@@ -20,11 +20,13 @@ import requestDeprecated, {
 import RefreshIcon from "@mui/icons-material/Refresh";
 import IconButton from "@mui/material/IconButton";
 import { updateUrl } from "../../reception/table/CaseReceptionTable.tsx";
+import caseExpenseBillState from "../../../../states/case/info/expense/expenseBill/CaseExpenseBillState.tsx";
 
 function CaseExpenseSearchBox() {
   const [expenseSearch, setExpenseSearch] = useRecoilState(
     caseExpenseSearchState,
   );
+  const setExpenseBill = useSetRecoilState(caseExpenseBillState);
   const setPage = useSetRecoilState(caseExpensePageState);
   const url = useRecoilValue(caseExpenseSearchUrlState);
   const setSize = useSetRecoilState(caseExpenseSizeState);
@@ -96,6 +98,8 @@ function CaseExpenseSearchBox() {
   };
 
   const handleSubmitButtonClick = () => {
+    setExpenseBill([]);
+
     if (caseId === null) {
       // TODO
       return;
@@ -108,7 +112,7 @@ function CaseExpenseSearchBox() {
       }: { expenses: CaseExpenseRowType[]; size: number } = res.data;
       setCaseExpenses(
         expenses.map((item) => {
-          return { ...item, editable: false };
+          return { ...item, editable: false, isSelected: false };
         }),
       );
       setSize(size);
@@ -119,7 +123,6 @@ function CaseExpenseSearchBox() {
     const newUrl = updateUrl(url, 0);
     requestDeprecated("GET", newUrl, {
       onSuccess: handleRequestSuccess,
-      useMock: false,
     });
   };
 
@@ -129,7 +132,7 @@ function CaseExpenseSearchBox() {
         display: "flex",
         gap: 3,
         flexDirection: "row",
-        margin: "0 10px 0 10px",
+        margin: "20px 10px 10px 10px",
       }}
     >
       <Box

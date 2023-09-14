@@ -1,23 +1,34 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import subNavigationBarState from "../../states/layout/SubNavigationBarState";
-import clientIdState from "../../states/client/ClientIdState.tsx";
+import userState, { isEmployeeState } from "../../states/user/UserState.ts";
+import userClientIdState from "../../states/user/UserClientIdState.tsx";
 
 function CasesPage() {
   const subNavigationBar = useRecoilValue(subNavigationBarState);
-  const setClientId = useSetRecoilState(clientIdState);
+  const isEmployee = useRecoilValue(isEmployeeState);
+  const user = useRecoilValue(userState);
+  const userClientId = useRecoilValue(userClientIdState);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (subNavigationBar.items && subNavigationBar.items.length > 0) {
-      const { id } = subNavigationBar.items[0];
-      setClientId(id);
-      navigate(`/cases/list?client=${id}`);
+    if (!user) {
+      return;
     }
-  }, [subNavigationBar.items]);
+    if (isEmployee && subNavigationBar.type !== "caseClient") {
+      return;
+    }
+    if (isEmployee) {
+      navigate(`/cases/clients/${subNavigationBar.curId}`);
+    }
+    if (userClientId == null) {
+      return;
+    }
+    navigate(`/cases/clients/${userClientId}`);
+  }, [user, userClientId, subNavigationBar]);
 
-  return <>TODO: Loading</>;
+  return <></>;
 }
 
 export default CasesPage;

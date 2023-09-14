@@ -41,10 +41,15 @@ function CaseExpenseAmountCell({ item }: Props) {
   ) : (
     <Box
       sx={{
-        display: "flex",
         justifyContent: "center",
         alignItems: "center",
         height: 40,
+        cursor: "pointer",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+        paddingTop: 1,
+        textAlign: "center",
       }}
     >
       {delimiter(item.amount)}

@@ -19,7 +19,7 @@ function ClientProfileTab() {
 
   return (
     <Box sx={{ display: "flex", gap: 3, flexDirection: "row", height: "100%" }}>
-      <ClientInfoCard width="50%" useEdit={true} />
+      <ClientInfoCard width="50%" />
       <Box
         ref={parentContainer}
         sx={{

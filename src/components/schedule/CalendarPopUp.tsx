@@ -32,7 +32,7 @@ function CalendarPopUp() {
 
   const handleToLawsuit = () => {
     setCalendarPopUpOpen(false);
-    navigate(`/cases/${info?.lawsuit.id}?client=${info?.clients[0].id}`);
+    navigate(`/cases/${info?.lawsuit.id}/clients/${info?.clients[0].id}`);
   };
 
   return (
@@ -54,10 +54,7 @@ function CalendarPopUp() {
       </AppBar>
 
       {info !== null ? (
-        <div
-          className="custom-scroll"
-          style={{ height: 400, overflowY: "scroll" }}
-        >
+        <div style={{ height: 400, overflowY: "auto" }}>
           <Divider sx={{ color: "gray" }}>사건</Divider>
           <List sx={{ display: "flex", flexDirection: "column", padding: 0 }}>
             <ListProfileItem

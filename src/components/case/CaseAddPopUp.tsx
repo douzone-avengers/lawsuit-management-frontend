@@ -17,7 +17,7 @@ import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
 } from "../../lib/requestDeprecated.ts";
-import { Court } from "./type/CourtInfo.ts";
+import { Court } from "./type/CourtInfo.tsx";
 import { MemberInfo } from "../employee/type/MemberInfo.tsx";
 import { ClientInfo } from "../client/type/ClientInfo.ts";
 import { LawsuitInfo } from "./type/LawsuitInfo.tsx";
@@ -66,7 +66,6 @@ function CaseAddPopUp({
     };
 
     requestDeprecated("GET", `/court`, {
-      useMock: false,
       onSuccess: handleRequestSuccess,
       onFail: handleRequestFail,
     });
@@ -85,7 +84,7 @@ function CaseAddPopUp({
 
     requestDeprecated("GET", `/members/me`, {
       withToken: true,
-      useMock: false,
+
       onSuccess: handleRequestSuccess,
       onFail: handleRequestFail,
     });
@@ -104,7 +103,7 @@ function CaseAddPopUp({
 
     requestDeprecated("GET", `/clients/${clientId}`, {
       withToken: true,
-      useMock: false,
+
       onSuccess: handleRequestSuccess,
       onFail: handleRequestFail,
     });
@@ -122,7 +121,7 @@ function CaseAddPopUp({
 
     requestDeprecated("GET", `/members/employees`, {
       withToken: true,
-      useMock: false,
+
       onSuccess: handleRequestSuccess,
       onFail: handleRequestFail,
     });
@@ -139,7 +138,6 @@ function CaseAddPopUp({
     };
 
     requestDeprecated("GET", `/clients`, {
-      useMock: false,
       onSuccess: handleRequestSuccess,
       onFail: handleRequestFail,
     });
@@ -149,10 +147,10 @@ function CaseAddPopUp({
   const handleCaseAddButtonClick = () => {
     if (
       !lawsuitType ||
-      !lawsuitName ||
+      !(lawsuitName.length >= 3 && lawsuitName.length <= 50) ||
       !courtList.length ||
       !selectCourtId ||
-      !commissionFee
+      !(commissionFee.length >= 1 && commissionFee.length <= 26)
     ) {
       setShowWarnings(true);
       return;
@@ -177,7 +175,7 @@ function CaseAddPopUp({
 
       requestDeprecated("GET", `/lawsuits/clients/${clientId}`, {
         onSuccess: handleRequestSuccess2,
-        useMock: false,
+
         params: {
           curPage: (page + 1).toString(),
           rowsPerPage: rowsPerPage.toString(),
@@ -203,7 +201,7 @@ function CaseAddPopUp({
         memberId: selectMemberIdList,
         clientId: selectClientIdList,
       },
-      useMock: false,
+
       onSuccess: handleRequestSuccess,
       onFail: handleRequestFail,
     });
@@ -277,12 +275,17 @@ function CaseAddPopUp({
         </FormControl>
       )}
 
-      {showWarnings && !lawsuitName ? (
+      {(lawsuitName.length > 50 || lawsuitName.length < 3) && showWarnings ? (
         <TextField
           error
           id="outlined-error-helper-text"
+          type="text"
           label="사건명 *"
           value={lawsuitName}
+          inputProps={{
+            minLength: 3,
+            maxLength: 50,
+          }}
           onChange={(e) => setLawsuitName(e.target.value)}
         />
       ) : (
@@ -290,6 +293,10 @@ function CaseAddPopUp({
           type="text"
           label="사건명 *"
           value={lawsuitName}
+          inputProps={{
+            minLength: 3,
+            maxLength: 50,
+          }}
           onChange={(e) => setLawsuitName(e.target.value)}
         />
       )}
@@ -336,12 +343,18 @@ function CaseAddPopUp({
         </FormControl>
       )}
 
-      {showWarnings && !commissionFee ? (
+      {(commissionFee.length < 1 || commissionFee.length > 26) &&
+      showWarnings ? (
         <TextField
           error
           id="outlined-error-helper-text"
+          type="text"
           label="의뢰비 *"
           value={commissionFee}
+          inputProps={{
+            minLength: 1,
+            maxLength: 26,
+          }}
           onChange={handleCommissionFeeChange}
         />
       ) : (
@@ -349,6 +362,10 @@ function CaseAddPopUp({
           type="text"
           label="의뢰비 *"
           value={commissionFee}
+          inputProps={{
+            minLength: 1,
+            maxLength: 26,
+          }}
           onChange={handleCommissionFeeChange}
         />
       )}
@@ -357,6 +374,10 @@ function CaseAddPopUp({
         type="text"
         label="성공보수비용"
         value={contingentFee}
+        inputProps={{
+          minLength: 1,
+          maxLength: 26,
+        }}
         onChange={handleContingentFeeChange}
       />
 
@@ -364,6 +385,10 @@ function CaseAddPopUp({
         type="text"
         label="사건번호"
         value={lawsuitNum}
+        inputProps={{
+          minLength: 2,
+          maxLength: 20,
+        }}
         onChange={(e) => setLawsuitNum(e.target.value)}
       />
 

@@ -1,28 +1,28 @@
 import MenuIcon from "@mui/icons-material/Menu";
-import IconButton from "@mui/material/IconButton";
 import { useRecoilState } from "recoil";
-import sideNavigationBarState from "../../../states/layout/SideNavigationBarOpenState.tsx";
+import sideNavigationBarOpenState from "../../../states/layout/SideNavigationBarOpenState.tsx";
 
 function SideNavigationBarDisplayButton() {
   const [sideBarNavigationOpen, setSideBarNavigationOpen] = useRecoilState(
-    sideNavigationBarState,
+    sideNavigationBarOpenState,
   );
 
-  const handleClick = () => {
-    setSideBarNavigationOpen(true);
-  };
-
-  return (
-    <IconButton
-      color="inherit"
-      aria-label="open drawer"
-      onClick={handleClick}
-      edge="start"
-      sx={{ mr: 2, ...(sideBarNavigationOpen && { display: "none" }) }}
+  return !sideBarNavigationOpen ? (
+    <div
+      style={{
+        marginLeft: 20,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        cursor: "pointer",
+      }}
+      onClick={() => {
+        setSideBarNavigationOpen(true);
+      }}
     >
       <MenuIcon />
-    </IconButton>
-  );
+    </div>
+  ) : null;
 }
 
 export default SideNavigationBarDisplayButton;

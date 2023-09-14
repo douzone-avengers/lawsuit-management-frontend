@@ -1,20 +1,67 @@
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import caseButtonIdState from "../../states/case/CaseButtonIdState";
-import caseIdState from "../../states/case/CaseIdState";
-import clientIdState from "../../states/client/ClientIdState";
-import loadingState from "../../states/layout/LoadingState.tsx";
-import PrintComponent from "./closing/print/PrintComponent.tsx";
+import caseEditPopUpOpenState from "../../states/case/CaseEditPopUpOpenState.tsx";
+import caseRemovePopUpOpenState from "../../states/case/CaseRemovePopUpOpenState.tsx";
+import CaseEditPopUp from "./CaseEditPopUp.tsx";
+import { useEffect, useState } from "react";
+import requestDeprecated, {
+  RequestFailHandler,
+  RequestSuccessHandler,
+} from "../../lib/requestDeprecated.ts";
+import { Court } from "./type/CourtInfo.tsx";
+import CaseRemovePopUp from "./CaseRemovePopUp.tsx";
+import caseBookPDFUploadLoadingState from "../../states/case/info/closing/CaseBookPDFUploadLoadingState.tsx";
+import CaseBookPDFShareComponent from "./closing/CaseBookPDFShareComponent.tsx";
+import caseBookPDFPrintLoadingState from "../../states/case/info/closing/CaseBookPDFPrintLoadingState.tsx";
+import CaseBookPDFPrintComponent from "./closing/CaseBookPDFPrintComponent.tsx";
+import downPaymentPDFPrintLoadingState from "../../states/case/info/closing/DownPaymentPDFPrintLoadingState.tsx";
+import downPaymentPDFUploadLoadingState from "../../states/case/info/closing/DownPaymentPDFUploadLoadingState.tsx";
+import DownPaymentPDFPrintComponent from "./closing/DownPaymentPDFPrintComponent.tsx";
+import DownPaymentPDFShareComponent from "./closing/DownPaymentPDFShareComponent.tsx";
+import caseBookSharePopUpOpenState from "../../states/case/info/closing/CaseBookSharePopUpOpenState.ts";
+import CaseBookSharePopUp from "./closing/CaseBookSharePopUp.tsx";
+import downPaymentSharePopUpOpenState from "../../states/case/info/closing/DownPaymentSharePopUpOpenState.ts";
+import DownPaymentSharePopUp from "./closing/DownPaymentSharePopUp.tsx";
+import Box from "@mui/material/Box";
 
 function CaseLayout() {
-  const caseButtonId = useRecoilValue(caseButtonIdState);
-  const clientId = useRecoilValue(clientIdState);
-  const caseId = useRecoilValue(caseIdState);
-  const navigate = useNavigate();
-  const loading = useRecoilValue(loadingState);
+  const caseEditPopUpOpen = useRecoilValue(caseEditPopUpOpenState);
+  const caseRemovePopUpOpen = useRecoilValue(caseRemovePopUpOpenState);
+  const [courtList, setCourtList] = useState<Court[]>([]);
+  const caseBookShareSelectPopUpOpen = useRecoilValue(
+    caseBookSharePopUpOpenState,
+  );
+  const caseBookPDFPrintLoading = useRecoilValue(caseBookPDFPrintLoadingState);
+  const caseBookPDFUploadLoading = useRecoilValue(
+    caseBookPDFUploadLoadingState,
+  );
+
+  const downPaymentShareSelectPopUpOpen = useRecoilValue(
+    downPaymentSharePopUpOpenState,
+  );
+  const downPaymentPDFPrintLoading = useRecoilValue(
+    downPaymentPDFPrintLoadingState,
+  );
+  const downPaymentPDFUploadLoading = useRecoilValue(
+    downPaymentPDFUploadLoadingState,
+  );
+
+  // 법원 리스트
+  useEffect(() => {
+    const handleRequestSuccess: RequestSuccessHandler = (res) => {
+      const courtData = res.data;
+      setCourtList(courtData);
+    };
+
+    const handleRequestFail: RequestFailHandler = (e) => {
+      alert((e.response.data as { code: string; message: string }).message);
+    };
+
+    requestDeprecated("GET", `/court`, {
+      onSuccess: handleRequestSuccess,
+      onFail: handleRequestFail,
+    });
+  }, []);
 
   return (
     <>
@@ -23,29 +70,28 @@ function CaseLayout() {
           display: "flex",
           gap: 2,
           flexDirection: "column",
+          minWidth: 960,
         }}
       >
-        <ButtonGroup variant="outlined" size="large" fullWidth>
-          <Button
-            variant={caseButtonId === 0 ? "contained" : "outlined"}
-            onClick={() => {
-              navigate(`/cases/list?client=${clientId}`);
-            }}
-          >
-            사건 리스트
-          </Button>
-          <Button
-            variant={caseButtonId === 1 ? "contained" : "outlined"}
-            onClick={() => {
-              navigate(`/cases/${caseId}?client=${clientId}`);
-            }}
-          >
-            사건 상세
-          </Button>
-        </ButtonGroup>
         <Outlet />
       </Box>
-      {loading.isLoading ? <PrintComponent /> : null}
+      {caseEditPopUpOpen ? <CaseEditPopUp courtList={courtList} /> : null}
+      {caseRemovePopUpOpen ? <CaseRemovePopUp /> : null}
+      {caseBookPDFPrintLoading === "loading" ? (
+        <CaseBookPDFPrintComponent />
+      ) : null}
+      {caseBookPDFUploadLoading === "loading" ? (
+        <CaseBookPDFShareComponent />
+      ) : null}
+      {caseBookShareSelectPopUpOpen ? <CaseBookSharePopUp /> : null}
+
+      {downPaymentPDFPrintLoading === "loading" ? (
+        <DownPaymentPDFPrintComponent />
+      ) : null}
+      {downPaymentPDFUploadLoading === "loading" ? (
+        <DownPaymentPDFShareComponent />
+      ) : null}
+      {downPaymentShareSelectPopUpOpen ? <DownPaymentSharePopUp /> : null}
     </>
   );
 }

@@ -11,10 +11,12 @@ import {
   TablePagination,
   TableSortLabel,
 } from "@mui/material";
-import { Hierarchy, MemberInfo, Role } from "../type/MemberInfo";
 import CardTitle from "../../common/CardTitle";
 import React from "react";
 import { HeadCell } from "../type/HeadCell";
+import { MemberInfo } from "../type/MemberInfo";
+import { Hierarchy } from "../../../states/data/hierarchyListState";
+import { Role } from "../../../states/data/roleListState";
 
 type Props = {
   memberInfos: (MemberInfo & { onClick: () => void })[];
@@ -66,42 +68,24 @@ function EmployeeListTable({
   };
 
   const headCells: HeadCell[] = [
-    {
-      id: "number",
-      label: "번호",
-      canSort: false,
-    },
-    {
-      id: "name",
-      label: "이름",
-      canSort: true,
-    },
-    {
-      id: "hierarchy",
-      label: "직급",
-      canSort: true,
-    },
-    {
-      id: "role",
-      label: "권한",
-      canSort: true,
-    },
-    {
-      id: "phone",
-      label: "전화번호",
-      canSort: true,
-    },
-    {
-      id: "email",
-      label: "이메일",
-      canSort: true,
-    },
-    {
-      id: "createdAt",
-      label: "가입일",
-      canSort: true,
-    },
+    { id: "number", label: "번호", canSort: false, width: "5%" },
+    { id: "name", label: "이름", canSort: true, width: "15%" },
+    { id: "hierarchy", label: "직급", canSort: true, width: "15%" },
+    { id: "role", label: "권한", canSort: true, width: "15%" },
+    { id: "phone", label: "전화번호", canSort: true, width: "20%" },
+    { id: "email", label: "이메일", canSort: true, width: "20%" },
+    { id: "createdAt", label: "가입일", canSort: true, width: "10%" },
   ];
+
+  const hierarchyMap: { [key: number]: Hierarchy } = {};
+  hierarchyList.forEach((item) => {
+    hierarchyMap[item.id] = item;
+  });
+
+  const roleMap: { [key: number]: Role } = {};
+  roleList.forEach((item) => {
+    roleMap[item.id] = item;
+  });
 
   return (
     <Card sx={{ marginBottom: 2, marginTop: 3 }}>
@@ -112,9 +96,11 @@ function EmployeeListTable({
             <TableRow>
               {headCells.map((headCell) =>
                 !headCell.canSort ? (
-                  <TableCell align="left">{headCell.label}</TableCell>
+                  <TableCell align="left" style={{ width: headCell.width }}>
+                    <b>{headCell.label}</b>
+                  </TableCell>
                 ) : (
-                  <TableCell align="left">
+                  <TableCell align="left" style={{ width: headCell.width }}>
                     <TableSortLabel
                       active={sortKey === headCell.id}
                       direction={sortKey === headCell.id ? sortOrder : "asc"}
@@ -122,7 +108,7 @@ function EmployeeListTable({
                         sortHandler(headCell.id);
                       }}
                     >
-                      {headCell.label}
+                      <b>{headCell.label}</b>
                     </TableSortLabel>
                   </TableCell>
                 ),
@@ -140,22 +126,33 @@ function EmployeeListTable({
                 }}
                 onClick={item.onClick}
               >
-                <TableCell align="left" component="th" scope="row">
+                <TableCell
+                  align="left"
+                  component="th"
+                  scope="row"
+                  style={{ width: headCells[0].width }}
+                >
                   {page * rowsPerPage + index + 1}
                 </TableCell>
-                <TableCell align="left">{item.name}</TableCell>
-                <TableCell align="left">
-                  {
-                    hierarchyList.filter((it) => it.id === item.hierarchyId)[0]
-                      .nameKr
-                  }
+                <TableCell align="left" style={{ width: headCells[1].width }}>
+                  {item.name}
                 </TableCell>
-                <TableCell align="left">
-                  {roleList.filter((it) => it.id === item.roleId)[0].nameKr}
+                <TableCell align="left" style={{ width: headCells[2].width }}>
+                  {hierarchyMap[item.hierarchyId]?.nameKr ?? "N/A"}
                 </TableCell>
-                <TableCell align="left">{item.phone}</TableCell>
-                <TableCell align="left">{item.email}</TableCell>
-                <TableCell align="left">{item.createdAt}</TableCell>
+                <TableCell align="left" style={{ width: headCells[3].width }}>
+                  {roleMap[item.roleId]?.nameKr ?? "N/A"}
+                </TableCell>
+
+                <TableCell align="left" style={{ width: headCells[4].width }}>
+                  {item.phone}
+                </TableCell>
+                <TableCell align="left" style={{ width: headCells[5].width }}>
+                  {item.email}
+                </TableCell>
+                <TableCell align="left" style={{ width: headCells[6].width }}>
+                  {item.createdAt}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

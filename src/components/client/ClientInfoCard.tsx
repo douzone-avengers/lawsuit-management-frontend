@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import requestDeprecated, {
   RequestFailHandler,
@@ -13,8 +13,8 @@ import {
   AppRegistration,
   Email,
   LocationOn,
-  PhoneIphone,
   Person,
+  PhoneIphone,
 } from "@mui/icons-material";
 import ClientRemovePopUpButton from "./ClientRemovePopUpButton.tsx";
 import { Link, SvgIcon, Typography } from "@mui/material";
@@ -29,28 +29,98 @@ import curMemberAddressState from "../../states/employee/CurMemberAddressState.t
 type Props = {
   width?: string | number;
   height?: string | number;
-  useEdit?: boolean;
 };
 
-function ClientInfoCard({ width, height, useEdit }: Props) {
+function ClientInfoCard({ width, height }: Props) {
   const clientId = useRecoilValue(clientIdState);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [isPhoneOk, setIsPhoneOk] = useState(true);
+  const [phoneMessage, setPhoneMessage] = useState("");
   const [email, setEmail] = useState("");
+  const [isEmailOk, setIsEmailOk] = useState(true);
   const [address, setAddress] = useState("");
+  const [addressDetail, setAddressDetail] = useState("");
+
+  const [previousName, setPreviousName] = useState("");
+  const [previousPhone, setPreviousPhone] = useState("");
+  const [previousEmail, setPreviousEmail] = useState("");
+  const [previousAddress, setPreviousAddress] = useState("");
+  const [previousAddressDetail, setPreviousAddressDetail] = useState("");
+
   const [memberId, setMemberId] = useState<number>();
   const [editMode, setEditMode] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const setRecoilAddress = useSetRecoilState(curMemberAddressState);
+
   const [isPromotionDialogOpen, setIsPromotionDialogOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isAddressDetailOk, setIsAddressDetailOk] = useState(true);
+  const [addressDetailMessage, setAddressDetailMessage] = useState("");
+
   const [promotionKey, setPromotionKey] = useState("");
+
+  // const onEmailChange = (
+  //   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  // ) => {
+  //   const emailRegex =
+  //     /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+  //   const emailCurrent = e.target.value;
+  //   setEmail(emailCurrent);
+  //
+  //   if (!emailRegex.test(emailCurrent)) {
+  //     setEmailMessage("이메일 형식이 틀렸습니다.");
+  //     setIsEmailOk(false);
+  //   } else {
+  //     setEmailMessage("올바른 이메일 형식입니다.");
+  //     setIsEmailOk(true);
+  //   }
+  // };
+
+  const onPhoneChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    let input = e.target.value.replace(/\D/g, ""); // 모든 숫자 아닌 문자를 제거합니다.
+    if (input.length > 2) {
+      input = input.substring(0, 3) + "-" + input.substring(3);
+    }
+    if (input.length > 7) {
+      input = input.substring(0, 8) + "-" + input.substring(8);
+    }
+    setPhone(input);
+
+    const phonePattern = /^010-\d{4}-?\d{4}$/;
+
+    if (phonePattern.test(input)) {
+      setPhoneMessage("올바른 전화번호 형식입니다.");
+      setIsPhoneOk(true);
+    } else {
+      setPhoneMessage("올바르지 않은 전화번호 형식입니다.");
+      setIsPhoneOk(false);
+    }
+  };
+
+  const onAddressDetailChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    let input = e.target.value;
+    setAddressDetail(input);
+
+    if (input.length === 0) {
+      setAddressDetailMessage("상세주소를 입력해 주세요.");
+      setIsAddressDetailOk(false);
+    } else {
+      setIsAddressDetailOk(true);
+      setAddressDetailMessage("");
+    }
+  };
 
   useEffect(() => {
     if (typeof clientId !== "number") {
       return;
     }
     requestClientInfo();
+    setEditMode(false);
   }, [clientId]);
 
   const requestClientInfo = () => {
@@ -60,6 +130,7 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
       setPhone(clientData.phone);
       setEmail(clientData.email);
       setAddress(clientData.address);
+      setAddressDetail(clientData.addressDetail);
       setMemberId(clientData.memberId);
     };
 
@@ -68,7 +139,6 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
     };
 
     requestDeprecated("GET", `/clients/${clientId}`, {
-      useMock: false,
       withToken: true,
       onSuccess: handleRequestSuccess,
       onFail: handleRequestFail,
@@ -76,6 +146,14 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
   };
 
   const requestUpdateClientInfo = () => {
+    if (!isEmailOk) {
+      document.getElementById("email-input")?.focus();
+      return;
+    }
+    if (!isPhoneOk) {
+      document.getElementById("phone-input")?.focus();
+      return;
+    }
     const handleRequestSuccess: RequestSuccessHandler = () => {
       const handleRequestSuccess2: RequestSuccessHandler = (res) => {
         const updatedData: ClientData = res.data;
@@ -83,7 +161,10 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
         setPhone(updatedData.phone);
         setEmail(updatedData.email);
         setAddress(updatedData.address);
+        setAddressDetail(updatedData.addressDetail);
         setMemberId(updatedData.memberId);
+        setPhoneMessage("");
+        setAddressDetailMessage("");
       };
 
       const handleRequestFail2: RequestFailHandler = (e) => {
@@ -91,7 +172,6 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
       };
 
       requestDeprecated("GET", `/clients/${clientId}`, {
-        useMock: false,
         onSuccess: handleRequestSuccess2,
         onFail: handleRequestFail2,
       });
@@ -102,17 +182,42 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
     };
 
     requestDeprecated("PUT", `/clients/${clientId}`, {
-      useMock: false,
       withToken: true,
       body: {
         email,
         name,
         phone,
         address,
+        addressDetail,
       },
       onSuccess: handleRequestSuccess,
       onFail: handleRequestFail,
     });
+
+    setEditMode(false);
+  };
+
+  const handleUpdateButton = () => {
+    setPreviousName(name);
+    setPreviousEmail(email);
+    setPreviousPhone(phone);
+    setPreviousAddress(address);
+    setPreviousAddressDetail(addressDetail);
+  };
+
+  const handleCancelUpdateButton = () => {
+    setName(previousName);
+    setEmail(previousEmail);
+    setPhone(previousPhone);
+    setAddress(previousAddress);
+    setAddressDetail(previousAddressDetail);
+
+    setIsEmailOk(true);
+    setIsPhoneOk(true);
+    setPhoneMessage("");
+    setIsAddressDetailOk(true);
+    setAddressDetailMessage("");
+    setEditMode(false);
   };
 
   const requestCreateClientPromotion = () => {
@@ -129,13 +234,13 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
       };
 
       requestDeprecated("POST", `/promotions/clients/${clientId}`, {
-        useMock: false,
         withToken: true,
         onSuccess: handleRequestSuccess,
         onFail: handelRequestFail,
       });
     });
   };
+
   return (
     <>
       <ReactModal
@@ -183,18 +288,7 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
           <Box
             sx={{ display: "flex", justifyContent: "space-between", flex: 1 }}
           >
-            {!editMode ? (
-              <Box>
-                <SvgIcon
-                  component={Person}
-                  sx={{ color: "#1976d2", marginTop: "5px" }}
-                />
-                &nbsp;
-                <Typography sx={{ display: "inline-block" }} variant="h4">
-                  {name}
-                </Typography>
-              </Box>
-            ) : (
+            {editMode && !memberId ? (
               <Box>
                 <SvgIcon
                   component={Person}
@@ -209,34 +303,61 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
                   }}
                 />
               </Box>
+            ) : (
+              <Box>
+                <SvgIcon
+                  component={Person}
+                  sx={{ color: "#1976d2", marginTop: "5px" }}
+                />
+                &nbsp;
+                <Typography sx={{ display: "inline-block" }} variant="h4">
+                  {name}
+                </Typography>
+              </Box>
             )}
-            {useEdit ? (
-              <Box sx={{ display: "flex", justifyContent: "right", gap: 1 }}>
-                {editMode ? (
+            <Box sx={{ display: "flex", justifyContent: "right", gap: 1 }}>
+              {editMode ? (
+                <>
                   <Button
-                    variant="contained"
-                    size="small"
+                    variant="outlined"
+                    sx={{ width: "64px", height: "41.98px" }}
                     onClick={() => {
                       requestUpdateClientInfo();
-                      setEditMode(false);
                     }}
                   >
                     확인
                   </Button>
-                ) : (
                   <Button
-                    variant="contained"
+                    variant="outlined"
+                    color="error"
+                    sx={{
+                      width: "64px",
+                      height: "41.98px",
+                    }}
+                    onClick={() => {
+                      handleCancelUpdateButton();
+                      setEditMode(false);
+                    }}
+                  >
+                    취소
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    variant="outlined"
                     size="small"
                     onClick={() => {
+                      handleUpdateButton();
                       setEditMode(true);
                     }}
                   >
                     수정
                   </Button>
-                )}
-                <ClientRemovePopUpButton />
-              </Box>
-            ) : null}
+                  {memberId ? null : <ClientRemovePopUpButton />}
+                </>
+              )}
+            </Box>
           </Box>
           <hr />
           <br />
@@ -249,7 +370,7 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
               }}
               color="text.secondary"
               gutterBottom
-              contentEditable={editMode}
+              contentEditable={false}
             >
               <SvgIcon component={AppRegistration} sx={{ color: "#1976d2" }} />{" "}
               &nbsp;회원가입 완료
@@ -263,7 +384,7 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
               }}
               color="text.secondary"
               gutterBottom
-              contentEditable={editMode}
+              contentEditable={false}
             >
               <SvgIcon component={AppRegistration} />
               &nbsp;
@@ -283,48 +404,28 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
           <br />
           <br />
           <Box>
-            {useEdit ? (
-              <Box>
-                <SvgIcon
-                  component={Email}
-                  sx={{ color: "#1976d2", marginTop: "5px" }}
-                />{" "}
-                &nbsp;
-                <TextField
-                  disabled={!editMode}
-                  size="small"
-                  sx={{ display: "inline-block", fontSize: 20 }}
-                  color="secondary"
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                  }}
-                />
-              </Box>
-            ) : (
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <SvgIcon
-                  component={Email}
-                  sx={{ color: "#1976d2", marginBottom: "5px" }}
-                />{" "}
-                &nbsp;&nbsp;
-                <Typography
-                  sx={{
-                    display: "inline-block",
-                    fontSize: 18,
-                    fontWeight: "bold",
-                  }}
-                  color="text.secondary"
-                  gutterBottom
-                >
-                  {email}
-                </Typography>
-              </Box>
-            )}
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <SvgIcon
+                component={Email}
+                sx={{ color: "#1976d2", marginBottom: "5px" }}
+              />{" "}
+              &nbsp;&nbsp;
+              <Typography
+                sx={{
+                  display: "inline-block",
+                  fontSize: 18,
+                  fontWeight: "bold",
+                }}
+                color="text.secondary"
+                gutterBottom
+              >
+                {email}
+              </Typography>
+            </Box>
           </Box>
           <br />
           <Box>
-            {useEdit ? (
+            {editMode ? (
               <Box>
                 <SvgIcon
                   component={PhoneIphone}
@@ -332,14 +433,15 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
                 />{" "}
                 &nbsp;
                 <TextField
+                  {...(isPhoneOk ? {} : { error: true })}
+                  id="phone-input"
                   disabled={!editMode}
+                  type="tel"
                   size="small"
                   sx={{ display: "inline-block", fontSize: 20 }}
-                  color="secondary"
                   value={phone}
-                  onChange={(e) => {
-                    setPhone(e.target.value);
-                  }}
+                  onChange={onPhoneChange}
+                  helperText={phoneMessage}
                 />
               </Box>
             ) : (
@@ -364,22 +466,38 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
             )}
           </Box>
           <br />
-          <Box>
-            {useEdit ? (
-              <Box>
-                <SvgIcon
-                  component={LocationOn}
-                  sx={{ color: "#1976d2", marginTop: "5px" }}
-                />{" "}
-                &nbsp;
-                <TextField
-                  disabled={!editMode}
-                  size="small"
-                  sx={{ display: "inline-block", fontSize: 20 }}
-                  color="secondary"
-                  value={address}
-                />
-              </Box>
+          <Box sx={{ display: "flex", marginBottom: "15px" }}>
+            {editMode ? (
+              <>
+                <Box sx={{ display: "flex" }}>
+                  <SvgIcon
+                    component={LocationOn}
+                    sx={{ color: "#1976d2", marginTop: "5px" }}
+                  />{" "}
+                  &nbsp;
+                  <TextField
+                    disabled={!editMode}
+                    size="small"
+                    fullWidth
+                    sx={{
+                      display: "inline-block",
+                      fontSize: 20,
+                      width: 300,
+                    }}
+                    value={address}
+                  />
+                </Box>
+                <Box sx={{ marginTop: "5px" }}>
+                  <Button
+                    size="small"
+                    onClick={() => {
+                      setIsModalOpen(true);
+                    }}
+                  >
+                    주소검색
+                  </Button>
+                </Box>
+              </>
             ) : (
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <SvgIcon
@@ -400,17 +518,46 @@ function ClientInfoCard({ width, height, useEdit }: Props) {
                 </Typography>
               </Box>
             )}
+          </Box>
+          <Box sx={{ marginBottom: "15px" }}>
             {editMode ? (
-              <Button
-                size="small"
-                onClick={() => {
-                  setIsModalOpen(true);
-                }}
-              >
-                주소검색
-              </Button>
+              <Box>
+                <SvgIcon
+                  component={LocationOn}
+                  sx={{ color: "#1976d2", marginTop: "5px" }}
+                />{" "}
+                &nbsp;
+                <TextField
+                  {...(isAddressDetailOk ? {} : { error: true })}
+                  id="phone-input"
+                  disabled={!editMode}
+                  type="tel"
+                  size="small"
+                  sx={{ display: "inline-block", fontSize: 20 }}
+                  value={addressDetail}
+                  onChange={onAddressDetailChange}
+                  helperText={addressDetailMessage}
+                />
+              </Box>
             ) : (
-              ""
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <SvgIcon
+                  component={LocationOn}
+                  sx={{ color: "#1976d2", marginBottom: "5px" }}
+                />{" "}
+                &nbsp;&nbsp;
+                <Typography
+                  sx={{
+                    display: "inline-block",
+                    fontSize: 18,
+                    fontWeight: "bold",
+                  }}
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  {addressDetail}
+                </Typography>
+              </Box>
             )}
           </Box>
         </CardContent>

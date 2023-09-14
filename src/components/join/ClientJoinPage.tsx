@@ -13,6 +13,8 @@ import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
 } from "../../lib/requestDeprecated.ts";
+import { AlertState } from "./type/AlertState";
+import NormalDialog from "../common/dialog/NormalDialog";
 
 function ClientJoinPage() {
   const validatedClient = useRecoilValue(validatedClientState);
@@ -40,11 +42,20 @@ function ClientJoinPage() {
 
   const [address, setAddress] = useState("");
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [addressDetail, setAddressDetail] = useState("");
+  const [isAddressDetailOk, setIsAddressDetailOk] = useState(true);
+  const [addressDetailMessage, setAddressDetailMessage] = useState("");
 
-  // const handleChange = (event: SelectChangeEvent) => {
-  //   setHierarchy(event.target.value as string);
-  // };
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [alert, setAlert] = useState<AlertState>({
+    isOpen: false,
+    message: "",
+    action: null,
+  });
+  const setAlertIsOpen = (isOpen: boolean) => {
+    setAlert((prevState) => ({ ...prevState, isOpen: isOpen }));
+  };
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -64,6 +75,9 @@ function ClientJoinPage() {
     if (validatedClient?.address) {
       setAddress(validatedClient.address);
     }
+    if (validatedClient?.addressDetail) {
+      setAddressDetail(validatedClient.addressDetail);
+    }
   }, [validatedClient]);
 
   const canRequest = () => {
@@ -74,30 +88,48 @@ function ClientJoinPage() {
       passwordConfirm &&
       name &&
       phone &&
-      address;
+      address &&
+      addressDetail;
     const isDataValid =
-      isEmailOk && isPasswordOk && isPasswordConfirmOk && isNameOk && isPhoneOk;
+      isEmailOk &&
+      isPasswordOk &&
+      isPasswordConfirmOk &&
+      isNameOk &&
+      isPhoneOk &&
+      isAddressDetailOk;
 
     return hasRequiredFields && isDataValid;
   };
 
   const handelRequestSuccess: RequestSuccessHandler = () => {
-    alert("가입 되었습니다.");
-    navigate("/login");
+    const afterClose = () => {
+      navigate("/login");
+    };
+    setAlert({
+      isOpen: true,
+      message: "가입 되었습니다.",
+      action: afterClose,
+    });
   };
 
   const handelRequestFail: RequestFailHandler = (e) => {
-    alert((e.response.data as { code: string; message: string }).message);
+    const message = (e.response.data as { code: string; message: string })
+      .message;
+    setAlert({ isOpen: true, message: message, action: null });
   };
 
   const joinRequest = () => {
     if (!canRequest()) {
-      alert("입력되지 않은 정보가 있습니다.");
+      setAlert({
+        isOpen: true,
+        message: "입력되지 않은 정보가 있습니다.",
+        action: null,
+      });
       return;
     }
     requestDeprecated("POST", `/members/clients`, {
       withToken: false,
-      useMock: false,
+
       onSuccess: handelRequestSuccess,
       onFail: handelRequestFail,
       body: {
@@ -107,6 +139,7 @@ function ClientJoinPage() {
         name,
         phone,
         address,
+        addressDetail,
       },
     });
   };
@@ -123,7 +156,7 @@ function ClientJoinPage() {
       setEmailMessage("이메일 형식이 틀렸습니다.");
       setIsEmailOk(false);
     } else {
-      setEmailMessage("올바른 이메일 형식입니다.");
+      setEmailMessage("");
       setIsEmailOk(true);
     }
   };
@@ -140,7 +173,7 @@ function ClientJoinPage() {
       setPasswordMessage("숫자+영문자+특수문자 조합 8자리 이상 입력하세요");
       setIsPasswordOk(false);
     } else {
-      setPasswordMessage("안전한 비밀번호입니다.");
+      setPasswordMessage("");
       setIsPasswordOk(true);
     }
   };
@@ -152,7 +185,7 @@ function ClientJoinPage() {
     setPasswordConfirm(passwordConfirmCurrent);
 
     if (password === passwordConfirmCurrent) {
-      setPasswordConfirmMessage("비밀번호가 일치합니다.");
+      setPasswordConfirmMessage("");
       setIsPasswordConfirmOk(true);
     } else {
       setPasswordConfirmMessage("비밀번호가 다릅니다.");
@@ -168,7 +201,7 @@ function ClientJoinPage() {
       setNameMessage("2글자 이상 10글자 이하로 입력해주세요.");
       setIsNameOk(false);
     } else {
-      setNameMessage("올바른 이름 형식입니다.");
+      setNameMessage("");
       setIsNameOk(true);
     }
   };
@@ -188,115 +221,148 @@ function ClientJoinPage() {
     const phonePattern = /^010-\d{4}-?\d{4}$/;
 
     if (phonePattern.test(input)) {
-      setPhoneMessage("올바른 전화번호 형식입니다.");
+      setPhoneMessage("");
       setIsPhoneOk(true);
     } else {
       setPhoneMessage("올바르지 않은 전화번호 형식입니다.");
       setIsPhoneOk(false);
     }
   };
+  const onAddressDetailChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    setAddressDetail(e.target.value);
+    if (e.target.value.length === 0) {
+      setAddressDetailMessage("상세주소를 입력해주세요.");
+      setIsAddressDetailOk(false);
+    } else {
+      setAddressDetailMessage("");
+      setIsAddressDetailOk(true);
+    }
+  };
 
   return (
-    <PopUp>
-      <ReactModal
-        style={{
-          overlay: {
-            zIndex: 10000, // 여기서 z-index 값을 높여주세요
-          },
-          content: {
-            width: "30%", // 모달의 너비를 50%로 설정
-            height: "60%", // 모달의 높이를 50%로 설정
-            margin: "auto", // 모달을 화면 가운데에 위치시킴
-          },
-        }}
-        isOpen={isModalOpen}
-      >
-        <DaumPostcode
+    <>
+      <NormalDialog
+        openStatus={alert.isOpen}
+        setOpenStatus={setAlertIsOpen}
+        title={"알림"}
+        text={alert.message}
+        action={alert.action}
+      />
+      <PopUp>
+        <ReactModal
           style={{
-            height: "100%",
+            overlay: {
+              zIndex: 10000, // 여기서 z-index 값을 높여주세요
+            },
+            content: {
+              width: "30%", // 모달의 너비를 50%로 설정
+              height: "60%", // 모달의 높이를 50%로 설정
+              margin: "auto", // 모달을 화면 가운데에 위치시킴
+            },
           }}
-          onComplete={(data) => {
-            // handle the complete event with selected data
-            setAddress(data.address);
-            setIsModalOpen(false);
-          }}
-          autoClose={false}
-          defaultQuery="부산 해운대구 센텀중앙로 79"
-        />
-      </ReactModal>
-
-      <Logo sx={{ width: "50%", marginBottom: 2 }} />
-      <TextField
-        disabled
-        type="text"
-        size="small"
-        label="가입키"
-        value={promotionKey}
-      />
-      <TextField
-        {...(isEmailOk ? {} : { error: true })}
-        type="email"
-        size="small"
-        label="이메일"
-        value={email}
-        onChange={onEmailChange}
-        helperText={emailMessage}
-      />
-      <TextField
-        {...(isPasswordOk ? {} : { error: true })}
-        type="password"
-        size="small"
-        label="비밀번호"
-        value={password}
-        onChange={onPasswordChange}
-        helperText={passwordMessage}
-      />
-      <TextField
-        {...(isPasswordConfirmOk ? {} : { error: true })}
-        type="password"
-        size="small"
-        label="비밀번호 확인"
-        value={passwordConfirm}
-        onChange={onPasswordConfirmChange}
-        helperText={passwordConfirmMessage}
-      />
-
-      <TextField
-        {...(isNameOk ? {} : { error: true })}
-        type="text"
-        size="small"
-        label="이름"
-        value={name}
-        onChange={onNameChange}
-        helperText={nameMessage}
-      />
-
-      <TextField
-        {...(isPhoneOk ? {} : { error: true })}
-        type="tel"
-        size="small"
-        label="전화번호"
-        value={phone}
-        onChange={onPhoneChange}
-        helperText={phoneMessage}
-      />
-
-      <Box>
-        <TextField type="text" size="small" label="주소" value={address} />
-        <Button
-          size="small"
-          onClick={() => {
-            setIsModalOpen(true);
-          }}
+          isOpen={isModalOpen}
         >
-          주소검색
-        </Button>
-      </Box>
+          <DaumPostcode
+            style={{
+              height: "100%",
+            }}
+            onComplete={(data) => {
+              // handle the complete event with selected data
+              setAddress(data.address);
+              setIsModalOpen(false);
+            }}
+            autoClose={false}
+            defaultQuery="부산 해운대구 센텀중앙로 79"
+          />
+        </ReactModal>
 
-      <Button variant="contained" size="large" onClick={joinRequest}>
-        회원 가입
-      </Button>
-    </PopUp>
+        <Logo sx={{ width: "50%", marginBottom: 2 }} />
+        <TextField
+          disabled
+          type="text"
+          size="small"
+          label="가입키"
+          value={promotionKey}
+        />
+        <TextField
+          {...(isEmailOk ? {} : { error: true })}
+          disabled
+          type="email"
+          size="small"
+          label="이메일"
+          value={email}
+          onChange={onEmailChange}
+          helperText={emailMessage}
+        />
+        <TextField
+          {...(isPasswordOk ? {} : { error: true })}
+          type="password"
+          size="small"
+          label="비밀번호"
+          value={password}
+          onChange={onPasswordChange}
+          helperText={passwordMessage}
+        />
+        <TextField
+          {...(isPasswordConfirmOk ? {} : { error: true })}
+          type="password"
+          size="small"
+          label="비밀번호 확인"
+          value={passwordConfirm}
+          onChange={onPasswordConfirmChange}
+          helperText={passwordConfirmMessage}
+        />
+
+        <TextField
+          {...(isNameOk ? {} : { error: true })}
+          disabled
+          type="text"
+          size="small"
+          label="이름"
+          value={name}
+          onChange={onNameChange}
+          helperText={nameMessage}
+        />
+
+        <TextField
+          {...(isPhoneOk ? {} : { error: true })}
+          type="tel"
+          size="small"
+          label="전화번호"
+          value={phone}
+          onChange={onPhoneChange}
+          helperText={phoneMessage}
+        />
+
+        <Box>
+          <TextField type="text" size="small" label="주소" value={address} />
+          <Button
+            size="small"
+            onClick={() => {
+              setIsModalOpen(true);
+            }}
+          >
+            주소검색
+          </Button>
+        </Box>
+
+        <TextField
+          {...(isAddressDetailOk ? {} : { error: true })}
+          type="text"
+          size="small"
+          label="상세주소"
+          value={addressDetail}
+          onChange={onAddressDetailChange}
+          helperText={addressDetailMessage}
+        />
+
+        <Button variant="contained" size="large" onClick={joinRequest}>
+          회원 가입
+        </Button>
+      </PopUp>
+    </>
   );
 }
 

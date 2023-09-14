@@ -12,7 +12,7 @@ type HttpMethod =
 export type RequestSuccessHandler = (res: AxiosResponse<any, any>) => void;
 
 export type RequestFailHandler = (e: {
-  response: { data: any; status: number };
+  response: { data: { code: string; message: string }; status: number };
 }) => void;
 
 function requestDeprecated(
@@ -20,8 +20,7 @@ function requestDeprecated(
   path: string,
   config?: {
     withToken?: boolean;
-    useMock?: boolean;
-    body?: Record<string, unknown>;
+    body?: Record<string, unknown> | FormData;
     params?: Record<string, string>;
     headers?: Record<string, string>;
     timeout?: number;
@@ -29,10 +28,7 @@ function requestDeprecated(
     onFail?: RequestFailHandler;
   },
 ) {
-  const useMock = config?.useMock ?? true;
-
-  //const ROOT = import.meta.env.DEV ? "http://localhost:3000/api" : ""; // TODO: 배포되고 난 다음
-  const ROOT = useMock ? "http://localhost:3000/api" : "http://localhost:8080";
+  const ROOT = import.meta.env.DEV ? "http://localhost:8080" : "";
 
   const url = path.startsWith("/") ? `${ROOT}${path}` : `${ROOT}/${path}`;
 

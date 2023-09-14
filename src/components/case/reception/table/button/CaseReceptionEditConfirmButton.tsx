@@ -59,7 +59,6 @@ function CaseReceptionEditConfirmButton({ item }: Props) {
     requestDeprecated("PUT", `/receptions/update/${item.id}`, {
       body,
       onSuccess: handleSuccess,
-      useMock: false,
     });
   };
   return (

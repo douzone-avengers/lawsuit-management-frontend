@@ -3,15 +3,18 @@ import { useRecoilValue } from "recoil";
 import caseIdState from "../../states/case/CaseIdState";
 import clientIdState from "../../states/client/ClientIdState";
 import employeeIdState from "../../states/employee/EmployeeIdState";
-import subNavigationBarTypeState from "../../states/layout/SubNavigationBarTypeState.tsx";
 import { useEffect, useState } from "react";
+import subNavigationBarState from "../../states/layout/SubNavigationBarState.tsx";
+import userState from "../../states/user/UserState.ts";
+import userClientIdState from "../../states/user/UserClientIdState.tsx";
 
 function Debug() {
   const clientId = useRecoilValue(clientIdState);
   const caseId = useRecoilValue(caseIdState);
   const employeeId = useRecoilValue(employeeIdState);
-  const subNavigationBarType = useRecoilValue(subNavigationBarTypeState);
-
+  const subNavigationBar = useRecoilValue(subNavigationBarState);
+  const user = useRecoilValue(userState);
+  const userClientId = useRecoilValue(userClientIdState);
   const [show, setShow] = useState(true);
 
   const handleKeydown = (e: KeyboardEvent) => {
@@ -27,15 +30,18 @@ function Debug() {
   return show ? (
     <Box
       sx={{
-        position: "absolute",
+        zIndex: 9999,
+        position: "fixed",
         right: 0,
         bottom: 0,
       }}
     >
-      <div>clientId: {clientId}</div>
-      <div>caseId: {caseId}</div>
-      <div>employeeId: {employeeId}</div>
-      <div>subNavigationBarType: {subNavigationBarType}</div>
+      <div>user: {user?.id ?? "null"}</div>
+      <div>userClientId: {userClientId ?? "null"}</div>
+      <div>client: {clientId ?? "null"}</div>
+      <div>case: {caseId ?? "null"}</div>
+      <div>employee: {employeeId ?? "null"}</div>
+      <div>snb: {subNavigationBar.type ?? "null"}</div>
     </Box>
   ) : null;
 }

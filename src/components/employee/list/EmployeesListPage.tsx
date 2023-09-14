@@ -6,9 +6,11 @@ import requestDeprecated, {
 import { Box } from "@mui/material";
 import EmployeeListTable from "./EmployeeListTable";
 import { useNavigate } from "react-router-dom";
-import { Hierarchy, MemberInfo, Role } from "../type/MemberInfo";
 import EmployeeListSearchBox from "./EmployeeListSearchBox";
 import EmployeePromotionDialog from "./EmployeePromotionDialog";
+import { MemberInfo } from "../type/MemberInfo";
+import { Hierarchy } from "../../../states/data/hierarchyListState";
+import { Role } from "../../../states/data/roleListState";
 
 function EmployeeListPage() {
   const navigate = useNavigate();
@@ -109,7 +111,7 @@ function EmployeeListPage() {
 
     requestDeprecated("GET", `/members/employees?${getQueryString()}`, {
       withToken: true,
-      useMock: false,
+
       onSuccess: handelRequestSuccess,
       onFail: handelRequestFail,
     });
@@ -134,7 +136,7 @@ function EmployeeListPage() {
 
     requestDeprecated("GET", `/hierarchy`, {
       withToken: false,
-      useMock: false,
+
       onSuccess: handelRequestSuccess,
       onFail: handelRequestFail,
     });
@@ -161,7 +163,7 @@ function EmployeeListPage() {
 
     requestDeprecated("GET", `/role`, {
       withToken: false,
-      useMock: false,
+
       onSuccess: handelRequestSuccess,
       onFail: handelRequestFail,
     });

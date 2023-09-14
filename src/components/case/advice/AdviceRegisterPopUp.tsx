@@ -1,8 +1,8 @@
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
-import { useSetRecoilState } from "recoil";
+import React, { useState } from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import requestDeprecated, {
   RequestSuccessHandler,
 } from "../../../lib/requestDeprecated.ts";
@@ -13,15 +13,24 @@ import CloseButton from "../../common/CloseButton.tsx";
 import PopUp from "../../common/PopUp.tsx";
 import "../../../stylesheet/calendar.css";
 import { Advicedata } from "../../../type/ResponseType.ts";
+import caseInfoState from "../../../states/case/info/caseInfoState.tsx";
+import caseIdState from "../../../states/case/CaseIdState.tsx";
+//import { DatePicker } from "@mui/x-date-pickers";
 
-function AdviceRegisterPopUp() {
+type Props = {
+  setAdvices: React.Dispatch<React.SetStateAction<Advicedata[]>>;
+};
+
+function AdviceRegisterPopUp({ setAdvices }: Props) {
+  const caseInfo = useRecoilValue(caseInfoState);
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
-  const [Clients, setClients] = useState<string[]>([]);
-  const [Members, setMembers] = useState<string[]>([]);
-  const [date, setDate] = useState("");
-  const [_, setAdvices] = useState<Advicedata[]>([]);
+  const [clientIdList, setclientIdList] = useState<string[]>([]);
+  const [memberIdList, setmemberIdList] = useState<string[]>([]);
+  const [advicedAt, setadvicedAt] = useState<string | null>(null);
+  // const [_, setAdvices] = useState<Advicedata[]>([]);
   const setAdviceId = useSetRecoilState(adviceIdState);
+  const caseId = useRecoilValue(caseIdState);
 
   const setAdviceRegisterPopUpOpen = useSetRecoilState(
     adviceRegisterPopUpOpenState,
@@ -30,24 +39,42 @@ function AdviceRegisterPopUp() {
   const handleCloseButtonClick = () => {
     setAdviceRegisterPopUpOpen(false);
   };
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newTitle = e.target.value;
+    if (newTitle.length <= 15) {
+      setTitle(newTitle);
+    } else {
+      alert("상담 제목은 최대 15자까지 가능합니다.");
+    }
+  };
 
   const handleRegisterButtonClick = () => {
-    const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      const body: { data: Advicedata[] } = res.data;
-      const { data } = body;
-      setAdvices(data);
-      setAdviceId(data[0]?.id);
+    const handleRequestSuccess: RequestSuccessHandler = () => {
+      const handleRequestSuccess2: RequestSuccessHandler = (res) => {
+        const body: Advicedata[] = res.data;
+        setAdvices(body);
+        setAdviceId(body[0]?.id);
+      };
+      requestDeprecated("GET", `/advices?lawsuit=${caseId}`, {
+        withToken: true,
+        onSuccess: handleRequestSuccess2,
+      });
     };
     setAdviceRegisterPopUpOpen(false);
-
+    setclientIdList([]);
+    setmemberIdList([]);
     setTitle("");
     setContents("");
-    setDate("");
+    setadvicedAt("");
     requestDeprecated("POST", "/advices", {
+      withToken: true,
       body: {
+        lawsuitId: caseId,
+        clientIdList,
+        memberIdList,
         title,
         contents,
-        date,
+        advicedAt,
       },
       onSuccess: handleRequestSuccess,
     });
@@ -65,13 +92,14 @@ function AdviceRegisterPopUp() {
           labelId="member"
           label="상담관"
           multiple
-          value={Members}
-          onChange={(e) => setMembers(e.target.value as string[])}
+          value={memberIdList}
+          onChange={(e) => setmemberIdList(e.target.value as string[])}
         >
-          <MenuItem value={0}>김세종</MenuItem>
-          <MenuItem value={1}>박지혁</MenuItem>
-          <MenuItem value={2}>오경민</MenuItem>
-          <MenuItem value={3}>한상진</MenuItem>
+          {caseInfo?.employees.map((employees) => (
+            <MenuItem key={employees.id} value={employees.id}>
+              {employees.name}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
 
@@ -81,27 +109,22 @@ function AdviceRegisterPopUp() {
           labelId="client"
           label="상담자"
           multiple
-          value={Clients}
-          onChange={(e) => setClients(e.target.value as string[])}
+          value={clientIdList}
+          onChange={(e) => setclientIdList(e.target.value as string[])}
         >
-          <MenuItem value={0}>홍길동</MenuItem>
-          <MenuItem value={1}>김철수</MenuItem>
-          <MenuItem value={2}>이영희</MenuItem>
-          <MenuItem value={3}>박민준</MenuItem>
-          <MenuItem value={4}>정수빈</MenuItem>
-          <MenuItem value={5}>신지아</MenuItem>
-          <MenuItem value={6}>윤영호</MenuItem>
-          <MenuItem value={7}>최지수</MenuItem>
-          <MenuItem value={8}>배예진</MenuItem>
-          <MenuItem value={9}>강민수</MenuItem>
+          {caseInfo?.clients.map((clients) => (
+            <MenuItem key={clients.id} value={clients.id}>
+              {clients.name}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
       <TextField
         type="text"
         size="small"
-        label="상담 제목"
+        label="상담 제목(15글자 이하)"
         value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        onChange={handleTitleChange}
       />
 
       <TextField
@@ -116,9 +139,10 @@ function AdviceRegisterPopUp() {
       <TextField
         type="date"
         size="medium"
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
+        value={advicedAt}
+        onChange={(e) => setadvicedAt(e.target.value)}
       />
+
       <Button
         variant="contained"
         size="large"
