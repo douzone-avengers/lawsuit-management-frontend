@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import { Divider, useTheme } from "@mui/material";
+import { CircularProgress, Divider, useTheme } from "@mui/material";
 import CaseExpenseBillHeaderRow from "./row/CaseExpenseBillHeaderRow.tsx";
 import { useRecoilState, useRecoilValue } from "recoil";
 import CaseExpenseBillDataRow from "./row/CaseExpenseBillDataRow.tsx";
@@ -17,6 +17,7 @@ import caseExpenseBillSizeState from "../../../../states/case/info/expense/expen
 import { updateUrl } from "../../reception/table/CaseReceptionTable.tsx";
 import { useEffect } from "react";
 import caseExpenseIdState from "../../../../states/case/info/expense/CaseExpenseIdState.tsx";
+import caseExpenseBillIsLoadedState from "../../../../states/case/info/expense/expenseBill/CaseExpenseBillIsLoadedState.tsx";
 
 function CaseExpenseBillTable() {
   const theme = useTheme();
@@ -24,11 +25,16 @@ function CaseExpenseBillTable() {
   const expenseId = useRecoilValue(caseExpenseIdState);
   const [page, setPage] = useRecoilState(caseExpenseBillPageState);
   const [size, setSize] = useRecoilState(caseExpenseBillSizeState);
+  const [isLoaded, setIsLoaded] = useRecoilState(caseExpenseBillIsLoadedState);
   const isNextDisabled = (page + 1) * 5 >= size;
-
   const url = useRecoilValue(caseExpenseBillUrlState);
 
   useEffect(() => {
+    setIsLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    setExpenseBill([]);
     setPage(0);
   }, [expenseId]);
 
@@ -72,21 +78,34 @@ function CaseExpenseBillTable() {
       <Divider />
       <CaseExpenseBillHeaderRow />
       <Divider />
-      {expenseBill.length > 0 ? (
-        expenseBill.map((item) => (
-          <CaseExpenseBillDataRow key={item.id} item={item} />
-        ))
+      {isLoaded ? (
+        expenseBill.length > 0 ? (
+          expenseBill.map((item) => (
+            <CaseExpenseBillDataRow key={item.id} item={item} />
+          ))
+        ) : (
+          <Box
+            sx={{
+              width: "100%",
+              height: 200,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            자료가 없습니다.
+          </Box>
+        )
       ) : (
         <Box
           sx={{
-            width: "100%",
-            height: 200,
             display: "flex",
-            justifyContent: "center",
+            height: "100%",
             alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          자료가 없습니다.
+          <CircularProgress />
         </Box>
       )}
       {expenseBill.length > 0 &&

@@ -24,6 +24,8 @@ import caseExpenseBillPageState, {
 } from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillPageState.tsx";
 import { useEffect, useState } from "react";
 import caseExpenseBillSizeState from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillSizeState.tsx";
+import CaseExpenseCancelButton from "../button/CaseExpenseCancelButton.tsx";
+import caseExpenseBillIsLoadedState from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillIsLoadedState.tsx";
 
 type Props = {
   item: CaseExpenseRowType & { editable: boolean; isSelected: boolean };
@@ -40,6 +42,7 @@ function CaseExpenseDataRow({ item, caseId }: Props) {
   const setSize = useSetRecoilState(caseExpenseBillSizeState);
   const url = useRecoilValue(caseExpenseBillUrlState);
   const [isHover, setIsHover] = useState(false);
+  const setIsLoaded = useSetRecoilState(caseExpenseBillIsLoadedState);
 
   useEffect(() => {
     if (expenseId === null) {
@@ -58,6 +61,7 @@ function CaseExpenseDataRow({ item, caseId }: Props) {
         }),
       );
       setSize(size);
+      setIsLoaded(true);
     };
 
     requestDeprecated("GET", url, {
@@ -77,6 +81,7 @@ function CaseExpenseDataRow({ item, caseId }: Props) {
     setExpenses(newExpenses);
     setExpenseId(expenseId);
     setPage(0);
+    setIsLoaded(false);
   };
 
   return (
@@ -136,7 +141,14 @@ function CaseExpenseDataRow({ item, caseId }: Props) {
         <CaseExpenseAmountCell item={item} />
       </Box>
       {isEmployee && (
-        <Box sx={{ display: "flex", width: 150, minWidth: 150 }}>
+        <Box
+          sx={{
+            display: "flex",
+            width: 150,
+            minWidth: 150,
+            background: "white",
+          }}
+        >
           <Box
             sx={{
               width: "100%",
@@ -159,7 +171,11 @@ function CaseExpenseDataRow({ item, caseId }: Props) {
               alignItems: "center",
             }}
           >
-            <CaseExpenseDeleteButton item={item} />
+            {item.editable ? (
+              <CaseExpenseCancelButton />
+            ) : (
+              <CaseExpenseDeleteButton item={item} />
+            )}
           </Box>
         </Box>
       )}
