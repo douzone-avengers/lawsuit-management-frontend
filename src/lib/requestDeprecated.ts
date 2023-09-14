@@ -30,7 +30,7 @@ function requestDeprecated(
 ) {
   const ROOT = import.meta.env.DEV
     ? "http://localhost:8080"
-    : "http://52.79.44.141:8080";
+    : "https://lawsuit-management-api.store";
 
   const url = path.startsWith("/") ? `${ROOT}${path}` : `${ROOT}/${path}`;
 
