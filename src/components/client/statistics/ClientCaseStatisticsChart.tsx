@@ -66,11 +66,9 @@ function ClientCaseStatisticsChart() {
       return 0;
     }
 
-    const totalCommissionFee = cases.reduce((acc, item) => {
+    return cases.reduce((acc, item) => {
       return acc + item.commissionFee;
     }, 0);
-
-    return totalCommissionFee;
   }
 
   function calculateSuccessAmount(): number {
