@@ -28,7 +28,6 @@ function AdviceRegisterPopUp({ setAdvices }: Props) {
   const [clientIdList, setclientIdList] = useState<string[]>([]);
   const [memberIdList, setmemberIdList] = useState<string[]>([]);
   const [advicedAt, setadvicedAt] = useState<string | null>(null);
-  // const [_, setAdvices] = useState<Advicedata[]>([]);
   const setAdviceId = useSetRecoilState(adviceIdState);
   const caseId = useRecoilValue(caseIdState);
 

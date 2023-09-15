@@ -15,6 +15,10 @@ import { Advicedata } from "../../../type/ResponseType.ts";
 import { isEmployeeState } from "../../../states/user/UserState.ts";
 import adviceEditPopUpOpenState from "../../../states/advice/adviceEditPopUpOpenState.tsx";
 import AdviceEditPopUp from "./table/popup/AdviceEditPopUp.tsx";
+import adviceDeletePopUpOpenState from "../../../states/advice/adviceDeletePopUpOpenState.tsx";
+import AdviceDeletePopUp from "./table/popup/AdviceDeletePopUp.tsx";
+import Card from "@mui/material/Card";
+import CardTitle from "../../common/CardTitle.tsx";
 
 function Adviceinfo() {
   const clientId = useRecoilValue(clientIdState);
@@ -22,6 +26,7 @@ function Adviceinfo() {
   const [_, setAdviceId] = useRecoilState(adviceIdState);
   const adviceRegisterPopUpOpen = useRecoilValue(adviceRegisterPopUpOpenState);
   const adviceEditPopUpOpen = useRecoilValue(adviceEditPopUpOpenState);
+  const adviceDeletePopUpOpen = useRecoilValue(adviceDeletePopUpOpenState);
   const [advices, setAdvices] = useState<Advicedata[]>([]);
   const isEmployee = useRecoilValue(isEmployeeState);
 
@@ -57,14 +62,21 @@ function Adviceinfo() {
           <AdviceRegisterPopUpButton />
         </Box>
       )}
-      <Box>
-        <AdviceListTable
-          advices={advices.map((item) => ({
-            ...item,
-          }))}
-        />
-      </Box>
-      {adviceEditPopUpOpen ? <AdviceEditPopUp /> : null}
+      <Card>
+        <CardTitle text="상담 리스트" />
+        <Box>
+          <AdviceListTable
+            advices={advices.map((item) => ({
+              ...item,
+            }))}
+          />
+        </Box>
+      </Card>
+
+      {adviceEditPopUpOpen ? <AdviceEditPopUp setAdvices={setAdvices} /> : null}
+      {adviceDeletePopUpOpen ? (
+        <AdviceDeletePopUp setAdvices={setAdvices} />
+      ) : null}
       {adviceRegisterPopUpOpen ? (
         <AdviceRegisterPopUp setAdvices={setAdvices} />
       ) : null}

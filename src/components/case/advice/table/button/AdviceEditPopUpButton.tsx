@@ -5,19 +5,23 @@ import adviceEditPopUpOpenState from "../../../../../states/advice/adviceEditPop
 
 type Props = {
   curAdviceId: number;
+  onClick?: (e: React.MouseEvent) => void;
 };
 
-function AdviceEditPopUpButton({ curAdviceId }: Props) {
+function AdviceEditPopUpButton({ curAdviceId, onClick }: Props) {
   const setAdviceId = useSetRecoilState(adviceIdState);
   const setAdviceEditPopUpOpen = useSetRecoilState(adviceEditPopUpOpenState);
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent) => {
+    if (onClick) {
+      onClick(e);
+    }
     setAdviceId(curAdviceId);
     setAdviceEditPopUpOpen(true);
   };
 
   return (
-    <Button size="large" variant="contained" onClick={handleClick}>
+    <Button variant={"outlined"} onClick={handleClick}>
       수정
     </Button>
   );

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import adviceIdState from "../../../../../states/advice/AdviceIdState.tsx";
 import caseIdState from "../../../../../states/case/CaseIdState.tsx";
@@ -17,21 +17,24 @@ import Button from "@mui/material/Button";
 import { CaseInfoType } from "../../../../../states/case/info/caseInfoState.tsx";
 import { DetailAdviceType } from "../AdviceListTable.tsx";
 import adviceInfoState from "../../../../../states/advice/adviceInfoState.tsx";
+import { Advicedata } from "../../../../../type/ResponseType.ts";
 
-function AdviceEditPopUp() {
-  /*const [advice, setAdvice] = useState<Advice | null>();*/
+type Props = {
+  setAdvices: React.Dispatch<React.SetStateAction<Advicedata[]>>;
+};
+
+function AdviceEditPopUp({ setAdvices }: Props) {
   const [_, setAdviceInfo] = useRecoilState(adviceInfoState);
   const [caseInfo, setCaseInfo] = useState<CaseInfoType>();
   const [adviceId] = useRecoilState(adviceIdState);
   const [caseId] = useRecoilState(caseIdState);
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
-  // const [clients, setClients] = useState<IdNameType[]>([]);
-  // const [members, setMembers] = useState<IdNameType[]>([]);
   const [selectedMembers, setSelectedMembers] = useState<number[]>([]);
   const [selectedClients, setSelectedClients] = useState<number[]>([]);
   const [advicedAt, setadvicedAt] = useState<string | null>(null);
   const setAdviceEditPopUpOpen = useSetRecoilState(adviceEditPopUpOpenState);
+  const setAdviceId = useSetRecoilState(adviceIdState);
 
   const handleCloseButtonClick = () => {
     setAdviceEditPopUpOpen(false);
@@ -80,10 +83,47 @@ function AdviceEditPopUp() {
     });
   };
 
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newTitle = e.target.value;
+    if (newTitle.length <= 15) {
+      setTitle(newTitle);
+    } else {
+      alert("상담 제목은 최대 15자까지 가능합니다.");
+    }
+  };
+
   const handleEditButtonClick = () => {
     const handleRequestSuccess: RequestSuccessHandler = () => {
-      setAdviceEditPopUpOpen(false);
+      const handleRequestSuccess2: RequestSuccessHandler = (res) => {
+        const body: Advicedata[] = res.data;
+        setAdvices(body);
+        setAdviceId(body[0]?.id);
+        const handleRequestSuccess3: RequestSuccessHandler = (res) => {
+          const data: DetailAdviceType = res.data;
+          console.log(res.data);
+          setAdviceInfo(res.data);
+          setTitle(data.title);
+          setContents(data.contents);
+          setadvicedAt(data.advicedAt);
+          const members = res.data.members;
+          setSelectedMembers(members?.map((item: any) => item.id) ?? []);
+          const clients = res.data.clients;
+          setSelectedClients(clients?.map((item: any) => item.id) ?? []);
+        };
+        requestDeprecated("GET", `/advices/${adviceId}`, {
+          onSuccess: handleRequestSuccess3,
+        });
+      };
+      const handleRequestFail: RequestFailHandler = (e) => {
+        alert((e.response.data as { code: string; message: string }).message);
+      };
+      requestDeprecated("GET", `/advices?lawsuit=${caseId}`, {
+        withToken: true,
+        onSuccess: handleRequestSuccess2,
+        onFail: handleRequestFail,
+      });
     };
+    setAdviceEditPopUpOpen(false);
     const handleRequestFail: RequestFailHandler = (e) => {
       alert((e.response.data as { code: string; message: string }).message);
     };
@@ -120,11 +160,8 @@ function AdviceEditPopUp() {
             onChange={(e) => {
               setSelectedMembers(e.target.value as number[]);
             }}
-            value={selectedMembers} // 11
+            value={selectedMembers}
           >
-            {/*<MenuItem key={11} value={11}>*/}
-            {/*  하드코딩 데이터*/}
-            {/*</MenuItem>*/}
             {caseInfo.employees.map((data) => (
               <MenuItem key={data.id} value={data.id}>
                 {data.name}
@@ -155,9 +192,9 @@ function AdviceEditPopUp() {
       <TextField
         type="text"
         size="small"
-        label="상담 제목"
+        label="상담 제목(15글자 이하)"
         value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        onChange={handleTitleChange}
       />
 
       <TextField
