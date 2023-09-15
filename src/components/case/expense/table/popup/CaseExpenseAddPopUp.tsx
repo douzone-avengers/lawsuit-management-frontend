@@ -49,7 +49,7 @@ function CaseExpenseAddPopUp() {
   };
 
   const handleAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setAmount(Number(e.target.value));
+    setAmount(Number(e.target.value.replace(/[^0-9]/g, "")));
   };
 
   const handleSubmitClick = () => {
