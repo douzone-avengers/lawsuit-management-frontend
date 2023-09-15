@@ -1,6 +1,6 @@
 import { useRecoilState } from "recoil";
 import { useEffect } from "react";
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 import calendarDateState from "../../states/schedule/calendarDateState.ts";
 import calendarItemsState, {
   CalendarItemType,

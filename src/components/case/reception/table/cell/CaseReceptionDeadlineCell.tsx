@@ -1,5 +1,4 @@
-import * as dayjs from "dayjs";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers";
 import { useRecoilState } from "recoil";
 import { produce } from "immer";
