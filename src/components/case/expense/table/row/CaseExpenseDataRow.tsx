@@ -90,7 +90,7 @@ function CaseExpenseDataRow({ item, caseId }: Props) {
         display: "flex",
         width: "100%",
         height: 40,
-        minWidth: "715.69px",
+        minWidth: "672px",
         background: item.isSelected || isHover ? "#DCE8F6" : "white",
       }}
     >
