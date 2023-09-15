@@ -8,7 +8,7 @@ import requestDeprecated, {
 import { produce } from "immer";
 import { Button } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 
 type Props = {
   item: CaseExpenseRowType & { editable: boolean };

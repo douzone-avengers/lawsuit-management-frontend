@@ -7,8 +7,7 @@ import caseExpensesState, {
   CaseExpenseRowType,
 } from "../../../../../states/case/info/expense/CaseExpensesState.tsx";
 import caseExpenseSizeState from "../../../../../states/case/info/expense/CaseExpenseSizeState.tsx";
-import * as dayjs from "dayjs";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import requestDeprecated, {
   RequestSuccessHandler,
 } from "../../../../../lib/requestDeprecated.ts";
