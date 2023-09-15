@@ -83,7 +83,7 @@ function CaseExpenseBillTable() {
           expenseBill.map((item) => (
             <CaseExpenseBillDataRow key={item.id} item={item} />
           ))
-        ) : (
+        ) : expenseId ? (
           <Box
             sx={{
               width: "100%",
@@ -94,6 +94,18 @@ function CaseExpenseBillTable() {
             }}
           >
             자료가 없습니다.
+          </Box>
+        ) : (
+          <Box
+            sx={{
+              width: "100%",
+              height: 200,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            지출 항목을 선택해주세요.
           </Box>
         )
       ) : (
