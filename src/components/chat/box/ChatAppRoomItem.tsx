@@ -1,6 +1,6 @@
 import { CSSProperties, useState } from "react";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 
 type Props = {
   roomName: string;

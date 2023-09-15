@@ -13,6 +13,7 @@ import caseExpenseBillState, {
   CaseExpenseBillRowType,
 } from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillState.tsx";
 import caseExpenseBillSizeState from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillSizeState.tsx";
+import caseExpenseIdState from "../../../../../states/case/info/expense/CaseExpenseIdState.tsx";
 
 function CaseExpenseBillHeaderRow() {
   const isEmployee = useRecoilValue(isEmployeeState);
@@ -20,6 +21,7 @@ function CaseExpenseBillHeaderRow() {
   const setSize = useSetRecoilState(caseExpenseBillSizeState);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const url = useRecoilValue(caseExpenseBillUrlState);
+  const expenseId = useRecoilValue(caseExpenseIdState);
 
   const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
@@ -56,6 +58,10 @@ function CaseExpenseBillHeaderRow() {
   };
 
   const handleExpenseBillAddButtonClick = () => {
+    if (!expenseId) {
+      alert("증빙 자료를 추가할 지출 내역을 선택해주세요.");
+      return;
+    }
     // 파일 선택을 위한 input 요소 클릭
     if (fileInputRef.current) {
       fileInputRef.current.click();
@@ -105,7 +111,7 @@ function CaseExpenseBillHeaderRow() {
             onChange={handleFileInputChange}
           />
           <Button
-            variant="contained"
+            variant="outlined"
             sx={{ width: "100%", height: 40, color: "secondary", fontSize: 16 }}
             onClick={handleExpenseBillAddButtonClick}
           >

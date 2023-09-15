@@ -8,7 +8,7 @@ import caseReceptionsState, {
 import requestDeprecated, {
   RequestSuccessHandler,
 } from "../../../../../lib/requestDeprecated.ts";
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 
 type Props = {
   item: CaseReceptionRowType & { editable: boolean };
