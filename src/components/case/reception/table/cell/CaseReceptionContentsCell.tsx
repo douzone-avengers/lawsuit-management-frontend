@@ -40,6 +40,7 @@ function CaseReceptionContentsCell({ item }: Props) {
         overflow: "hidden",
         textOverflow: "ellipsis",
         whiteSpace: "noWrap",
+        textAlign: "center",
       }}
     >
       <span style={{ paddingTop: 2 }}>{item.contents}</span>

@@ -30,19 +30,22 @@ function CaseExpenseContentsCell({ item }: Props) {
       size="small"
       value={item.contents}
       onChange={handleChange}
-      multiline
+      multiline={false}
       rows={1}
       fullWidth
     />
   ) : (
     <Box
       sx={{
-        display: "flex",
         justifyContent: "center",
         alignItems: "center",
         overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
         height: 40,
         cursor: "pointer",
+        paddingTop: 1,
+        textAlign: "center",
       }}
     >
       {item.contents}

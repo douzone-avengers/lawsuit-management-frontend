@@ -288,6 +288,7 @@ function ClientJoinPage() {
         />
         <TextField
           {...(isEmailOk ? {} : { error: true })}
+          disabled
           type="email"
           size="small"
           label="이메일"
@@ -316,6 +317,7 @@ function ClientJoinPage() {
 
         <TextField
           {...(isNameOk ? {} : { error: true })}
+          disabled
           type="text"
           size="small"
           label="이름"

@@ -8,7 +8,7 @@ import requestDeprecated, {
 import { produce } from "immer";
 import { Button } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 
 type Props = {
   item: CaseExpenseRowType & { editable: boolean };
@@ -53,7 +53,7 @@ function CaseExpenseEditConfirmButton({ item, caseId }: Props) {
     <Button
       sx={{ width: "100%", marginRight: 1 }}
       size="small"
-      variant="contained"
+      variant="outlined"
       fullWidth
       onClick={handleClick}
     >

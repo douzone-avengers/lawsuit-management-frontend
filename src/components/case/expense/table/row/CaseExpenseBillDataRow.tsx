@@ -1,22 +1,37 @@
 import Box from "@mui/material/Box";
 import CaseExpenseBillShowNameCell from "../cell/CaseExpenseBillShowNameCell.tsx";
-import CaseExpenseBillEditConfirmButton from "../button/CaseExpenseBillEditConfirmButton.tsx";
-import CaseExpenseBillEditButton from "../button/CaseExpenseBillEditButton.tsx";
-import CaseExpenseBillDeleteButton from "../button/CaseExpenseBillDeleteButton.tsx";
-import { CaseExpenseBillRowType } from "../../../../../states/case/info/expense/CaseExpenseBillState.tsx";
+import CaseExpenseBillRemoveButton from "../button/CaseExpenseBillRemoveButton.tsx";
+import { CaseExpenseBillRowType } from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillState.tsx";
+import { useState } from "react";
 
 type Props = {
   item: CaseExpenseBillRowType & { editable: boolean };
-  expenseBillId: number | null;
 };
 
-function CaseExpenseBillDataRow({ item, expenseBillId }: Props) {
+function CaseExpenseBillDataRow({ item }: Props) {
+  const [isHover, setIsHover] = useState(false);
+
   return (
-    <Box sx={{ display: "flex", width: "100%", height: 40 }}>
+    <Box
+      sx={{
+        display: "flex",
+        width: "100%",
+        height: 40,
+        background: isHover ? "#DCE8F6" : "none",
+        textDecoration: isHover ? "underline" : "none",
+      }}
+      onMouseOver={() => {
+        setIsHover(true);
+      }}
+      onMouseLeave={() => {
+        setIsHover(false);
+      }}
+    >
       <Box
         sx={{
           width: 300,
           minWidth: 150,
+          flex: 1,
         }}
       >
         <CaseExpenseBillShowNameCell item={item} />
@@ -30,24 +45,7 @@ function CaseExpenseBillDataRow({ item, expenseBillId }: Props) {
             alignItems: "center",
           }}
         >
-          {item.editable ? (
-            <CaseExpenseBillEditConfirmButton
-              item={item}
-              expenseBillId={expenseBillId}
-            />
-          ) : (
-            <CaseExpenseBillEditButton item={item} />
-          )}
-        </Box>
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <CaseExpenseBillDeleteButton item={item} />
+          <CaseExpenseBillRemoveButton item={item} />
         </Box>
       </Box>
     </Box>

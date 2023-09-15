@@ -1,8 +1,8 @@
-import { Button, Divider, useTheme } from "@mui/material";
-import { useEffect } from "react";
+import { Button, CircularProgress, Divider, useTheme } from "@mui/material";
+import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import caseIdState from "../../../../states/case/CaseIdState.tsx";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
@@ -18,20 +18,27 @@ import caseExpenseSizeState from "../../../../states/case/info/expense/CaseExpen
 import caseExpensePageState from "../../../../states/case/info/expense/CaseExpensePageState.tsx";
 import caseExpenseSortKeyState from "../../../../states/case/info/expense/CaseExpenseSortKeyState.tsx";
 import caseExpenseSortOrderState from "../../../../states/case/info/expense/CaseExpenseSortOrderState.tsx";
+import caseExpenseBillState from "../../../../states/case/info/expense/expenseBill/CaseExpenseBillState.tsx";
+import caseExpenseIdState from "../../../../states/case/info/expense/CaseExpenseIdState.tsx";
 
 function CaseExpenseTable() {
   const theme = useTheme();
   const caseId = useRecoilValue(caseIdState);
   const [expenses, setExpenses] = useRecoilState(caseExpensesState);
+  const setExpenseId = useSetRecoilState(caseExpenseIdState);
+  const setExpenseBill = useSetRecoilState(caseExpenseBillState);
   const [page, setPage] = useRecoilState(caseExpensePageState);
   const [size, setSize] = useRecoilState(caseExpenseSizeState);
   const [sortKey, setSortKey] = useRecoilState(caseExpenseSortKeyState);
   const [sortOrder, setSortOrder] = useRecoilState(caseExpenseSortOrderState);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const url = useRecoilValue(caseExpenseSearchUrlState);
   const isNextDisabled = (page + 1) * 5 >= size;
 
   useEffect(() => {
+    setExpenseId(null);
+    setExpenseBill([]);
     if (caseId === null) {
       return;
     }
@@ -48,6 +55,7 @@ function CaseExpenseTable() {
         }),
       );
       setSize(size);
+      setIsLoaded(true);
     };
 
     const handleRequestFail: RequestFailHandler = (e) => {
@@ -77,21 +85,34 @@ function CaseExpenseTable() {
         setSortOrder={setSortOrder}
       />
       <Divider />
-      {expenses.length > 0 ? (
-        expenses.map((item) => (
-          <CaseExpenseDataRow key={item.id} item={item} caseId={caseId} />
-        ))
+      {isLoaded ? (
+        expenses.length > 0 ? (
+          expenses.map((item) => (
+            <CaseExpenseDataRow key={item.id} item={item} caseId={caseId} />
+          ))
+        ) : (
+          <Box
+            sx={{
+              width: "100%",
+              height: 200,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            지출정보가 존재하지 않습니다.
+          </Box>
+        )
       ) : (
         <Box
           sx={{
-            width: "100%",
-            height: 200,
             display: "flex",
-            justifyContent: "center",
+            height: "100%",
             alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          지출정보가 존재하지 않습니다.
+          <CircularProgress />
         </Box>
       )}
       {expenses.length > 0 &&

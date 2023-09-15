@@ -6,18 +6,22 @@ import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
 } from "../../../../../lib/requestDeprecated.ts";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { isEmployeeState } from "../../../../../states/user/UserState.ts";
+import { caseExpenseBillUrlState } from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillPageState.tsx";
+import caseExpenseBillState, {
+  CaseExpenseBillRowType,
+} from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillState.tsx";
+import caseExpenseBillSizeState from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillSizeState.tsx";
 import caseExpenseIdState from "../../../../../states/case/info/expense/CaseExpenseIdState.tsx";
 
-type Props = {
-  setTrigger: any;
-};
-
-function CaseExpenseBillHeaderRow({ setTrigger }: Props) {
+function CaseExpenseBillHeaderRow() {
   const isEmployee = useRecoilValue(isEmployeeState);
-  const expenseId = useRecoilValue(caseExpenseIdState);
+  const setExpenseBill = useSetRecoilState(caseExpenseBillState);
+  const setSize = useSetRecoilState(caseExpenseBillSizeState);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const url = useRecoilValue(caseExpenseBillUrlState);
+  const expenseId = useRecoilValue(caseExpenseIdState);
 
   const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
@@ -26,8 +30,18 @@ function CaseExpenseBillHeaderRow({ setTrigger }: Props) {
       const formData = new FormData();
       formData.append("file", selectedFile);
 
-      const handleRequestSuccess: RequestSuccessHandler = () => {
-        setTrigger(true);
+      const handleRequestSuccess: RequestSuccessHandler = (res) => {
+        const {
+          expenseBill,
+          size,
+        }: { expenseBill: CaseExpenseBillRowType[]; size: number } = res.data;
+
+        setExpenseBill(
+          expenseBill.map((item) => {
+            return { ...item, editable: false };
+          }),
+        );
+        setSize(size);
       };
 
       const handleRequestFail: RequestFailHandler = (e) => {
@@ -35,7 +49,7 @@ function CaseExpenseBillHeaderRow({ setTrigger }: Props) {
       };
 
       // formData 서버로 전송
-      requestDeprecated("POST", `/expenses/${expenseId}/bill`, {
+      requestDeprecated("POST", url, {
         body: formData,
         onSuccess: handleRequestSuccess,
         onFail: handleRequestFail,
@@ -44,6 +58,10 @@ function CaseExpenseBillHeaderRow({ setTrigger }: Props) {
   };
 
   const handleExpenseBillAddButtonClick = () => {
+    if (!expenseId) {
+      alert("증빙 자료를 추가할 지출 내역을 선택해주세요.");
+      return;
+    }
     // 파일 선택을 위한 input 요소 클릭
     if (fileInputRef.current) {
       fileInputRef.current.click();
@@ -93,8 +111,8 @@ function CaseExpenseBillHeaderRow({ setTrigger }: Props) {
             onChange={handleFileInputChange}
           />
           <Button
-            variant="contained"
-            sx={{ width: "100%", color: "secondary", fontSize: 16 }}
+            variant="outlined"
+            sx={{ width: "100%", height: 40, color: "secondary", fontSize: 16 }}
             onClick={handleExpenseBillAddButtonClick}
           >
             등록

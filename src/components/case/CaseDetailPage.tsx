@@ -1,5 +1,6 @@
 import { Box, SvgIcon } from "@mui/material";
 import { useEffect, useState } from "react";
+import Info from "./advice/Adviceinfo";
 import TabBar, { TabItem } from "../common/TabBar";
 import ExpenseInfoPage from "./expense/ExpenseInfoPage.tsx";
 import Closing from "./closing/ClosingInfo.tsx";
@@ -24,7 +25,8 @@ import { useNavigate } from "react-router-dom";
 import CaseEditPopUpButton from "./CaseEditPopUpButton.tsx";
 import CaseRemovePopUpButton from "./CaseRemovePopUpButton.tsx";
 import { isEmployeeState } from "../../states/user/UserState.ts";
-import Adviceinfo from "./advice/Adviceinfo.tsx";
+import caseExpenseIdState from "../../states/case/info/expense/CaseExpenseIdState.tsx";
+
 
 function CaseDetailPage() {
   const [caseTabId, setCaseTabId] = useRecoilState(caseTabIdState);
@@ -32,6 +34,7 @@ function CaseDetailPage() {
   const navigate = useNavigate();
   const caseId = useRecoilValue(caseIdState);
   const setCaseInfo = useSetRecoilState(caseInfoState);
+  const setExpenseId = useSetRecoilState(caseExpenseIdState);
 
   const handleClickListButton = () => {
     navigate(`/cases/clients/${clientId}`);
@@ -48,7 +51,7 @@ function CaseDetailPage() {
       name: "상담 정보",
       children: (
         <div>
-          <Adviceinfo />
+          <Info></Info>
         </div>
       ),
     },
@@ -76,6 +79,8 @@ function CaseDetailPage() {
     if (caseId === null) {
       return;
     }
+
+    setExpenseId(null);
 
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
       const body: CaseInfoType = res.data;

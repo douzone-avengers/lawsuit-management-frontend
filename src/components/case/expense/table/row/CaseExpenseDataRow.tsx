@@ -16,8 +16,16 @@ import requestDeprecated, {
 } from "../../../../../lib/requestDeprecated.ts";
 import caseExpenseBillState, {
   CaseExpenseBillRowType,
-} from "../../../../../states/case/info/expense/CaseExpenseBillState.tsx";
+} from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillState.tsx";
 import { produce } from "immer";
+import caseExpenseIdState from "../../../../../states/case/info/expense/CaseExpenseIdState.tsx";
+import caseExpenseBillPageState, {
+  caseExpenseBillUrlState,
+} from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillPageState.tsx";
+import { useEffect, useState } from "react";
+import caseExpenseBillSizeState from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillSizeState.tsx";
+import CaseExpenseCancelButton from "../button/CaseExpenseCancelButton.tsx";
+import caseExpenseBillIsLoadedState from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillIsLoadedState.tsx";
 
 type Props = {
   item: CaseExpenseRowType & { editable: boolean; isSelected: boolean };
@@ -29,34 +37,51 @@ function CaseExpenseDataRow({ item, caseId }: Props) {
 
   const [expenses, setExpenses] = useRecoilState(CaseExpensesState);
   const setExpenseBill = useSetRecoilState(caseExpenseBillState);
+  const [expenseId, setExpenseId] = useRecoilState(caseExpenseIdState);
+  const [page, setPage] = useRecoilState(caseExpenseBillPageState);
+  const setSize = useSetRecoilState(caseExpenseBillSizeState);
+  const url = useRecoilValue(caseExpenseBillUrlState);
+  const [isHover, setIsHover] = useState(false);
+  const setIsLoaded = useSetRecoilState(caseExpenseBillIsLoadedState);
 
-  const handleClickRow = (expenseId: number) => {
-    const newExpenses = produce(expenses, (draft) => {
-      for (const d of draft) {
-        d.isSelected = false;
-      }
-      const expense = draft.filter((item2) => item2.id === item.id)[0];
-      expense.isSelected = true;
-    });
-    setExpenses(newExpenses);
-
+  useEffect(() => {
     if (expenseId === null) {
       return;
     }
 
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      const expenseBill: CaseExpenseBillRowType[] = res.data;
+      const {
+        expenseBill,
+        size,
+      }: { expenseBill: CaseExpenseBillRowType[]; size: number } = res.data;
 
       setExpenseBill(
         expenseBill.map((item) => {
           return { ...item, editable: false };
         }),
       );
+      setSize(size);
+      setIsLoaded(true);
     };
 
-    requestDeprecated("GET", `/expenses/${expenseId}/bill`, {
+    requestDeprecated("GET", url, {
       onSuccess: handleRequestSuccess,
     });
+  }, [expenseId, page]);
+
+  const handleClickRow = (expenseId: number) => {
+    const newExpenses = produce(expenses, (draft) => {
+      for (const d of draft) {
+        d.isSelected = false;
+      }
+      const expense = draft.filter((item2) => item2.id === expenseId)[0];
+      expense.isSelected = true;
+    });
+
+    setExpenses(newExpenses);
+    setExpenseId(expenseId);
+    setPage(0);
+    setIsLoaded(false);
   };
 
   return (
@@ -65,30 +90,65 @@ function CaseExpenseDataRow({ item, caseId }: Props) {
         display: "flex",
         width: "100%",
         height: 40,
-        minWidth: "715.69px",
-        background: item.isSelected ? "lightgray" : "none",
+        minWidth: "672px",
+        background: item.isSelected || isHover ? "#DCE8F6" : "white",
       }}
     >
       <Box
-        sx={{ width: 200, minWidth: 150 }}
+        sx={{
+          width: 200,
+          minWidth: 150,
+          flex: 1,
+        }}
         onClick={() => handleClickRow(item.id)}
+        onMouseOver={() => {
+          setIsHover(true);
+        }}
+        onMouseLeave={() => {
+          setIsHover(false);
+        }}
       >
         <CaseExpenseSpeningAtCell item={item} />
       </Box>
       <Box
-        sx={{ width: 500, minWidth: 200 }}
+        sx={{
+          width: 500,
+          minWidth: 200,
+        }}
         onClick={() => handleClickRow(item.id)}
+        onMouseOver={() => {
+          setIsHover(true);
+        }}
+        onMouseLeave={() => {
+          setIsHover(false);
+        }}
       >
         <CaseExpenseContentsCell item={item} />
       </Box>
       <Box
-        sx={{ width: 200, minWidth: 100 }}
+        sx={{
+          width: 200,
+          minWidth: 100,
+        }}
         onClick={() => handleClickRow(item.id)}
+        onMouseOver={() => {
+          setIsHover(true);
+        }}
+        onMouseLeave={() => {
+          setIsHover(false);
+        }}
       >
         <CaseExpenseAmountCell item={item} />
       </Box>
       {isEmployee && (
-        <Box sx={{ display: "flex", width: 150, minWidth: 150 }}>
+        <Box
+          sx={{
+            display: "flex",
+            width: 150,
+            minWidth: 150,
+            background: "white",
+          }}
+        >
           <Box
             sx={{
               width: "100%",
@@ -111,7 +171,11 @@ function CaseExpenseDataRow({ item, caseId }: Props) {
               alignItems: "center",
             }}
           >
-            <CaseExpenseDeleteButton item={item} />
+            {item.editable ? (
+              <CaseExpenseCancelButton />
+            ) : (
+              <CaseExpenseDeleteButton item={item} />
+            )}
           </Box>
         </Box>
       )}

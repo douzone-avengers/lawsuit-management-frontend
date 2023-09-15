@@ -1,8 +1,7 @@
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
-import * as React from "react";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import TabPanel from "./TabPanel";
 
 export type TabItem = {

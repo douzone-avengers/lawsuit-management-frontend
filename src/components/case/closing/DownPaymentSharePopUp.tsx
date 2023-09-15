@@ -22,9 +22,9 @@ import downPaymentSharePopUpOpenState from "../../../states/case/info/closing/Do
 
 function DownPaymentSharePopUp() {
   const caseId = useRecoilValue(caseIdState);
-  const [text, setText] = useState("");
-  const [invalidText, setInvalidText] = useState(false);
-  const [errTextMsg, setErrTextMsg] = useState("");
+  const [email, setEmail] = useState("");
+  const [invalidEmail, setInvalidEmail] = useState(false);
+  const [errEmail, setErrEmail] = useState("");
   const [emails, setEmails] = useRecoilState(downPaymentShareEmailsState);
   const setUploadLoading = useSetRecoilState(downPaymentPDFUploadLoadingState);
 
@@ -42,20 +42,20 @@ function DownPaymentSharePopUp() {
   };
 
   const handleAddEmail = () => {
-    if (emails.some((item) => item === text)) {
-      setInvalidText(true);
-      setErrTextMsg("이미 존재하는 이메일입니다.");
-      setText("");
+    if (emails.some((item) => item === email)) {
+      setInvalidEmail(true);
+      setErrEmail("이미 존재하는 이메일입니다.");
+      setEmail("");
       return;
     }
-    if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(text)) {
-      setInvalidText(true);
-      setErrTextMsg("올바르지 않은 이메일 형식입니다.");
-      setText("");
+    if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email)) {
+      setInvalidEmail(true);
+      setErrEmail("올바르지 않은 이메일 형식입니다.");
+      setEmail("");
       return;
     }
-    setEmails([...emails, text]);
-    setText("");
+    setEmails([...emails, email]);
+    setEmail("");
   };
 
   useEffect(() => {
@@ -71,6 +71,7 @@ function DownPaymentSharePopUp() {
   return (
     <PopUp width={420}>
       <CloseButton onClick={handleCloseButtonClick} />
+
       <Box
         sx={{
           height: 80,
@@ -83,14 +84,14 @@ function DownPaymentSharePopUp() {
           sx={{
             flexGrow: 1,
           }}
-          error={invalidText}
-          helperText={errTextMsg}
+          error={invalidEmail}
+          helperText={errEmail}
           label="이메일"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           onKeyDown={(e) => {
-            setInvalidText(false);
-            setErrTextMsg("");
+            setInvalidEmail(false);
+            setErrEmail("");
             if (e.key === "Enter") {
               handleAddEmail();
             }

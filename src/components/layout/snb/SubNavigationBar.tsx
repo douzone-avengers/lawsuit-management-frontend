@@ -7,7 +7,7 @@ import SubNavigationBarItem from "./SubNavigationBarItem.tsx";
 import ClientRegisterPopUpButton from "../../client/ClientRegisterPopUpButton.tsx";
 import employeeIdState from "../../../states/employee/EmployeeIdState";
 import snbLoadedState from "../../../states/common/SnbLoadedState.ts";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { isEmployeeState } from "../../../states/user/UserState.ts";
 import userClientIdState from "../../../states/user/UserClientIdState.tsx";
 
@@ -22,15 +22,12 @@ function SubNavigationBar() {
   const isEmployee = useRecoilValue(isEmployeeState);
   const userClientId = useRecoilValue(userClientIdState);
 
-  const filteredItems = isEmployee
-    ? useMemo(
-        () =>
-          items.filter((it) =>
-            it.text.toLowerCase().includes(searchTerm.toLowerCase()),
-          ),
-        [items, searchTerm],
-      )
-    : items.filter((item) => item.id === userClientId);
+  const filteredItems =
+    isEmployee || subNavigationBar.type !== "caseClient"
+      ? items.filter((it) =>
+          it.text.toLowerCase().includes(searchTerm.toLowerCase()),
+        )
+      : items.filter((item) => item.id === userClientId);
 
   return (
     <div

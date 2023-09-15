@@ -7,8 +7,7 @@ import caseExpensesState, {
   CaseExpenseRowType,
 } from "../../../../../states/case/info/expense/CaseExpensesState.tsx";
 import caseExpenseSizeState from "../../../../../states/case/info/expense/CaseExpenseSizeState.tsx";
-import * as dayjs from "dayjs";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import requestDeprecated, {
   RequestSuccessHandler,
 } from "../../../../../lib/requestDeprecated.ts";
@@ -50,7 +49,7 @@ function CaseExpenseAddPopUp() {
   };
 
   const handleAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setAmount(Number(e.target.value));
+    setAmount(Number(e.target.value.replace(/[^0-9]/g, "")));
   };
 
   const handleSubmitClick = () => {

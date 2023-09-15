@@ -2,8 +2,7 @@ import caseExpensesState, {
   CaseExpenseRowType,
 } from "../../../../../states/case/info/expense/CaseExpensesState.tsx";
 import { useRecoilState } from "recoil";
-import * as dayjs from "dayjs";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { produce } from "immer";
 import { DatePicker } from "@mui/x-date-pickers";
 import Box from "@mui/material/Box";
@@ -38,11 +37,15 @@ function CaseExpenseSpeningAtCell({ item }: Props) {
   ) : (
     <Box
       sx={{
-        display: "flex",
         justifyContent: "center",
         alignItems: "center",
         height: 40,
         cursor: "pointer",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+        paddingTop: 1,
+        textAlign: "center",
       }}
     >
       {item.speningAt}

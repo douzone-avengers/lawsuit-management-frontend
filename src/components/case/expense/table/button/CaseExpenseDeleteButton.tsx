@@ -24,7 +24,8 @@ function CaseExpenseDeleteButton({ item }: Props) {
     <Button
       sx={{ width: "100%", marginLeft: 1 }}
       size="small"
-      variant="contained"
+      variant="outlined"
+      color="error"
       fullWidth
       onClick={handleExpenseRemoveButtonClick}
     >
