@@ -53,7 +53,7 @@ function CaseExpenseEditConfirmButton({ item, caseId }: Props) {
     <Button
       sx={{ width: "100%", marginRight: 1 }}
       size="small"
-      variant="contained"
+      variant="outlined"
       fullWidth
       onClick={handleClick}
     >
