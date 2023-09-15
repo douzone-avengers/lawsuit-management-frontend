@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import adviceIdState from "../../../../../states/advice/AdviceIdState.tsx";
 import caseIdState from "../../../../../states/case/CaseIdState.tsx";
 import requestDeprecated, {
@@ -14,14 +14,14 @@ import Typography from "@mui/material/Typography";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import caseInfoState from "../../../../../states/case/info/caseInfoState.tsx";
+import { CaseInfoType } from "../../../../../states/case/info/caseInfoState.tsx";
 import { DetailAdviceType } from "../AdviceListTable.tsx";
 import adviceInfoState from "../../../../../states/advice/adviceInfoState.tsx";
 
 function AdviceEditPopUp() {
   /*const [advice, setAdvice] = useState<Advice | null>();*/
   const [_, setAdviceInfo] = useRecoilState(adviceInfoState);
-  const caseInfo = useRecoilValue(caseInfoState);
+  const [caseInfo, setCaseInfo] = useState<CaseInfoType>();
   const [adviceId] = useRecoilState(adviceIdState);
   const [caseId] = useRecoilState(caseIdState);
   const [title, setTitle] = useState("");
@@ -33,34 +33,29 @@ function AdviceEditPopUp() {
   const [advicedAt, setadvicedAt] = useState<string | null>(null);
   const setAdviceEditPopUpOpen = useSetRecoilState(adviceEditPopUpOpenState);
 
-  const [caseEmployees, setCaseEmployees] = useState(caseInfo?.employees);
-
   const handleCloseButtonClick = () => {
     setAdviceEditPopUpOpen(false);
   };
 
   useEffect(() => {
-    getAdviceInfo();
-  }, [adviceId]);
-  const getAdviceInfo = () => {
+    // getAdviceInfo();
+    requestCaseInfo();
+  }, []);
+  const requestAdviceInfo = () => {
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
       const data: DetailAdviceType = res.data;
-      console.log("dd", data);
       setAdviceInfo(res.data);
 
       setTitle(data.title);
       setContents(data.contents);
       setadvicedAt(data.advicedAt);
       const members = res.data.members;
-      console.log("test");
-      console.log(members);
       setSelectedMembers(members?.map((item: any) => item.id) ?? []);
       const clients = res.data.clients;
       setSelectedClients(clients?.map((item: any) => item.id) ?? []);
     };
     const handleRequestFail: RequestFailHandler = (e) => {
-      console.dir(e);
-      // alert((e.response.data as { code: string; message: string }).message);
+      alert((e.response.data as { code: string; message: string }).message);
     };
     requestDeprecated("GET", `/advices/${adviceId}`, {
       onSuccess: handleRequestSuccess,
@@ -68,42 +63,23 @@ function AdviceEditPopUp() {
     });
   };
 
-  const handleRequestSuccess: RequestSuccessHandler = () => {};
-  requestDeprecated("GET", `/advices?lawsuit=${caseId}`, {
-    withToken: true,
-    onSuccess: handleRequestSuccess,
-  });
+  const requestCaseInfo = () => {
+    const handleRequestSuccess: RequestSuccessHandler = (res) => {
+      const body: CaseInfoType = res.data;
+      setCaseInfo(body);
+      requestAdviceInfo();
+    };
 
-  /*const handleMemberChange = (event: SelectChangeEvent<number[]>) => {
-    const selectedIds = event.target.value as number[];
-    const newMembers = produce(members, (draft) => {
-      for (const member of draft) {
-        if (selectedIds.includes(member.id)) {
-          member.selected = true;
-        } else {
-          member.selected = false;
-        }
-      }
+    const handleRequestFail: RequestFailHandler = (e) => {
+      alert((e.response.data as { code: string; message: string }).message);
+    };
+
+    requestDeprecated("GET", `/lawsuits/${caseId}/basic`, {
+      onSuccess: handleRequestSuccess,
+      onFail: handleRequestFail,
     });
-    setMembers(newMembers);
   };
 
-  // 상담자 선택 로직
-  const handleClientChange = (event: SelectChangeEvent<number[]>) => {
-    const selectedIds = event.target.value as number[];
-    const newClients = produce(clients, (draft) => {
-      for (const client of draft) {
-        if (selectedIds.includes(client.id)) {
-          client.selected = true;
-        } else {
-          client.selected = false;
-        }
-      }
-    });
-    setClients(newClients);
-  };*/
-  console.dir(selectedClients);
-  console.dir(selectedMembers);
   const handleEditButtonClick = () => {
     const handleRequestSuccess: RequestSuccessHandler = () => {
       setAdviceEditPopUpOpen(false);
@@ -111,11 +87,7 @@ function AdviceEditPopUp() {
     const handleRequestFail: RequestFailHandler = (e) => {
       alert((e.response.data as { code: string; message: string }).message);
     };
-    // setClients([]);
-    // setMembers([]);
-    // setTitle("");
-    // setContents("");
-    // setadvicedAt("");
+
     requestDeprecated("PUT", `advices/${adviceId}`, {
       withToken: true,
       body: {
@@ -136,26 +108,28 @@ function AdviceEditPopUp() {
       <Typography variant="h5" sx={{ textAlign: "center" }}>
         상담 수정
       </Typography>
-      {selectedMembers.length > 0 && caseEmployees ? (
+
+      {caseInfo && selectedMembers ? (
         <FormControl fullWidth>
           <InputLabel id="member">상담관</InputLabel>
           <Select
             labelId="member"
             label="상담관"
             multiple
-            value={selectedMembers}
+            defaultValue={selectedMembers}
             onChange={(e) => {
               setSelectedMembers(e.target.value as number[]);
             }}
+            value={selectedMembers} // 11
           >
-            {caseEmployees.map((data) => {
-              console.dir(data);
-              return (
-                <MenuItem key={data.id} value={data.id}>
-                  {data.name}
-                </MenuItem>
-              );
-            })}
+            {/*<MenuItem key={11} value={11}>*/}
+            {/*  하드코딩 데이터*/}
+            {/*</MenuItem>*/}
+            {caseInfo.employees.map((data) => (
+              <MenuItem key={data.id} value={data.id}>
+                {data.name}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
       ) : null}
@@ -166,7 +140,7 @@ function AdviceEditPopUp() {
           labelId="client"
           label="상담자"
           multiple
-          value={[14]}
+          value={selectedClients}
           onChange={(e) => {
             setSelectedClients(e.target.value as number[]);
           }}
