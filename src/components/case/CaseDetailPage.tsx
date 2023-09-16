@@ -27,6 +27,7 @@ import CaseRemovePopUpButton from "./CaseRemovePopUpButton.tsx";
 import { isEmployeeState } from "../../states/user/UserState.ts";
 import caseExpenseIdState from "../../states/case/info/expense/CaseExpenseIdState.tsx";
 
+
 function CaseDetailPage() {
   const [caseTabId, setCaseTabId] = useRecoilState(caseTabIdState);
   const clientId = useRecoilValue(clientIdState);

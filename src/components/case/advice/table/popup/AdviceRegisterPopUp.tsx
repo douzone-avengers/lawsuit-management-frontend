@@ -1,53 +1,71 @@
-import { useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import adviceIdState from "../../../states/advice/AdviceState.tsx";
-import caseIdState from "../../../states/case/CaseIdState.tsx";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import React, { useState } from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import requestDeprecated, {
   RequestSuccessHandler,
-} from "../../../lib/requestDeprecated.ts";
-import adviceRemovePopUpOpenState from "../../../states/advice/adviceRemovePopUpOpenState.tsx";
-
-import PopUp from "../../common/PopUp.tsx";
-import CloseButton from "../../common/CloseButton.tsx";
-import Typography from "@mui/material/Typography";
+} from "../../../../../lib/requestDeprecated.ts";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import { AllLawsuitType } from "../closing/CaseBookPDFPrintComponent.tsx";
+import adviceRegisterPopUpOpenState from "../../../../../states/advice/AdviceRegisterPopUpOpenState.tsx";
+import adviceIdState from "../../../../../states/advice/AdviceIdState.tsx";
+import CloseButton from "../../../../common/CloseButton.tsx";
+import PopUp from "../../../../common/PopUp.tsx";
+import "../../../../../stylesheet/calendar.css";
+import { Advicedata } from "../../../../../type/ResponseType.ts";
+import caseInfoState from "../../../../../states/case/info/caseInfoState.tsx";
+import caseIdState from "../../../../../states/case/CaseIdState.tsx";
+//import { DatePicker } from "@mui/x-date-pickers";
 
-function AdviceRemovePopUp() {
-  const [data, setData] = useState<AllLawsuitType | null>(null);
-  const [adviceId] = useRecoilState(adviceIdState);
-  const [caseId] = useRecoilState(caseIdState);
+type Props = {
+  setAdvices: React.Dispatch<React.SetStateAction<Advicedata[]>>;
+};
+
+function AdviceRegisterPopUp({ setAdvices }: Props) {
+  const caseInfo = useRecoilValue(caseInfoState);
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
   const [clientIdList, setclientIdList] = useState<string[]>([]);
   const [memberIdList, setmemberIdList] = useState<string[]>([]);
   const [advicedAt, setadvicedAt] = useState<string | null>(null);
-  const setAdviceRemovePopUpOpen = useSetRecoilState(
-    adviceRemovePopUpOpenState,
+  const setAdviceId = useSetRecoilState(adviceIdState);
+  const caseId = useRecoilValue(caseIdState);
+
+  const setAdviceRegisterPopUpOpen = useSetRecoilState(
+    adviceRegisterPopUpOpenState,
   );
+
   const handleCloseButtonClick = () => {
-    setAdviceRemovePopUpOpen(false);
+    setAdviceRegisterPopUpOpen(false);
   };
-  const handleRemoveButtonClick = () => {
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newTitle = e.target.value;
+    if (newTitle.length <= 15) {
+      setTitle(newTitle);
+    } else {
+      alert("상담 제목은 최대 15자까지 가능합니다.");
+    }
+  };
+
+  const handleRegisterButtonClick = () => {
     const handleRequestSuccess: RequestSuccessHandler = () => {
       const handleRequestSuccess2: RequestSuccessHandler = (res) => {
-        const body: AllLawsuitType = res.data;
-        setData(body);
+        const body: Advicedata[] = res.data;
+        setAdvices(body);
+        setAdviceId(body[0]?.id);
       };
-      requestDeprecated("GET", `/lawsuits/${caseId}/print`, {
+      requestDeprecated("GET", `/advices?lawsuit=${caseId}`, {
         withToken: true,
         onSuccess: handleRequestSuccess2,
       });
     };
-    setAdviceRemovePopUpOpen(false);
+    setAdviceRegisterPopUpOpen(false);
     setclientIdList([]);
     setmemberIdList([]);
     setTitle("");
     setContents("");
     setadvicedAt("");
-    requestDeprecated("PATCH", `advices/${adviceId}`, {
+    requestDeprecated("POST", "/advices", {
       withToken: true,
       body: {
         lawsuitId: caseId,
@@ -60,6 +78,7 @@ function AdviceRemovePopUp() {
       onSuccess: handleRequestSuccess,
     });
   };
+
   return (
     <PopUp width={600}>
       <CloseButton onClick={handleCloseButtonClick} />
@@ -75,9 +94,9 @@ function AdviceRemovePopUp() {
           value={memberIdList}
           onChange={(e) => setmemberIdList(e.target.value as string[])}
         >
-          {data?.advices.map((data) => (
-            <MenuItem key={data.id} value={data.id}>
-              {data.memberNames}
+          {caseInfo?.employees.map((employees) => (
+            <MenuItem key={employees.id} value={employees.id}>
+              {employees.name}
             </MenuItem>
           ))}
         </Select>
@@ -92,9 +111,9 @@ function AdviceRemovePopUp() {
           value={clientIdList}
           onChange={(e) => setclientIdList(e.target.value as string[])}
         >
-          {data?.advices.map((data) => (
-            <MenuItem key={data.id} value={data.id}>
-              {data.clientNames}
+          {caseInfo?.clients.map((clients) => (
+            <MenuItem key={clients.id} value={clients.id}>
+              {clients.name}
             </MenuItem>
           ))}
         </Select>
@@ -102,9 +121,9 @@ function AdviceRemovePopUp() {
       <TextField
         type="text"
         size="small"
-        label="상담 제목"
+        label="상담 제목(15글자 이하)"
         value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        onChange={handleTitleChange}
       />
 
       <TextField
@@ -126,7 +145,7 @@ function AdviceRemovePopUp() {
       <Button
         variant="contained"
         size="large"
-        onClick={handleRemoveButtonClick}
+        onClick={handleRegisterButtonClick}
       >
         등록
       </Button>
@@ -134,4 +153,4 @@ function AdviceRemovePopUp() {
   );
 }
 
-export default AdviceRemovePopUp;
+export default AdviceRegisterPopUp;
