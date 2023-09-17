@@ -221,7 +221,7 @@ function ClientInfoCard({ width, height }: Props) {
 
         setSubNavigationBar({
           type: "client",
-          curId: newItems[0].id,
+          curId: newItems.find((it) => it.id === clientId)?.id ?? -1,
           items: newItems,
         });
         setSnbLoaded(true);
