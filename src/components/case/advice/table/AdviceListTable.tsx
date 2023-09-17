@@ -6,23 +6,28 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Advicedata } from "../../../type/ResponseType.ts";
+import { Advicedata } from "../../../../type/ResponseType.ts";
 import IconButton from "@mui/material/IconButton";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import requestDeprecated, {
   RequestFailHandler,
-  RequestSuccessHandler,
-} from "../../../lib/requestDeprecated.ts";
+} from "../../../../lib/requestDeprecated.ts";
 import TextField from "@mui/material/TextField";
+import AdviceEditPopUpButton from "./button/AdviceEditPopUpButton.tsx";
+import { IdNameType } from "../../../../states/advice/adviceInfoState.tsx";
+import AdviceDeletePopUpButton from "./button/AdviceDeletePopUpButton.tsx";
+import { useRecoilValue } from "recoil";
+import { isEmployeeState } from "../../../../states/user/UserState.ts";
+import Box from "@mui/material/Box";
 
-type Advice = {
-  id: number;
+export type DetailAdviceType = {
+  adviceId: number;
   title: string;
   contents: string;
   advicedAt: string;
-  memberId: string[];
-  clientId: string[];
+  members: IdNameType[];
+  clients: IdNameType[];
 };
 
 type Props = {
@@ -30,10 +35,10 @@ type Props = {
 };
 
 function AdviceListTable({ advices }: Props) {
+  const isEmployee = useRecoilValue(isEmployeeState);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const maxContentLength = 20;
-  const [advice, setAdvice] = useState<Advice | null>();
-
+  const [advice, setAdvice] = useState<DetailAdviceType | null>();
   const trimContent = (content: string) => {
     if (content.length <= maxContentLength) {
       return content;
@@ -42,16 +47,16 @@ function AdviceListTable({ advices }: Props) {
     }
   };
   const adviceRequest = (adviceId: number) => {
-    const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      const body: Advice = res.data;
-      setAdvice(body);
-    };
     const handelRequestFail: RequestFailHandler = (e) => {
       alert((e.response.data as { code: string; message: string }).message);
     };
     requestDeprecated("GET", `/advices/${adviceId}`, {
       withToken: true,
-      onSuccess: handleRequestSuccess,
+      onSuccess: (res) => {
+        const body: DetailAdviceType = res.data;
+        console.log(body);
+        setAdvice(body);
+      },
       onFail: handelRequestFail,
     });
   };
@@ -64,6 +69,11 @@ function AdviceListTable({ advices }: Props) {
       adviceRequest(advices[index].id);
     }
   };
+  const handleButtonClick = (e: any) => {
+    e.stopPropagation(); // 이벤트 버블링을 막음
+
+    setExpandedRow(null);
+  };
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -73,6 +83,7 @@ function AdviceListTable({ advices }: Props) {
             <TableCell align="left">상담 제목</TableCell>
             <TableCell align="left">상담 내용</TableCell>
             <TableCell align="left">상담 일시</TableCell>
+            <TableCell width="10%" />
           </TableRow>
         </TableHead>
         <TableBody>
@@ -81,7 +92,9 @@ function AdviceListTable({ advices }: Props) {
               <TableRow
                 key={item.id}
                 hover={true}
-                onClick={() => handleExpandClick(index)}
+                onClick={() => {
+                  handleExpandClick(index);
+                }}
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   cursor: "pointer",
@@ -103,6 +116,17 @@ function AdviceListTable({ advices }: Props) {
                 <TableCell align="left">
                   {new Date(item.advicedAt).toLocaleDateString()}
                 </TableCell>
+                {isEmployee && (
+                  <TableCell align="center">
+                    <Box sx={{ display: "flex", gap: 1 }}>
+                      <AdviceEditPopUpButton
+                        curAdviceId={item.id}
+                        onClick={handleButtonClick}
+                      />
+                      <AdviceDeletePopUpButton curAdviceId={item.id} />
+                    </Box>
+                  </TableCell>
+                )}
               </TableRow>
               {expandedRow === index && (
                 <TableRow>
@@ -128,7 +152,7 @@ function AdviceListTable({ advices }: Props) {
                       <TextField
                         style={{ margin: "10px 0" }}
                         label="상담 날짜"
-                        value={advice?.advicedAt}
+                        value={advice?.advicedAt.split(" ")[0]}
                         InputProps={{
                           readOnly: true,
                         }}
@@ -136,28 +160,36 @@ function AdviceListTable({ advices }: Props) {
                           shrink: true,
                         }}
                       />
-                      <TextField
-                        style={{ margin: "10px 0" }}
-                        label="상담관"
-                        value={advice?.memberId.join(", ")}
-                        InputProps={{
-                          readOnly: true,
-                        }}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                      />
-                      <TextField
-                        style={{ margin: "10px 0" }}
-                        label="상담자"
-                        value={advice?.clientId.join(", ")}
-                        InputProps={{
-                          readOnly: true,
-                        }}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                      />
+                      {advice && (
+                        <TextField
+                          style={{ margin: "10px 0" }}
+                          label="상담관"
+                          value={advice.members
+                            .map((item) => item.name)
+                            .join(", ")}
+                          InputProps={{
+                            readOnly: true,
+                          }}
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                        />
+                      )}
+                      {advice && (
+                        <TextField
+                          style={{ margin: "10px 0" }}
+                          label="상담자"
+                          value={advice.clients
+                            .map((item) => item.name)
+                            .join(", ")}
+                          InputProps={{
+                            readOnly: true,
+                          }}
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                        />
+                      )}
                       <TextField
                         style={{ margin: "10px 0" }}
                         label="상담 내용"

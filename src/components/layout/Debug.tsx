@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import subNavigationBarState from "../../states/layout/SubNavigationBarState.tsx";
 import userState from "../../states/user/UserState.ts";
 import userClientIdState from "../../states/user/UserClientIdState.tsx";
+import adviceIdState from "../../states/advice/AdviceIdState.tsx";
 
 function Debug() {
   const clientId = useRecoilValue(clientIdState);
@@ -15,6 +16,7 @@ function Debug() {
   const subNavigationBar = useRecoilValue(subNavigationBarState);
   const user = useRecoilValue(userState);
   const userClientId = useRecoilValue(userClientIdState);
+  const adviceId = useRecoilValue(adviceIdState);
   const [show, setShow] = useState(true);
 
   const handleKeydown = (e: KeyboardEvent) => {
@@ -42,6 +44,7 @@ function Debug() {
       <div>case: {caseId ?? "null"}</div>
       <div>employee: {employeeId ?? "null"}</div>
       <div>snb: {subNavigationBar.type ?? "null"}</div>
+      <div>adviceId: {adviceId ?? "null"}</div>
     </Box>
   ) : null;
 }
