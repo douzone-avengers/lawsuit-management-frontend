@@ -10,7 +10,7 @@ import CloseButton from "../common/CloseButton.tsx";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import PopUp from "../common/PopUp.tsx";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import caseEditPopUpOpenState from "../../states/case/CaseEditPopUpOpenState.tsx";
 import { useEffect, useState } from "react";
 import { Court } from "./type/CourtInfo.tsx";
@@ -22,13 +22,23 @@ import requestDeprecated, {
 } from "../../lib/requestDeprecated.ts";
 import caseInfoState from "../../states/case/info/caseInfoState.tsx";
 import { mapLawsuitStatus } from "../../lib/convert.ts";
+import { SubNavigationBarItemState } from "../layout/snb/SubNavigationBarItem";
+import BalanceIcon from "@mui/icons-material/Balance";
+import caseIdState from "../../states/case/CaseIdState";
+import snbLoadedState from "../../states/common/SnbLoadedState";
+import clientIdState from "../../states/client/ClientIdState";
+import subNavigationBarState from "../../states/layout/SubNavigationBarState";
 
 type Props = {
   courtList: Court[];
 };
 
 function CaseEditPopUp({ courtList }: Props) {
+  const caseId = useRecoilValue(caseIdState);
+  const clientId = useRecoilValue(clientIdState);
+  const setSnbLoaded = useSetRecoilState(snbLoadedState);
   const [caseInfo, setCaseInfo] = useRecoilState(caseInfoState);
+  const setSubNavigationBar = useSetRecoilState(subNavigationBarState);
   const [lawsuitType, setLawsuitType] = useState<string>(
     caseInfo?.lawsuit.lawsuitType ?? "",
   );
@@ -131,11 +141,46 @@ function CaseEditPopUp({ courtList }: Props) {
     }
     setShowWarnings(false);
 
+    const renewSnb = () => {
+      setSnbLoaded(false);
+      requestDeprecated(
+        "GET",
+        `/lawsuits/clients/${clientId}?curPage=1&rowsPerPage=5&searchWord=`,
+        {
+          onSuccess: (res) => {
+            const body: {
+              lawsuitList: { id: number; name: string; lawsuitNum: string }[];
+              pageRange: { startPage: number; endPage: number };
+            } = res.data;
+
+            const newItems: SubNavigationBarItemState[] = body.lawsuitList.map(
+              (item) => {
+                return {
+                  id: item.id,
+                  text: item.name,
+                  subText: item.lawsuitNum,
+                  url: `cases/${item.id}/clients/${clientId}`,
+                  SvgIcon: BalanceIcon,
+                };
+              },
+            );
+            setSubNavigationBar({
+              type: "case",
+              curId: newItems.find((it) => it.id === caseId)?.id ?? -1,
+              items: newItems,
+            });
+            setSnbLoaded(true);
+          },
+        },
+      );
+    };
+
     const handleRequestSuccess: RequestSuccessHandler = () => {
       const handleRequestSuccess2: RequestSuccessHandler = (res) => {
         setCaseInfo(res.data);
         setSelectMemberIdList(res.data.employees);
         setSelectClientIdList(res.data.clients);
+        renewSnb();
         setCaseEditPopUpOpen(false);
       };
 

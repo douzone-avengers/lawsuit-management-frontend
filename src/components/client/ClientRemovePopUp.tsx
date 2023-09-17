@@ -15,6 +15,8 @@ import { ClientData } from "../../type/ResponseType";
 import { SubNavigationBarItemState } from "../layout/snb/SubNavigationBarItem";
 import PersonIcon from "@mui/icons-material/Person";
 import subNavigationBarState from "../../states/layout/SubNavigationBarState";
+import { useNavigate } from "react-router-dom";
+import snbLoadedState from "../../states/common/SnbLoadedState";
 
 function ClientRemovePopUp() {
   const setClientRemovePopUpOpen = useSetRecoilState(
@@ -22,11 +24,13 @@ function ClientRemovePopUp() {
   );
   const setSubNavigationBar = useSetRecoilState(subNavigationBarState);
   const clientId = useRecoilValue(clientIdState);
+  const setSnbLoaded = useSetRecoilState(snbLoadedState);
+  const navigate = useNavigate();
 
   const handleRemoveButtonClick = () => {
     const handleRequestSuccess: RequestSuccessHandler = () => {
       alert("의뢰인이 삭제되었습니다.");
-      handelAfterRegister();
+      handelAfterDelete();
     };
 
     const handleRequestFail: RequestFailHandler = (e) => {
@@ -44,7 +48,8 @@ function ClientRemovePopUp() {
     setClientRemovePopUpOpen(false);
   };
 
-  const handelAfterRegister = () => {
+  const handelAfterDelete = () => {
+    setSnbLoaded(false);
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
       const body: ClientData[] = res.data;
       const newItems: SubNavigationBarItemState[] = body.map((item) => {
@@ -55,11 +60,14 @@ function ClientRemovePopUp() {
           SvgIcon: PersonIcon,
         };
       });
+
       setSubNavigationBar({
         type: "client",
         curId: newItems[0].id,
         items: newItems,
       });
+      setSnbLoaded(true);
+      navigate(`/clients`);
     };
 
     const handleRequestFail: RequestFailHandler = (e) => {
