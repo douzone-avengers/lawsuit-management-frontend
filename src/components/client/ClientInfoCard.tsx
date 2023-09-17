@@ -25,6 +25,10 @@ import TextField from "@mui/material/TextField";
 import DaumPostcode from "react-daum-postcode";
 import ReactModal from "react-modal";
 import curMemberAddressState from "../../states/employee/CurMemberAddressState.tsx";
+import { SubNavigationBarItemState } from "../layout/snb/SubNavigationBarItem";
+import PersonIcon from "@mui/icons-material/Person";
+import subNavigationBarState from "../../states/layout/SubNavigationBarState";
+import snbLoadedState from "../../states/common/SnbLoadedState";
 
 type Props = {
   width?: string | number;
@@ -59,6 +63,9 @@ function ClientInfoCard({ width, height }: Props) {
   const [addressDetailMessage, setAddressDetailMessage] = useState("");
 
   const [promotionKey, setPromotionKey] = useState("");
+
+  const setSubNavigationBar = useSetRecoilState(subNavigationBarState);
+  const setSnbLoaded = useSetRecoilState(snbLoadedState);
 
   // const onEmailChange = (
   //   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -165,6 +172,7 @@ function ClientInfoCard({ width, height }: Props) {
         setMemberId(updatedData.memberId);
         setPhoneMessage("");
         setAddressDetailMessage("");
+        renewSnb();
       };
 
       const handleRequestFail2: RequestFailHandler = (e) => {
@@ -195,6 +203,30 @@ function ClientInfoCard({ width, height }: Props) {
     });
 
     setEditMode(false);
+  };
+
+  const renewSnb = () => {
+    setSnbLoaded(false);
+    requestDeprecated("GET", "/clients", {
+      onSuccess: (res) => {
+        const body: ClientData[] = res.data;
+        const newItems: SubNavigationBarItemState[] = body.map((item) => {
+          return {
+            id: item.id,
+            text: item.name,
+            url: `clients/${item.id}`,
+            SvgIcon: PersonIcon,
+          };
+        });
+
+        setSubNavigationBar({
+          type: "client",
+          curId: newItems[0].id,
+          items: newItems,
+        });
+        setSnbLoaded(true);
+      },
+    });
   };
 
   const handleUpdateButton = () => {
