@@ -32,6 +32,7 @@ import {
   Person,
   PhoneIphone,
 } from "@mui/icons-material";
+import { isEmployeeState } from "../../states/user/UserState";
 
 type Props = {
   width?: string | number;
@@ -41,6 +42,8 @@ type Props = {
 };
 
 function PrivateCard({ width = "50%", memberInfo, setMemberInfo }: Props) {
+  const isEmployee = useRecoilValue(isEmployeeState);
+
   const [isEditMode, setIsEditMode] = useState(false);
 
   const [name, setName] = useState("");
@@ -312,19 +315,17 @@ function PrivateCard({ width = "50%", memberInfo, setMemberInfo }: Props) {
                     취소
                   </Button>
                 </>
-              ) : (
-                <>
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    onClick={() => {
-                      handleUpdateButton();
-                    }}
-                  >
-                    수정
-                  </Button>
-                </>
-              )}
+              ) : isEmployee ? (
+                <Button
+                  variant="outlined"
+                  size="small"
+                  onClick={() => {
+                    handleUpdateButton();
+                  }}
+                >
+                  수정
+                </Button>
+              ) : null}
             </Box>
           </Box>
           <hr />
