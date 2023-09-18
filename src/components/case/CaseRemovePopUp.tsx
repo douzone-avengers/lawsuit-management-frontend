@@ -18,7 +18,7 @@ function CaseRemovePopUp() {
   const navigate = useNavigate();
   const handleRemoveButtonClick = () => {
     const handleRequestSuccess: RequestSuccessHandler = () => {
-      navigate(`/cases/list?client=${clientId}`);
+      navigate(`/cases/clients/${clientId}`);
     };
 
     requestDeprecated("PATCH", `/lawsuits/${caseId}`, {
