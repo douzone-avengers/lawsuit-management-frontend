@@ -21,6 +21,7 @@ import NormalDialog from "../../../common/dialog/NormalDialog";
 import Card from "@mui/material/Card";
 import CardTitle from "../../../common/CardTitle";
 import { HeadCell } from "../../../case/type/HeadCell";
+import { isAdminState } from "../../../../states/user/UserState";
 
 type Props = {
   cases: (LawsuitInfo & { onClick: () => void })[];
@@ -49,6 +50,8 @@ function EmployeeCaseListTable({
   sortOrder,
   setSortOrder,
 }: Props) {
+  const isAdmin = useRecoilValue(isAdminState);
+
   const employeeId = useRecoilValue(employeeIdState);
   const [isRemoveConfirmOpen, setIsRemoveConfirmOpen] = useState(false);
   const [selectedLawsuitId, setSelectedLawsuitId] = useState<number | null>(
@@ -125,7 +128,7 @@ function EmployeeCaseListTable({
       id: "name",
       label: "사건명",
       canSort: true,
-      width: "20%",
+      width: "25%",
     },
     {
       id: "lawsuitNum",
@@ -143,27 +146,33 @@ function EmployeeCaseListTable({
       id: "commissionFee",
       label: "의뢰비",
       canSort: true,
-      width: "10%",
+      width: "15%",
     },
     {
       id: "contingentFee",
       label: "성공보수",
       canSort: true,
-      width: "10%",
+      width: "15%",
     },
     {
       id: "createdAt",
       label: "등록일",
       canSort: true,
-      width: "15%",
-    },
-    {
-      id: "remove",
-      label: "담당자 제거",
-      canSort: false,
       width: "10%",
     },
   ];
+
+  if (isAdmin) {
+    headCells.push({
+      id: "remove",
+      label: "담당자 제거",
+      canSort: false,
+      width: "15%",
+    });
+    headCells.find((cell) => cell.id === "contingentFee")!.width = "10%";
+    headCells.find((cell) => cell.id === "commissionFee")!.width = "10%";
+    headCells.find((cell) => cell.id === "lawsuitNum")!.width = "10%";
+  }
 
   return (
     <>
@@ -192,7 +201,7 @@ function EmployeeCaseListTable({
                   !headCell.canSort ? (
                     <TableCell
                       key={headCell.id}
-                      align="left"
+                      align="center"
                       style={{ width: headCell.width }}
                     >
                       <b>{headCell.label}</b>
@@ -200,10 +209,14 @@ function EmployeeCaseListTable({
                   ) : (
                     <TableCell
                       key={headCell.id}
-                      align="left"
+                      align="center"
                       style={{ width: headCell.width }}
                     >
                       <TableSortLabel
+                        sx={{
+                          align: "center",
+                          marginLeft: "25px",
+                        }}
                         active={sortKey === headCell.id}
                         direction={sortKey === headCell.id ? sortOrder : "asc"}
                         onClick={() => {
@@ -230,65 +243,72 @@ function EmployeeCaseListTable({
                     onClick={item.onClick}
                   >
                     <TableCell
-                      align="left"
+                      align="center"
                       component="th"
                       scope="row"
-                      style={{ width: headCells[0].width }}
+                      style={{ width: headCells[0].width, height: "65px" }}
                     >
                       {page * rowsPerPage + index + 1}
                     </TableCell>
                     <TableCell
-                      align="left"
+                      align="center"
                       style={{ width: headCells[1].width }}
                     >
                       {item.name}
                     </TableCell>
                     <TableCell
-                      align="left"
+                      align="center"
                       style={{ width: headCells[2].width }}
                     >
                       {item.lawsuitNum ? item.lawsuitNum : "-"}
                     </TableCell>
                     <TableCell
-                      align="left"
+                      align="center"
                       style={{ width: headCells[3].width }}
                     >
                       {item.lawsuitStatus}
                     </TableCell>
                     <TableCell
-                      align="left"
+                      align="center"
                       style={{ width: headCells[4].width }}
                     >
                       {delimiter(item.commissionFee)}
                     </TableCell>
                     <TableCell
-                      align="left"
+                      align="center"
                       style={{ width: headCells[5].width }}
                     >
                       {delimiter(item.contingentFee)}
                     </TableCell>
                     <TableCell
-                      align="left"
+                      align="center"
                       style={{ width: headCells[6].width }}
                     >
                       {item.createdAt.toString().substring(0, 10)}
                     </TableCell>
-                    <TableCell
-                      align="left"
-                      style={{ width: headCells[7].width }}
-                    >
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          setIsRemoveConfirmOpen(true);
-                          setSelectedLawsuitId(item.id);
-                        }}
+                    {isAdmin && (
+                      <TableCell
+                        align="center"
+                        style={{ width: headCells[7].width }}
                       >
-                        담당자 제거
-                      </Button>
-                    </TableCell>
+                        {item.lawsuitStatus !== "종결" ? (
+                          <Button
+                            size="small"
+                            variant="contained"
+                            color="primary"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              setIsRemoveConfirmOpen(true);
+                              setSelectedLawsuitId(item.id);
+                            }}
+                          >
+                            담당자 제거
+                          </Button>
+                        ) : (
+                          <span style={{ color: "red" }}>종결사건</span>
+                        )}
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))}
               </TableBody>
@@ -298,7 +318,7 @@ function EmployeeCaseListTable({
                   align="center"
                   component="th"
                   scope="row"
-                  colSpan={8}
+                  colSpan={isAdmin ? 8 : 7}
                 >
                   <br />
                   담당 사건이 없습니다.
@@ -310,7 +330,10 @@ function EmployeeCaseListTable({
 
             <TableFooter>
               <TableRow>
-                <TableCell colSpan={8} style={{ textAlign: "center" }}>
+                <TableCell
+                  colSpan={isAdmin ? 8 : 7}
+                  style={{ textAlign: "center" }}
+                >
                   <TablePagination
                     sx={{ display: "inline-flex", verticalAlign: "middle" }}
                     rowsPerPageOptions={[5, 10, 25]}

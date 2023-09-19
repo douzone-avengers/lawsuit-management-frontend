@@ -38,6 +38,7 @@ import BalanceIcon from "@mui/icons-material/Balance";
 import snbLoadedState from "../../../../states/common/SnbLoadedState";
 import subNavigationBarState from "../../../../states/layout/SubNavigationBarState";
 import caseIdState from "../../../../states/case/CaseIdState";
+import { isAdminState } from "../../../../states/user/UserState";
 
 type Props = {
   width?: string | number;
@@ -87,6 +88,8 @@ function EmployeeInfoCard({
   const [phoneMessage, setPhoneMessage] = useState("");
   const [isAddressDetailOk, setIsAddressDetailOk] = useState(true);
   const [addressDetailMessage, setAddressDetailMessage] = useState("");
+
+  const isAdmin = useRecoilValue(isAdminState);
 
   const onPhoneChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -338,7 +341,7 @@ function EmployeeInfoCard({
                 </>
               ) : (
                 <>
-                  {isEditable ? (
+                  {isEditable && isAdmin ? (
                     <Button
                       variant="outlined"
                       size="small"

@@ -96,12 +96,16 @@ function EmployeeListTable({
             <TableRow>
               {headCells.map((headCell) =>
                 !headCell.canSort ? (
-                  <TableCell align="left" style={{ width: headCell.width }}>
+                  <TableCell align="center" style={{ width: headCell.width }}>
                     <b>{headCell.label}</b>
                   </TableCell>
                 ) : (
-                  <TableCell align="left" style={{ width: headCell.width }}>
+                  <TableCell align="center" style={{ width: headCell.width }}>
                     <TableSortLabel
+                      sx={{
+                        align: "center",
+                        marginLeft: "25px",
+                      }}
                       active={sortKey === headCell.id}
                       direction={sortKey === headCell.id ? sortOrder : "asc"}
                       onClick={() => {
@@ -134,23 +138,23 @@ function EmployeeListTable({
                 >
                   {page * rowsPerPage + index + 1}
                 </TableCell>
-                <TableCell align="left" style={{ width: headCells[1].width }}>
+                <TableCell align="center" style={{ width: headCells[1].width }}>
                   {item.name}
                 </TableCell>
-                <TableCell align="left" style={{ width: headCells[2].width }}>
+                <TableCell align="center" style={{ width: headCells[2].width }}>
                   {hierarchyMap[item.hierarchyId]?.nameKr ?? "N/A"}
                 </TableCell>
-                <TableCell align="left" style={{ width: headCells[3].width }}>
+                <TableCell align="center" style={{ width: headCells[3].width }}>
                   {roleMap[item.roleId]?.nameKr ?? "N/A"}
                 </TableCell>
 
-                <TableCell align="left" style={{ width: headCells[4].width }}>
+                <TableCell align="center" style={{ width: headCells[4].width }}>
                   {item.phone}
                 </TableCell>
-                <TableCell align="left" style={{ width: headCells[5].width }}>
+                <TableCell align="center" style={{ width: headCells[5].width }}>
                   {item.email}
                 </TableCell>
-                <TableCell align="left" style={{ width: headCells[6].width }}>
+                <TableCell align="center" style={{ width: headCells[6].width }}>
                   {item.createdAt}
                 </TableCell>
               </TableRow>
