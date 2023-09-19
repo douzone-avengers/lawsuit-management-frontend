@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import caseRemovePopUpOpenState from "../../states/case/CaseRemovePopUpOpenState.tsx";
 import requestDeprecated, {
+  RequestFailHandler,
   RequestSuccessHandler,
 } from "../../lib/requestDeprecated.ts";
 import caseIdState from "../../states/case/CaseIdState.tsx";
@@ -21,8 +22,13 @@ function CaseRemovePopUp() {
       navigate(`/cases/clients/${clientId}`);
     };
 
+    const handleRequestFail: RequestFailHandler = (e) => {
+      alert((e.response.data as { code: string; message: string }).message);
+    };
+
     requestDeprecated("PATCH", `/lawsuits/${caseId}`, {
       onSuccess: handleRequestSuccess,
+      onFail: handleRequestFail,
     });
 
     setCaseRemovePopUpOpen(false);
