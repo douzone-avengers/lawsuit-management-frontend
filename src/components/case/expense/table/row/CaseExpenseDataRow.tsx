@@ -69,19 +69,24 @@ function CaseExpenseDataRow({ item, caseId }: Props) {
     });
   }, [expenseId, page]);
 
-  const handleClickRow = (expenseId: number) => {
+  const handleClickRow = (clickExpenseId: number) => {
     const newExpenses = produce(expenses, (draft) => {
       for (const d of draft) {
         d.isSelected = false;
       }
-      const expense = draft.filter((item2) => item2.id === expenseId)[0];
+      const expense = draft.filter((item2) => item2.id === clickExpenseId)[0];
       expense.isSelected = true;
     });
 
     setExpenses(newExpenses);
-    setExpenseId(expenseId);
+    setExpenseId(clickExpenseId);
     setPage(0);
-    setIsLoaded(false);
+
+    if (expenseId === clickExpenseId) {
+      setIsLoaded(true);
+    } else {
+      setIsLoaded(false);
+    }
   };
 
   return (
