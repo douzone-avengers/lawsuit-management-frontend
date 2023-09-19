@@ -170,7 +170,7 @@ function ClientCaseStatisticsChart() {
           name: "사건 현황",
           type: "pie",
           radius: "70%",
-          center: ["50%", "60%"],
+          center: ["50%", "55%"],
           data: filteredLawsuitStatusData,
           emphasis: {
             itemStyle: {
@@ -215,7 +215,7 @@ function ClientCaseStatisticsChart() {
           name: "상세 금액",
           type: "pie",
           radius: "70%",
-          center: ["50%", "60%"],
+          center: ["50%", "55%"],
           data: filteredLawsuitFeeData,
           emphasis: {
             itemStyle: {
