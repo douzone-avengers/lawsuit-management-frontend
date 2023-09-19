@@ -8,6 +8,7 @@ import requestDeprecated, {
 } from "../../../lib/requestDeprecated.ts";
 import Card from "@mui/material/Card";
 import { LawsuitInfo } from "../../case/type/LawsuitInfo.tsx";
+import sideNavigationBarOpenState from "../../../states/layout/SideNavigationBarOpenState.tsx";
 
 type EChartsOption = echarts.EChartsOption;
 
@@ -20,6 +21,7 @@ function ClientCaseStatisticsChart() {
   const [countRegistration, setCountRegistration] = useState(0); // countTotalLawsuitStatus("등록")
   const [countProceeding, setCountProceeding] = useState(0); // countTotalLawsuitStatus("진행")
   const [countClosing, setCountClosing] = useState(0); //countTotalLawsuitStatus("종결")
+  const sideNavigationBarOpen = useRecoilValue(sideNavigationBarOpenState);
 
   useEffect(() => {
     if (typeof clientId !== "number") {
@@ -146,6 +148,9 @@ function ClientCaseStatisticsChart() {
     const totalCountLawsuitStatusOptions: EChartsOption = {
       title: {
         text: "사건 현황",
+        subtext: `총 사건: ${
+          countRegistration + countProceeding + countClosing
+        }건`,
         left: "center",
       },
       grid: {
@@ -153,6 +158,7 @@ function ClientCaseStatisticsChart() {
       },
       tooltip: {
         trigger: "item",
+        formatter: "{b}: {c}건",
       },
       legend: {
         orient: "vertical",
@@ -171,6 +177,13 @@ function ClientCaseStatisticsChart() {
               shadowColor: "rgba(0, 0, 0, 0.5)",
             },
           },
+          label: {
+            show: true,
+            formatter: function (params) {
+              const formattedValue = params.value.toLocaleString();
+              return `${params.name}: ${formattedValue} 건`;
+            },
+          },
         },
       ],
     };
@@ -179,6 +192,9 @@ function ClientCaseStatisticsChart() {
     const unreceivedAmountChartOptions: EChartsOption = {
       title: {
         text: "의뢰비 / 성공보수",
+        subtext: `총 금액: ${(
+          calculateCommissionAmount() + calculateSuccessAmount()
+        ).toLocaleString()}원`,
         left: "center",
       },
       grid: {
@@ -186,6 +202,7 @@ function ClientCaseStatisticsChart() {
       },
       tooltip: {
         trigger: "item",
+        formatter: "{b}: {c}원",
       },
       legend: {
         orient: "vertical",
@@ -202,6 +219,13 @@ function ClientCaseStatisticsChart() {
               shadowBlur: 10,
               shadowOffsetX: 0,
               shadowColor: "rgba(0, 0, 0, 0.5)",
+            },
+          },
+          label: {
+            show: true,
+            formatter: function (params) {
+              const formattedValue = params.value.toLocaleString();
+              return `${params.name}: ${formattedValue} 원`;
             },
           },
         },
@@ -224,7 +248,7 @@ function ClientCaseStatisticsChart() {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [countRegistration, countProceeding, countClosing]);
+  }, [countRegistration, countProceeding, countClosing, sideNavigationBarOpen]);
 
   return (
     <Box
@@ -236,9 +260,24 @@ function ClientCaseStatisticsChart() {
     >
       <Card
         ref={countTotalStatus}
-        sx={{ width: "100%", height: "400px" }}
+        sx={{
+          width: "100%",
+          height: "400px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
       ></Card>
-      <Card ref={countTotalFee} sx={{ width: "100%", height: "400px" }}></Card>
+      <Card
+        ref={countTotalFee}
+        sx={{
+          width: "100%",
+          height: "400px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      ></Card>
     </Box>
   );
 }
