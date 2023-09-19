@@ -72,7 +72,7 @@ function EmployeeCaseStatisticsTab() {
       const data = res.data;
       setRevenueStatus({
         total: data.total ?? 0,
-        localeTotal: data.tatal ? data.total.toLocaleString() : 0,
+        localeTotal: data.total ? data.total.toLocaleString() : 0,
         commissionFee: data.commissionFee ?? 0,
         contingentFee: data.contingentFee ?? 0,
         isLoading: true,
