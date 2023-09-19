@@ -246,7 +246,7 @@ function EmployeeCaseListTable({
                       align="center"
                       component="th"
                       scope="row"
-                      style={{ width: headCells[0].width }}
+                      style={{ width: headCells[0].width, height: "65px" }}
                     >
                       {page * rowsPerPage + index + 1}
                     </TableCell>
@@ -291,17 +291,22 @@ function EmployeeCaseListTable({
                         align="center"
                         style={{ width: headCells[7].width }}
                       >
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            setIsRemoveConfirmOpen(true);
-                            setSelectedLawsuitId(item.id);
-                          }}
-                        >
-                          담당자 제거
-                        </Button>
+                        {item.lawsuitStatus !== "종결" ? (
+                          <Button
+                            size="small"
+                            variant="contained"
+                            color="primary"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              setIsRemoveConfirmOpen(true);
+                              setSelectedLawsuitId(item.id);
+                            }}
+                          >
+                            담당자 제거
+                          </Button>
+                        ) : (
+                          <span style={{ color: "red" }}>종결사건</span>
+                        )}
                       </TableCell>
                     )}
                   </TableRow>
