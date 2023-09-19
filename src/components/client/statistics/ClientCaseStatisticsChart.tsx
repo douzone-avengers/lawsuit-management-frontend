@@ -152,6 +152,7 @@ function ClientCaseStatisticsChart() {
           countRegistration + countProceeding + countClosing
         }건`,
         left: "center",
+        top: "5%",
       },
       grid: {
         width: "50%",
@@ -169,6 +170,7 @@ function ClientCaseStatisticsChart() {
           name: "사건 현황",
           type: "pie",
           radius: "70%",
+          center: ["50%", "60%"],
           data: filteredLawsuitStatusData,
           emphasis: {
             itemStyle: {
@@ -196,13 +198,13 @@ function ClientCaseStatisticsChart() {
           calculateCommissionAmount() + calculateSuccessAmount()
         ).toLocaleString()}원`,
         left: "center",
+        top: "5%",
       },
       grid: {
         width: "50%",
       },
       tooltip: {
         trigger: "item",
-        formatter: "{b}: {c}원",
       },
       legend: {
         orient: "vertical",
@@ -213,6 +215,7 @@ function ClientCaseStatisticsChart() {
           name: "상세 금액",
           type: "pie",
           radius: "70%",
+          center: ["50%", "60%"],
           data: filteredLawsuitFeeData,
           emphasis: {
             itemStyle: {
