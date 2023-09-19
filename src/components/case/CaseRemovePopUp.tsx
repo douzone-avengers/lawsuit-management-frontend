@@ -19,6 +19,7 @@ function CaseRemovePopUp() {
   const navigate = useNavigate();
   const handleRemoveButtonClick = () => {
     const handleRequestSuccess: RequestSuccessHandler = () => {
+      alert("사건이 삭제되었습니다.");
       navigate(`/cases/clients/${clientId}`);
     };
 
