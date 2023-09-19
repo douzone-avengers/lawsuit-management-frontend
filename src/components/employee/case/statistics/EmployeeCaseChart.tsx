@@ -179,12 +179,24 @@ export default function EmployeeCaseChart({
       >
         <Card
           ref={lawsuitType_ChartRef}
-          sx={{ width: "100%", height: "400px" }}
+          sx={{
+            width: "100%",
+            height: "400px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
         ></Card>
 
         <Card
           ref={revenueType_ChartRef}
-          sx={{ width: "100%", height: "400px" }}
+          sx={{
+            width: "100%",
+            height: "400px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
         ></Card>
       </Box>
     </Box>
