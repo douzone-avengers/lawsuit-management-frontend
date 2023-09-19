@@ -26,4 +26,15 @@ export const isEmployeeState = selector<boolean>({
   },
 });
 
+export const isAdminState = selector<boolean>({
+  key: "isAdminState",
+  get: ({ get }) => {
+    const user = get(userState);
+    if (!user) {
+      return false;
+    }
+    return user.roleId !== 2;
+  },
+});
+
 export default userState;
