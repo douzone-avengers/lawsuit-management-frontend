@@ -33,6 +33,12 @@ import {
   Person,
   PhoneIphone,
 } from "@mui/icons-material";
+import { SubNavigationBarItemState } from "../../../layout/snb/SubNavigationBarItem";
+import BalanceIcon from "@mui/icons-material/Balance";
+import snbLoadedState from "../../../../states/common/SnbLoadedState";
+import subNavigationBarState from "../../../../states/layout/SubNavigationBarState";
+import caseIdState from "../../../../states/case/CaseIdState";
+import { isAdminState } from "../../../../states/user/UserState";
 
 type Props = {
   width?: string | number;
@@ -49,6 +55,10 @@ function EmployeeInfoCard({
   setMemberInfo,
   isEditable = true,
 }: Props) {
+  const setSnbLoaded = useSetRecoilState(snbLoadedState);
+  const setSubNavigationBar = useSetRecoilState(subNavigationBarState);
+  const caseId = useRecoilValue(caseIdState);
+
   const employeeId = useRecoilValue(employeeIdState);
   const [isEditMode, setIsEditMode] = useState(false);
   const [name, setName] = useState("");
@@ -78,6 +88,8 @@ function EmployeeInfoCard({
   const [phoneMessage, setPhoneMessage] = useState("");
   const [isAddressDetailOk, setIsAddressDetailOk] = useState(true);
   const [addressDetailMessage, setAddressDetailMessage] = useState("");
+
+  const isAdmin = useRecoilValue(isAdminState);
 
   const onPhoneChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -186,6 +198,7 @@ function EmployeeInfoCard({
       setIsPhoneOk(true);
       setPhoneMessage("");
       setIsAddressDetailOk(true);
+      renewSnb();
     };
     const handelRequestFail: RequestFailHandler = (e) => {
       alert((e.response.data as { code: string; message: string }).message);
@@ -204,6 +217,33 @@ function EmployeeInfoCard({
         addressDetail,
         hierarchyId,
         roleId,
+      },
+    });
+  };
+
+  const renewSnb = () => {
+    setSnbLoaded(false);
+    requestDeprecated("GET", `/members/employees`, {
+      onSuccess: (res) => {
+        const memberInfos: MemberInfo[] = res.data.memberDtoNonPassList;
+        const newItems: SubNavigationBarItemState[] = memberInfos.map(
+          (item) => {
+            return {
+              id: item.id,
+              text: item.name,
+              subText: roleList.filter((it) => it.id == item.roleId)[0].nameKr,
+              url: `employees/${item.id}`,
+              SvgIcon: BalanceIcon,
+            };
+          },
+        );
+        setSubNavigationBar({
+          type: "employee",
+          curId: newItems.find((it) => it.id === caseId)?.id ?? -1,
+
+          items: newItems,
+        });
+        setSnbLoaded(true);
       },
     });
   };
@@ -301,7 +341,7 @@ function EmployeeInfoCard({
                 </>
               ) : (
                 <>
-                  {isEditable ? (
+                  {isEditable && isAdmin ? (
                     <Button
                       variant="outlined"
                       size="small"

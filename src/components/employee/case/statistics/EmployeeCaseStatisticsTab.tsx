@@ -44,10 +44,10 @@ function EmployeeCaseStatisticsTab() {
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
       const data = res.data;
       setLawsuitCountStatus({
-        total: data.total,
-        registration: data.registration,
-        proceeding: data.proceeding,
-        closing: data.closing,
+        total: data.total ?? 0,
+        registration: data.registration ?? 0,
+        proceeding: data.proceeding ?? 0,
+        closing: data.closing ?? 0,
         isLoading: true,
       });
     };
@@ -71,10 +71,10 @@ function EmployeeCaseStatisticsTab() {
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
       const data = res.data;
       setRevenueStatus({
-        total: data.total,
-        localeTotal: data.total.toLocaleString(),
-        commissionFee: data.commissionFee,
-        contingentFee: data.contingentFee,
+        total: data.total ?? 0,
+        localeTotal: data.total ? data.total.toLocaleString() : 0,
+        commissionFee: data.commissionFee ?? 0,
+        contingentFee: data.contingentFee ?? 0,
         isLoading: true,
       });
     };
@@ -119,22 +119,10 @@ function EmployeeCaseStatisticsTab() {
       )}
       <br />
 
-      {lawsuitCountStatus.total === 0 ? (
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="50vh"
-          fontSize="24px"
-        >
-          담당 사건이 없습니다.
-        </Box>
-      ) : (
-        <EmployeeCaseChart
-          lawsuitCountStatus={lawsuitCountStatus}
-          revenueStatus={revenueStatus}
-        />
-      )}
+      <EmployeeCaseChart
+        lawsuitCountStatus={lawsuitCountStatus}
+        revenueStatus={revenueStatus}
+      />
     </>
   );
 }

@@ -84,40 +84,40 @@ export default function KakaoMap({ parentWidth, parentHeight }: Props) {
 
     if (!map) {
       setMap(new window.kakao.maps.Map(current, options));
+    } else {
+      const geocoder = new window.kakao.maps.services.Geocoder(); // 주소를 좌표로 변환하기 위한 객체
+
+      geocoder.addressSearch(address, function (result: any[], status: any) {
+        // 정상적으로 검색 완료됐으면
+        if (status === window.kakao.maps.services.Status.OK) {
+          const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+
+          // 결과값으로 받은 위치를 마커로 표시
+          const marker = new window.kakao.maps.Marker({
+            map: map,
+            position: coords,
+          });
+
+          // 인포윈도우로 장소에 대한 설명 표시
+          const infoWindow = new window.kakao.maps.InfoWindow({
+            content: `<div style="width:200px;text-align:center;padding:6px 0;">${address}</div>`,
+          });
+
+          // 마커에 마우스오버 이벤트 등록
+          window.kakao.maps.event.addListener(marker, "mouseover", function () {
+            infoWindow.open(map, marker);
+          });
+
+          // 마커에 마우스아웃 이벤트 등록
+          window.kakao.maps.event.addListener(marker, "mouseout", function () {
+            infoWindow.close();
+          });
+
+          map.setCenter(coords); // 지도의 중심을 결과값으로 받은 위치로 이동
+          map.relayout(); // 지도의 픽셀과 좌표 정보 새로 설정
+        }
+      });
     }
-
-    const geocoder = new window.kakao.maps.services.Geocoder(); // 주소를 좌표로 변환하기 위한 객체
-
-    geocoder.addressSearch(address, function (result: any[], status: any) {
-      // 정상적으로 검색 완료됐으면
-      if (status === window.kakao.maps.services.Status.OK) {
-        const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
-
-        // 결과값으로 받은 위치를 마커로 표시
-        const marker = new window.kakao.maps.Marker({
-          map: map,
-          position: coords,
-        });
-
-        // 인포윈도우로 장소에 대한 설명 표시
-        const infoWindow = new window.kakao.maps.InfoWindow({
-          content: `<div style="width:200px;text-align:center;padding:6px 0;">${address}</div>`,
-        });
-
-        // 마커에 마우스오버 이벤트 등록
-        window.kakao.maps.event.addListener(marker, "mouseover", function () {
-          infoWindow.open(map, marker);
-        });
-
-        // 마커에 마우스아웃 이벤트 등록
-        window.kakao.maps.event.addListener(marker, "mouseout", function () {
-          infoWindow.close();
-        });
-
-        map.setCenter(coords); // 지도의 중심을 결과값으로 받은 위치로 이동
-        map.relayout(); // 지도의 픽셀과 좌표 정보 새로 설정
-      }
-    });
   }, [address, map, width, height]);
 
   return (
