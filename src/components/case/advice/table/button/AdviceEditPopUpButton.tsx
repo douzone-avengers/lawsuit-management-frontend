@@ -1,7 +1,7 @@
 import Button from "@mui/material/Button";
 import { useSetRecoilState } from "recoil";
 import adviceIdState from "../../../../../states/advice/AdviceIdState.tsx";
-import adviceEditPopUpOpenState from "../../../../../states/advice/adviceEditPopUpOpenState.tsx";
+import adviceEditPopUpOpenState from "../../../../../states/advice/AdviceEditPopUpOpenState.tsx";
 
 type Props = {
   curAdviceId: number;

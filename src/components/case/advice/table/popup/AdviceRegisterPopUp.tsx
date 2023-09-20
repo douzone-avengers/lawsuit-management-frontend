@@ -15,6 +15,7 @@ import "../../../../../stylesheet/calendar.css";
 import { Advicedata } from "../../../../../type/ResponseType.ts";
 import caseInfoState from "../../../../../states/case/info/caseInfoState.tsx";
 import caseIdState from "../../../../../states/case/CaseIdState.tsx";
+import AdviceRequestTriggerState from "../../../../../states/advice/AdviceRequestTriggerState.tsx";
 //import { DatePicker } from "@mui/x-date-pickers";
 
 type Props = {
@@ -29,7 +30,8 @@ function AdviceRegisterPopUp({ setAdvices }: Props) {
   const [memberIdList, setmemberIdList] = useState<string[]>([]);
   const [advicedAt, setadvicedAt] = useState<string | null>(null);
   const setAdviceId = useSetRecoilState(adviceIdState);
-  const caseId = useRecoilValue(caseIdState);
+  const lawsuitId = useRecoilValue(caseIdState);
+  const setAdviceRequestTrigger = useSetRecoilState(AdviceRequestTriggerState);
 
   const setAdviceRegisterPopUpOpen = useSetRecoilState(
     adviceRegisterPopUpOpenState,
@@ -49,15 +51,7 @@ function AdviceRegisterPopUp({ setAdvices }: Props) {
 
   const handleRegisterButtonClick = () => {
     const handleRequestSuccess: RequestSuccessHandler = () => {
-      const handleRequestSuccess2: RequestSuccessHandler = (res) => {
-        const body: Advicedata[] = res.data;
-        setAdvices(body);
-        setAdviceId(body[0]?.id);
-      };
-      requestDeprecated("GET", `/advices?lawsuit=${caseId}`, {
-        withToken: true,
-        onSuccess: handleRequestSuccess2,
-      });
+      setAdviceRequestTrigger(true);
     };
     setAdviceRegisterPopUpOpen(false);
     setclientIdList([]);
@@ -68,7 +62,7 @@ function AdviceRegisterPopUp({ setAdvices }: Props) {
     requestDeprecated("POST", "/advices", {
       withToken: true,
       body: {
-        lawsuitId: caseId,
+        lawsuitId: lawsuitId,
         clientIdList,
         memberIdList,
         title,
