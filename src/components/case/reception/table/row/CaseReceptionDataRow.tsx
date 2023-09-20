@@ -10,6 +10,7 @@ import CaseReceptionEditButton from "../button/CaseReceptionEditButton.tsx";
 import CaseReceptionDeleteButton from "../button/CaseReceptionDeleteButton.tsx";
 import { useRecoilValue } from "recoil";
 import { isEmployeeState } from "../../../../../states/user/UserState.ts";
+import { isClosingCaseState } from "../../../../../states/case/info/caseInfoState.tsx";
 
 type Props = {
   item: CaseReceptionRowType & { editable: boolean };
@@ -17,6 +18,8 @@ type Props = {
 
 function CaseReceptionDataRow({ item }: Props) {
   const isEmployee = useRecoilValue(isEmployeeState);
+  const isClosing = useRecoilValue(isClosingCaseState);
+
   return (
     <Box
       sx={{
@@ -33,7 +36,10 @@ function CaseReceptionDataRow({ item }: Props) {
       </Box>
       <Box
         sx={{
-          width: isEmployee ? "calc(100% - 720px)" : "calc(100% - 520px)",
+          width:
+            isEmployee && !isClosing
+              ? "calc(100% - 720px)"
+              : "calc(100% - 520px)",
         }}
       >
         <CaseReceptionContentsCell item={item} />
@@ -44,7 +50,7 @@ function CaseReceptionDataRow({ item }: Props) {
       <Box sx={{ width: 150 }}>
         <CaseReceptionReceivedAtCell item={item} />
       </Box>
-      {isEmployee && (
+      {isEmployee && !isClosing && (
         <>
           <Box
             sx={{

@@ -3,9 +3,11 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import caseReceptionAddPopUpOpenState from "../../../../../states/case/info/reception/CaseReceptionAddPopUpOpenState.tsx";
 import Button from "@mui/material/Button";
 import { isEmployeeState } from "../../../../../states/user/UserState.ts";
+import { isClosingCaseState } from "../../../../../states/case/info/caseInfoState.tsx";
 
 function CaseReceptionHeaderRow() {
   const isEmployee = useRecoilValue(isEmployeeState);
+  const isClosing = useRecoilValue(isClosingCaseState);
 
   const setReceptionAddPopUpOpen = useSetRecoilState(
     caseReceptionAddPopUpOpenState,
@@ -78,7 +80,7 @@ function CaseReceptionHeaderRow() {
       >
         <Box>완료일</Box>
       </Box>
-      {isEmployee && (
+      {isEmployee && !isClosing && (
         <Box
           sx={{
             width: 200,
