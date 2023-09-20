@@ -185,7 +185,7 @@ function CaseBookPDFShareComponent() {
               />
               <Row header="담당법원" data={data?.lawsuit.court} />
               <Row header="판결" data={data?.lawsuit.judgementResult} />
-              <Row header="판결일" data={data?.lawsuit.judgementDate} />
+              {/*<Row header="판결일" data={data?.lawsuit.judgementDate} />*/}
               <Row
                 header="의뢰비"
                 data={`${delimiter(data?.lawsuit.commissionFee ?? 0)}원`}
