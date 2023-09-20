@@ -6,7 +6,7 @@ import requestDeprecated, {
   RequestFailHandler,
   RequestSuccessHandler,
 } from "../../../../../lib/requestDeprecated.ts";
-import adviceEditPopUpOpenState from "../../../../../states/advice/adviceEditPopUpOpenState.tsx";
+import adviceEditPopUpOpenState from "../../../../../states/advice/AdviceEditPopUpOpenState.tsx";
 
 import PopUp from "../../../../common/PopUp.tsx";
 import CloseButton from "../../../../common/CloseButton.tsx";
