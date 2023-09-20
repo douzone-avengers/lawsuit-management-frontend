@@ -18,6 +18,7 @@ import DaumPostcode from "react-daum-postcode";
 import ReactModal from "react-modal";
 import Box from "@mui/material/Box";
 import { SubNavigationBarItemState } from "../layout/snb/SubNavigationBarItem";
+import * as React from "react";
 
 function ClientRegisterPopUp() {
   const [name, setName] = useState("");
@@ -25,6 +26,14 @@ function ClientRegisterPopUp() {
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [addressDetail, setAddressDetail] = useState("");
+
+  const [showWarnings, setShowWarnings] = useState<boolean>(false);
+  const [isEmailOk, setIsEmailOk] = useState(false);
+  const [emailMessage, setEmailMessage] = useState("");
+  const [isPhoneOk, setIsPhoneOk] = useState(false);
+  const [phoneMessage, setPhoneMessage] = useState("");
+  const [isAddressDetailOk, setIsAddressDetailOk] = useState(false);
+  const [addressDetailMessage, setAddressDetailMessage] = useState("");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const setRecoilAddress = useSetRecoilState(curMemberAddressState);
@@ -37,6 +46,20 @@ function ClientRegisterPopUp() {
     setClientRegisterPopUpOpen(false);
   };
   const handleRegisterButtonClick = () => {
+    console.log(email.length);
+    if (
+      !name.length ||
+      !isEmailOk ||
+      !isPhoneOk ||
+      address.length < 1 ||
+      !isAddressDetailOk
+    ) {
+      setShowWarnings(true);
+      return;
+    }
+
+    setShowWarnings(false);
+
     const handleRequestSuccess: RequestSuccessHandler = () => {
       setClientRegisterPopUpOpen(false);
       setName("");
@@ -95,6 +118,68 @@ function ClientRegisterPopUp() {
     });
   };
 
+  const onPhoneChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    let input = e.target.value.replace(/\D/g, "");
+    if (input.length <= 11) {
+      if (input.length > 2) {
+        input = input.substring(0, 3) + "-" + input.substring(3);
+      }
+      if (input.length > 7) {
+        input = input.substring(0, 8) + "-" + input.substring(8);
+      }
+      setPhone(input);
+
+      const phonePattern = /^010-\d{4}-?\d{4}$/;
+
+      if (phonePattern.test(input)) {
+        setPhoneMessage("올바른 전화번호 형식입니다.");
+        setIsPhoneOk(true);
+      } else {
+        setPhoneMessage("올바르지 않은 전화번호 형식입니다.");
+        setIsPhoneOk(false);
+      }
+    }
+  };
+
+  const onEmailChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const emailRegex =
+      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    const emailCurrent = e.target.value;
+    setEmail(emailCurrent);
+
+    if (!emailRegex.test(emailCurrent)) {
+      setEmailMessage("이메일 형식이 틀렸습니다.");
+      setIsEmailOk(false);
+    } else if (emailCurrent.length == 0) {
+      setIsEmailOk(true);
+    } else {
+      setEmailMessage("올바른 이메일 형식입니다.");
+      setIsEmailOk(true);
+    }
+  };
+
+  const onAddressDetailChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    let input = e.target.value;
+    setAddressDetail(input);
+
+    if (input.length === 0) {
+      setAddressDetailMessage("상세주소를 입력해 주세요.");
+      setIsAddressDetailOk(false);
+    } else {
+      setIsAddressDetailOk(true);
+      setAddressDetailMessage("");
+    }
+  };
+
+  console.log(showWarnings);
+  console.log(isEmailOk);
+
   return (
     <PopUp>
       <ReactModal
@@ -142,28 +227,69 @@ function ClientRegisterPopUp() {
         <CloseButton onClick={handleCloseButtonClick} />
       </Box>
       <TextField
+        {...(showWarnings && !name.length ? { error: true } : {})}
         type="text"
         size="small"
         label="이름"
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
-      <TextField
-        type="email"
-        size="small"
-        label="이메일"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <TextField
-        type="tel"
-        size="small"
-        label="전화번호"
-        value={phone}
-        onChange={(e) => setPhone(e.target.value)}
-      />
+      {showWarnings && !isEmailOk ? (
+        <TextField
+          error
+          type="email"
+          size="small"
+          label="이메일"
+          value={email}
+          onChange={onEmailChange}
+          helperText={emailMessage}
+        />
+      ) : (
+        <TextField
+          {...(isEmailOk
+            ? {}
+            : { ...(email.length == 0 ? {} : { error: true }) })}
+          type="email"
+          size="small"
+          label="이메일"
+          value={email}
+          onChange={onEmailChange}
+          helperText={emailMessage}
+        />
+      )}
+      {showWarnings && !isPhoneOk ? (
+        <TextField
+          error
+          type="tel"
+          size="small"
+          label="전화번호"
+          value={phone}
+          placeholder="010-xxxx-xxxx"
+          onChange={onPhoneChange}
+          helperText={phoneMessage}
+        />
+      ) : (
+        <TextField
+          {...(isPhoneOk
+            ? {}
+            : { ...(phone.length == 0 ? {} : { error: true }) })}
+          type="tel"
+          size="small"
+          label="전화번호"
+          value={phone}
+          placeholder="010-xxxx-xxxx"
+          onChange={onPhoneChange}
+          helperText={phoneMessage}
+        />
+      )}
       <Box>
-        <TextField type="text" size="small" label="주소" value={address} />
+        <TextField
+          {...(showWarnings && address.length == 0 ? { error: true } : {})}
+          type="text"
+          size="small"
+          label="주소"
+          value={address}
+        />
         <Button
           size="small"
           sx={{ marginTop: "5px" }}
@@ -175,11 +301,13 @@ function ClientRegisterPopUp() {
         </Button>
       </Box>
       <TextField
+        {...(showWarnings && !isAddressDetailOk ? { error: true } : {})}
         type="addressDetail"
         size="small"
         label="상세주소"
         value={addressDetail}
-        onChange={(e) => setAddressDetail(e.target.value)}
+        onChange={onAddressDetailChange}
+        helperText={addressDetailMessage}
       />
       <Button
         variant="contained"
