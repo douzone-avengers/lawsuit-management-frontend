@@ -81,7 +81,7 @@ function AdviceListTable({
     { id: "expandedRow", label: "", canSort: false, width: "9%" },
     { id: "title", label: "상담 제목", canSort: true, width: "27%" },
     { id: "contents", label: "상담 내용", canSort: false, width: "27%" },
-    { id: "advicedAt", label: "상담 일시", canSort: true, width: "27%" },
+    { id: "adviced_at", label: "상담 일시", canSort: true, width: "27%" },
     { id: "Button", label: " ", canSort: false, width: "10%" },
   ];
 
@@ -129,25 +129,25 @@ function AdviceListTable({
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            {headCells.map((headCell) => (
-              <TableCell
-                key={headCell.id}
-                align="left"
-                style={{ width: headCell.width }}
-              >
-                {headCell.canSort ? (
+            {headCells.map((headCell) =>
+              !headCell.canSort ? (
+                <TableCell align="left" style={{ width: headCell.width }}>
+                  <b>{headCell.label}</b>
+                </TableCell>
+              ) : (
+                <TableCell align="left" style={{ width: headCell.width }}>
                   <TableSortLabel
                     active={sortKey === headCell.id}
                     direction={sortKey === headCell.id ? sortOrder : "asc"}
-                    onClick={() => sortHandler(headCell.id)}
+                    onClick={() => {
+                      sortHandler(headCell.id);
+                    }}
                   >
-                    {headCell.label}
+                    <b>{headCell.label}</b>
                   </TableSortLabel>
-                ) : (
-                  headCell.label
-                )}
-              </TableCell>
-            ))}
+                </TableCell>
+              ),
+            )}
           </TableRow>
         </TableHead>
         {advices.length > 0 ? (

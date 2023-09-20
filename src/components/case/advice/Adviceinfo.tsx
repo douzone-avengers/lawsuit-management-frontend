@@ -66,7 +66,7 @@ function Adviceinfo() {
       withToken: true,
       onSuccess: handleRequestSuccess,
     });
-  }, [lawsuitId, adviceRequestTrigger, curPage, rowsPerPage]);
+  }, [lawsuitId, adviceRequestTrigger, curPage, rowsPerPage, sortOrder]);
 
   return (
     <Box
