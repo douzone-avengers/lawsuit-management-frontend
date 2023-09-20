@@ -13,12 +13,13 @@ import AdviceRegisterPopUp from "./table/popup/AdviceRegisterPopUp.tsx";
 import AdviceRegisterPopUpButton from "./table/button/AdviceRegisterPopUpButton.tsx";
 import { Advicedata } from "../../../type/ResponseType.ts";
 import { isEmployeeState } from "../../../states/user/UserState.ts";
-import adviceEditPopUpOpenState from "../../../states/advice/adviceEditPopUpOpenState.tsx";
+import adviceEditPopUpOpenState from "../../../states/advice/AdviceEditPopUpOpenState.tsx";
 import AdviceEditPopUp from "./table/popup/AdviceEditPopUp.tsx";
 import adviceDeletePopUpOpenState from "../../../states/advice/adviceDeletePopUpOpenState.tsx";
 import AdviceDeletePopUp from "./table/popup/AdviceDeletePopUp.tsx";
 import Card from "@mui/material/Card";
 import CardTitle from "../../common/CardTitle.tsx";
+import AdviceRequestTriggerState from "../../../states/advice/AdviceRequestTriggerState.tsx";
 
 function Adviceinfo() {
   const clientId = useRecoilValue(clientIdState);
@@ -29,24 +30,43 @@ function Adviceinfo() {
   const adviceDeletePopUpOpen = useRecoilValue(adviceDeletePopUpOpenState);
   const [advices, setAdvices] = useState<Advicedata[]>([]);
   const isEmployee = useRecoilValue(isEmployeeState);
+  const [sortKey, setSortKey] = useState("advicedAt");
+  const [sortOrder, setSortOrder] = useState<"desc" | "asc">("desc");
+  const [curPage, setCurPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [count, setCount] = useState(0);
+  const [adviceRequestTrigger, setAdviceRequestTrigger] = useRecoilState(
+    AdviceRequestTriggerState,
+  );
 
   useEffect(() => {
     if (typeof clientId !== "number" || typeof lawsuitId !== "number") {
       // TODO
       return;
     }
+    if (adviceRequestTrigger) {
+      setAdviceRequestTrigger(false);
+    }
 
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
-      const body: Advicedata[] = res.data;
-      setAdvices(body);
-      setAdviceId(body[0]?.id);
+      const data = res.data;
+      const adviceList: Advicedata[] = data.adviceDtoList;
+      setAdvices(adviceList);
+      setAdviceId(adviceList[0]?.id);
+      setCount(data.count);
     };
 
-    requestDeprecated("GET", `/advices?lawsuit=${lawsuitId}`, {
+    requestDeprecated("GET", `/advices/lawsuits/${lawsuitId}`, {
+      params: {
+        curPage: (curPage + 1).toString(),
+        rowsPerPage: rowsPerPage.toString(),
+        ...(sortKey !== null ? { sortKey: sortKey } : {}),
+        ...(sortOrder !== null ? { sortOrder: sortOrder } : {}),
+      },
       withToken: true,
       onSuccess: handleRequestSuccess,
     });
-  }, [lawsuitId]);
+  }, [lawsuitId, adviceRequestTrigger, curPage, rowsPerPage, sortOrder]);
 
   return (
     <Box
@@ -69,6 +89,15 @@ function Adviceinfo() {
             advices={advices.map((item) => ({
               ...item,
             }))}
+            count={count}
+            curPage={curPage}
+            setCurPage={setCurPage}
+            rowsPerPage={rowsPerPage}
+            setRowsPerPage={setRowsPerPage}
+            sortKey={sortKey}
+            setSortKey={setSortKey}
+            sortOrder={sortOrder}
+            setSortOrder={setSortOrder}
           />
         </Box>
       </Card>
