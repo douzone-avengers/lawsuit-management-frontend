@@ -4,7 +4,9 @@ import CaseBookPrintButton from "./CaseBookPrintButton.tsx";
 import Card from "@mui/material/Card";
 import DownPaymentShareButton from "./DownPaymentShareButton.tsx";
 import DownPaymentPrintButton from "./DownPaymentPrintButton.tsx";
-import caseInfoState from "../../../states/case/info/caseInfoState.tsx";
+import caseInfoState, {
+  isClosableUserState,
+} from "../../../states/case/info/caseInfoState.tsx";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { isEmployeeState } from "../../../states/user/UserState.ts";
 import FormControl from "@mui/material/FormControl";
@@ -26,6 +28,7 @@ function ClosingInfo() {
   const [hasError, setHasError] = useState(false);
   const [account, setAccount] = useRecoilState(downPaymentAccountState);
   const [bank, setBank] = useRecoilState(downPaymentBankState);
+  const closableUser = useRecoilValue(isClosableUserState);
 
   return (
     <Box
@@ -61,7 +64,7 @@ function ClosingInfo() {
             </Box>
           </Card>
         </>
-      ) : isEmployee ? (
+      ) : closableUser ? (
         <Card>
           <Box
             sx={{
