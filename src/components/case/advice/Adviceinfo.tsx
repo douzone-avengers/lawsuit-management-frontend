@@ -30,7 +30,7 @@ function Adviceinfo() {
   const adviceDeletePopUpOpen = useRecoilValue(adviceDeletePopUpOpenState);
   const [advices, setAdvices] = useState<Advicedata[]>([]);
   const isEmployee = useRecoilValue(isEmployeeState);
-  const [sortKey, setSortKey] = useState("adviced_at");
+  const [sortKey, setSortKey] = useState("advicedAt");
   const [sortOrder, setSortOrder] = useState<"desc" | "asc">("desc");
   const [curPage, setCurPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
