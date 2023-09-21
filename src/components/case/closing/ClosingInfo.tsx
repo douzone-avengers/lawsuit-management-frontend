@@ -49,7 +49,7 @@ function ClosingInfo() {
                 alignItems: "center",
               }}
             >
-              <Box>사건집</Box>
+              <Box>기록책</Box>
               <Box
                 sx={{
                   display: "flex",

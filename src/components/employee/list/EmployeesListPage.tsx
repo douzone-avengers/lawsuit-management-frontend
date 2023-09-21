@@ -11,6 +11,8 @@ import EmployeePromotionDialog from "./EmployeePromotionDialog";
 import { MemberInfo } from "../type/MemberInfo";
 import { Hierarchy } from "../../../states/data/hierarchyListState";
 import { Role } from "../../../states/data/roleListState";
+import { useRecoilValue } from "recoil";
+import { isAdminState } from "../../../states/user/UserState.ts";
 
 function EmployeeListPage() {
   const navigate = useNavigate();
@@ -42,6 +44,8 @@ function EmployeeListPage() {
   const [count, setCount] = useState(0);
 
   const [curSearchWord, setCurSearchWord] = useState("");
+
+  const isAdmin = useRecoilValue(isAdminState);
 
   useEffect(() => {
     hierarchyRequest();
@@ -204,7 +208,7 @@ function EmployeeListPage() {
         sortOrder={sortOrder}
         setSortOrder={setSortOrder}
       />
-      <EmployeePromotionDialog />
+      {isAdmin && <EmployeePromotionDialog />}
     </Box>
   );
 }
