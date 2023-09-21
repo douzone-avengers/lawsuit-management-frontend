@@ -26,6 +26,7 @@ import { useEffect, useState } from "react";
 import caseExpenseBillSizeState from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillSizeState.tsx";
 import CaseExpenseCancelButton from "../button/CaseExpenseCancelButton.tsx";
 import caseExpenseBillIsLoadedState from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillIsLoadedState.tsx";
+import { isClosingCaseState } from "../../../../../states/case/info/caseInfoState.tsx";
 
 type Props = {
   item: CaseExpenseRowType & { editable: boolean; isSelected: boolean };
@@ -34,6 +35,7 @@ type Props = {
 
 function CaseExpenseDataRow({ item, caseId }: Props) {
   const isEmployee = useRecoilValue(isEmployeeState);
+  const isClosing = useRecoilValue(isClosingCaseState);
 
   const [expenses, setExpenses] = useRecoilState(CaseExpensesState);
   const setExpenseBill = useSetRecoilState(caseExpenseBillState);
@@ -145,7 +147,7 @@ function CaseExpenseDataRow({ item, caseId }: Props) {
       >
         <CaseExpenseAmountCell item={item} />
       </Box>
-      {isEmployee && (
+      {isEmployee && !isClosing && (
         <Box
           sx={{
             display: "flex",
