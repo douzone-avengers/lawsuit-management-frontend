@@ -14,6 +14,7 @@ import caseExpenseBillState, {
 } from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillState.tsx";
 import caseExpenseBillSizeState from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillSizeState.tsx";
 import caseExpenseIdState from "../../../../../states/case/info/expense/CaseExpenseIdState.tsx";
+import { isClosingCaseState } from "../../../../../states/case/info/caseInfoState.tsx";
 
 function CaseExpenseBillHeaderRow() {
   const isEmployee = useRecoilValue(isEmployeeState);
@@ -22,6 +23,7 @@ function CaseExpenseBillHeaderRow() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const url = useRecoilValue(caseExpenseBillUrlState);
   const expenseId = useRecoilValue(caseExpenseIdState);
+  const isClosing = useRecoilValue(isClosingCaseState);
 
   const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
@@ -92,7 +94,7 @@ function CaseExpenseBillHeaderRow() {
           <b>지출 증빙자료</b>
         </TableCell>
       </Box>
-      {isEmployee && (
+      {isEmployee && !isClosing && (
         <Box
           sx={{
             width: 150,
@@ -112,7 +114,12 @@ function CaseExpenseBillHeaderRow() {
           />
           <Button
             variant="outlined"
-            sx={{ width: "100%", height: 40, color: "secondary", fontSize: 16 }}
+            sx={{
+              width: "100%",
+              height: 40,
+              color: "secondary",
+              fontSize: 16,
+            }}
             onClick={handleExpenseBillAddButtonClick}
           >
             등록

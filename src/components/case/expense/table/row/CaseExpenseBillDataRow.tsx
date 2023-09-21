@@ -3,6 +3,9 @@ import CaseExpenseBillShowNameCell from "../cell/CaseExpenseBillShowNameCell.tsx
 import CaseExpenseBillRemoveButton from "../button/CaseExpenseBillRemoveButton.tsx";
 import { CaseExpenseBillRowType } from "../../../../../states/case/info/expense/expenseBill/CaseExpenseBillState.tsx";
 import { useState } from "react";
+import { useRecoilValue } from "recoil";
+import { isEmployeeState } from "../../../../../states/user/UserState.ts";
+import { isClosingCaseState } from "../../../../../states/case/info/caseInfoState.tsx";
 
 type Props = {
   item: CaseExpenseBillRowType & { editable: boolean };
@@ -10,6 +13,8 @@ type Props = {
 
 function CaseExpenseBillDataRow({ item }: Props) {
   const [isHover, setIsHover] = useState(false);
+  const isEmployee = useRecoilValue(isEmployeeState);
+  const isClosing = useRecoilValue(isClosingCaseState);
 
   return (
     <Box
@@ -36,18 +41,20 @@ function CaseExpenseBillDataRow({ item }: Props) {
       >
         <CaseExpenseBillShowNameCell item={item} />
       </Box>
-      <Box sx={{ display: "flex", width: 150, minWidth: 150 }}>
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <CaseExpenseBillRemoveButton item={item} />
+      {isEmployee && !isClosing && (
+        <Box sx={{ display: "flex", width: 150, minWidth: 150 }}>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CaseExpenseBillRemoveButton item={item} />
+          </Box>
         </Box>
-      </Box>
+      )}
     </Box>
   );
 }

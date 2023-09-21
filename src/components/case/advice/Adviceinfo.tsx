@@ -20,6 +20,7 @@ import AdviceDeletePopUp from "./table/popup/AdviceDeletePopUp.tsx";
 import Card from "@mui/material/Card";
 import CardTitle from "../../common/CardTitle.tsx";
 import AdviceRequestTriggerState from "../../../states/advice/AdviceRequestTriggerState.tsx";
+import { isClosingCaseState } from "../../../states/case/info/caseInfoState.tsx";
 
 function Adviceinfo() {
   const clientId = useRecoilValue(clientIdState);
@@ -30,7 +31,7 @@ function Adviceinfo() {
   const adviceDeletePopUpOpen = useRecoilValue(adviceDeletePopUpOpenState);
   const [advices, setAdvices] = useState<Advicedata[]>([]);
   const isEmployee = useRecoilValue(isEmployeeState);
-  const [sortKey, setSortKey] = useState("advicedAt");
+  const [sortKey, setSortKey] = useState("adviced_at");
   const [sortOrder, setSortOrder] = useState<"desc" | "asc">("desc");
   const [curPage, setCurPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -38,6 +39,7 @@ function Adviceinfo() {
   const [adviceRequestTrigger, setAdviceRequestTrigger] = useRecoilState(
     AdviceRequestTriggerState,
   );
+  const isClosing = useRecoilValue(isClosingCaseState);
 
   useEffect(() => {
     if (typeof clientId !== "number" || typeof lawsuitId !== "number") {
@@ -77,7 +79,7 @@ function Adviceinfo() {
         position: "relative",
       }}
     >
-      {isEmployee && (
+      {isEmployee && !isClosing && (
         <Box>
           <AdviceRegisterPopUpButton />
         </Box>
