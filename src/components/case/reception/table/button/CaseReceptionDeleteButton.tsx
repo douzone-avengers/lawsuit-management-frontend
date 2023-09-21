@@ -45,7 +45,8 @@ function CaseReceptionDeleteButton({ item }: Props) {
     <Button
       sx={{ marginLeft: 1, marginRight: 1 }}
       size="small"
-      variant="contained"
+      variant="outlined"
+      color="error"
       fullWidth
       onClick={handleClick}
     >

@@ -11,6 +11,7 @@ import CaseReceptionDeleteButton from "../button/CaseReceptionDeleteButton.tsx";
 import { useRecoilValue } from "recoil";
 import { isEmployeeState } from "../../../../../states/user/UserState.ts";
 import { isClosingCaseState } from "../../../../../states/case/info/caseInfoState.tsx";
+import CaseReceptionCancelButton from "../button/CaseReceptionCancelButton.tsx";
 
 type Props = {
   item: CaseReceptionRowType & { editable: boolean };
@@ -74,7 +75,11 @@ function CaseReceptionDataRow({ item }: Props) {
               alignItems: "center",
             }}
           >
-            <CaseReceptionDeleteButton item={item} />
+            {item.editable ? (
+              <CaseReceptionCancelButton />
+            ) : (
+              <CaseReceptionDeleteButton item={item} />
+            )}
           </Box>
         </>
       )}

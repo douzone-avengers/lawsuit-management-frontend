@@ -65,7 +65,7 @@ function CaseReceptionEditConfirmButton({ item }: Props) {
     <Button
       sx={{ marginLeft: 1, marginRight: 1 }}
       size="small"
-      variant="contained"
+      variant="outlined"
       fullWidth
       onClick={handleClick}
     >

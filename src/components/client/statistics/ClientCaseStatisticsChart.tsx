@@ -182,8 +182,7 @@ function ClientCaseStatisticsChart() {
           label: {
             show: true,
             formatter: function (params) {
-              const formattedValue = params.value.toLocaleString();
-              return `${params.name}: ${formattedValue} 건`;
+              return `${params.name}`;
             },
           },
         },
@@ -205,6 +204,29 @@ function ClientCaseStatisticsChart() {
       },
       tooltip: {
         trigger: "item",
+        formatter: function (
+          params: echarts.TooltipComponentFormatterCallbackParams,
+        ) {
+          if (Array.isArray(params)) {
+            // 여러 데이터 포맷 처리
+            return params
+              .map((item) => {
+                if (typeof item.value === "number") {
+                  const formattedValue = item.value.toLocaleString();
+                  return item.name + ": " + formattedValue + "원";
+                }
+                return item.name + ": " + item.value + "원";
+              })
+              .join("<br>");
+          } else {
+            // 단일 데이터 포맷 처리
+            if (typeof params.value === "number") {
+              const formattedValue = params.value.toLocaleString();
+              return params.name + ": " + formattedValue + "원";
+            }
+            return params.name + ": " + params.value + "원";
+          }
+        },
       },
       legend: {
         orient: "vertical",
@@ -227,8 +249,7 @@ function ClientCaseStatisticsChart() {
           label: {
             show: true,
             formatter: function (params) {
-              const formattedValue = params.value.toLocaleString();
-              return `${params.name}: ${formattedValue} 원`;
+              return `${params.name}`;
             },
           },
         },

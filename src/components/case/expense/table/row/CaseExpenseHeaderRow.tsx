@@ -6,6 +6,7 @@ import React from "react";
 import TableCell from "@mui/material/TableCell";
 import { HeadCell } from "../../../type/HeadCell.tsx";
 import { isEmployeeState } from "../../../../../states/user/UserState.ts";
+import { isClosingCaseState } from "../../../../../states/case/info/caseInfoState.tsx";
 
 type Props = {
   sortKey: string;
@@ -21,6 +22,7 @@ function CaseExpenseHeaderRow({
   setSortOrder,
 }: Props) {
   const isEmployee = useRecoilValue(isEmployeeState);
+  const isClosing = useRecoilValue(isClosingCaseState);
 
   const setExpenseAddPopUpOpen = useSetRecoilState(
     caseExpenseAddPopUpOpenState,
@@ -158,7 +160,7 @@ function CaseExpenseHeaderRow({
           </TableSortLabel>
         </TableCell>
       </Box>
-      {isEmployee && (
+      {isEmployee && !isClosing && (
         <Box
           sx={{
             width: 150,
