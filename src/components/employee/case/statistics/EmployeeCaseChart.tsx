@@ -62,6 +62,7 @@ export default function EmployeeCaseChart({
       },
       tooltip: {
         trigger: "item",
+        formatter: "{b}: {c}건",
       },
       legend: {
         orient: "vertical",
@@ -74,8 +75,10 @@ export default function EmployeeCaseChart({
           radius: "70%",
           center: ["50%", "55%"],
           label: {
-            show: true, // 항상 라벨을 표시
-            formatter: "{b}: {c} 건",
+            show: true,
+            formatter: function (params) {
+              return `${params.name}`;
+            },
           },
           data: filteredLawsuitData,
           emphasis: {
@@ -123,6 +126,29 @@ export default function EmployeeCaseChart({
       },
       tooltip: {
         trigger: "item",
+        formatter: function (
+          params: echarts.TooltipComponentFormatterCallbackParams,
+        ) {
+          if (Array.isArray(params)) {
+            // 여러 데이터 포맷 처리
+            return params
+              .map((item) => {
+                if (typeof item.value === "number") {
+                  const formattedValue = item.value.toLocaleString();
+                  return item.name + ": " + formattedValue + "원";
+                }
+                return item.name + ": " + item.value + "원";
+              })
+              .join("<br>");
+          } else {
+            // 단일 데이터 포맷 처리
+            if (typeof params.value === "number") {
+              const formattedValue = params.value.toLocaleString();
+              return params.name + ": " + formattedValue + "원";
+            }
+            return params.name + ": " + params.value + "원";
+          }
+        },
       },
       legend: {
         orient: "vertical",
@@ -137,9 +163,7 @@ export default function EmployeeCaseChart({
           label: {
             show: true,
             formatter: function (params) {
-              // 숫자 값을 천의 자리마다 쉼표로 구분하여 표시
-              const formattedValue = params.value.toLocaleString();
-              return `${params.name}: ${formattedValue} 원`;
+              return `${params.name}`;
             },
           },
           data: filteredRevenueData,
