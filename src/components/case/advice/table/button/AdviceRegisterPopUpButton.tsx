@@ -10,7 +10,7 @@ function AdviceRegisterPopUpButton() {
     setAdviceRegisterPopUp(true);
   };
   return (
-    <Button size="large" variant="contained" onClick={handleClick}>
+    <Button size="large" variant="outlined" onClick={handleClick}>
       상담 등록
     </Button>
   );
