@@ -1,6 +1,6 @@
 import CloseIcon from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import caseReceptionsState from "../../../../../states/case/info/reception/CaseReceptionsState.tsx";
 import caseReceptionPreviousState from "../../../../../states/case/info/reception/CaseReceptionPreviousState.tsx";
 
