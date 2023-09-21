@@ -97,6 +97,19 @@ function DownPaymentSharePopUp() {
             }
           }}
         />
+        <div style={{ height: 56 }}>
+          <Button
+            variant="contained"
+            sx={{ height: "100%" }}
+            onClick={() => {
+              setInvalidEmail(false);
+              setErrEmail("");
+              handleAddEmail();
+            }}
+          >
+            추가
+          </Button>
+        </div>
       </Box>
       <Card>
         <List sx={{ height: 240, paddingLeft: 1, overflow: "auto" }}>
