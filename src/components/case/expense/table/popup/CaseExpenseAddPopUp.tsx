@@ -89,7 +89,7 @@ function CaseExpenseAddPopUp() {
         lawsuitId: caseId,
         speningAt,
         contents,
-        amount,
+        amount: amount.replace(/[^0-9]/g, ""),
       },
       onSuccess: handleRequestSuccess,
     });
