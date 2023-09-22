@@ -20,7 +20,12 @@ import { useRecoilValue } from "recoil";
 import { isEmployeeState } from "../../../../states/user/UserState.ts";
 import Box from "@mui/material/Box";
 import { HeadCell } from "../../type/HeadCell.tsx";
-import { TableFooter, TablePagination, TableSortLabel } from "@mui/material";
+import {
+  CircularProgress,
+  TableFooter,
+  TablePagination,
+  TableSortLabel,
+} from "@mui/material";
 import TextField from "@mui/material/TextField";
 
 export type DetailAdviceType = {
@@ -89,6 +94,7 @@ function AdviceListTable({
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const maxContentLength = 20;
   const [advice, setAdvice] = useState<DetailAdviceType | null>();
+  const [isLoading, setIsLoading] = useState(false);
   const trimContent = (content: string) => {
     if (content.length <= maxContentLength) {
       return content;
@@ -104,8 +110,8 @@ function AdviceListTable({
       withToken: true,
       onSuccess: (res) => {
         const body: DetailAdviceType = res.data;
-        console.log(body);
         setAdvice(body);
+        setIsLoading(true);
       },
       onFail: handelRequestFail,
     });
@@ -115,6 +121,7 @@ function AdviceListTable({
     if (expandedRow === index) {
       setExpandedRow(null);
     } else {
+      setIsLoading(false);
       setExpandedRow(index);
       adviceRequest(advices[index].id);
     }
@@ -197,43 +204,19 @@ function AdviceListTable({
                 </TableRow>
                 {expandedRow === index && (
                   <TableRow>
-                    <TableCell colSpan={4}>
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          padding: "10px 30px 10px 30px",
-                        }}
-                      >
-                        <TextField
-                          style={{ margin: "10px 0" }}
-                          label="상담 제목"
-                          value={advice?.title}
-                          InputProps={{
-                            readOnly: true,
+                    {isLoading ? (
+                      <TableCell colSpan={4}>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            padding: "10px 30px 10px 30px",
                           }}
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
-                        />
-                        <TextField
-                          style={{ margin: "10px 0" }}
-                          label="상담 날짜"
-                          value={advice?.advicedAt.split(" ")[0]}
-                          InputProps={{
-                            readOnly: true,
-                          }}
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
-                        />
-                        {advice && (
+                        >
                           <TextField
                             style={{ margin: "10px 0" }}
-                            label="상담관"
-                            value={advice.members
-                              .map((item) => item.name)
-                              .join(", ")}
+                            label="상담 제목"
+                            value={advice?.title}
                             InputProps={{
                               readOnly: true,
                             }}
@@ -241,14 +224,10 @@ function AdviceListTable({
                               shrink: true,
                             }}
                           />
-                        )}
-                        {advice && (
                           <TextField
                             style={{ margin: "10px 0" }}
-                            label="상담자"
-                            value={advice.clients
-                              .map((item) => item.name)
-                              .join(", ")}
+                            label="상담 날짜"
+                            value={advice?.advicedAt.split(" ")[0]}
                             InputProps={{
                               readOnly: true,
                             }}
@@ -256,22 +235,54 @@ function AdviceListTable({
                               shrink: true,
                             }}
                           />
-                        )}
-                        <TextField
-                          style={{ margin: "10px 0" }}
-                          label="상담 내용"
-                          value={advice?.contents}
-                          InputProps={{
-                            readOnly: true,
-                          }}
-                          multiline
-                          rows={4}
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
-                        />
-                      </div>
-                    </TableCell>
+                          {advice && (
+                            <TextField
+                              style={{ margin: "10px 0" }}
+                              label="상담관"
+                              value={advice.members
+                                .map((item) => item.name)
+                                .join(", ")}
+                              InputProps={{
+                                readOnly: true,
+                              }}
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                            />
+                          )}
+                          {advice && (
+                            <TextField
+                              style={{ margin: "10px 0" }}
+                              label="상담자"
+                              value={advice.clients
+                                .map((item) => item.name)
+                                .join(", ")}
+                              InputProps={{
+                                readOnly: true,
+                              }}
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                            />
+                          )}
+                          <TextField
+                            style={{ margin: "10px 0" }}
+                            label="상담 내용"
+                            value={advice?.contents}
+                            InputProps={{
+                              readOnly: true,
+                            }}
+                            multiline
+                            rows={4}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                          />
+                        </div>
+                      </TableCell>
+                    ) : (
+                      <CircularProgress />
+                    )}
                   </TableRow>
                 )}
               </>
