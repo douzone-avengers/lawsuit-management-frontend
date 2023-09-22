@@ -23,7 +23,7 @@ import caseInfoState, {
 function CaseExpenseAddPopUp() {
   const [speningAt, setSpeningAt] = useState(new Date().toISOString());
   const [contents, setContents] = useState("");
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState("");
 
   const caseId = useRecoilValue(caseIdState);
   const setCaseInfo = useSetRecoilState(caseInfoState);
@@ -49,7 +49,9 @@ function CaseExpenseAddPopUp() {
   };
 
   const handleAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setAmount(Number(e.target.value.replace(/[^0-9]/g, "")));
+    const value = e.target.value.replace(/\D/g, ""); // 숫자 이외의 문자 제거
+    const formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 3자리마다 쉼표 추가
+    setAmount(formattedValue);
   };
 
   const handleSubmitClick = () => {
