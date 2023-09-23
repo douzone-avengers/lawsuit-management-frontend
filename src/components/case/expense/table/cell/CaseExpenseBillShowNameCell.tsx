@@ -16,7 +16,7 @@ function CaseExpenseBillShowNameCell({ item }: Props) {
     // console.log("Blob URL Supported:", blobSupported);
 
     // 파일의 실제 다운로드 경로
-    const fileUrl = `http://localhost:8080/files/download/${fileId}`;
+    const fileUrl = `https://lawsuit-management.store/files/download/${fileId}`;
     // 사용자의 토큰 저장
     const token = localStorage.getItem("accessToken");
 
