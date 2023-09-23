@@ -95,35 +95,26 @@ function AdviceEditPopUp({ setAdvices }: Props) {
   const handleEditButtonClick = () => {
     const handleRequestSuccess: RequestSuccessHandler = () => {
       const handleRequestSuccess2: RequestSuccessHandler = (res) => {
-        const body: Advicedata[] = res.data;
-        setAdvices(body);
-        setAdviceId(body[0]?.id);
-        const handleRequestSuccess3: RequestSuccessHandler = (res) => {
-          const data: DetailAdviceType = res.data;
-          console.log(res.data);
-          setAdviceInfo(res.data);
-          setTitle(data.title);
-          setContents(data.contents);
-          setadvicedAt(data.advicedAt);
-          const members = res.data.members;
-          setSelectedMembers(members?.map((item: any) => item.id) ?? []);
-          const clients = res.data.clients;
-          setSelectedClients(clients?.map((item: any) => item.id) ?? []);
-        };
-        requestDeprecated("GET", `/advices/${adviceId}`, {
-          onSuccess: handleRequestSuccess3,
-        });
+        const data = res.data;
+        const adviceList: Advicedata[] = data.adviceDtoList;
+        setAdvices(adviceList);
+        setAdviceId(adviceList[0]?.id);
+        setAdviceEditPopUpOpen(false);
       };
       const handleRequestFail: RequestFailHandler = (e) => {
         alert((e.response.data as { code: string; message: string }).message);
       };
-      requestDeprecated("GET", `/advices?lawsuit=${caseId}`, {
+      requestDeprecated("GET", `/advices/lawsuits/${caseId}`, {
+        params: {
+          curPage: "1",
+          rowsPerPage: "5",
+        },
         withToken: true,
         onSuccess: handleRequestSuccess2,
         onFail: handleRequestFail,
       });
     };
-    setAdviceEditPopUpOpen(false);
+
     const handleRequestFail: RequestFailHandler = (e) => {
       alert((e.response.data as { code: string; message: string }).message);
     };

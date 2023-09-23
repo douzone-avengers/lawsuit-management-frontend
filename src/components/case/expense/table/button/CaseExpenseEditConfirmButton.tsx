@@ -38,6 +38,8 @@ function CaseExpenseEditConfirmButton({ item, caseId }: Props) {
       setExpenses(newExpenses);
     };
 
+    console.dir(expenses);
+
     requestDeprecated("PUT", `/expenses/update/${item.id}`, {
       body: {
         lawsuitId: caseId,
