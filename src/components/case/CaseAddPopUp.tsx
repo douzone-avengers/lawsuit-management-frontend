@@ -164,6 +164,8 @@ function CaseAddPopUp({
           count: number;
         } = res.data;
 
+        console.dir(res.data);
+
         const mappedLawsuitList = lawsuitData.lawsuitList.map((item) => ({
           ...item,
           lawsuitStatus: mapLawsuitStatus(item.lawsuitStatus),

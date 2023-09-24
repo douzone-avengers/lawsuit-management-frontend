@@ -56,6 +56,16 @@ function CaseExpenseBillShowNameCell({ item }: Props) {
         downloadLink.click(); // 해당 downloadLink 클릭되도록하는 함수
         document.body.removeChild(downloadLink); // download 후 해당 downloadLink 제거
       };
+
+      // 개선된 코드
+      // reader.onload = () => {
+      //   const downloadLink = document.createElement("a"); // 다운로드 링크인 <a> 태그 생성
+      //   downloadLink.href = URL.createObjectURL(blob); // 이미 Blob으로 처리된 데이터를 사용
+      //   downloadLink.download = fileName; // 다운로드될 파일 이름 설정
+      //   document.body.appendChild(downloadLink);
+      //   downloadLink.click(); // 해당 downloadLink 클릭되도록하는 함수
+      //   document.body.removeChild(downloadLink); // download 후 해당 downloadLink 제거
+      // };
     }
   };
 
