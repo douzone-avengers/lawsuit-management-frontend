@@ -12,6 +12,7 @@ import caseTabIdState from "../../states/case/CaseTabIdState.tsx";
 import caseIdState from "../../states/case/CaseIdState.tsx";
 import caseInfoState, {
   CaseInfoType,
+  isClosingCaseState,
 } from "../../states/case/info/caseInfoState.tsx";
 import requestDeprecated, {
   RequestFailHandler,
@@ -27,7 +28,6 @@ import CaseRemovePopUpButton from "./CaseRemovePopUpButton.tsx";
 import { isEmployeeState } from "../../states/user/UserState.ts";
 import caseExpenseIdState from "../../states/case/info/expense/CaseExpenseIdState.tsx";
 
-
 function CaseDetailPage() {
   const [caseTabId, setCaseTabId] = useRecoilState(caseTabIdState);
   const clientId = useRecoilValue(clientIdState);
@@ -35,6 +35,7 @@ function CaseDetailPage() {
   const caseId = useRecoilValue(caseIdState);
   const setCaseInfo = useSetRecoilState(caseInfoState);
   const setExpenseId = useSetRecoilState(caseExpenseIdState);
+  const isClosing = useRecoilValue(isClosingCaseState);
 
   const handleClickListButton = () => {
     navigate(`/cases/clients/${clientId}`);
@@ -114,7 +115,7 @@ function CaseDetailPage() {
             &nbsp; 목록
           </Button>
         </Box>
-        {isEmployee && (
+        {isEmployee && !isClosing && (
           <Box sx={{ display: "flex", gap: 1 }}>
             <CaseEditPopUpButton />
             <CaseRemovePopUpButton />
