@@ -84,6 +84,7 @@ function CaseDetailPage() {
     setExpenseId(null);
 
     const handleRequestSuccess: RequestSuccessHandler = (res) => {
+      console.log("temp");
       const body: CaseInfoType = res.data;
       setCaseInfo(body);
     };
