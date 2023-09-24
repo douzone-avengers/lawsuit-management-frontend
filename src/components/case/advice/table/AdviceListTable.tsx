@@ -27,6 +27,7 @@ import {
   TableSortLabel,
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
+import { isClosingCaseState } from "../../../../states/case/info/caseInfoState.tsx";
 
 export type DetailAdviceType = {
   adviceId: number;
@@ -62,6 +63,7 @@ function AdviceListTable({
   sortOrder,
   setSortOrder,
 }: Props) {
+  const isClosing = useRecoilValue(isClosingCaseState);
   const handleChangePage = (_event: unknown, newCurPage: number) => {
     setCurPage(newCurPage);
   };
@@ -190,7 +192,7 @@ function AdviceListTable({
                   <TableCell align="left">
                     {new Date(item.advicedAt).toLocaleDateString()}
                   </TableCell>
-                  {isEmployee && (
+                  {isEmployee && !isClosing && (
                     <TableCell align="center">
                       <Box sx={{ display: "flex", gap: 1 }}>
                         <AdviceEditPopUpButton
