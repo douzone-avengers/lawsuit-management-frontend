@@ -288,7 +288,7 @@ function AppRoutes() {
       setSnbLoaded(false);
       requestDeprecated(
         "GET",
-        `/lawsuits/clients/${clientId}?curPage=1&rowsPerPage=5&searchWord=`,
+        `/lawsuits/clients/${clientId}?curPage=1&searchWord=`,
         {
           onSuccess: (res) => {
             const body: {
