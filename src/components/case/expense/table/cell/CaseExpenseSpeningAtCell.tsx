@@ -3,7 +3,6 @@ import caseExpensesState, {
 } from "../../../../../states/case/info/expense/CaseExpensesState.tsx";
 import { useRecoilState } from "recoil";
 import dayjs, { Dayjs } from "dayjs";
-import { produce } from "immer";
 import { DatePicker } from "@mui/x-date-pickers";
 import Box from "@mui/material/Box";
 
@@ -16,10 +15,21 @@ function CaseExpenseSpeningAtCell({ item }: Props) {
 
   const handleChange = (e: Dayjs | null) => {
     if (item.editable) {
-      const newExpenses = produce(expenses, (draft) => {
-        const expenses = draft.filter((item2) => item2.id === item.id)[0];
-        expenses.speningAt = e?.toDate().toISOString() ?? "";
-      });
+      console.dir("before");
+      console.dir(expenses);
+      // const newExpenses = produce(expenses, (draft) => {
+      //   const expenses = draft.filter((item2) => item2.id === item.id)[0];
+      //   expenses.speningAt = e?.toDate().toISOString() ?? "";
+      // });
+
+      const newExpenses = expenses.map((expense) =>
+        expense.id === item.id
+          ? { ...expense, speningAt: "2010-03-13" } // 새로운 날짜로 수정
+          : expense,
+      );
+
+      console.dir("after");
+      console.dir(newExpenses);
       setExpenses(newExpenses);
     }
   };

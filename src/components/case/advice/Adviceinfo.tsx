@@ -106,7 +106,7 @@ function Adviceinfo() {
 
       {adviceEditPopUpOpen ? <AdviceEditPopUp setAdvices={setAdvices} /> : null}
       {adviceDeletePopUpOpen ? (
-        <AdviceDeletePopUp setAdvices={setAdvices} />
+        <AdviceDeletePopUp setAdvices={setAdvices} setCount={setCount} />
       ) : null}
       {adviceRegisterPopUpOpen ? (
         <AdviceRegisterPopUp setAdvices={setAdvices} />

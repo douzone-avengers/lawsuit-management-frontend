@@ -15,9 +15,10 @@ import caseIdState from "../../../../../states/case/CaseIdState.tsx";
 
 type Props = {
   setAdvices: React.Dispatch<React.SetStateAction<Advicedata[]>>;
+  setCount: React.Dispatch<React.SetStateAction<number>>;
 };
 
-function AdviceDeletePopUp({ setAdvices }: Props) {
+function AdviceDeletePopUp({ setAdvices, setCount }: Props) {
   const setAdviceDeletePopUpOpen = useSetRecoilState(
     adviceDeletePopUpOpenState,
   );
@@ -31,11 +32,17 @@ function AdviceDeletePopUp({ setAdvices }: Props) {
     };
     const handleRequestSuccess: RequestSuccessHandler = () => {
       const handleRequestSuccess2: RequestSuccessHandler = (res) => {
-        const body: Advicedata[] = res.data;
-        setAdvices(body);
-        setAdviceId(body[0]?.id);
+        const data = res.data;
+        const adviceList: Advicedata[] = data.adviceDtoList;
+        setAdvices(adviceList);
+        setAdviceId(adviceList[0]?.id);
+        setCount(data.count);
       };
-      requestDeprecated("GET", `/advices?lawsuit=${caseId}`, {
+      requestDeprecated("GET", `/advices/lawsuits/${caseId}`, {
+        params: {
+          curPage: "1",
+          rowsPerPage: "5",
+        },
         withToken: true,
         onSuccess: handleRequestSuccess2,
       });
