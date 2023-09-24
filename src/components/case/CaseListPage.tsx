@@ -85,6 +85,7 @@ function CaseListPage() {
     clientId,
     rowsPerPage,
     page,
+    count,
     searchLawsuitStatus,
     searchWord,
     sortKey,
