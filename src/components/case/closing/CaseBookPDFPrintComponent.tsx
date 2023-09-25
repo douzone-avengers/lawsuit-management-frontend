@@ -241,7 +241,10 @@ function CaseBookPDFPrintComponent() {
                       style={{
                         border: "1px solid black",
                         height: 770,
+                        width: 700,
                         padding: 20,
+                        wordBreak: "break-all",
+                        whiteSpace: "pre-wrap",
                       }}
                     >
                       {item.contents}
